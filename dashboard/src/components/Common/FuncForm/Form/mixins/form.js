@@ -161,8 +161,8 @@ export default {
           }
         })
         this.$emit('submit', model)
-      }).catch(() => {
-
+      }).catch(error => {
+        console.log(error)
       })
     },
     // 重置表单

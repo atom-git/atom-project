@@ -24,7 +24,6 @@
 <script>
 /**
  * 新增或者编辑的数据表单，默认实现
- * TODO 改为Dialog组件统一弹窗形式
  */
 import Dialog from '@/components/Common/Dialog'
 import { FormList } from '@/components/Common/FuncForm'

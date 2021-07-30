@@ -1,16 +1,16 @@
 /*功能标题title*/
 .atom-title {
-  color: rgba(0, 0, 0, 0.85);
+  color: @text-color;
   /*有前缀时为通用的title可以用于一些超链接*/
-}
-.atom-title.atom-has-prefix {
-  color: #1890ff;
-}
-.atom-title:not(.atom-has-prefix):before {
-  content: \"\";
-  height: 20px;
-  display: inline-block;
-  vertical-align: text-bottom;
-  margin-right: 6px;
-  border-right: 4px solid #1890ff;
+  .atom-has-prefix {
+    color: @primary-color;
+  }
+  &:not(.atom-has-prefix):before {
+    content: "";
+    height: 20px;
+    display: inline-block;
+    vertical-align: text-bottom;
+    margin-right: 6px;
+    border-right: 4px solid @primary-color;
+  }
 }
