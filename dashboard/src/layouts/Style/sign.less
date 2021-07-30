@@ -11,7 +11,7 @@
   background-repeat: no-repeat;
   background-position: center 110px;
   background-size: 100%;
-  background-color: @body-background;
+  background-color: @layout-body-background;
   /*手机端*/
   &.mobile .ant-layout-content .atom-sign-content {
     width: 96%;
@@ -75,18 +75,6 @@
             }
           }
         }
-        /*密码强度*/
-        .atom-password-level {
-          &.low .atom-password-level-desc {
-            color: @error-color;
-          }
-          &.middle .atom-password-level-desc {
-            color: @warning-color;
-          }
-          &.strong .atom-password-level-desc {
-            color: @success-color;
-          }
-        }
       }
     }
   }
@@ -103,6 +91,18 @@
       margin-top: 8px;
       text-align: center;
     }
+  }
+}
+/*密码强度*/
+.atom-password-level {
+  &.low .atom-password-level-desc {
+    color: @error-color;
+  }
+  &.middle .atom-password-level-desc {
+    color: @warning-color;
+  }
+  &.strong .atom-password-level-desc {
+    color: @success-color;
   }
 }
 //.atom-sign-layout.mobile .ant-layout-content .atom-sign-content {
