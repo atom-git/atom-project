@@ -6,83 +6,155 @@ header右侧样式
   line-height: 48px;
   height: 48px;
   min-width: 255px;
-}
-.atom-header-right .atom-header-button {
-  padding: 0 12px;
-  cursor: pointer;
-  display: inline-block;
-  height: 48px;
-  line-height: 48px;
-  font-size: 16px;
-}
-.atom-header-right .atom-header-button .ant-badge {
-  font-size: 16px;
-}
-.atom-header-right .atom-header-button:hover {
-  background: #1890ff;
-  color: #fff;
-}
-.atom-header-right .atom-header-button:hover .ant-badge > .anticon {
-  color: #fff;
+  .atom-header-button {
+    padding: 0 12px;
+    cursor: pointer;
+    display: inline-block;
+    height: 48px;
+    line-height: 48px;
+    font-size: 16px;
+    .ant-badge {
+      font-size: 16px;
+    }
+    &:hover {
+      background: @primary-color;
+      color: #FFFFFF;
+      .ant-badge > .anticon {
+        color: #FFFFFF;
+      }
+    }
+  }
 }
 /*消息提醒*/
 .atom-notice-container {
   width: 336px;
   border-radius: 4px;
-  background: #fff;
+  background: @component-background;
   box-shadow: 0 6px 16px -8px rgba(0, 0, 0, 0.08), 0 9px 28px 0 rgba(0, 0, 0, 0.05), 0 12px 48px 16px rgba(0, 0, 0, 0.03);
-}
-.atom-notice-container .ant-tabs-bar {
-  border-bottom: 1px solid #d9d9d9;
-  text-align: center;
-  margin: 0;
-}
-.atom-notice-container .ant-tabs-bar .ant-tabs-tab {
-  padding: 12px 6px;
-}
-.atom-notice-container .atom-notice-item-list .ant-list-item {
-  padding: 12px 24px;
-  border-bottom: 1px solid #d9d9d9;
-  cursor: pointer;
-}
-.atom-notice-container .atom-notice-item-list .ant-list-item.atom-read {
-  opacity: 0.4;
-}
-.atom-notice-container .atom-notice-item-list .ant-list-item:last-child {
-  border-bottom: 0 !important;
-}
-.atom-notice-container .atom-notice-item-list .ant-list-item:hover,
-.atom-notice-container .atom-notice-item-list .ant-list-item:focus {
-  background: #f5f5f5;
-}
-.atom-notice-container .atom-notice-item-list .ant-list-item .ant-list-item-meta-title {
-  font-weight: 400;
-}
-.atom-notice-container .atom-notice-item-list .ant-list-footer {
-  text-align: center;
-  line-height: 46px;
-  vertical-align: middle;
-  padding: 0;
-  cursor: pointer;
-  border-top: 1px solid #d9d9d9;
-}
-.atom-notice-container .atom-notice-item-list .ant-list-footer .ant-col:first-child {
-  border-right: 1px solid #d9d9d9;
+  .ant-tabs-bar {
+    border-bottom: 1px solid #d9d9d9;
+    text-align: center;
+    margin: 0;
+    .ant-tabs-tab {
+      padding: 12px 6px;
+    }
+  }
+  .atom-notice-item-list {
+    .ant-list-item {
+      padding: 12px 24px;
+      border-bottom: 1px solid @border-color-base;
+      cursor: pointer;
+      .ant-list-item {
+        .atom-read {
+          opacity: 0.4;
+        }
+        &:last-child {
+          border-bottom: 0 !important;
+        }
+        &:hover, &:focus {
+          background: @item-hover-bg;
+        }
+        .ant-list-item-meta-title {
+          font-weight: 400;
+        }
+      }
+    }
+    .ant-list-footer {
+      text-align: center;
+      line-height: 46px;
+      vertical-align: middle;
+      padding: 0;
+      cursor: pointer;
+      border-top: 1px solid @border-color-base;
+      .ant-col:first-child {
+        border-right: 1px solid @border-color-base;
+      }
+    }
+  }
 }
 /*样式设置*/
 .atom-theme-container .ant-drawer-content {
-  background: #fff;
+  background: @component-background;
+  .atom-theme-setting-item {
+    padding: 12px 0;
+    .atom-theme-setting-title {
+      font-weight: 500;
+      font-size: 14px;
+      color: @text-color;
+      margin: 8px 0;
+      display: inline-block;
+    }
+  }
+  .atom-theme-page-setting .ant-select {
+    width: 80px;
+  }
 }
-.atom-theme-container .ant-drawer-content .atom-theme-setting-item {
-  padding: 12px 0;
-}
-.atom-theme-container .ant-drawer-content .atom-theme-setting-item .atom-theme-setting-title {
-  font-weight: 500;
-  font-size: 14px;
-  color: rgba(0, 0, 0, 0.85);
-  margin: 8px 0;
-  display: inline-block;
-}
-.atom-theme-container .ant-drawer-content .atom-theme-page-setting .ant-select {
-  width: 80px;
-}
+//.atom-header-right .atom-header-button {
+//  padding: 0 12px;
+//  cursor: pointer;
+//  display: inline-block;
+//  height: 48px;
+//  line-height: 48px;
+//  font-size: 16px;
+//}
+//.atom-header-right .atom-header-button .ant-badge {
+//  font-size: 16px;
+//}
+//.atom-header-right .atom-header-button:hover {
+//  background: #1890ff;
+//  color: #fff;
+//}
+//.atom-header-right .atom-header-button:hover .ant-badge > .anticon {
+//  color: #fff;
+//}
+//.atom-notice-container .ant-tabs-bar {
+//  border-bottom: 1px solid #d9d9d9;
+//  text-align: center;
+//  margin: 0;
+//}
+//.atom-notice-container .ant-tabs-bar .ant-tabs-tab {
+//  padding: 12px 6px;
+//}
+//.atom-notice-container .atom-notice-item-list .ant-list-item {
+//  padding: 12px 24px;
+//  border-bottom: 1px solid #d9d9d9;
+//  cursor: pointer;
+//}
+//.atom-notice-container .atom-notice-item-list .ant-list-item.atom-read {
+//  opacity: 0.4;
+//}
+//.atom-notice-container .atom-notice-item-list .ant-list-item:last-child {
+//  border-bottom: 0 !important;
+//}
+//.atom-notice-container .atom-notice-item-list .ant-list-item:hover,
+//.atom-notice-container .atom-notice-item-list .ant-list-item:focus {
+//  background: #f5f5f5;
+//}
+//.atom-notice-container .atom-notice-item-list .ant-list-item .ant-list-item-meta-title {
+//  font-weight: 400;
+//}
+////
+//.atom-notice-container .atom-notice-item-list .ant-list-footer {
+//  text-align: center;
+//  line-height: 46px;
+//  vertical-align: middle;
+//  padding: 0;
+//  cursor: pointer;
+//  border-top: 1px solid #d9d9d9;
+//}
+//.atom-notice-container .atom-notice-item-list .ant-list-footer .ant-col:first-child {
+//  border-right: 1px solid #d9d9d9;
+//}
+//.atom-theme-container .ant-drawer-content .atom-theme-setting-item {
+//  padding: 12px 0;
+//}
+//.atom-theme-container .ant-drawer-content .atom-theme-setting-item .atom-theme-setting-title {
+//  font-weight: 500;
+//  font-size: 14px;
+//  color: rgba(0, 0, 0, 0.85);
+//  margin: 8px 0;
+//  display: inline-block;
+//}
+//.atom-theme-container .ant-drawer-content .atom-theme-page-setting .ant-select {
+//  width: 80px;
+//}

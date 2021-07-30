@@ -45,8 +45,8 @@ module.exports = {
     'style-resources-loader': {
       preProcessor: 'less',
       patterns: [
-        // 这个是加上自己的路径,不能使用(如下:alias)中配置的别名路径
-        resolve(__dirname, './src/config/theme/default.less')
+        // 这里是指所有需要预解析的文件夹目录
+        resolve('./src/config/theme/default.less')
       ]
     }
   },

@@ -5,145 +5,273 @@ drawer布局样式
   width: 100%;
   min-height: 100vh !important;
   /*顶部菜单*/
+  .ant-layout-header {
+    display: flex;
+    height: 48px;
+    line-height: 48px;
+    padding: 0;
+    box-shadow: 0 1px 4px #00152914;
+    .atom-logo {
+      flex: 1 1 0;
+    }
+    .atom-header-right {
+      min-width: 150px;
+      .atom-header-button {
+        padding: 0 8px;
+        color: #FFFFFF;
+        .ant-badge {
+          color: #FFFFFF;
+        }
+        &:hover {
+          background: @primary-color;
+        }
+      }
+    }
+    /*折叠展开按钮*/
+    .atom-sider-trigger {
+      font-size: 18px;
+      width: 48px;
+      cursor: pointer;
+      text-align: center;
+      color: @text-color;
+      &:hover {
+        background: @primary-color;
+        color: #FFFFFF;
+      }
+    }
+  }
   /*页面内容*/
+  .ant-layout-content {
+    margin: 8px;
+    /*card body样式*/
+    .atom-page-layout .ant-card {
+      /*常规card模块*/
+      .ant-card-body {
+        padding: 8px;
+        /*折叠窗体样式*/
+        .ant-collapse .ant-collapse-item .ant-collapse-header {
+          padding: 10px 10px 10px 8px;
+        }
+      }
+      /*filter模块*/
+      &.atom-form.filter .ant-card-body {
+        padding: 16px 8px 0 8px;
+      }
+      /*drawer模式下formItem下边距变小*/
+      .ant-form-item {
+        margin-bottom: 16px;
+      }
+    }
+  }
   /*页脚部分*/
+  .ant-layout-footer {
+    padding: 8px 16px;
+    margin: 16px 0 8px;
+    text-align: center;
+    .atom-footer-links a, .atom-footer-copyright {
+      font-size: 14px;
+      color: @text-color-secondary;
+    }
+    .atom-footer-copyright {
+      margin-top: 8px;
+      text-align: center;
+    }
+  }
   /**
   混合主题 mix
   */
+  .mix {
+    /*页眉样式*/
+    .ant-layout-header {
+      /*logo部分*/
+      .atom-logo h1 {
+        color: #FFFFFF;
+      }
+      /*折叠展开按钮*/
+      .atom-sider-trigger {
+        color: #FFFFFF;
+      }
+    }
+  }
   /**
   浅色主题 light
   */
+  &.light {
+    /*页眉样式*/
+    .ant-layout-header {
+      background: #fff;
+      /*右侧菜单部分*/
+      .atom-header-right .atom-header-button {
+        color: @text-color;
+        .anticon {
+          color: @text-color;
+        }
+      }
+    }
+  }
   /**
   深色主题 dark
    */
-}
-.atom-drawer-layout .ant-layout-header {
-  display: flex;
-  height: 48px;
-  line-height: 48px;
-  padding: 0;
-  box-shadow: 0 1px 4px #00152914;
-  /*折叠展开按钮*/
-}
-.atom-drawer-layout .ant-layout-header .atom-logo {
-  flex: 1 1 0;
-}
-.atom-drawer-layout .ant-layout-header .atom-header-right {
-  min-width: 150px;
-}
-.atom-drawer-layout .ant-layout-header .atom-header-right .atom-header-button {
-  padding: 0 8px;
-  color: #fff;
-}
-.atom-drawer-layout .ant-layout-header .atom-header-right .atom-header-button .ant-badge {
-  color: #fff;
-}
-.atom-drawer-layout .ant-layout-header .atom-header-right .atom-header-button:hover {
-  background: #1890ff;
-}
-.atom-drawer-layout .ant-layout-header .atom-sider-trigger {
-  font-size: 18px;
-  width: 48px;
-  cursor: pointer;
-  text-align: center;
-  color: rgba(0, 0, 0, 0.85);
-}
-.atom-drawer-layout .ant-layout-header .atom-sider-trigger:hover {
-  background: #1890ff;
-  color: #fff;
-}
-.atom-drawer-layout .ant-layout-content {
-  margin: 8px;
-  /*card body样式*/
-}
-.atom-drawer-layout .ant-layout-content .atom-page-layout .ant-card {
-  /*常规card模块*/
-  /*filter模块*/
-  /*drawer模式下formItem下边距变小*/
-}
-.atom-drawer-layout .ant-layout-content .atom-page-layout .ant-card .ant-card-body {
-  padding: 8px;
-  /*折叠窗体样式*/
-}
-.atom-drawer-layout .ant-layout-content .atom-page-layout .ant-card .ant-card-body .ant-collapse .ant-collapse-item .ant-collapse-header {
-  padding: 10px 10px 10px 8px;
-}
-.atom-drawer-layout .ant-layout-content .atom-page-layout .ant-card.atom-form.filter .ant-card-body {
-  padding: 16px 8px 0 8px;
-}
-.atom-drawer-layout .ant-layout-content .atom-page-layout .ant-card .ant-form-item {
-  margin-bottom: 16px;
-}
-.atom-drawer-layout .ant-layout-footer {
-  padding: 8px 16px;
-  margin: 16px 0 8px;
-  text-align: center;
-}
-.atom-drawer-layout .ant-layout-footer .atom-footer-links a,
-.atom-drawer-layout .ant-layout-footer .atom-footer-copyright {
-  font-size: 14px;
-  color: rgba(0, 0, 0, 0.45);
-}
-.atom-drawer-layout .ant-layout-footer .atom-footer-copyright {
-  margin-top: 8px;
-  text-align: center;
-}
-.atom-drawer-layout.mix {
-  /*页眉样式*/
-}
-.atom-drawer-layout.mix .ant-layout-header {
-  /*logo部分*/
-  /*折叠展开按钮*/
-}
-.atom-drawer-layout.mix .ant-layout-header .atom-logo h1 {
-  color: #fff;
-}
-.atom-drawer-layout.mix .ant-layout-header .atom-sider-trigger {
-  color: #fff;
-}
-.atom-drawer-layout.light {
-  /*页眉样式*/
-}
-.atom-drawer-layout.light .ant-layout-header {
-  background: #fff;
-  /*右侧菜单部分*/
-}
-.atom-drawer-layout.light .ant-layout-header .atom-header-right .atom-header-button {
-  color: rgba(0, 0, 0, 0.85);
-}
-.atom-drawer-layout.light .ant-layout-header .atom-header-right .atom-header-button .anticon {
-  color: rgba(0, 0, 0, 0.85);
-}
-.atom-drawer-layout.dark {
-  /*页眉样式*/
-}
-.atom-drawer-layout.dark .ant-layout-header {
-  /*折叠展开按钮*/
-}
-.atom-drawer-layout.dark .ant-layout-header .atom-sider-trigger {
-  color: #fff;
+  &.dark {
+    /*页眉样式*/
+    .ant-layout-header {
+      /*折叠展开按钮*/
+      .atom-sider-trigger {
+        color: #FFFFFF;
+      }
+    }
+  }
 }
 /*移动端drawer弹出层样式*/
 .atom-mobile-drawer {
   top: 48px !important;
+  .ant-drawer-body {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    .atom-sider-menu {
+      flex: 1 1 0;
+      overflow: hidden auto;
+    }
+    .ant-layout-footer {
+      height: 110px;
+      padding: 8px;
+      text-align: center;
+      .atom-footer-links a, .atom-footer-copyright {
+        color: @text-color;
+        font-size: 14px;
+      }
+    }
+  }
 }
-.atom-mobile-drawer .ant-drawer-body {
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-.atom-mobile-drawer .ant-drawer-body .atom-sider-menu {
-  flex: 1 1 0;
-  overflow: hidden auto;
-}
-.atom-mobile-drawer .ant-drawer-body .ant-layout-footer {
-  height: 110px;
-  padding: 8px;
-  text-align: center;
-}
-.atom-mobile-drawer .ant-drawer-body .ant-layout-footer .atom-footer-links a,
-.atom-mobile-drawer .ant-drawer-body .ant-layout-footer .atom-footer-copyright {
-  color: rgba(0, 0, 0, 0.85);
-  font-size: 14px;
-}
+//.atom-drawer-layout .ant-layout-header {
+//  display: flex;
+//  height: 48px;
+//  line-height: 48px;
+//  padding: 0;
+//  box-shadow: 0 1px 4px #00152914;
+//  /*折叠展开按钮*/
+//}
+//.atom-drawer-layout .ant-layout-header .atom-logo {
+//  flex: 1 1 0;
+//}
+//.atom-drawer-layout .ant-layout-header .atom-header-right {
+//  min-width: 150px;
+//}
+//.atom-drawer-layout .ant-layout-header .atom-header-right .atom-header-button {
+//  padding: 0 8px;
+//  color: #fff;
+//}
+//.atom-drawer-layout .ant-layout-header .atom-header-right .atom-header-button .ant-badge {
+//  color: #fff;
+//}
+//.atom-drawer-layout .ant-layout-header .atom-header-right .atom-header-button:hover {
+//  background: #1890ff;
+//}
+//.atom-drawer-layout .ant-layout-header .atom-sider-trigger {
+//  font-size: 18px;
+//  width: 48px;
+//  cursor: pointer;
+//  text-align: center;
+//  color: rgba(0, 0, 0, 0.85);
+//}
+//.atom-drawer-layout .ant-layout-header .atom-sider-trigger:hover {
+//  background: #1890ff;
+//  color: #fff;
+//}
+//.atom-drawer-layout .ant-layout-content {
+//  margin: 8px;
+//  /*card body样式*/
+//}
+//.atom-drawer-layout .ant-layout-content .atom-page-layout .ant-card {
+//  /*常规card模块*/
+//  /*filter模块*/
+//  /*drawer模式下formItem下边距变小*/
+//}
+//.atom-drawer-layout .ant-layout-content .atom-page-layout .ant-card .ant-card-body {
+//  padding: 8px;
+//  /*折叠窗体样式*/
+//}
+//.atom-drawer-layout .ant-layout-content .atom-page-layout .ant-card .ant-card-body .ant-collapse .ant-collapse-item .ant-collapse-header {
+//  padding: 10px 10px 10px 8px;
+//}
+//.atom-drawer-layout .ant-layout-content .atom-page-layout .ant-card.atom-form.filter .ant-card-body {
+//  padding: 16px 8px 0 8px;
+//}
+//.atom-drawer-layout .ant-layout-content .atom-page-layout .ant-card .ant-form-item {
+//  margin-bottom: 16px;
+//}
+//.atom-drawer-layout .ant-layout-footer {
+//  padding: 8px 16px;
+//  margin: 16px 0 8px;
+//  text-align: center;
+//}
+//.atom-drawer-layout .ant-layout-footer .atom-footer-links a,
+//.atom-drawer-layout .ant-layout-footer .atom-footer-copyright {
+//  font-size: 14px;
+//  color: rgba(0, 0, 0, 0.45);
+//}
+//.atom-drawer-layout .ant-layout-footer .atom-footer-copyright {
+//  margin-top: 8px;
+//  text-align: center;
+//}
+//.atom-drawer-layout.mix {
+//  /*页眉样式*/
+//}
+//.atom-drawer-layout.mix .ant-layout-header {
+//  /*logo部分*/
+//  /*折叠展开按钮*/
+//}
+//.atom-drawer-layout.mix .ant-layout-header .atom-logo h1 {
+//  color: #fff;
+//}
+//.atom-drawer-layout.mix .ant-layout-header .atom-sider-trigger {
+//  color: #fff;
+//}
+//.atom-drawer-layout.light {
+//  /*页眉样式*/
+//}
+//.atom-drawer-layout.light .ant-layout-header {
+//  background: #fff;
+//  /*右侧菜单部分*/
+//}
+//.atom-drawer-layout.light .ant-layout-header .atom-header-right .atom-header-button {
+//  color: rgba(0, 0, 0, 0.85);
+//}
+//.atom-drawer-layout.light .ant-layout-header .atom-header-right .atom-header-button .anticon {
+//  color: rgba(0, 0, 0, 0.85);
+//}
+//.atom-drawer-layout.dark {
+//  /*页眉样式*/
+//}
+//.atom-drawer-layout.dark .ant-layout-header {
+//  /*折叠展开按钮*/
+//}
+//.atom-drawer-layout.dark .ant-layout-header .atom-sider-trigger {
+//  color: #fff;
+//}
+///*移动端drawer弹出层样式*/
+//.atom-mobile-drawer {
+//  top: 48px !important;
+//}
+//.atom-mobile-drawer .ant-drawer-body {
+//  padding: 0;
+//  display: flex;
+//  flex-direction: column;
+//  height: 100%;
+//}
+//.atom-mobile-drawer .ant-drawer-body .atom-sider-menu {
+//  flex: 1 1 0;
+//  overflow: hidden auto;
+//}
+//.atom-mobile-drawer .ant-drawer-body .ant-layout-footer {
+//  height: 110px;
+//  padding: 8px;
+//  text-align: center;
+//}
+//.atom-mobile-drawer .ant-drawer-body .ant-layout-footer .atom-footer-links a,
+//.atom-mobile-drawer .ant-drawer-body .ant-layout-footer .atom-footer-copyright {
+//  color: rgba(0, 0, 0, 0.85);
+//  font-size: 14px;
+//}
