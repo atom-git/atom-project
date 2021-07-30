@@ -1,0 +1,41 @@
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**
+!**/src/test/**
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### Env Properties ###
+application-dev.properties
+*.jar
+server/src/main/resources/portal/
+server/src/main/resources/dashboard/
+dist/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/nbdist/
+/.nb-gradle/
+build/
+.DS_Store
+node_modules/
+### VS Code ###
+.vscode/
+
+### log ###
+logdir_IS_UNDEFINED/

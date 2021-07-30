@@ -1,0 +1,98 @@
+/**
+top布局样式，仅包括颜色变化部分
+ */
+.atom-top-layout {
+  width: 100%;
+  min-height: 100vh !important;
+  /*顶部菜单*/
+  /*页面内容*/
+  /*页脚部分*/
+  /**
+  混合主题 mix
+  */
+  /**
+  浅色主题 light
+  */
+  /**
+  深色主题 dark
+   */
+}
+.atom-top-layout.fixed {
+  /*头部固定*/
+  /*内容部分下移*/
+}
+.atom-top-layout.fixed .ant-layout-header {
+  position: fixed;
+  z-index: 99;
+  width: 100%;
+}
+.atom-top-layout.fixed .ant-layout-content {
+  margin-top: 48px;
+}
+.atom-top-layout .ant-layout-header {
+  display: flex;
+  height: 48px;
+  line-height: 48px;
+  padding: 0 16px;
+  transition: background 0.3s, width 0.2s;
+  /*logo部分*/
+  /*右侧菜单部分*/
+  /*菜单*/
+}
+.atom-top-layout .ant-layout-header .atom-logo {
+  padding: 16px 16px 16px 0;
+}
+.atom-top-layout .ant-layout-header .atom-logo h1 {
+  color: rgba(0, 0, 0, 0.85);
+}
+.atom-top-layout .ant-layout-header .atom-header-right .atom-header-button {
+  color: rgba(0, 0, 0, 0.85);
+}
+.atom-top-layout .ant-layout-header .atom-top-menu {
+  line-height: 48px;
+  flex: 1 1 0;
+  min-width: 0;
+}
+.atom-top-layout .ant-layout-content {
+  margin: 0 16px 16px;
+}
+.atom-top-layout .ant-layout-footer {
+  padding: 8px 16px;
+  margin: 16px 0 8px;
+  text-align: center;
+}
+.atom-top-layout .ant-layout-footer .atom-footer-links a,
+.atom-top-layout .ant-layout-footer .atom-footer-copyright {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.45);
+}
+.atom-top-layout .ant-layout-footer .atom-footer-copyright {
+  margin-top: 8px;
+  text-align: center;
+}
+.atom-top-layout.mix {
+  /*页眉样式*/
+}
+.atom-top-layout.mix .ant-layout-header {
+  /*logo部分*/
+  /*右侧菜单部分*/
+}
+.atom-top-layout.mix .ant-layout-header .atom-logo h1 {
+  color: #fff;
+}
+.atom-top-layout.mix .ant-layout-header .atom-header-right .atom-header-button {
+  color: #fff;
+}
+.atom-top-layout.mix .ant-layout-header .atom-header-right .atom-header-button .anticon {
+  color: #fff;
+}
+.atom-top-layout.light {
+  /*页眉样式*/
+}
+.atom-top-layout.light .ant-layout-header {
+  background: #fff;
+  box-shadow: 0 1px 4px 0 #0015291f;
+}
+.atom-top-layout.light .ant-layout-header .ant-menu-horizontal {
+  border-bottom: none;
+}
