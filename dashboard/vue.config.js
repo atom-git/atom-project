@@ -15,6 +15,7 @@ const themeOptions = {
   stylesDir: resolve('./src'),
   varFile: resolve('./src/config/theme/default.less'),
   themeVariables: themeVars,
+  outputFilePath: resolve('./public/theme/color.less'),
   generateOnce: true
 }
 

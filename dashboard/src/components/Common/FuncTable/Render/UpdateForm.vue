@@ -1,5 +1,5 @@
 <template>
-  <Dialog v-model="visible"
+  <Dialog v-model="dialogVisible"
           :title="title"
           :width="width"
           :maskClosable="false"
@@ -73,7 +73,9 @@ export default {
   data () {
     return {
       // 表单的form值
-      model: {}
+      model: {},
+      // 弹窗是否显示
+      dialogVisible: false
     }
   },
   emits: ['update:modelValue', 'table-editor-submit', 'table-editor-cancel'],
@@ -90,6 +92,10 @@ export default {
       handler (newValue) {
         this.model = newValue
       }
+    },
+    // 监听外部visible变化
+    visible (newValue) {
+      this.dialogVisible = newValue
     }
   },
   methods: {

@@ -1,6 +1,6 @@
-import axios from '@/config/lib/axios'
-import Default from '@/config/default'
-import Utils from '@/utils'
+// import axios from '@/config/lib/axios'
+// import Default from '@/config/default'
+// import Utils from '@/utils'
 
 /*
  * 系统角色api
