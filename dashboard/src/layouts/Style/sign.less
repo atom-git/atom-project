@@ -11,96 +11,187 @@
   background-repeat: no-repeat;
   background-position: center 110px;
   background-size: 100%;
-  background-color: #f0f2f5;
+  background-color: @body-background;
+  /*手机端*/
+  &.mobile .ant-layout-content .atom-sign-content {
+    width: 96%;
+    max-width: 328px;
+  }
   /*内容部分*/
+  .ant-layout-content {
+    flex: 1 1 0;
+    min-height: auto;
+    .atom-logo {
+      align-items: center;
+    }
+    .atom-logo .atom-logo-desc {
+      color: @text-color-secondary;
+    }
+    .atom-sign-content {
+      width: 328px;
+      margin: 0 auto;
+      .atom-sign-form {
+        .ant-tabs .ant-tabs-bar {
+          text-align: center;
+          border-bottom: none;
+        }
+        .atom-form-flex .ant-form-item-control .ant-form-item-control-input-content {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+          .ant-input-affix-wrapper, .ant-avatar-group {
+            flex: 1 1 0;
+            margin-right: 8px;
+          }
+          .atom-form-flex-right {
+            text-align: right;
+            cursor: pointer;
+          }
+        }
+        .ant-form-item {
+          .ant-input-prefix {
+            color: @primary-color;
+          }
+          .ant-input-lg, .ant-btn-lg {
+            font-size: 14px;
+            .ant-statistic .ant-statistic-content {
+              font-size: 14px;
+            }
+          }
+          .atom-form-flex-right {
+            color: @primary-color;
+            &:hover {
+              color: @primary-4;
+            }
+          }
+          .ant-avatar-group .ant-avatar {
+            cursor: pointer;
+            margin-right: 16px;
+            &:hover {
+              border-color: @primary-color;
+              background-color: @primary-color;
+              transition: all 0.3s;
+            }
+          }
+        }
+        /*密码强度*/
+        .atom-password-level {
+          &.low .atom-password-level-desc {
+            color: @error-color;
+          }
+          &.middle .atom-password-level-desc {
+            color: @warning-color;
+          }
+          &.strong .atom-password-level-desc {
+            color: @success-color;
+          }
+        }
+      }
+    }
+  }
   /*页脚部分*/
+  .ant-layout-footer {
+    padding: 8px 16px;
+    margin: 16px 0 8px;
+    text-align: center;
+    .atom-footer-links a, .atom-footer-copyright {
+      font-size: 14px;
+      color: @text-color-secondary;
+    }
+    .atom-footer-copyright {
+      margin-top: 8px;
+      text-align: center;
+    }
+  }
 }
-.atom-sign-layout.mobile .ant-layout-content .atom-sign-content {
-  width: 96%;
-  max-width: 328px;
-}
-.atom-sign-layout .ant-layout-content {
-  flex: 1 1 0;
-  min-height: auto;
-}
-.atom-sign-layout .ant-layout-content .atom-logo {
-  align-items: center;
-}
-.atom-sign-layout .ant-layout-content .atom-logo .atom-logo-desc {
-  color: rgba(0, 0, 0, 0.45);
-}
-.atom-sign-layout .ant-layout-content .atom-sign-content {
-  width: 328px;
-  margin: 0 auto;
-}
-.atom-sign-layout .ant-layout-content .atom-sign-content .atom-sign-form {
-  /*密码强度*/
-}
-.atom-sign-layout .ant-layout-content .atom-sign-content .atom-sign-form .ant-tabs .ant-tabs-bar {
-  text-align: center;
-  border-bottom: none;
-}
-.atom-sign-layout .ant-layout-content .atom-sign-content .atom-sign-form .atom-form-flex .ant-form-item-control .ant-form-item-control-input-content {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-}
-.atom-sign-layout .ant-layout-content .atom-sign-content .atom-sign-form .atom-form-flex .ant-form-item-control .ant-form-item-control-input-content .ant-input-affix-wrapper,
-.atom-sign-layout .ant-layout-content .atom-sign-content .atom-sign-form .atom-form-flex .ant-form-item-control .ant-form-item-control-input-content .ant-avatar-group {
-  flex: 1 1 0;
-  margin-right: 8px;
-}
-.atom-sign-layout .ant-layout-content .atom-sign-content .atom-sign-form .atom-form-flex .ant-form-item-control .ant-form-item-control-input-content .atom-form-flex-right {
-  text-align: right;
-  cursor: pointer;
-}
-.atom-sign-layout .ant-layout-content .atom-sign-content .atom-sign-form .ant-form-item .ant-input-prefix {
-  color: #1890ff;
-}
-.atom-sign-layout .ant-layout-content .atom-sign-content .atom-sign-form .ant-form-item .ant-input-lg,
-.atom-sign-layout .ant-layout-content .atom-sign-content .atom-sign-form .ant-form-item .ant-btn-lg {
-  font-size: 14px;
-}
-.atom-sign-layout .ant-layout-content .atom-sign-content .atom-sign-form .ant-form-item .ant-input-lg .ant-statistic .ant-statistic-content,
-.atom-sign-layout .ant-layout-content .atom-sign-content .atom-sign-form .ant-form-item .ant-btn-lg .ant-statistic .ant-statistic-content {
-  font-size: 14px;
-}
-.atom-sign-layout .ant-layout-content .atom-sign-content .atom-sign-form .ant-form-item .atom-form-flex-right {
-  color: #1890ff;
-}
-.atom-sign-layout .ant-layout-content .atom-sign-content .atom-sign-form .ant-form-item .atom-form-flex-right:hover {
-  color: #40a9ff;
-}
-.atom-sign-layout .ant-layout-content .atom-sign-content .atom-sign-form .ant-form-item .ant-avatar-group .ant-avatar {
-  cursor: pointer;
-  margin-right: 16px;
-}
-.atom-sign-layout .ant-layout-content .atom-sign-content .atom-sign-form .ant-form-item .ant-avatar-group .ant-avatar:hover {
-  border-color: #1890ff;
-  background-color: #1890ff;
-  transition: all 0.3s;
-}
-.atom-sign-layout .ant-layout-content .atom-sign-content .atom-sign-form .atom-password-level.low .atom-password-level-desc {
-  color: #ff4d4f;
-}
-.atom-sign-layout .ant-layout-content .atom-sign-content .atom-sign-form .atom-password-level.middle .atom-password-level-desc {
-  color: #faad14;
-}
-.atom-sign-layout .ant-layout-content .atom-sign-content .atom-sign-form .atom-password-level.strong .atom-password-level-desc {
-  color: #52c41a;
-}
-.atom-sign-layout .ant-layout-footer {
-  padding: 8px 16px;
-  margin: 16px 0 8px;
-  text-align: center;
-}
-.atom-sign-layout .ant-layout-footer .atom-footer-links a,
-.atom-sign-layout .ant-layout-footer .atom-footer-copyright {
-  font-size: 14px;
-  color: rgba(0, 0, 0, 0.45);
-}
-.atom-sign-layout .ant-layout-footer .atom-footer-copyright {
-  margin-top: 8px;
-  text-align: center;
-}
+//.atom-sign-layout.mobile .ant-layout-content .atom-sign-content {
+//  width: 96%;
+//  max-width: 328px;
+//}
+//.atom-sign-layout .ant-layout-content {
+//  flex: 1 1 0;
+//  min-height: auto;
+//}
+//.atom-sign-layout .ant-layout-content .atom-logo {
+//  align-items: center;
+//}
+//.atom-sign-layout .ant-layout-content .atom-logo .atom-logo-desc {
+//  color: rgba(0, 0, 0, 0.45);
+//}
+//.atom-sign-layout .ant-layout-content .atom-sign-content {
+//  width: 328px;
+//  margin: 0 auto;
+//}
+//.atom-sign-layout .ant-layout-content .atom-sign-content .atom-sign-form {
+//  /*密码强度*/
+//}
+//.atom-sign-layout .ant-layout-content .atom-sign-content .atom-sign-form .ant-tabs .ant-tabs-bar {
+//  text-align: center;
+//  border-bottom: none;
+//}
+//.atom-sign-layout .ant-layout-content .atom-sign-content .atom-sign-form .atom-form-flex .ant-form-item-control .ant-form-item-control-input-content {
+//  display: flex;
+//  flex-direction: row;
+//  align-items: center;
+//  justify-content: space-between;
+//}
+//.atom-sign-layout .ant-layout-content .atom-sign-content .atom-sign-form .atom-form-flex .ant-form-item-control .ant-form-item-control-input-content .ant-input-affix-wrapper,
+//.atom-sign-layout .ant-layout-content .atom-sign-content .atom-sign-form .atom-form-flex .ant-form-item-control .ant-form-item-control-input-content .ant-avatar-group {
+//  flex: 1 1 0;
+//  margin-right: 8px;
+//}
+//.atom-sign-layout .ant-layout-content .atom-sign-content .atom-sign-form .atom-form-flex .ant-form-item-control .ant-form-item-control-input-content .atom-form-flex-right {
+//  text-align: right;
+//  cursor: pointer;
+//}
+//.atom-sign-layout .ant-layout-content .atom-sign-content .atom-sign-form .ant-form-item .ant-input-prefix {
+//  color: #1890ff;
+//}
+//.atom-sign-layout .ant-layout-content .atom-sign-content .atom-sign-form .ant-form-item .ant-input-lg,
+//.atom-sign-layout .ant-layout-content .atom-sign-content .atom-sign-form .ant-form-item .ant-btn-lg {
+//  font-size: 14px;
+//}
+//.atom-sign-layout .ant-layout-content .atom-sign-content .atom-sign-form .ant-form-item .ant-input-lg .ant-statistic .ant-statistic-content,
+//.atom-sign-layout .ant-layout-content .atom-sign-content .atom-sign-form .ant-form-item .ant-btn-lg .ant-statistic .ant-statistic-content {
+//  font-size: 14px;
+//}
+//.atom-sign-layout .ant-layout-content .atom-sign-content .atom-sign-form .ant-form-item .atom-form-flex-right {
+//  color: #1890ff;
+//}
+//.atom-sign-layout .ant-layout-content .atom-sign-content .atom-sign-form .ant-form-item .atom-form-flex-right:hover {
+//  color: #40a9ff;
+//}
+//.atom-sign-layout .ant-layout-content .atom-sign-content .atom-sign-form .ant-form-item .ant-avatar-group .ant-avatar {
+//  cursor: pointer;
+//  margin-right: 16px;
+//}
+//.atom-sign-layout .ant-layout-content .atom-sign-content .atom-sign-form .ant-form-item .ant-avatar-group .ant-avatar:hover {
+//  border-color: #1890ff;
+//  background-color: #1890ff;
+//  transition: all 0.3s;
+//}
+////
+//.atom-sign-layout .ant-layout-content .atom-sign-content .atom-sign-form .atom-password-level.low .atom-password-level-desc {
+//  color: #ff4d4f;
+//}
+//.atom-sign-layout .ant-layout-content .atom-sign-content .atom-sign-form .atom-password-level.middle .atom-password-level-desc {
+//  color: #faad14;
+//}
+//.atom-sign-layout .ant-layout-content .atom-sign-content .atom-sign-form .atom-password-level.strong .atom-password-level-desc {
+//  color: #52c41a;
+//}
+//.atom-sign-layout .ant-layout-footer {
+//  padding: 8px 16px;
+//  margin: 16px 0 8px;
+//  text-align: center;
+//}
+//.atom-sign-layout .ant-layout-footer .atom-footer-links a,
+//.atom-sign-layout .ant-layout-footer .atom-footer-copyright {
+//  font-size: 14px;
+//  color: rgba(0, 0, 0, 0.45);
+//}
+//.atom-sign-layout .ant-layout-footer .atom-footer-copyright {
+//  margin-top: 8px;
+//  text-align: center;
+//}
