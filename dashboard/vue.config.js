@@ -56,6 +56,7 @@ module.exports = {
       less: {
         /* less 变量覆盖，用于自定义 ant design 主题 */
         modifyVars: {
+          'primary-color': '#5B8FF9',
           'card-padding-base': '16px',
           'modal-body-padding': '16px',
           'drawer-body-padding': '16px'

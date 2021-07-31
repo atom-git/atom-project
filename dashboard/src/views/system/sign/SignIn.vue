@@ -3,14 +3,14 @@
     <a-tabs v-model:activeKey="signUser.type">
       <a-tab-pane key="account" tab="帐户密码登录">
         <a-form-item name="account">
-          <a-input v-model="signUser.account" placeholder="请输入帐号" size="large" allowClear>
+          <a-input v-model:value="signUser.account" placeholder="请输入帐号" size="large" allowClear>
             <template #prefix>
               <IconFont type="UserOutlined"/>
             </template>
           </a-input>
         </a-form-item>
         <a-form-item name="password">
-          <a-input-password v-model="signUser.password" placeholder="请输入密码" size="large" allowClear>
+          <a-input-password v-model:value="signUser.password" placeholder="请输入密码" size="large" allowClear>
             <template #prefix>
               <IconFont type="LockOutlined"/>
             </template>
@@ -19,14 +19,14 @@
       </a-tab-pane>
       <a-tab-pane key="phone" tab="手机号登录">
         <a-form-item name="phone">
-          <a-input v-model="signUser.phone" placeholder="请输入手机号" size="large" allowClear>
+          <a-input v-model:value="signUser.phone" placeholder="请输入手机号" size="large" allowClear>
             <template #prefix>
               <IconFont type="MobileOutlined"/>
             </template>
           </a-input>
         </a-form-item>
         <a-form-item name="verifyCode" class="atom-form-flex">
-          <a-input v-model="signUser.verifyCode" placeholder="请输入验证码" size="large" allowClear>
+          <a-input v-model:value="signUser.verifyCode" placeholder="请输入验证码" size="large" allowClear>
             <template #prefix>
               <IconFont type="MessageOutlined"/>
             </template>
