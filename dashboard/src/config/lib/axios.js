@@ -36,6 +36,8 @@ axios.interceptors.request.use(config => {
   if (config.url === '/login') {
     config.baseURL = ''
   }
+  // 配置请求头
+  config.headers.post['Content-Type'] = 'application/json'
   // 增加请求令牌
   const token = store.getters.token
   if (token) {

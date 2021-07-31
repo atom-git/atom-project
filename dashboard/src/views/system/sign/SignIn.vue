@@ -109,11 +109,13 @@ export default {
   methods: {
     // 获取验证码
     sendVerifyCode () {
-      // 调用后台短信网关
-      this.$api.system.sendVerifyCode(this.signUser.phone).then(() => {
-        this.$message.success('验证码发送成功')
+      this.$refs.signForm.validate(['phone']).then(() => {
+        // 调用后台短信网关
+        this.$api.system.sendVerifyCode(this.signUser.phone).then(() => {
+          this.$message.success('验证码发送成功')
+        })
+        this.timeOut = Date.now() + 1000 * 60
       })
-      this.timeOut = Date.now() + 1000 * 60
     },
     // 倒计时结束
     onFinished () {

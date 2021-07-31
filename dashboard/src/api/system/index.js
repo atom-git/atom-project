@@ -78,7 +78,7 @@ export default class system {
    */
   static sendVerifyCode (phone) {
     return axios({
-      url: Utils.formatStr('/system/user/{s}/verifycode', phone),
+      url: Utils.formatStr('/system/send/{s}/verifyCode', phone),
       method: Default.HTTP_METHOD_POST
     })
   }

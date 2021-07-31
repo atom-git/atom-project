@@ -108,7 +108,7 @@ public class SystemController {
 	 * @param phone 用户手机号
 	 * @return 返回短信验证码是否发送成功
 	 */
-	@PostMapping("send/{phone}/verify/code")
+	@PostMapping("send/{phone}/verifyCode")
 	@ApiOperation("发送短信验证码")
 	@Permission(actionType = ActionType.N, grantType = GrantType.AUTO)
 	public RestResponse<?> verifyCode(@PathVariable String phone) {
