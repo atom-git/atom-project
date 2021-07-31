@@ -1,5 +1,5 @@
 <template>
-  <a-form class="atom-sign-form" :model="signUser" :rules="signRules">
+  <a-form class="atom-sign-form" ref="signForm" :model="signUser" :rules="signRules">
     <a-tabs v-model:activeKey="signUser.type">
       <a-tab-pane key="account" tab="帐户密码登录">
         <a-form-item name="account">
@@ -121,9 +121,20 @@ export default {
     },
     // 响应登录
     handleSignIn () {
-      this.$api.system.signIn(this.signUser).then(() => {
-
-      })
+      this.loading = true
+      // 校验输入
+      this.$refs.signForm.validate().then(() => {
+        // 登录
+        this.$store.dispatch('signIn').then(() => {
+          // 拉取用户信息
+          this.$store.dispatch('getUser').then((menus, actions) => {
+            // 生成权限信息
+            this.$store.dispatch('generatePermission', { menus, actions }).then(() => {
+              this.$router.replace({ name: this.$default.HOME_PAGE })
+            }).catch(() => this.loading = false)
+          }).catch(() => this.loading = false)
+        }).catch(() => this.loading = false)
+      }).catch(() => this.loading = false)
     },
     // 响应忘记密码
     handleForget () {

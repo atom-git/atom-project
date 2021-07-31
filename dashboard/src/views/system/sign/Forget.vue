@@ -1,5 +1,5 @@
 <template>
-  <a-form class="atom-sign-form" :model="forgetUser" :rules="forgetRules">
+  <a-form class="atom-sign-form" ref="forgetForm" :model="forgetUser" :rules="forgetRules">
     <a-form-item name="account">
       <a-input v-model:value="forgetUser.account" placeholder="请输入帐号" size="large" allowClear>
         <template #prefix>
@@ -146,9 +146,16 @@ export default {
     },
     // 响应注册
     handleForget () {
-      this.$api.system.forgetPassword(this.forgetUser).then(() => {
-
-      })
+      this.loading = true
+      // 校验
+      this.$refs.forgetForm.validate().then(() => {
+        // 重置密码
+        this.$api.system.forgetPassword(this.forgetUser).then(() => {
+          // 注册成功提示并跳转
+          this.$message.success(`用户【${this.forgetUser.account}】帐号密码重置成功！`)
+          this.$router.replace({ name: 'signIn' })
+        }).catch(() => this.loading = false)
+      }).catch(() => this.loading = false)
     }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <a-form class="atom-sign-form" :model="signUser" :rules="signRules">
+  <a-form class="atom-sign-form" ref="signForm" :model="signUser" :rules="signRules">
     <a-form-item name="account">
       <a-input v-model:value="signUser.account" placeholder="请输入帐号" size="large" allowClear>
         <template #prefix>
@@ -146,9 +146,16 @@ export default {
     },
     // 响应注册
     handleSignUp () {
-      this.$api.system.signUp(this.signUser).then(() => {
-
-      })
+      this.loading = true
+      // 校验
+      this.$refs.signForm.validate().then(() => {
+        // 注册
+        this.$api.system.signUp(this.signUser).then(() => {
+          // 注册成功提示并跳转
+          this.$message.success(`用户【${this.signUser.account}】帐号注册成功！`)
+          this.$router.replace({ name: 'signIn' })
+        }).catch(() => this.loading = false)
+      }).catch(() => this.loading = false)
     }
   }
 }
