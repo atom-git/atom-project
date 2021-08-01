@@ -104,15 +104,16 @@ sider布局样式，仅包括颜色变化部分
   /**
   混合主题 mix
   */
-  .mix {
+  &.mix {
     /*左侧菜单*/
     .atom-sider {
       /*sider内部元素*/
       .ant-layout-sider-children {
-        /*滚动条样式*/
-        .atom-logo a h1 {
+        /*logo部分*/
+        .atom-logo h1 {
           color: #FFFFFF;
         }
+        /*滚动条样式*/
         &::-webkit-scrollbar-thumb {
           background: #FFFFFF33;
           border-radius: 3px;
@@ -134,6 +135,7 @@ sider布局样式，仅包括颜色变化部分
     .atom-sider {
       /*sider内部元素*/
       .ant-layout-sider-children {
+        /*logo样式*/
         .atom-logo a h1 {
           color: @primary-color;
         }
@@ -159,6 +161,10 @@ sider布局样式，仅包括颜色变化部分
     .atom-sider {
       /*sider内部元素*/
       .ant-layout-sider-children {
+        /*logo样式*/
+        .atom-logo a h1 {
+          color: #FFFFFF;
+        }
         /*滚动条样式*/
         &::-webkit-scrollbar-thumb {
           background: #FFFFFF33;
@@ -174,165 +180,3 @@ sider布局样式，仅包括颜色变化部分
     }
   }
 }
-
-//.atom-sider-layout.fixed .atom-sider-content {
-//  /*头部固定*/
-//  /*内容部分下移*/
-//}
-//.atom-sider-layout.fixed .atom-sider-content .ant-layout-header {
-//  position: fixed;
-//  z-index: 99;
-//}
-//.atom-sider-layout.fixed .atom-sider-content .ant-layout-content {
-//  margin-top: 48px;
-//}
-//.atom-sider-layout .atom-sider {
-//  position: fixed;
-//  top: 0;
-//  left: 0;
-//  height: 100%;
-//  box-shadow: 2px 0 8px 0 #1D23290D;
-//  z-index: 10;
-//  overflow: hidden;
-//  /*sider内部元素*/
-//  /*折叠后效果*/
-//}
-//.atom-sider-layout .atom-sider .ant-layout-sider-children {
-//  display: flex;
-//  flex-direction: column;
-//  height: 100%;
-//  /*侧边菜单*/
-//  /*折叠展开按钮*/
-//  /*滚动条样式*/
-//}
-//.atom-sider-layout .atom-sider .ant-layout-sider-children .atom-sider-menu {
-//  flex: 1 1 0;
-//  overflow: hidden auto;
-//}
-//.atom-sider-layout .atom-sider .ant-layout-sider-children .atom-sider-menu .ant-menu-inline-collapsed {
-//  width: 48px;
-//}
-//.atom-sider-layout .atom-sider .ant-layout-sider-children .atom-sider-menu .ant-menu-inline-collapsed .ant-menu-item,
-//.atom-sider-layout .atom-sider .ant-layout-sider-children .atom-sider-menu .ant-menu-inline-collapsed .ant-menu-submenu .ant-menu-submenu-title {
-//  padding: 0 16px !important;
-//}
-//.atom-sider-layout .atom-sider .ant-layout-sider-children .atom-sider-trigger {
-//  width: 100%;
-//  font-size: 16px;
-//}
-//.atom-sider-layout .atom-sider .ant-layout-sider-children .atom-sider-trigger .ant-menu-inline-collapsed {
-//  width: 48px;
-//}
-//.atom-sider-layout .atom-sider .ant-layout-sider-children .atom-sider-trigger .ant-menu-inline-collapsed .ant-menu-item,
-//.atom-sider-layout .atom-sider .ant-layout-sider-children .atom-sider-trigger .ant-menu-inline-collapsed .ant-menu-submenu .ant-menu-submenu-title {
-//  padding: 0 16px !important;
-//}
-//.atom-sider-layout .atom-sider .ant-layout-sider-children ::-webkit-scrollbar {
-//  width: 6px;
-//}
-//.atom-sider-layout .atom-sider.ant-layout-sider-collapsed .atom-sider-logo {
-//  padding: 16px 8px;
-//}
-//.atom-sider-layout .atom-sider-content {
-//  transition: all 0.2s;
-//  min-height: 100vh;
-//  /*页眉部分*/
-//  /*页面内容*/
-//  /*页脚部分*/
-//}
-//.atom-sider-layout .atom-sider-content .ant-layout-header {
-//  position: relative;
-//  display: flex;
-//  align-items: center;
-//  width: 100%;
-//  height: 48px;
-//  line-height: 48px;
-//  padding: 0 16px;
-//  z-index: 9;
-//  background: #fff;
-//  box-shadow: 0 1px 4px #00152914;
-//}
-//.atom-sider-layout .atom-sider-content .ant-layout-header .atom-sider-trigger {
-//  font-size: 20px;
-//  cursor: pointer;
-//}
-//.atom-sider-layout .atom-sider-content .ant-layout-content {
-//  margin: 0 16px 16px;
-//}
-//.atom-sider-layout .atom-sider-content .ant-layout-footer {
-//  padding: 8px 16px;
-//  margin: 16px 0 8px;
-//  text-align: center;
-//}
-//.atom-sider-layout .atom-sider-content .ant-layout-footer .atom-footer-links a,
-//.atom-sider-layout .atom-sider-content .ant-layout-footer .atom-footer-copyright {
-//  color: rgba(0, 0, 0, 0.45);
-//  font-size: 14px;
-//}
-//.atom-sider-layout .atom-sider-content .ant-layout-footer .atom-footer-copyright {
-//  margin-top: 8px;
-//  text-align: center;
-//}
-//.atom-sider-layout.mix {
-//  /*左侧菜单*/
-//}
-//.atom-sider-layout.mix .atom-sider {
-//  /*sider内部元素*/
-//}
-//.atom-sider-layout.mix .atom-sider .ant-layout-sider-children {
-//  /*滚动条样式*/
-//}
-//.atom-sider-layout.mix .atom-sider .ant-layout-sider-children .atom-logo a h1 {
-//  color: #fff;
-//}
-//.atom-sider-layout.mix .atom-sider .ant-layout-sider-children ::-webkit-scrollbar-thumb {
-//  background: #FFFFFF33;
-//  border-radius: 3px;
-//  -webkit-box-shadow: inset 0 0 5px #FFFFFF0D;
-//}
-//.atom-sider-layout.mix .atom-sider .ant-layout-sider-children ::-webkit-scrollbar-track {
-//  background: #FFFFFF26;
-//  border-radius: 3px;
-//  -webkit-box-shadow: inset 0 0 5px #2525250D;
-//}
-//.atom-sider-layout.light {
-//  /*左侧菜单*/
-//}
-//.atom-sider-layout.light .atom-sider {
-//  /*sider内部元素*/
-//}
-//.atom-sider-layout.light .atom-sider .ant-layout-sider-children {
-//  /*滚动条样式*/
-//}
-//.atom-sider-layout.light .atom-sider .ant-layout-sider-children .atom-logo a h1 {
-//  color: #1890ff;
-//}
-//.atom-sider-layout.light .atom-sider .ant-layout-sider-children ::-webkit-scrollbar-thumb {
-//  background: #0000001F;
-//  border-radius: 3px;
-//  -webkit-box-shadow: inset 0 0 5px #0015290d;
-//}
-//.atom-sider-layout.light .atom-sider .ant-layout-sider-children ::-webkit-scrollbar-track {
-//  background: #0000000F;
-//  border-radius: 3px;
-//  -webkit-box-shadow: inset 0 0 5px #0015290D;
-//}
-//.atom-sider-layout.dark {
-//  /*左侧菜单*/
-//}
-//.atom-sider-layout.dark .atom-sider {
-//  /*sider内部元素*/
-//}
-//.atom-sider-layout.dark .atom-sider .ant-layout-sider-children {
-//  /*滚动条样式*/
-//}
-//.atom-sider-layout.dark .atom-sider .ant-layout-sider-children ::-webkit-scrollbar-thumb {
-//  background: #FFFFFF33;
-//  border-radius: 3px;
-//  -webkit-box-shadow: inset 0 0 5px #FFFFFF0D;
-//}
-//.atom-sider-layout.dark .atom-sider .ant-layout-sider-children ::-webkit-scrollbar-track {
-//  background: #FFFFFF26;
-//  border-radius: 3px;
-//  -webkit-box-shadow: inset 0 0 5px #2525250D;
-//}

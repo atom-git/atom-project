@@ -65,6 +65,7 @@ export default {
       font-weight: 600;
       animation: fade-in;
       animation-duration: .2s;
+      color: @text-color;
     }
   }
   /*不同大小的logo配置*/

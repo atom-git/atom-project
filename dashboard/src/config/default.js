@@ -24,7 +24,7 @@ export default {
   title: 'Atom Pro',
   primaryColor: '#5B8FF9',
   theme: 'mix',
-  layout: 'top',
+  layout: 'sider',
   mobileLayout: 'drawer',
   multiTab: true,
   multiTabDraggable: false,

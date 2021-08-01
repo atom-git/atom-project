@@ -1,13 +1,16 @@
 /**
  * 主题切换动态生态dark.json,default.json配置文件
  */
-const { getLessVars } = require('antd-theme-generator')
 const fs = require("fs")
-const defaultPath = './node_modules/ant-design-vue/lib/style/themes/default.less'
-const darkPath = './node_modules/ant-design-vue/lib/style/themes/dark.less'
+const { getThemeVariables } = require('./node_modules/ant-design-vue/dist/theme')
 
-const defaultVars = getLessVars(defaultPath)
-const darkVars = { ...defaultVars, ...getLessVars(darkPath)}
+// 获取样式变量
+const defaultVars = getThemeVariables()
+const darkVars = getThemeVariables({ dark: true })
+
+// 删除hack
+delete defaultVars['hack']
+delete darkVars['hack']
 
 // 写出样式配置
 fs.writeFileSync('./public/theme/default.json', JSON.stringify(defaultVars));

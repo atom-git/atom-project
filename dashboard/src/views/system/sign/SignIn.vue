@@ -127,9 +127,9 @@ export default {
       // 校验输入
       this.$refs.signForm.validate().then(() => {
         // 登录
-        this.$store.dispatch('signIn').then(() => {
+        this.$store.dispatch('signIn', this.signUser).then(() => {
           // 拉取用户信息
-          this.$store.dispatch('getUser').then((menus, actions) => {
+          this.$store.dispatch('getUser').then(({ menus, actions }) => {
             // 生成权限信息
             this.$store.dispatch('generatePermission', { menus, actions }).then(() => {
               this.$router.replace({ name: this.$default.HOME_PAGE })

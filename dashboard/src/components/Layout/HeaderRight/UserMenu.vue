@@ -1,11 +1,8 @@
 <template>
   <a-dropdown :trigger="['hover', 'click']">
     <span class="atom-header-button">
-      <a-avatar size="small" :style="{backgroundColor: '#7262fd', marginRight: '8px'}">
-        <template v-if="userInfo.name">
-          {{ iconName }}
-        </template>
-        <template #icon v-if="!userInfo.name">
+      <a-avatar size="small" :style="{backgroundColor: '#7262fd', marginRight: '8px'}" :alt="iconName">
+        <template #icon>
           <IconFont type="UserOutlined"/>
         </template>
       </a-avatar>
@@ -37,7 +34,7 @@ export default {
   mixins: [user],
   computed: {
     iconName () {
-      let userName = this.userInfo.name
+      let userName = this.userInfo.name || ''
       // 如果是中文结尾，则取最后一个字
       if (chinese.test(userName)) {
         return userName.substr(userName.length - 1, 1)
