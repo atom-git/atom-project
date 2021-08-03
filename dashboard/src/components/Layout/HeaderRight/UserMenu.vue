@@ -1,7 +1,7 @@
 <template>
   <a-dropdown :trigger="['hover', 'click']">
     <span class="atom-header-button">
-      <a-avatar size="small" :style="{backgroundColor: '#7262fd', marginRight: '8px'}" :alt="iconName">
+      <a-avatar size="small" :alt="iconName">
         <template #icon>
           <IconFont type="UserOutlined"/>
         </template>

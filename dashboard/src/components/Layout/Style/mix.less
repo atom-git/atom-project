@@ -87,6 +87,36 @@ mix布局样式，仅包括颜色变化部分
   混合主题 mix
   */
   &.mix {
+    /*header部分*/
+    .ant-layout-header {
+      /*logo*/
+      .atom-logo a h1 {
+        color: #FFFFFF;
+      }
+      /*header右侧*/
+      .atom-header-right {
+        .atom-header-button {
+          color: #FFFFFF;
+          /*右侧图标样式*/
+          .anticon, .ant-badge .anticon {
+            color: #FFFFFF;
+          }
+          /*右侧用户图标样式*/
+          .ant-avatar {
+            .anticon {
+              color: #FFFFFF;
+            }
+          }
+          &:hover {
+            .ant-avatar {
+              .anticon {
+                color: @primary-color;
+              }
+            }
+          }
+        }
+      }
+    }
     /*左侧菜单*/
     .atom-sider {
       /*sider内部元素*/
@@ -112,6 +142,10 @@ mix布局样式，仅包括颜色变化部分
     /*页眉样式*/
     .ant-layout-header {
       background: #FFFFFF;
+      /*logo样式*/
+      .atom-logo a h1 {
+        color: @primary-color;
+      }
     }
     /*左侧菜单*/
     .atom-sider {

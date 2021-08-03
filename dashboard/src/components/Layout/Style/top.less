@@ -23,17 +23,6 @@ top布局样式，仅包括颜色变化部分
     line-height: 48px;
     padding: 0 16px;
     transition: background 0.3s, width 0.2s;
-    /*logo部分*/
-    .atom-logo {
-      padding: 16px 16px 16px 0;
-      h1 {
-        color: @text-color;
-      }
-    }
-    /*右侧菜单部分*/
-    .atom-header-right .atom-header-button {
-      color: @text-color;
-    }
     /*菜单*/
     .atom-top-menu {
       line-height: 48px;
@@ -66,14 +55,30 @@ top布局样式，仅包括颜色变化部分
     /*页眉样式*/
     .ant-layout-header {
       /*logo部分*/
-      .atom-logo h1 {
+      .atom-logo a h1 {
         color: #FFFFFF;
       }
-      /*右侧菜单部分*/
-      .atom-header-right .atom-header-button {
-        color: #FFFFFF;
-        .anticon {
+      /*header右侧*/
+      .atom-header-right {
+        .atom-header-button {
           color: #FFFFFF;
+          /*右侧图标样式*/
+          .anticon, .ant-badge .anticon {
+            color: #FFFFFF;
+          }
+          /*右侧用户图标样式*/
+          .ant-avatar {
+            .anticon {
+              color: #FFFFFF;
+            }
+          }
+          &:hover {
+            .ant-avatar {
+              .anticon {
+                color: @primary-color;
+              }
+            }
+          }
         }
       }
     }
@@ -86,6 +91,10 @@ top布局样式，仅包括颜色变化部分
     .ant-layout-header {
       background: #FFFFFF;
       box-shadow: 0 1px 4px 0 #0015291f;
+      /*logo样式*/
+      .atom-logo a h1 {
+        color: @primary-color;
+      }
       .ant-menu-horizontal {
         border-bottom: none;
       }

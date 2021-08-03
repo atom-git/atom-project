@@ -16,9 +16,13 @@ export function bootstrap (app) {
     // 注册指令
     setUpDirectives(app)
     // 读取用户个性化配置包括布局，主题，主题色等信息
+    // console.log(store)
+    // console.log(store.getters.userInfo)
     store.dispatch('setLayout', store.getters.userInfo.layout || 'mix').then(() => { console.log('布局已切换') }),
     // 更新页面主题
-    toggleTheme(store.state.theme, store.state.primaryColor).then(() => { console.log('主题已切换') })
+    // console.log(store.getters.theme)
+    // console.log(store.getters.primaryColor)
+    toggleTheme(store.getters.theme, store.getters.primaryColor).then(() => { console.log('主题已切换') })
     // 读取store中的配置信息判断用户是否登录【即是否是页面刷新】，如果登录则使用store.permission.asyncRoute生成异步路由
     if (store.getters.generated) {
       store.dispatch('reloadRouter', store.getters.menus).then(() => {

@@ -14,17 +14,31 @@ header右侧样式
     line-height: 48px;
     font-size: 16px;
     color: @text-color;
-    .ant-badge {
+    /*右侧图标样式*/
+    .anticon, .ant-badge .anticon {
+      color: @text-color;
       font-size: 16px;
     }
-    &>.anticon {
-      color: @text-color;
+    /*右侧用户图标样式*/
+    .ant-avatar {
+      background: @primary-color;
+      margin-right: 8px;
+      .anticon {
+        color: #FFFFFF;
+      }
     }
+    /*右侧图标hover后样式*/
     &:hover {
       background: @primary-color;
       color: #FFFFFF;
-      .ant-badge > .anticon {
+      .anticon, .ant-badge .anticon {
         color: #FFFFFF;
+      }
+      .ant-avatar {
+        background: #FFFFFF;
+        .anticon {
+          color: @primary-color;
+        }
       }
     }
   }
