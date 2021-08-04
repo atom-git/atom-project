@@ -1,6 +1,7 @@
 /**
  * form表单混入
  */
+import FieldRules from './FieldRules'
 export default {
   props: {
     /**
@@ -9,7 +10,8 @@ export default {
      * modelValue仅作为内外值的双向绑定
      */
     modelValue: {
-      type: Object
+      type: Object,
+      default: {}
     },
     /**
      * label 标签的文本对齐方式'left' | 'right'
@@ -85,16 +87,17 @@ export default {
       }
     }
   },
+  emits: ['update:modelValue', 'submit'],
   created () {
     // 初始化表单数据
-    this.initModel()
+    this.initModel(this.$utils.deepClone(this.fields))
   },
   methods: {
     // 表单值初始化，默认值仅通过fields传入
-    initModel (reset = false) {
+    initModel (fields) {
       const model = {}
-      if (this.fields) {
-        this.fields.forEach(field => {
+      if (this.$utils.isValid(fields)) {
+        fields.forEach(field => {
           if (this.dateType.includes(field.type)) {
             model[field.name] = this.$utils.toDate(field.default) || null
           } else {
@@ -102,13 +105,7 @@ export default {
           }
         })
       }
-      if (reset) {
-        // 重置时仅保留field中默认值
-        Object.assign(this.model, model)
-      } else {
-        // 初始化时，保留field默认属性，以及传入的绑定对象，形成form绑定值
-        Object.assign(this.model, model, this.modelValue)
-      }
+      this.model = Object.assign(model, this.modelValue)
       this.$emit('update:modelValue', this.model)
     },
     // 表单数据提交
@@ -118,52 +115,80 @@ export default {
         // 根据fields的属性格式化date类型属性值
         this.fields.forEach(field => {
           // 如果当前值有效，返回当前值
-          if (this.$utils.isValid(this.model[field.prop])) {
-            if (field.type === 'datePicker') {
-              model[field.prop] = this.model[field.prop].format('YYYYMMDD')
-            } else if (field.type === 'monthPicker') {
-              model[field.prop] = this.model[field.prop].format('YYYYMM')
-            } else if (field.type === 'weekPicker') {
-              model[field.prop] = this.model[field.prop].weekYear()
-            } else if (field.type === 'timePicker') {
-              model[field.prop] = this.model[field.prop].unix()
-            } else if (field.type === 'rangePicker') {
-              const mode = field.mode || 'date'
-              if (mode === 'time') {
-                model[field.prop] = [
-                  this.model[field.prop][0].unix(),
-                  this.model[field.prop][1].unix()
-                ]
-              } else if (mode === 'date') {
-                model[field.prop] = [
-                  this.model[field.prop][0].set({ hour: 0, minute: 0, second: 0, millisecond: 0 }).unix(),
-                  this.model[field.prop][1].set({ hour: 23, minute: 59, second: 59, millisecond: 999 }).unix()
-                ]
-              } else if (mode === 'month') {
-                model[field.prop] = [
-                  this.model[field.prop][0].format('YYYYMM'),
-                  this.model[field.prop][1].format('YYYYMM')
-                ]
-              } else if (mode === 'year') {
-                model[field.prop] = [
-                  this.model[field.prop][0].format('YYYY'),
-                  this.model[field.prop][1].format('YYYY')
-                ]
-              } else if (mode === 'decade') {
-                model[field.prop] = [
-                  this.model[field.prop][0].format('YYYY'),
-                  this.model[field.prop][1].format('YYYY')
-                ]
-              }
-            } else {
-              model[field.prop] = this.model[field.prop]
-            }
+          if (this.$utils.isValid(this.model[field.name])) {
+            this.formatModel(field, model)
           }
         })
-        this.$emit('submit', model)
+        this.$emit('submit', Object.assign({}, this.modelValue, model))
       }).catch(error => {
         console.log(error)
       })
+    },
+    // 格式化moment值
+    formatModel (field, model) {
+      if (field.type === 'datePicker') {
+        model[field.name] = this.model[field.name].format('YYYYMMDD')
+      } else if (field.type === 'monthPicker') {
+        model[field.name] = this.model[field.name].format('YYYYMM')
+      } else if (field.type === 'weekPicker') {
+        model[field.name] = this.model[field.name].weekYear()
+      } else if (field.type === 'timePicker') {
+        model[field.name] = this.model[field.name].unix()
+      } else if (field.type === 'rangePicker') {
+        const mode = field.mode || 'date'
+        if (mode === 'time') {
+          model[field.name] = [
+            this.model[field.name][0].unix(),
+            this.model[field.name][1].unix()
+          ]
+        } else if (mode === 'date') {
+          model[field.name] = [
+            this.model[field.name][0].set({ hour: 0, minute: 0, second: 0, millisecond: 0 }).unix(),
+            this.model[field.name][1].set({ hour: 23, minute: 59, second: 59, millisecond: 999 }).unix()
+          ]
+        } else if (mode === 'month') {
+          model[field.name] = [
+            this.model[field.name][0].format('YYYYMM'),
+            this.model[field.name][1].format('YYYYMM')
+          ]
+        } else if (mode === 'year') {
+          model[field.name] = [
+            this.model[field.name][0].format('YYYY'),
+            this.model[field.name][1].format('YYYY')
+          ]
+        } else if (mode === 'decade') {
+          model[field.name] = [
+            this.model[field.name][0].format('YYYY'),
+            this.model[field.name][1].format('YYYY')
+          ]
+        }
+      } else {
+        // 判断是否为inputGroup
+        if (field.type === 'inputGroup') {
+          field.group.forEach(groupField => {
+            this.formatModel(groupField, model)
+          })
+        } else {
+          model[field.name] = this.model[field.name]
+        }
+      }
+    },
+    // 初始化校验规则
+    initRules (field) {
+      const rules = field.rules
+      // TODO 如果inputGroup时需要单独处理内部rules
+      // 为一个有效的数据时，即String, Object的混合数组
+      if (this.$utils.isValid(rules)) {
+        return rules.map(rule => {
+          // 外部message优先级最高，如果没有则按照内置校验规则生成相应的message
+          if (!rule.message) {
+            FieldRules.resolve(field, rule)
+          }
+          return rule
+        })
+      } else {
+        return []
+      }
     },
     // 重置表单
     resetForm () {

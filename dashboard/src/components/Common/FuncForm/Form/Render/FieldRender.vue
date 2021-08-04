@@ -1,11 +1,20 @@
 <template>
   <!-- 基础组件 -->
   <!-- input -->
-  <a-input v-if="isType()" v-bind="renderField" :value="modelValue" @change="handleInputChange" allowClear/>
+  <a-input v-if="isType()"
+           v-bind="renderField"
+           :value="modelValue"
+           @change="handleInputChange" allowClear/>
   <!-- textarea -->
-  <a-textarea v-else-if="isType('textarea')" v-bind="renderField" :value="modelValue" @change="handleInputChange" allowClear/>
+  <a-textarea v-else-if="isType('textarea')"
+              v-bind="renderField"
+              :value="modelValue"
+              @change="handleInputChange" allowClear/>
   <!-- number -->
-  <a-input-number v-else-if="isType('number')" v-bind="renderField" :value="modelValue" @change="handleChange" allowClear/>
+  <a-input-number v-else-if="isType('number')"
+                  v-bind="renderField"
+                  :value="modelValue"
+                  @change="handleChange" allowClear/>
   <!-- select, multiple, tags, combobox由mode来决定 -->
   <!-- tags或者combobox模式下，option的value不能用number类型 combobox模式不可用 -->
   <a-select v-else-if="isType('select')"
@@ -185,7 +194,6 @@ export default {
   },
   // 防止v-bind绑定时继承多个onChange等异常现象
   inheritAttrs: false,
-  emits: ['update:modelValue'],
   props: {
     /**
      * formItem属性定义
@@ -245,6 +253,7 @@ export default {
       })
     }
   },
+  emits: ['update:modelValue'],
   methods: {
     // 判断field类型
     isType (type = 'text') {
