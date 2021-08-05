@@ -1,5 +1,5 @@
 <template>
-  <div>首页</div>
+  <div class="atom-page-layout">首页</div>
 </template>
 
 <script>

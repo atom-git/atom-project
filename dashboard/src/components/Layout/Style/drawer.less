@@ -4,6 +4,18 @@ drawer布局样式
 .atom-drawer-layout {
   width: 100%;
   min-height: 100vh !important;
+  &.fixed {
+    /*头部固定*/
+    .ant-layout-header {
+      position: fixed;
+      z-index: 99;
+      width: 100%;
+    }
+    /*内容部分下移*/
+    .ant-layout-content {
+      margin-top: 56px;
+    }
+  }
   /*顶部菜单*/
   .ant-layout-header {
     display: flex;

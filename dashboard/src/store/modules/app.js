@@ -45,8 +45,10 @@ const app = {
     },
     setLayout: (state, layout) => {
       state.layout = state.device.isMobile || (document.body.clientWidth || window.innerWidth) < 768 ? Default.mobileLayout : layout
-      // 如果是mix布局，fixHeader一定为true，并且不可更改
-      state.fixHeader = true
+      // 如果是mix布局，fixHeader一定为true，并且不可更改，drawer默认为fixed，但是可以改变
+      if (layout === 'mix' || layout === 'drawer') {
+        state.fixHeader = true
+      }
     },
     setMultiTab: (state, multiTab) => {
       state.multiTab = multiTab
