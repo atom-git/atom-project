@@ -99,9 +99,9 @@ export default {
       if (this.$utils.isValid(fields)) {
         fields.forEach(field => {
           if (this.dateType.includes(field.type)) {
-            model[field.name] = this.$utils.toDate(field.default) || null
+            model[field.name] = this.$utils.toDate(field.default) || undefined
           } else {
-            model[field.name] = field.default || null
+            model[field.name] = field.default || undefined
           }
         })
       }
@@ -117,8 +117,11 @@ export default {
           // 如果当前值有效，返回当前值
           if (this.$utils.isValid(this.model[field.name])) {
             this.formatModel(field, model)
+          } else if (field.type === 'inputGroup') {
+            this.formatModel(field, model)
           }
         })
+        // 与this.modelValue叠加是为了防止外部传入的id等值
         this.$emit('submit', Object.assign({}, this.modelValue, model))
       }).catch(error => {
         console.log(error)
@@ -165,8 +168,12 @@ export default {
       } else {
         // 判断是否为inputGroup
         if (field.type === 'inputGroup') {
+          model[field.name] = {}
           field.group.forEach(groupField => {
             this.formatModel(groupField, model)
+            if (this.$utils.isValid(this.model[groupField.name])) {
+              model[field.name][groupField.name] = this.model[groupField.name]
+            }
           })
         } else {
           model[field.name] = this.model[field.name]

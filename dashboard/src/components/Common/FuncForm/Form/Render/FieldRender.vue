@@ -10,13 +10,23 @@
               v-bind="renderField"
               :value="modelValue"
               @change="handleInputChange" allowClear/>
-  <!-- number -->
+  <!-- number，这里属性只能单独写，直接用v-bind会存在解析异常 -->
   <a-input-number v-else-if="isType('number')"
-                  v-bind="renderField"
                   :value="modelValue"
+                  :formatter="renderField.formatter"
+                  :parser="renderField.parser"
+                  :precision="renderField.precision"
+                  :autofocus="renderField.autofocus"
+                  :disabled="renderField.disabled"
+                  :max="renderField.max"
+                  :min="renderField.min"
+                  :decimalSeparator="renderField.decimalSeparator"
+                  :size="renderField.size"
+                  :step="renderField.step"
+                  :style="renderField.style"
                   @change="handleChange" allowClear/>
-  <!-- select, multiple, tags, combobox由mode来决定 -->
-  <!-- tags或者combobox模式下，option的value不能用number类型 combobox模式不可用 -->
+  <!-- select, multiple, tags 由mode来决定 -->
+  <!-- tags模式下，option的value不能用number类型 -->
   <a-select v-else-if="isType('select')"
             :value="modelValue"
             @change="handleChange"
@@ -47,12 +57,13 @@
   <a-select v-else-if="isType('remoteSelect')"
             :value="modelValue"
             :placeholder="renderField.placeholder"
+            :mode="renderField.mode"
             :showSearch="true"
             :style="renderField.style"
             :filterOption="false"
             :defaultActiveFirstOption="renderField.defaultActiveFirstOption || false"
             @search="handleRemoteSearch"
-            @select="handleRemoteSelect"
+            @change="handleRemoteSelect"
             :disabled="renderField.disabled"
             allowClear>
     <a-select-option v-for="option in renderField.options"
@@ -85,7 +96,13 @@
     </template>
   </a-radio-group>
   <!-- switch -->
-  <a-switch v-else-if="isType('switch')" v-bind="renderField" :style="{ width: 'auto' }" :checked="modelValue" @change="handleChange"/>
+  <a-switch v-else-if="isType('switch')"
+            v-bind="renderField"
+            :style="{ width: 'auto' }"
+            :checked="modelValue"
+            :checkedValue="renderField.checkedValue || 1"
+            :unCheckedValue="renderField.unCheckedValue || 0"
+            @change="handleChange"/>
   <!-- cascader TODO 分级loadData -->
   <a-cascader v-else-if="isType('cascader')"
               v-bind="renderField"
@@ -138,10 +155,15 @@
   <a-auto-complete v-else-if="isType('autoComplete')"
                    v-bind="renderField"
                    :value="modelValue"
-                   @change="handleChange"
+                   @change="handleRemoteSelect"
                    @search="handleRemoteSearch"></a-auto-complete>
   <!-- mentions TODO 自定义option展示形式 -->
-  <a-mentions v-else-if="isType('mentions')" v-bind="renderField" :value="modelValue" @change="handleChange" @search="handleRemoteSearch">
+  <a-mentions v-else-if="isType('mentions')"
+              v-bind="renderField"
+              :value="modelValue"
+              :filterOption="initFilterOption"
+              @search="handleRemoteSearch"
+              @change="handleChange">
     <template v-if="renderField.options">
       <a-mentions-option
           v-for="option in renderField.options"
@@ -211,7 +233,7 @@ export default {
      * options: [{ label, value, [children], [disabled] }] 选择控件的下拉菜单，[children]可选属性，级联选择时有效，[disabled]可选
      * rules: [String, Object] String类型为内置校验规则，支持详情见FieldRules.js，Object则为自定义校验，可以混合使用
      * slot: String 自定义表单组件的挂载点名称
-     * remote: 时外部传入数据查询和选中回调的方法{ search: function promise方法, callback: function }
+     * remote: 时外部传入数据查询和选中回调的方法{ search: function promise方法, select: function }
      * 以及其他各组件支持的属性
      */
     field: {
@@ -249,7 +271,8 @@ export default {
         size: this.size,
         hidden: this.field.hidden ? this.field.hidden : false,
         replaceFields: Object.assign({}, defaultKeys, this.field.replaceFields),
-        style: this.field.style || { width: '100%' }
+        // slider不能设置为100%
+        style: this.field.style || { width: this.field.type === 'slider' ? '96%' : '100%' }
       })
     }
   },
@@ -284,10 +307,15 @@ export default {
         return field.mode
       }
     },
+    // 初始化选项过滤
+    initFilterOption (keyword, option) {
+      return this.renderField.remote ? true : option.value.toLowerCase().includes(keyword.toLowerCase())
+    },
     // 响应远程搜索，从外部传入方法，使用内部解析存在数据流不好上移的问题
     handleRemoteSearch (keyword = this.modelValue) {
       // 存在远程搜索时执行
-      if (this.field['remote'].search && keyword) {
+      if (this.field.remote && this.field.remote.search && keyword) {
+        this.renderField.options = null
         if (!this.loading) {
           const self = this
           // 增加延迟请求防止多次无用请求
@@ -305,10 +333,10 @@ export default {
     },
     // 响应远程搜索的数据回调
     handleRemoteSelect (value, option) {
-      this.handleChange(value)
-      // 如果外部传入的callback,则调用外部实现自定义绑定数据
-      if ( this.field.remote.callback) {
-        this.field.remote.callback(option['bindData'])
+      // 如果外部传入的select,则调用外部实现自定义绑定数据
+      if (this.field.remote && this.field.remote.select) {
+        this.handleChange(value)
+        this.field.remote.select(option)
       }
     },
     // 响应input改变
