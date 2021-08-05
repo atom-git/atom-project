@@ -201,6 +201,10 @@ export default {
     resetForm () {
       this.$refs.funcForm.resetFields()
     },
+    // 暴露validate方法
+    validate () {
+      return this.$refs.funcForm.validate()
+    },
     // 移除表单项的校验结果
     clearValidate () {
       this.$refs.funcForm.clearValidate()

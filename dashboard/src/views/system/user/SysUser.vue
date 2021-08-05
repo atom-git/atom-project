@@ -24,7 +24,8 @@
           :loading="loading"
           :maskClosable="false"
           @ok="handleDialogSubmit">
-    <FormList v-model="userRole"
+    <FormList ref="roleForm"
+              v-model="userRole"
               :fields="roleFields"
               :hiddenFooter="true"
               :labelCol="{ xs: 24, sm: 8, md: 6, xl: 6, xxl: 5 }"></FormList>
@@ -211,10 +212,12 @@ export default {
     },
     // 响应弹窗表单的提交
     handleDialogSubmit () {
-      this.$api.system.user.updateRole(this.sysUser.id, this.userRole.userRoleList).then(() => {
-        this.$message.success(`用户【${this.sysUser.name}】赋权角色成功！`)
-      }).finally(() => {
-        this.visible = false
+      this.$refs.roleForm.validate().then(() => {
+        this.$api.system.user.updateRole(this.sysUser.id, this.userRole.userRoleList).then(() => {
+          this.$message.success(`用户【${this.sysUser.name}】赋权角色成功！`)
+        }).finally(() => {
+          this.visible = false
+        })
       })
     }
   },

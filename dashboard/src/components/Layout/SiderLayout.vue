@@ -21,7 +21,7 @@
       <!-- 右侧功能按钮 -->
       <HeaderRight></HeaderRight>
     </a-layout-header>
-    <a-layout-content>
+    <a-layout-content :class="multiTab ? 'atom-has-multitab' : ''">
       <!-- 多标签栏 -->
       <MultiTab v-if="multiTab"></MultiTab>
       <RouteView v-if="isAlive"></RouteView>

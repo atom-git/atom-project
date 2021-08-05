@@ -21,7 +21,7 @@
     </a-layout-sider>
     <!-- 右侧内容部分 -->
     <a-layout :style="{ marginLeft: `${fixHeader ? collapsed ? 48 : 200 : 0}px`}">
-      <a-layout-content>
+      <a-layout-content :class="multiTab ? 'atom-has-multitab' : ''">
         <!-- 多标签栏 -->
         <MultiTab v-if="multiTab"></MultiTab>
         <RouteView v-if="isAlive"></RouteView>

@@ -141,32 +141,53 @@ export default {
     handleLayoutSwitch (layout) {
       // 保存布局到缓存
       this.$store.dispatch('setLayout', layout)
+      this.$nextTick(() => {
+        this.$message.success('布局切换成功！', 1)
+      })
     },
     // 响应Header是否固定
     handleFixToggle (fixHeader) {
       this.$store.dispatch('setFixHeader', fixHeader)
+      this.$nextTick(() => {
+        this.$message.success(`页面头部已${fixHeader ? '锁定' : '解锁'}`, 1)
+      })
     },
     // 响应是否打开多标签
     handleMultiTabToggle (multiTab) {
       this.$store.dispatch('setMultiTab', multiTab)
+      this.$nextTick(() => {
+        this.$message.success(`多标签已${multiTab ? '开启' : '关闭'}`, 1)
+      })
     },
     // 响应多标签是否可拖拽
     handleMultiTabDraggable (multiTabDraggable) {
       this.$store.dispatch('setMultiTabDraggable', multiTabDraggable)
+      this.$nextTick(() => {
+        this.$message.success(`多标签拖拽已${multiTabDraggable ? '开启' : '关闭'}`, 1)
+      })
     },
     // 响应页面水印是否打开
     handleWaterMarkEnable (waterMarkEnable) {
       this.$store.dispatch('setWaterMarkEnable', waterMarkEnable)
+      this.$nextTick(() => {
+        this.$message.success('已经开启水印！', 1)
+      })
     },
     // 响应动画效果的切换
     handleAnimateToggle () {
       // 调整默认方向
       this.transition.direction = this.directionOptions[0].value
       this.$store.dispatch('setTransition', this.transition)
+      this.$nextTick(() => {
+        this.$message.success('动画效果设置成功！', 1)
+      })
     },
     // 响应动画方案的切换
     handleTransitionToggle () {
       this.$store.dispatch('setTransition', this.transition)
+      this.$nextTick(() => {
+        this.$message.success('动画效果设置成功！', 1)
+      })
     }
   }
 }

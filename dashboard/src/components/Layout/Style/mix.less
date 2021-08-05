@@ -15,10 +15,13 @@ mix布局样式，仅包括颜色变化部分
     .ant-layout-has-sider {
       margin-top: 48px;
     }
-    /**/
+    /*内容部分下移*/
     .ant-layout-content {
-      .atom-page-layout {
+      &.atom-has-multitab .atom-page-layout {
         margin-top: 44px;
+      }
+      .atom-page-layout {
+        margin-top: 16px;
       }
     }
   }
