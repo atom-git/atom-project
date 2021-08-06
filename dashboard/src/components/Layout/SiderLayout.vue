@@ -23,7 +23,7 @@
     </a-layout-header>
     <a-layout-content :class="multiTab ? 'atom-has-multitab' : ''">
       <!-- 多标签栏 -->
-      <MultiTab v-if="multiTab"></MultiTab>
+      <MultiTab v-if="multiTab" :style="{ width: `calc(100% - ${fixHeader ? collapsed ? 48 + 32 : 200 + 32 : 0}px)` }"></MultiTab>
       <RouteView v-if="isAlive"></RouteView>
     </a-layout-content>
     <!-- 底部footer -->
