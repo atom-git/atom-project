@@ -123,7 +123,7 @@ export default class Utils {
       } else if (this.regExpNum(time, 10)) {
         return moment.unix(time)
       } else {
-        return moment.utc(time)
+        return moment(time)
       }
     }
   }

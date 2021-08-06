@@ -4,7 +4,7 @@
           v-model:activeKey="activeKey"
           @change="handleTabChange">
     <a-tab-pane v-for="(item, index) in tabs"
-                :forceRender="item.tab.forceRender || false"
+                :forceRender="(item.tab && item.tab.forceRender) || false"
                 :key="index"
                 :tab="item.tab.title">
       <FuncTable v-bind="item.table"
@@ -47,7 +47,7 @@ export default {
       activeKey: 0
     }
   },
-  emits: ['table-tab-change', 'table-data-load', 'table-func-action', 'table-row-action', 'table-form-submit', 'table-form-cancel', 'table-data-load'],
+  emits: ['table-tab-change', 'table-data-load', 'table-func-action', 'table-row-action', 'table-form-submit', 'table-form-cancel'],
   methods: {
     // 响应tab切换
     handleTabChange (activeKey) {

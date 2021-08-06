@@ -1,5 +1,6 @@
 <template>
-  <FormList :fields="fields" v-model="model" @submit="handleSubmit">
+  <FormFilter :fields="fields" v-model="model" @submit="handleSubmit"></FormFilter>
+  <FormList title="表单功能测试" :fields="fields" v-model="model" @submit="handleSubmit">
     <template #number>
       <a-input-number
           v-model:value="model.number1"
@@ -10,10 +11,10 @@
 </template>
 
 <script>
-import { FormList } from '@/components/Common/FuncForm'
+import { FormFilter, FormList } from '@/components/Common/FuncForm'
 export default {
   name: 'BasicForm',
-  components: { FormList },
+  components: { FormFilter, FormList },
   data () {
     return {
       model: { id: 1, number1: 3, number2: 30000 },

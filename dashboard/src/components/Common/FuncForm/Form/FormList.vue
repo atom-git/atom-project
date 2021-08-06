@@ -12,7 +12,7 @@
             :labelCol="labelCol"
             :wrapperCol="wrapperCol">
       <!-- FormItem渲染 -->
-      <a-form-item v-for="field in fields"
+      <a-form-item v-for="field in renderFields"
                    :key="field.name"
                    :name="field.name"
                    :label="field.label"
@@ -111,6 +111,12 @@ export default {
     footerAlign: {
       type: String,
       default: 'center'
+    }
+  },
+  computed: {
+    // 用于渲染的fields，深度克隆防止互相影响
+    renderFields () {
+      return this.$utils.deepClone(this.fields)
     }
   },
   emits: ['form-action'],

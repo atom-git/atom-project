@@ -5,6 +5,10 @@
     padding: 24px 16px 0 16px;
   }
   .ant-form {
+    /*此处是为了兼容暗黑模式下的样式问题*/
+    .ant-mentions textarea {
+      background-color: transparent;
+    }
     .atom-form-footer {
       &.filter {
         text-align: right;

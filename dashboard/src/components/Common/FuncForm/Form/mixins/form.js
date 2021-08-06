@@ -73,6 +73,14 @@ export default {
     }
   },
   watch: {
+    // 监听fields变化
+    fields: {
+      handler (newValue) {
+        // 初始化表单数据
+        this.initModel(this.$utils.deepClone(newValue))
+      },
+      deep: true
+    },
     // 内部form表单变化时，提交变化
     model: {
       handler (newValue) {
@@ -88,10 +96,6 @@ export default {
     }
   },
   emits: ['update:modelValue', 'submit'],
-  created () {
-    // 初始化表单数据
-    this.initModel(this.$utils.deepClone(this.fields))
-  },
   methods: {
     // 表单值初始化，默认值仅通过fields传入
     initModel (fields) {

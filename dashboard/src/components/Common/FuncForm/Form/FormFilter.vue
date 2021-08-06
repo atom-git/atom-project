@@ -91,7 +91,7 @@ export default {
   computed: {
     // 用于渲染的fields，分为本身长度大于默认展开长度和小于两种情况
     renderFields () {
-      const renderFields = Object.assign(this.fields)
+      const renderFields = this.$utils.deepClone(this.fields)
       renderFields.forEach(field => {
         if (field.rules) { delete field.rules }
         // filter默认label是左对齐的

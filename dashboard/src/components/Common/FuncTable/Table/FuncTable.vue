@@ -97,7 +97,7 @@ export default {
       deep: true
     }
   },
-  emits: ['table-data-load', 'table-func-action', 'table-row-action', 'table-form-submit', 'table-form-cancel', 'table-data-load'],
+  emits: ['table-data-load', 'table-func-action', 'table-row-action', 'table-form-submit', 'table-form-cancel'],
   methods: {
     // 加载数据
     loadTableData () {

@@ -20,8 +20,12 @@ import org.hibernate.criterion.Restrictions;
 @Setter
 @ApiModel("系统用户filter")
 public class SysUserFilter {
-	@ApiModelProperty("搜索关键字")
-	private String keyword;
+	@ApiModelProperty("帐号")
+	private String account;
+	@ApiModelProperty("电话")
+	private String phone;
+	@ApiModelProperty("名称")
+	private String name;
 	@ApiModelProperty("组织部门ID")
 	private Integer deptId;
 	@ApiModelProperty("是否启用 0：禁用 1：启用")
@@ -33,13 +37,16 @@ public class SysUserFilter {
 		public DetachedCriteria doForward(SysUserFilter sysUserFilter) {
 			DetachedCriteria dc = DetachedCriteria.forClass(SysUser.class);
 			if (sysUserFilter != null) {
-				if (Validator.isNotEmpty(sysUserFilter.getKeyword())) {
-					dc.add(Restrictions.or(
-						Restrictions.like("account", sysUserFilter.getKeyword(), MatchMode.ANYWHERE),
-						Restrictions.like("phone", sysUserFilter.getKeyword(), MatchMode.ANYWHERE),
-						Restrictions.like("name", sysUserFilter.getKeyword(), MatchMode.ANYWHERE)
-					));
+				if (Validator.isNotEmpty(sysUserFilter.getAccount())) {
+					dc.add(Restrictions.like("account", sysUserFilter.getAccount(), MatchMode.ANYWHERE));
 				}
+				if (Validator.isNotEmpty(sysUserFilter.getPhone())) {
+					dc.add(Restrictions.like("phone", sysUserFilter.getPhone(), MatchMode.ANYWHERE));
+				}
+				if (Validator.isNotEmpty(sysUserFilter.getName())) {
+					dc.add(Restrictions.like("name", sysUserFilter.getName(), MatchMode.ANYWHERE));
+				}
+
 				if (Validator.isNotNull(sysUserFilter.getDeptId())) {
 					dc.add(Restrictions.eq("deptId", sysUserFilter.getDeptId()));
 				}
