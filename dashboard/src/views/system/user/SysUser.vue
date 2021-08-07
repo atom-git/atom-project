@@ -188,7 +188,7 @@ export default {
         this.$modal.$confirm({
           content: '确认要重置用户【'.concat(row.name, '】的密码吗？'),
           icon: createVNode(ExclamationCircleOutlined),
-          confirmLoading: this.loading,
+          confirmLoading: self.loading,
           onOk () {
             self.loading = true
             self.$api.system.user.resetPassword(row.id).then(password => {
