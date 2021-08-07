@@ -14,7 +14,6 @@
                  :columns="columns"
                  :funcZone="funcZone"
                  :extendParams="extendParams"
-                 @table-func-action="handleFuncAction"
                  @table-row-action="handleRowAction"></FuncTable>
     </template>
   </SideLayout>
@@ -175,10 +174,6 @@ export default {
       }).finally(() => {
         this.loading = false
       })
-    },
-    // 响应功能区域操作按钮
-    handleFuncAction (action) {
-      console.log(action)
     },
     // 响应行级操作按钮
     handleRowAction (action, row) {
