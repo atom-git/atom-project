@@ -45,13 +45,7 @@ import Dialog from '@/components/Common/Dialog'
 import { FormList } from '@/components/Common/FuncForm'
 export default {
   name: 'SysUser',
-  components: {
-    SideLayout,
-    MenuTree,
-    FuncTable,
-    Dialog,
-    FormList
-  },
+  components: { SideLayout, MenuTree, FuncTable, Dialog, FormList },
   data () {
     return {
       // 组织架构列表
@@ -169,7 +163,6 @@ export default {
   methods: {
     // 响应树节点的选择
     handleTreeSelect (nodeKey, treeNode) {
-      this.formAction = this.$default.ACTION_EDIT.name
       this.sysDept = treeNode
     },
     // 加载组织机构树

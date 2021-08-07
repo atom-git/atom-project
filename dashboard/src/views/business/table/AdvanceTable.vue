@@ -167,6 +167,10 @@ export default {
     handleFormCancel (action, activeKey, tab) {
       console.log(action, activeKey, tab)
     }
+  },
+  created () {
+    // 加载组织树数据
+    this.loadSysDeptTree()
   }
 }
 </script>
