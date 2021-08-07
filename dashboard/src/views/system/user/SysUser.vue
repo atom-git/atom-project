@@ -188,10 +188,12 @@ export default {
         this.$modal.$confirm({
           content: '确认要重置用户【'.concat(row.name, '】的密码吗？'),
           icon: createVNode(ExclamationCircleOutlined),
+          confirmLoading: this.loading,
           onOk () {
+            self.loading = true
             self.$api.system.user.resetPassword(row.id).then(password => {
               self.$message.success(`用户${row.name}密码重置为${password}成功！`)
-            })
+            }).finally(() => { self.loading = false })
           }
         })
       } else if (action.name === 'permission') {
@@ -205,13 +207,15 @@ export default {
     },
     // 响应弹窗表单的提交
     handleDialogSubmit () {
+      this.loading = true
       this.$refs.roleForm.validate().then(() => {
         this.$api.system.user.updateRole(this.sysUser.id, this.userRole.userRoleList).then(() => {
           this.$message.success(`用户【${this.sysUser.name}】赋权角色成功！`)
         }).finally(() => {
+          this.loading = false
           this.visible = false
         })
-      })
+      }).catch(() => { this.loading = false })
     }
   },
   created () {
