@@ -74,7 +74,7 @@ export default {
       return [
         { type: 'text', label: '菜单名称', name: 'name', rules: [{ required: true }] },
         { type: 'text', label: '菜单描述', name: 'desc' },
-        // { type: 'iconPicker', label: '菜单图标', name: 'icon' },
+        { type: 'iconPicker', label: '菜单图标', name: 'icon' },
         { type: 'text', label: '路由名称', name: 'route', rules: [{ required: true }] },
         { type: 'treeSelect', label: '父级菜单', name: 'parentId', treeData: this.sysMenuTree, replaceFields: this.replaceFields },
         { type: 'number', label: '优先级', name: 'menuOrder', rules: [{ required: true, type: 'integer' }], extra: '新增时默认按照子集最大序号生成' },

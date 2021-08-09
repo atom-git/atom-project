@@ -1,0 +1,24 @@
+/**
+图标选择器
+ */
+.atom-icon-picker {
+  .atom-icon-picker-container {
+    height: 120px;
+    overflow-y: auto;
+    .atom-icon-picker-item {
+      font-size: 20px;
+      padding: 4px;
+      margin: 10px;
+      line-height: 36px;
+      cursor: pointer;
+      &:hover, &.selected {
+        border-radius: @border-radius-base;
+        box-shadow: 0 0 4px @primary-color;
+        .anticon {
+          transform: scale(1.2);
+          transition: transform .3s ease-in-out;
+        }
+      }
+    }
+  }
+}
