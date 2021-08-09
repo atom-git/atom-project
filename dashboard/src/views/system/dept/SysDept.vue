@@ -38,6 +38,8 @@ import MenuTree from '@/components/Common/MenuTree'
 import { FormList } from '@/components/Common/FuncForm'
 import { createVNode } from 'vue'
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
+// sysDept默认值
+const defaultSysDept = { ifValid: 1 }
 export default {
   name: 'SysDept',
   components: { SideLayout, MenuTree, FormList },
@@ -50,7 +52,7 @@ export default {
       // 组织架构树
       sysDeptTree: [],
       // 当前组织对象
-      sysDept: {},
+      sysDept: defaultSysDept,
       // 表单的动作
       formAction: this.$default.ACTION_ADD,
       // 组织树的按钮
@@ -73,10 +75,6 @@ export default {
         { type: 'treeSelect', label: '上级部门', name: 'deptParent', treeData: this.sysDeptTree, replaceFields: this.replaceFields },
         { type: 'radio', label: '状态', name: 'ifValid', default: 1, options: [{ title: '禁用', value: 0 }, { title: '启用', value: 1 }], rules: [{ type: 'integer', required: true }] }
       ]
-    },
-    // 默认选中第一个父级
-    defaultSelectedKeys () {
-      return [this.sysDept.id]
     },
     // 表单的标题
     formTitle () {
@@ -103,7 +101,7 @@ export default {
     // 响应角色新增
     handleAdd () {
       this.formAction = this.$default.ACTION_ADD
-      this.sysDept = { ifValid: 1 }
+      this.sysDept = defaultSysDept
     },
     // 响应菜单扩展操作
     handleAction (action, treeNode) {
@@ -121,7 +119,7 @@ export default {
           content: `确定要删除组织【${treeNode.deptName}】吗？`,
           onOk () {
             self.$api.system.dept.delete(self.sysDept.id).then(() => {
-              self.sysDept = {}
+              self.sysDept = defaultSysDept
               // 提示删除成功
               self.$message.success('系统组织删除成功！')
               // 刷新数据

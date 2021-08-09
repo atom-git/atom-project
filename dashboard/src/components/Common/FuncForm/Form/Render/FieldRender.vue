@@ -41,10 +41,10 @@
                      :value="option[renderField.replaceFields.value]"
                      :title="option[renderField.replaceFields.title]"
                      :key="option[renderField.replaceFields.value]">
-        <span v-if="option[renderField.replaceFields.status] || option[renderField.replaceFields.color]"
-              role="img" :aria-label="option[renderField.replaceFields.title]">
-          <a-badge v-if="option[renderField.replaceFields.status]"
-                   :status="option[renderField.replaceFields.status]"
+        <span v-if="$utils.isValid(option[renderField.replaceFields.status]) || option[renderField.replaceFields.color]"
+              role="img" :ariaLabel="option[renderField.replaceFields.title]">
+          <a-badge v-if="$utils.isValid(option[renderField.replaceFields.status])"
+                   :status="formatStatus(option[renderField.replaceFields.status])"
                    :text="option[renderField.replaceFields.title]"/>
           <a-badge v-else-if="option[renderField.replaceFields.color]"
                    :color="option[renderField.replaceFields.color]"
@@ -310,6 +310,14 @@ export default {
     // 初始化选项过滤
     initFilterOption (keyword, option) {
       return this.renderField.remote ? true : option.value.toLowerCase().includes(keyword.toLowerCase())
+    },
+    // 格式化status
+    formatStatus (value) {
+      if (this.$utils.isInt(value) || this.$utils.isBoolean(value)) {
+        return value ? 'processing' : 'warning'
+      } else {
+        return value || 'default'
+      }
     },
     // 响应远程搜索，从外部传入方法，使用内部解析存在数据流不好上移的问题
     handleRemoteSearch (keyword = this.modelValue) {

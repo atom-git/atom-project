@@ -7,14 +7,13 @@ import Utils from '@/utils'
  */
 export default class menu {
   // menu的替代字段
-  static replaceFields = { title: 'name', label: 'name', key: 'id', value: 'id' }
-
+  static replaceFields = { title: 'name', label: 'name', key: 'id', value: 'id', children: 'children' }
   /**
-   * 查询菜单列表
+   * 查询菜单树
    */
-  static list () {
+  static tree () {
     return axios({
-      url: '/system/menu/list',
+      url: '/system/menu/tree',
       method: Default.HTTP_METHOD_GET
     })
   }
@@ -39,6 +38,19 @@ export default class menu {
     return axios({
       url: Utils.formatStr('/system/menu/delete/{s}', menuId),
       method: Default.HTTP_METHOD_DELETE
+    })
+  }
+
+  /**
+   * 菜单的上移或者下移
+   * @param move 动作
+   * @param sysMenu 菜单
+   */
+  static exchange (move, sysMenu) {
+    return axios({
+      url: Utils.formatStr('/system/menu/exchange/{s}', move),
+      method: Default.HTTP_METHOD_POST,
+      data: sysMenu
     })
   }
 }

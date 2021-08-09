@@ -20,7 +20,10 @@
                    :key="field.name"
                    :name="field.name"
                    :label="field.label"
-                   :rules="initRules(field)">
+                   :rules="initRules(field)"
+                   :colon="field.colon"
+                   :extra="field.extra"
+                   :help="field.help">
         <!-- 根据field的slot名称设置挂载点，field采用slot方式挂载时，优先级最高 -->
         <slot v-if="field.slot" :name="field.slot" :field="field" :model="model"></slot>
         <!-- inputGroup字段 -->

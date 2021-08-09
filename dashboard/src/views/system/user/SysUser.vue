@@ -149,7 +149,7 @@ export default {
           options: this.sysRoleList,
           mode: 'multiple',
           showSearch: true,
-          replaceFields: this.$api.system.role.replaceFields
+          replaceFields: this.$utils.deepClone(this.$api.system.role.replaceFields)
         }
       ]
     },

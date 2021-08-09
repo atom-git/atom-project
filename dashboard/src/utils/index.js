@@ -7,6 +7,7 @@ import Default from '@/config/default'
  * isArray: 是否数组
  * isObject: 是否对象
  * isInt: 是否正整数
+ * isBoolean: 是否布尔值
  * clearObject: 清除obj中undefined或者null的key
  * deepClone: 对象深度克隆，采对属性部门进行克隆
  * fromNow: 从目前开始的时间命名
@@ -71,6 +72,15 @@ export default class Utils {
    */
   static isInt (value) {
     return new RegExp(/^[0-9]*$/).test(value)
+  }
+
+  /**
+   * 验证是否是true false
+   * @param value
+   * @returns {boolean}
+   */
+  static isBoolean (value) {
+    return typeof value === 'boolean'
   }
 
   /**

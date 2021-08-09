@@ -1,5 +1,6 @@
 package com.atom.server.system.service;
 
+import com.atom.server.system.entity.SysMenu;
 import com.atom.server.system.pojo.dto.SysMenuDTO;
 import com.atom.server.system.pojo.vo.SysMenuVO;
 
@@ -18,5 +19,5 @@ public interface ISysMenuService {
 
 	void delete(Integer menuId);
 
-	void exchange(String move, SysMenuDTO sysMenuDTO);
+	SysMenuVO exchange(String move, SysMenuDTO sysMenuDTO);
 }

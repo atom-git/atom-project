@@ -76,8 +76,7 @@ public class SysMenuController {
 	@PostMapping("exchange/{move}")
 	@ApiOperation("菜单顺序上移或者下移")
 	@Permission(actionType = ActionType.E, grantType = GrantType.MANUAL)
-	public RestResponse<?> exchange(@PathVariable String move, @RequestBody SysMenuDTO sysMenuDTO) {
-		sysMenuService.exchange(move, sysMenuDTO);
-		return RestResponse.success();
+	public RestResponse<SysMenuVO> exchange(@PathVariable String move, @RequestBody SysMenuDTO sysMenuDTO) {
+		return RestResponse.success(sysMenuService.exchange(move, sysMenuDTO));
 	}
 }

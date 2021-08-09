@@ -116,7 +116,7 @@ public class SysMenuService implements ISysMenuService {
 	 * @param sysMenuDTO 移动的菜单
 	 */
 	@Override
-	public void exchange(String move, SysMenuDTO sysMenuDTO) {
+	public SysMenuVO exchange(String move, SysMenuDTO sysMenuDTO) {
 		// 检查菜单是否存在
 		SysMenu sysMenu = sysMenuDao.findOne(sysMenuDTO.getId());
 		if (Validator.isNull(sysMenu)) {
@@ -160,5 +160,6 @@ public class SysMenuService implements ISysMenuService {
 				sysMenuDao.update(nextMenu);
 			}
 		}
+		return sysMenuVOConverter.doForward(sysMenu);
 	}
 }

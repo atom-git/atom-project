@@ -47,6 +47,8 @@ import { FormList } from '@/components/Common/FuncForm'
 import { createVNode } from 'vue'
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
 import RolePermission from './RolePermission'
+// sysRole默认值
+const defaultSysRole = { ifDefault: 0 }
 export default {
   name: 'SysRole',
   components: { SideLayout, MenuTree, FormList, RolePermission },
@@ -57,7 +59,7 @@ export default {
       // 角色列表
       sysRoleList: [],
       // 当前操作的角色
-      sysRole: {},
+      sysRole: defaultSysRole,
       // 表单的动作
       formAction: this.$default.ACTION_ADD,
       // 组织树的按钮
@@ -71,7 +73,7 @@ export default {
       fields: [
         { type: 'text', label: '角色名称', name: 'roleName', rules: [{ required: true }] },
         { type: 'text', label: '角色描述', name: 'roleDesc' },
-        { type: 'switch', label: '是否默认', name: 'ifDefault', default: 0, options: [{ value: 1, label: '是', status: 'processing' }, { value: 0, label: '否', status: 'success' }] }
+        { type: 'switch', label: '是否默认', name: 'ifDefault', default: 0, options: [{ value: 1, label: '是' }, { value: 0, label: '否' }] }
       ],
       // 角色权限
       rolePermission: {},
@@ -108,7 +110,7 @@ export default {
     // 响应角色新增
     handleAdd () {
       this.formAction = this.$default.ACTION_ADD
-      this.sysRole = { ifDefault: 0 }
+      this.sysRole = defaultSysRole
       this.activeKey = 'edit'
     },
     // 响应菜单扩展操作
@@ -132,7 +134,7 @@ export default {
           content: `确定要删除角色【${treeNode.roleName}】吗？`,
           onOk () {
             self.$api.system.role.delete(self.sysDept.id).then(() => {
-              self.sysDept = {}
+              self.sysRole = defaultSysRole
               // 提示删除成功
               self.$message.success('系统角色删除成功！')
               // 刷新数据
@@ -148,7 +150,7 @@ export default {
       this.$refs.roleForm.validate().then(() => {
         // 新增或者编辑的数据提交
         this.$api.system.role.update(sysRole).then(() => {
-          this.sysRole = { ifDefault: 0 }
+          this.sysRole = defaultSysRole
           this.$message.success('系统角色信息更新成功！')
           this.loadSysRoleList()
         }).finally(() => { this.loading = false })
