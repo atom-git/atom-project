@@ -28,7 +28,7 @@ public class SysRoleMenuVO extends AbsEntity {
 	@ApiModelProperty("选中的菜单keys")
 	private Set<Integer> checkedMenus;
 	@ApiModelProperty("权限的菜单及资源VO")
-	private List<SysMenuActionVO> sysMenuActionVOList;
+	private List<SysMenuActionVO> sysMenuActionList;
 
 	public static class VOConverter extends Converter<SysRoleMenuVO, SysRole> {
 
@@ -37,7 +37,7 @@ public class SysRoleMenuVO extends AbsEntity {
 			sysRoleMenuVO.setId(sysRole.getId());
 			sysRoleMenuVO.setRoleName(sysRole.getRoleName());
 			sysRoleMenuVO.setCheckedMenus(menuSet);
-			sysRoleMenuVO.setSysMenuActionVOList(sysMenuActionVOList);
+			sysRoleMenuVO.setSysMenuActionList(sysMenuActionVOList);
 			return sysRoleMenuVO;
 		}
 	}

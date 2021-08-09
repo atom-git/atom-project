@@ -9,3 +9,15 @@ dashboard全局样式覆盖
 .ant-calendar-week-number .ant-calendar-body tr.ant-calendar-active-week {
   background: @select-item-selected-bg;
 }
+/*line模式tabs bar增加背景色，扩展按钮增加右边距*/
+.ant-tabs {
+  &.ant-tabs-line:not(.atom-multi-tabs) .ant-tabs-bar {
+    background: @component-background;
+    border-radius: 2px;
+  }
+  &.ant-tabs-top, &.ant-tabs-bottom {
+    .ant-tabs-bar .ant-tabs-extra-content {
+      margin-right: 16px;
+    }
+  }
+}

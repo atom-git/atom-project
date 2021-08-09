@@ -27,7 +27,7 @@ export default {
     labelCol: {
       type: Object,
       default: () => {
-        return { xs: 24, sm: 6, md: 6, xl: 5, xxl: 4 }
+        return { xs: 24, sm: 6, md: 8, lg: 8, xl: 6, xxl: 4 }
       }
     },
     /**

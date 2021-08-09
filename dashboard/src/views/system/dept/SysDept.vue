@@ -3,7 +3,6 @@
     <template #sider>
       <MenuTree :search="true"
                 :options="sysDeptList"
-                :optionKeys="replaceFields"
                 :loading="loading"
                 :tree="sysDeptTree"
                 :actions="actions"
@@ -12,7 +11,16 @@
                 @tree-node-action="handleAction"></MenuTree>
     </template>
     <template #content>
-      <FormList ref="deptForm" :title="formTitle" :fields="fields" v-model="sysDept" @submit="handleFormSubmit">
+      <FormList ref="deptForm"
+                :title="formTitle"
+                :fields="fields"
+                v-model="sysDept"
+                @submit="handleFormSubmit">
+        <template #extra>
+          <a-button type="primary" @click="handleAdd">
+            <IconFont type="FileAddOutlined"/>新增
+          </a-button>
+        </template>
         <template #footer="{ handleClick }">
           <a-button @click="handleClick('submit')" type="primary" block :loading="loading">更新组织信息</a-button>
         </template>
@@ -35,12 +43,12 @@ export default {
   components: { SideLayout, MenuTree, FormList },
   data () {
     return {
+      // 替代字段
+      replaceFields: this.$api.system.dept.replaceFields,
       // 组织架构列表
       sysDeptList: [],
       // 组织架构树
       sysDeptTree: [],
-      // 替代字段
-      replaceFields: this.$api.system.dept.replaceFields,
       // 当前组织对象
       sysDept: {},
       // 表单的动作
@@ -63,7 +71,7 @@ export default {
         { type: 'text', label: '负责人', name: 'leaderName' },
         { type: 'text', label: '负责人电话', name: 'leaderPhone', rules: [{ required: true, type: 'phone' }] },
         { type: 'treeSelect', label: '上级部门', name: 'deptParent', treeData: this.sysDeptTree, replaceFields: this.replaceFields },
-        { type: 'radio', label: '状态', name: 'ifValid', default: 1, options: [{ title: '无效', value: 0 }, { title: '有效', value: 1 }], rules: [{ type: 'integer', required: true }] }
+        { type: 'radio', label: '状态', name: 'ifValid', default: 1, options: [{ title: '禁用', value: 0 }, { title: '启用', value: 1 }], rules: [{ type: 'integer', required: true }] }
       ]
     },
     // 默认选中第一个父级
@@ -76,11 +84,6 @@ export default {
     }
   },
   methods: {
-    // 响应树节点的选择
-    handleTreeSelect (nodeKey, treeNode) {
-      this.formAction = this.$default.ACTION_EDIT
-      this.sysDept = treeNode
-    },
     // 加载组织机构树
     loadSysDeptTree () {
       this.loading = true
@@ -92,16 +95,15 @@ export default {
         this.loading = false
       })
     },
-    // 响应数据编辑提交
-    handleFormSubmit (sysDept) {
-      this.loading = true
-      this.$refs.deptForm.validate().then(() => {
-        // 新增或者编辑的数据提交
-        this.$api.system.dept.update(sysDept).then(() => {
-          this.$message.success('系统组织信息更新成功！')
-          this.loadSysDeptTree()
-        }).finally(() => { this.loading = false })
-      }).catch(() => { this.loading = false })
+    // 响应树节点的选择
+    handleTreeSelect (nodeKey, treeNode) {
+      this.formAction = this.$default.ACTION_EDIT
+      this.sysDept = treeNode
+    },
+    // 响应角色新增
+    handleAdd () {
+      this.formAction = this.$default.ACTION_ADD
+      this.sysDept = { ifValid: 1 }
     },
     // 响应菜单扩展操作
     handleAction (action, treeNode) {
@@ -128,6 +130,17 @@ export default {
           }
         })
       }
+    },
+    // 响应数据编辑提交
+    handleFormSubmit (sysDept) {
+      this.loading = true
+      this.$refs.deptForm.validate().then(() => {
+        // 新增或者编辑的数据提交
+        this.$api.system.dept.update(sysDept).then(() => {
+          this.$message.success('系统组织信息更新成功！')
+          this.loadSysDeptTree()
+        }).finally(() => { this.loading = false })
+      }).catch(() => { this.loading = false })
     }
   },
   created () {

@@ -4,6 +4,10 @@
     <template v-if="title" #title>
       <FuncTitle :title="title"></FuncTitle>
     </template>
+    <!-- 表单头右侧扩展按钮 -->
+    <template v-if="$slots.extra" #extra>
+      <slot name="extra"></slot>
+    </template>
     <!-- 表单区域 -->
     <a-form ref="funcForm"
             :model="model"

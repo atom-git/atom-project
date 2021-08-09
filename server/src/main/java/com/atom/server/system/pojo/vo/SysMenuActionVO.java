@@ -30,7 +30,7 @@ public class SysMenuActionVO extends AbsEntity {
 	@ApiModelProperty("父级菜单ID")
 	private Integer parentId;
 	@ApiModelProperty("按照主题归类动作列表")
-	private List<SysActionTopicVO> sysActionTopicVOList;
+	private List<SysActionTopicVO> sysActionTopicList;
 
 	public static class VOConverter extends Converter<SysMenuActionVO, SysMenu> {
 
@@ -44,13 +44,13 @@ public class SysMenuActionVO extends AbsEntity {
 						.filter(sysMenuTopic -> sysMenuTopic.getMenuId() == sysMenu.getId())
 						.map(SysMenuTopic::getTopicId).collect(Collectors.toList());
 				if (sysActionTopicVOList != null && sysActionTopicVOList.size() > 0) {
-					sysMenuActionVO.setSysActionTopicVOList(sysActionTopicVOList.stream()
+					sysMenuActionVO.setSysActionTopicList(sysActionTopicVOList.stream()
 							.filter(sysActionTopicVO -> topicList.contains(sysActionTopicVO.getId())).collect(Collectors.toList()));
 				} else {
-					sysMenuActionVO.setSysActionTopicVOList(new ArrayList<>());
+					sysMenuActionVO.setSysActionTopicList(new ArrayList<>());
 				}
 			} else {
-				sysMenuActionVO.setSysActionTopicVOList(new ArrayList<>());
+				sysMenuActionVO.setSysActionTopicList(new ArrayList<>());
 			}
 			return sysMenuActionVO;
 		}

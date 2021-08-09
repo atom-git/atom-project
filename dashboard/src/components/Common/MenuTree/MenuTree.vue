@@ -9,8 +9,8 @@
                 :filterOption="true"
                 optionFilterProp="title"
                 @change="handleSelectChange">
-        <a-select-option v-for="option in options" :key="option[optionKeys.value]" :title="option[optionKeys.title]">
-          {{ option[optionKeys.title] }}
+        <a-select-option v-for="option in options" :key="option[optionFields.value]" :title="option[optionFields.title]">
+          {{ option[optionFields.title] }}
         </a-select-option>
       </a-select>
       <a-tooltip v-if="refresh" title="刷新">
@@ -26,12 +26,18 @@
                 :treeData="tree"
                 :replaceFields="replaceFields"
                 :blockNode="true"
+                :checkable="checkable"
                 v-model:expandedKeys="expandedKeys"
+                :checkedKeys="checkedKeys"
                 :selectedKeys="selectedKeys"
                 :showLine="true"
-                @select="handleTreeSelect">
+                @select="handleTreeSelect"
+                @check="handleTreeCheck">
           <template v-for="slot in slots" #[slot.name]>
             {{ slot.node[replaceFields.title] }}
+            <a-badge v-if="slot.node[replaceFields.status] !== undefined && slot.node[replaceFields.status] !== null"
+                     :key="slot.node[replaceFields.key]"
+                     :status="slot.node.status"/>
             <a-dropdown v-if="actions" :key="slot.name" placement="bottomCenter">
               <IconFont type="MoreOutlined" class="atom-menu-tree-action"/>
               <template #overlay>
@@ -71,8 +77,18 @@ export default {
       type: Object,
       required: false
     },
-    // tree默认选中的节点
+    // 是否支持多选
+    checkable: {
+      type: Boolean,
+      default: false
+    },
+    // tree默认选择的节点
     defaultSelectedKeys: {
+      type: Array,
+      required: false
+    },
+    // tree默认选中的节点
+    defaultCheckedKeys: {
       type: Array,
       required: false
     },
@@ -101,29 +117,40 @@ export default {
       type: Array,
       required: false
     },
-    // 搜索下拉选项的key
+    // 搜索下拉选项的key，可以用replaceKeys替代
     optionKeys: {
       type: Object,
-      default: () => ({ label: 'label', value: 'value' })
+      required: false
     },
     // 是否显示刷新按钮
     refresh: {
       type: Boolean,
       default: false
+    },
+    // node显示状态时的默认选项
+    statusOptions: {
+      type: Array,
+      default: () => ([{ status: 'processing', value: 1 }, { status: 'warning', value: 0 }])
     }
   },
   data () {
     return {
       // 默认展开的节点
       expandedKeys: [],
+      // 设置选择的keys
+      selectedKeys: [],
       // 设置选中的keys
-      selectedKeys: []
+      checkedKeys: []
     }
   },
   computed: {
     // 默认的替换字段
     replaceFields () {
-      return Object.assign({ key: 'key', title: 'title', children: 'children' }, this.replaceKeys)
+      return Object.assign({ key: 'key', title: 'title', children: 'children', status: 'status' }, this.replaceKeys)
+    },
+    // 下拉菜单替换字段
+    optionFields () {
+      return Object.assign({}, this.replaceFields, this.optionKeys)
     },
     // 用于对title重新挂载的slot数组
     slots () {
@@ -139,8 +166,18 @@ export default {
   },
   watch: {
     // 响应默认值的改变
-    defaultSelectedKeys (newValue) {
-      this.selectedKeys = [...newValue]
+    defaultSelectedKeys: {
+      deep: true,
+      handler (newValue) {
+        this.selectedKeys = [...newValue]
+      }
+    },
+    // 响应默认值的改变
+    defaultCheckedKeys: {
+      deep: true,
+      handler (newValue) {
+        this.checkedKeys = [...newValue]
+      }
     },
     // 监听tree的值变化，设置展开
     tree: {
@@ -152,7 +189,7 @@ export default {
       }
     }
   },
-  emits: ['tree-node-action', 'tree-search-select', 'tree-select'],
+  emits: ['tree-node-action', 'tree-search-select', 'tree-select', 'tree-check'],
   methods: {
     // 生成默认展示的第一个节点
     initExtendKeys (tree) {
@@ -167,6 +204,10 @@ export default {
       tree.forEach(node => {
         slotName = 'title' + node[this.replaceFields.key]
         node.slots = { title: slotName }
+        // 如果有状态信息字段，则写入状态信息，用于显示状态
+        if (node[this.replaceFields.status] !== undefined && node[this.replaceFields.status] !== null) {
+          node.status = this.statusOptions.filter(option => option.value === node[this.replaceFields.status])[0].status || 'default'
+        }
         // 把挂载点写进数组用于生成挂载信息
         slots.push({ name: slotName, node: node })
         if (this.$utils.isValid(node[this.replaceFields.children])) {
@@ -195,6 +236,10 @@ export default {
         selectNode = node.dataRef
       }
       this.$emit('tree-select', this.selectedKeys, selectNode)
+    },
+    // 响应节点的check
+    handleTreeCheck (checkedKeys, $event) {
+      this.$emit('tree-check', checkedKeys, $event)
     },
     // 响应数据刷新，数据由外部进行控制
     handleRefresh () {

@@ -33,7 +33,7 @@
 /**
  * 页面左右布局，正常模式下左右分隔，在device is mobile模式下，显示为右侧的drawer
  */
-const defaultSide = { xs: 10, sm: 8, md: 7, lg: 6, xl: 5, xxl: 4 }
+const defaultSide = { xs: 10, sm: 8, md: 8, lg: 7, xl: 6, xxl: 5 }
 import config from '@/config/mixins/config'
 export default {
   name: 'SideLayout',

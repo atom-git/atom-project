@@ -3,7 +3,6 @@
     <template #sider>
       <MenuTree :search="true"
                 :options="sysDeptList"
-                :optionKeys="replaceFields"
                 :loading="loading"
                 :tree="sysDeptTree"
                 :replaceKeys="replaceFields"
@@ -160,10 +159,6 @@ export default {
     }
   },
   methods: {
-    // 响应树节点的选择
-    handleTreeSelect (nodeKey, treeNode) {
-      this.sysDept = treeNode
-    },
     // 加载组织机构树
     loadSysDeptTree () {
       this.loading = true
@@ -174,6 +169,10 @@ export default {
       }).finally(() => {
         this.loading = false
       })
+    },
+    // 响应树节点的选择
+    handleTreeSelect (nodeKey, treeNode) {
+      this.sysDept = treeNode
     },
     // 响应行级操作按钮
     handleRowAction (action, row) {

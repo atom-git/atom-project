@@ -121,7 +121,7 @@ export default {
     // form表单的label,wrapper宽度分配
     labelCol: {
       type: Object,
-      default: () => ({ xs: 24, sm: 6, md: 8, xl: 6, xxl: 5 })
+      default: () => ({ xs: 24, sm: 6, md: 8, lg: 8, xl: 6, xxl: 5 })
     },
     // 是否加载中
     loading: {

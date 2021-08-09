@@ -77,7 +77,7 @@ export default {
     // 查询条件列表分割布局，用于控制查询条件一行几列
     colSpan: {
       type: Object,
-      default: () => ({ xs: 24, md: 12, xl: 8, xxl: 8 })
+      default: () => ({ xs: 24, md: 12, lg: 12, xl: 8, xxl: 8 })
     }
   },
   data () {

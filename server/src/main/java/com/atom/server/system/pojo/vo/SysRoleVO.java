@@ -31,8 +31,6 @@ public class SysRoleVO extends AbsEntity {
     private Date modifyTime;
     @ApiModelProperty("是否默认角色1是，0否，最多只允许一个默认权限")
     private Integer ifDefault;
-    @ApiModelProperty("是否启用 0：禁用 1：启用")
-    private Integer ifValid;
 
     public static class VOConverter extends Converter<SysRoleVO, SysRole> {
 

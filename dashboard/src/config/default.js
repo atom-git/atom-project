@@ -32,7 +32,7 @@ export default {
   waterMarkEnable: false,
   transition: {
     name: 'slide',
-    direction: 'Left',
+    direction: 'Right',
     disabled: false
   },
   dialogType: 'drawer',

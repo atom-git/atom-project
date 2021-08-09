@@ -280,16 +280,20 @@ export default class Utils {
    * @param children 子集属性名
    */
   static buildTree (list, id, pid, children) {
-    id = id || 'id'
-    pid = pid || 'pid'
-    children = children || 'children'
-    const cloneList = list.concat()
-    // 这里选择浅复制的原因是为了让对象之间保持关系用于list和tree的节点数据同步
-    return cloneList.filter(parent => {
-      const child = cloneList.filter(child => parent[id] === child[pid])
-      parent[children] = child.length > 0 ? child : null
-      return parent[pid] === 0 || !parent[pid]
-    })
+    if (this.isValid(list)) {
+      id = id || 'id'
+      pid = pid || 'pid'
+      children = children || 'children'
+      const cloneList = list.concat()
+      // 这里选择浅复制的原因是为了让对象之间保持关系用于list和tree的节点数据同步
+      return cloneList.filter(parent => {
+        const child = cloneList.filter(child => parent[id] === child[pid])
+        parent[children] = child.length > 0 ? child : null
+        return parent[pid] === 0 || !parent[pid]
+      })
+    } else {
+      return []
+    }
   }
 
   /**

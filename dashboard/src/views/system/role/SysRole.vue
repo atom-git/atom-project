@@ -1,9 +1,163 @@
 <template>
-  <div>角色管理</div>
+  <SideLayout sideTitle="角色列表">
+    <template #sider>
+      <MenuTree :search="true"
+                :options="sysRoleList"
+                :loading="loading"
+                :tree="sysRoleList"
+                :actions="actions"
+                :replaceKeys="replaceFields"
+                @tree-select="handleTreeSelect"
+                @tree-node-action="handleAction"></MenuTree>
+    </template>
+    <template #content>
+      <a-tabs v-model:activeKey="activeKey">
+        <a-tab-pane key="edit" tab="角色信息">
+          <FormList ref="roleForm"
+                    title="角色信息编辑"
+                    :fields="fields"
+                    v-model="sysRole"
+                    @submit="handleFormSubmit">
+            <template #footer="{ handleClick }">
+              <a-button @click="handleClick('submit')" type="primary" block :loading="loading">更新角色信息</a-button>
+            </template>
+          </FormList>
+        </a-tab-pane>
+        <a-tab-pane key="permission" tab="权限信息">
+          <RolePermission :sysRole="sysRole" :rolePermission="rolePermission"></RolePermission>
+        </a-tab-pane>
+        <!-- 扩展的tab元素 -->
+        <template #tabBarExtraContent>
+          <a-button type="primary" @click="handleAdd">
+            <IconFont type="FileAddOutlined"/>新增
+          </a-button>
+        </template>
+      </a-tabs>
+    </template>
+  </SideLayout>
 </template>
 
 <script>
+/**
+ * 角色管理
+ */
+import { SideLayout } from '@/layouts'
+import MenuTree from '@/components/Common/MenuTree'
+import { FormList } from '@/components/Common/FuncForm'
+import { createVNode } from 'vue'
+import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
+import RolePermission from './RolePermission'
 export default {
-  name: 'SysRole'
+  name: 'SysRole',
+  components: { SideLayout, MenuTree, FormList, RolePermission },
+  data () {
+    return {
+      // 角色替换字段
+      replaceFields: this.$api.system.role.replaceFields,
+      // 角色列表
+      sysRoleList: [],
+      // 当前操作的角色
+      sysRole: {},
+      // 表单的动作
+      formAction: this.$default.ACTION_ADD,
+      // 组织树的按钮
+      actions: [
+        { icon: 'ContactsOutlined', title: '赋权', name: 'permission' },
+        this.$default.ACTION_DELETE
+      ],
+      // 当前激活的信息窗
+      activeKey: 'edit',
+      // 字段列表
+      fields: [
+        { type: 'text', label: '角色名称', name: 'roleName', rules: [{ required: true }] },
+        { type: 'text', label: '角色描述', name: 'roleDesc' },
+        { type: 'switch', label: '是否默认', name: 'ifDefault', default: 0, options: [{ value: 1, label: '是', status: 'processing' }, { value: 0, label: '否', status: 'success' }] }
+      ],
+      // 角色权限
+      rolePermission: {},
+      // 是否加载中
+      loading: false
+    }
+  },
+  computed: {
+    // 表单的标题
+    formTitle () {
+      return `【${this.formAction.title}】系统组织信息`
+    }
+  },
+  methods: {
+    // 加载组织机构树
+    loadSysRoleList () {
+      this.loading = true
+      this.$api.system.role.list().then(sysRoleList => {
+        this.sysRoleList = sysRoleList
+      }).finally(() => {
+        this.loading = false
+      })
+    },
+    // 响应树选中
+    handleTreeSelect (nodeKey, treeNode) {
+      this.sysRole = treeNode
+      // 如果当前切至赋权tab，选中角色，则加载角色权限信息
+      if (this.activeKey === 'permission' && this.$utils.isValid(this.sysRole)) {
+        this.$api.system.role.permission(this.sysRole.id).then(permission => {
+          this.rolePermission = permission
+        })
+      }
+    },
+    // 响应角色新增
+    handleAdd () {
+      this.formAction = this.$default.ACTION_ADD
+      this.sysRole = { ifDefault: 0 }
+      this.activeKey = 'edit'
+    },
+    // 响应菜单扩展操作
+    handleAction (action, treeNode) {
+      if (action === 'permission') {
+        // 赋权
+        this.formAction = this.$default.ACTION_EDIT
+        this.sysRole = treeNode
+        // 切换至赋权tab
+        this.activeKey = 'permission'
+        this.$api.system.role.permission(this.sysRole.id).then(permission => {
+          this.rolePermission = permission
+        })
+      } else {
+        this.sysDept = treeNode
+        // 删除时弹出删除框
+        const self = this
+        this.$modal.$confirm({
+          icon: createVNode(ExclamationCircleOutlined),
+          okType: 'danger',
+          content: `确定要删除角色【${treeNode.roleName}】吗？`,
+          onOk () {
+            self.$api.system.role.delete(self.sysDept.id).then(() => {
+              self.sysDept = {}
+              // 提示删除成功
+              self.$message.success('系统角色删除成功！')
+              // 刷新数据
+              self.loadSysDeptTree()
+            })
+          }
+        })
+      }
+    },
+    // 响应数据编辑提交
+    handleFormSubmit (sysRole) {
+      this.loading = true
+      this.$refs.roleForm.validate().then(() => {
+        // 新增或者编辑的数据提交
+        this.$api.system.role.update(sysRole).then(() => {
+          this.sysRole = { ifDefault: 0 }
+          this.$message.success('系统角色信息更新成功！')
+          this.loadSysRoleList()
+        }).finally(() => { this.loading = false })
+      }).catch(() => { this.loading = false })
+    }
+  },
+  created () {
+    // 加载组织树数据
+    this.loadSysRoleList()
+  }
 }
 </script>
