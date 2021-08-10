@@ -50,7 +50,7 @@ public class SysRoleController {
 	 * @param sysRoleDTO 角色传输dto
 	 * @return 是否修改成功
 	 */
-	@PostMapping("update")
+	@PutMapping("update")
 	@ApiOperation("新增或者编辑角色信息")
 	@Permission(actionType = {ActionType.N, ActionType.E}, grantType = GrantType.MANUAL)
 	public RestResponse<?> update(@RequestBody SysRoleDTO sysRoleDTO) {

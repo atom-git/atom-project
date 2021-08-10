@@ -20,9 +20,6 @@ import java.util.Set;
 public class SysPermissionDTO extends AbsEntity {
 
 	@NotNull
-	@ApiModelProperty("角色ID")
-	private Integer roleId;
-	@NotNull
 	@ApiModelProperty("选中的菜单")
 	private Set<Integer> menusSet;
 	@NotNull

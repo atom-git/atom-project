@@ -26,7 +26,7 @@ export default class role {
   static update (sysRole) {
     return axios({
       url: '/system/role/update',
-      method: Default.HTTP_METHOD_POST,
+      method: Default.HTTP_METHOD_PUT,
       data: sysRole
     })
   }

@@ -11,7 +11,7 @@
                 @tree-node-action="handleAction"></MenuTree>
     </template>
     <template #content>
-      <a-tabs v-model:activeKey="activeKey">
+      <a-tabs v-model:activeKey="activeKey" @change="handleTabChange">
         <a-tab-pane key="edit" tab="角色信息">
           <FormList ref="roleForm"
                     title="角色信息编辑"
@@ -24,7 +24,9 @@
           </FormList>
         </a-tab-pane>
         <a-tab-pane key="permission" tab="权限信息">
-          <RolePermission :sysRole="sysRole" :rolePermission="rolePermission"></RolePermission>
+          <a-spin :spinning="loading" tip="加载中...">
+            <RolePermission :sysRole="sysRole" :permission="permission"></RolePermission>
+          </a-spin>
         </a-tab-pane>
         <!-- 扩展的tab元素 -->
         <template #tabBarExtraContent>
@@ -76,9 +78,9 @@ export default {
         { type: 'switch', label: '是否默认', name: 'ifDefault', default: 0, options: [{ value: 1, label: '是' }, { value: 0, label: '否' }] }
       ],
       // 角色权限
-      rolePermission: {},
+      permission: {},
       // 是否加载中
-      loading: false
+      loading: true
     }
   },
   computed: {
@@ -97,15 +99,31 @@ export default {
         this.loading = false
       })
     },
+    // 加载角色权限信息
+    loadRolePermission () {
+      if (this.activeKey === 'permission' && this.$utils.isValid(this.sysRole.id)) {
+        this.loading = true
+        this.$api.system.role.permission(this.sysRole.id).then(permission => {
+          this.permission = permission
+        }).finally(() => { this.loading = false })
+      } else {
+        this.permission = {}
+      }
+    },
     // 响应树选中
     handleTreeSelect (nodeKey, treeNode) {
       this.sysRole = treeNode
-      // 如果当前切至赋权tab，选中角色，则加载角色权限信息
-      if (this.activeKey === 'permission' && this.$utils.isValid(this.sysRole)) {
-        this.$api.system.role.permission(this.sysRole.id).then(permission => {
-          this.rolePermission = permission
-        })
+      // 取消选中时，将permission重置为空
+      if (!this.$utils.isValid(this.sysRole)) {
+        this.permission = {}
       }
+      // 如果当前切至赋权tab，选中角色，则加载角色权限信息
+      this.loadRolePermission()
+    },
+    // 响应tabs切换
+    handleTabChange () {
+      // 如果当前切至赋权tab，选中角色，则加载角色权限信息
+      this.loadRolePermission()
     },
     // 响应角色新增
     handleAdd () {
@@ -121,11 +139,9 @@ export default {
         this.sysRole = treeNode
         // 切换至赋权tab
         this.activeKey = 'permission'
-        this.$api.system.role.permission(this.sysRole.id).then(permission => {
-          this.rolePermission = permission
-        })
+        this.loadRolePermission()
       } else {
-        this.sysDept = treeNode
+        this.sysRole = treeNode
         // 删除时弹出删除框
         const self = this
         this.$modal.$confirm({
@@ -133,12 +149,12 @@ export default {
           okType: 'danger',
           content: `确定要删除角色【${treeNode.roleName}】吗？`,
           onOk () {
-            self.$api.system.role.delete(self.sysDept.id).then(() => {
+            self.$api.system.role.delete(self.sysRole.id).then(() => {
               self.sysRole = defaultSysRole
               // 提示删除成功
               self.$message.success('系统角色删除成功！')
               // 刷新数据
-              self.loadSysDeptTree()
+              self.loadSysRoleList()
             })
           }
         })

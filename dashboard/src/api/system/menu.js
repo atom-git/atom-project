@@ -25,7 +25,7 @@ export default class menu {
   static update (sysMenu) {
     return axios({
       url: '/system/menu/update',
-      method: Default.HTTP_METHOD_POST,
+      method: Default.HTTP_METHOD_PUT,
       data: sysMenu
     })
   }

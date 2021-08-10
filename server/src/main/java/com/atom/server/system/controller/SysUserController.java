@@ -101,7 +101,7 @@ public class SysUserController {
 	 * @param sysUserDTO 用户传输dto
 	 * @return 新增时返回用户默认密码，修改时返回为空
 	 */
-	@PostMapping("update")
+	@PutMapping("update")
 	@ApiOperation("新增或者编辑用户信息")
 	@Permission(actionType = {ActionType.N, ActionType.E}, grantType = GrantType.MANUAL)
 	public RestResponse<?> update(@RequestBody SysUserDTO sysUserDTO) {

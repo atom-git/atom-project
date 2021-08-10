@@ -198,8 +198,8 @@ export default {
         if (this.$utils.isValid(column.children)) {
           column.children = this.initShowColumns(column.children)
         }
-        // 根据checkedColumns控制字段是否显示
-        if (this.checkedColumns.includes(column.key)) {
+        // 根据checkedColumns控制字段是否显示，如果未定义funcZone或者funcZone中setting为false则直接全部显示
+        if (this.checkedColumns.includes(column.key) || (!this.funcZone || !this.funcZone.setting)) {
           showColumns.push(column)
         }
       })

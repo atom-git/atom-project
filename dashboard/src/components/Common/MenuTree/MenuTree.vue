@@ -28,7 +28,7 @@
                 :blockNode="true"
                 :checkable="checkable"
                 v-model:expandedKeys="expandedKeys"
-                :checkedKeys="checkedKeys"
+                v-model:checkedKeys="checkedKeys"
                 :selectedKeys="selectedKeys"
                 :showLine="true"
                 @select="handleTreeSelect"
@@ -160,23 +160,25 @@ export default {
     },
     // 树的最大高度，PC端，平板端是总高度的80%，手机端是50%
     treeStyle () {
-      const maxHeight = this.device.isMobile ? this.contentHeight * 0.5 : this.contentHeight * 0.8
+      const maxHeight = this.device.isMobile ? this.contentHeight * 0.6 : this.contentHeight * 0.9
       return { maxHeight: maxHeight + 'px', overflow: 'auto' }
     }
   },
   watch: {
-    // 响应默认值的改变
+    // 响应默认值的改变，immediate防止数据不更新
     defaultSelectedKeys: {
+      immediate: true,
       deep: true,
       handler (newValue) {
-        this.selectedKeys = [...newValue]
+        this.selectedKeys = [...(newValue || [])]
       }
     },
-    // 响应默认值的改变
+    // 响应默认值的改变，immediate防止数据不更新
     defaultCheckedKeys: {
+      immediate: true,
       deep: true,
       handler (newValue) {
-        this.checkedKeys = [...newValue]
+        this.checkedKeys = [...(newValue || [])]
       }
     },
     // 监听tree的值变化，设置展开

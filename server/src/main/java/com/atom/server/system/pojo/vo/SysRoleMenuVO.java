@@ -27,17 +27,23 @@ public class SysRoleMenuVO extends AbsEntity {
 	private String roleName;
 	@ApiModelProperty("选中的菜单keys")
 	private Set<Integer> checkedMenus;
-	@ApiModelProperty("权限的菜单及资源VO")
-	private List<SysMenuActionVO> sysMenuActionList;
+	@ApiModelProperty("权限菜单VO")
+	private List<SysMenuVO> sysMenuList;
+	@ApiModelProperty("选中的资源keys")
+	private Set<Integer> checkedActions;
+	@ApiModelProperty("权限资源VO")
+	private List<SysActionTopicVO> sysActionTopicList;
 
 	public static class VOConverter extends Converter<SysRoleMenuVO, SysRole> {
 
-		public SysRoleMenuVO doForward(SysRole sysRole, List<SysMenuActionVO> sysMenuActionVOList, Set<Integer> menuSet) {
+		public SysRoleMenuVO doForward(SysRole sysRole, Set<Integer> menuSet, List<SysMenuVO> sysMenuVOList, Set<Integer> actionSet, List<SysActionTopicVO> sysActionTopicVOList) {
 			SysRoleMenuVO sysRoleMenuVO = new SysRoleMenuVO();
 			sysRoleMenuVO.setId(sysRole.getId());
 			sysRoleMenuVO.setRoleName(sysRole.getRoleName());
 			sysRoleMenuVO.setCheckedMenus(menuSet);
-			sysRoleMenuVO.setSysMenuActionList(sysMenuActionVOList);
+			sysRoleMenuVO.setSysMenuList(sysMenuVOList);
+			sysRoleMenuVO.setCheckedActions(actionSet);
+			sysRoleMenuVO.setSysActionTopicList(sysActionTopicVOList);
 			return sysRoleMenuVO;
 		}
 	}

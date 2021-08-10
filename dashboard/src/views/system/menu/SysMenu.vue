@@ -164,7 +164,7 @@ export default {
       this.loading = true
       this.$refs.menuForm.validate().then(() => {
         // 新增或者编辑的数据提交
-        this.$api.system.dept.update(sysMenu).then(() => {
+        this.$api.system.menu.update(sysMenu).then(() => {
           this.$message.success('系统菜单信息更新成功！')
           this.loadSysMenuTree()
         }).finally(() => { this.loading = false })
@@ -174,6 +174,8 @@ export default {
   created () {
     // 加载菜单树数据
     this.loadSysMenuTree()
+    // 加载资源主题数据
+    this.loadActionTopicList()
   }
 }
 </script>

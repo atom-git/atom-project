@@ -4,7 +4,7 @@
               v-model:visible="dropdown"
               overlayClassName="atom-icon-picker"
               :getPopupContainer="getPopupContainer">
-    <a-input :value="selectedIcon" :size="size" allowClear>
+    <a-input v-model:value="selectedIcon" :size="size" allowClear>
       <template #prefix>
         <IconFont :type="selectedIcon || 'QuestionCircleOutlined'"/>
       </template>
@@ -47,7 +47,7 @@ export default {
     return {
       // 是否dropdown
       dropdown: false,
-      // 下拉菜单的宽度
+      // 下拉菜单的容器
       popupContainer: null,
       // icon选择类型面板
       tabList: [
@@ -64,7 +64,7 @@ export default {
       // 图标集
       icons,
       // 选中的图标，默认情况展示
-      selectedIcon: 'QuestionCircleOutlined',
+      selectedIcon: '',
       // 计算下拉菜单宽度
       dropdownWidth: '100%'
     }
@@ -73,6 +73,11 @@ export default {
     // 监听外部的值变化
     modelValue (newValue) {
       this.selectedIcon = newValue
+    },
+    // 监听选中值的值变化
+    selectedIcon (newValue) {
+      this.$emit('update:modelValue', newValue)
+      this.$emit('change', newValue)
     }
   },
   mounted () {
@@ -95,8 +100,6 @@ export default {
     // 响应图标的选中
     handleIconSelect (icon) {
       this.selectedIcon = icon
-      this.$emit('update:modelValue', icon)
-      this.$emit('change', icon)
       this.dropdown = false
     }
   }

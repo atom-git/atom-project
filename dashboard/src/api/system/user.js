@@ -63,7 +63,7 @@ export default class user {
   static update (sysUser) {
     return axios({
       url: '/system/user/update',
-      method: Default.HTTP_METHOD_POST,
+      method: Default.HTTP_METHOD_PUT,
       data: sysUser
     })
   }

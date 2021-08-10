@@ -59,7 +59,11 @@ public class SysActionVO extends AbsEntity {
 		public SysActionVO doForward(SysAction sysAction, Set<Integer> actionSet) {
 			SysActionVO sysActionVO = new SysActionVO();
 			BeanUtils.copyProperties(sysAction, sysActionVO);
-			sysActionVO.setChecked(actionSet.contains(sysActionVO.getId()) || sysActionVO.getGrantType().equals(GrantType.AUTO.getCode()));
+			// 如果是自动赋权，则增加至actionSet
+			if (sysActionVO.getGrantType().equals(GrantType.AUTO.getCode())) {
+				actionSet.add(sysActionVO.getId());
+			}
+			sysActionVO.setChecked(actionSet.contains(sysActionVO.getId()));
 			return sysActionVO;
 		}
 	}

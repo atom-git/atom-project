@@ -8,10 +8,7 @@ import com.atom.server.system.dao.*;
 import com.atom.server.system.entity.*;
 import com.atom.server.system.pojo.dto.SysPermissionDTO;
 import com.atom.server.system.pojo.dto.SysRoleDTO;
-import com.atom.server.system.pojo.vo.SysActionTopicVO;
-import com.atom.server.system.pojo.vo.SysMenuActionVO;
-import com.atom.server.system.pojo.vo.SysRoleMenuVO;
-import com.atom.server.system.pojo.vo.SysRoleVO;
+import com.atom.server.system.pojo.vo.*;
 import com.atom.server.system.service.ISysRoleService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -80,6 +77,11 @@ public class SysRoleService implements ISysRoleService {
 	private final SysRoleVO.VOConverter sysRoleVOConverter = new SysRoleVO.VOConverter();
 
 	/**
+	 * 系统菜单VO转换器
+	 */
+	private final SysMenuVO.VOConverter sysMenuVOConverter = new SysMenuVO.VOConverter();
+
+	/**
 	 * 系统角色DTO转换器
 	 */
 	private final SysRoleDTO.DTOConverter sysRoleDTOConverter = new SysRoleDTO.DTOConverter();
@@ -88,11 +90,6 @@ public class SysRoleService implements ISysRoleService {
 	 * 系统资源VO转换器
 	 */
 	private final SysActionTopicVO.VOConverter sysActionTopicVOConverter = new SysActionTopicVO.VOConverter();
-
-	/**
-	 * 系统菜单资源VO转换器
-	 */
-	private final SysMenuActionVO.VOConverter sysMenuActionVOConverter = new SysMenuActionVO.VOConverter();
 
 	/**
 	 * 系统角色菜单资源VO转换器
@@ -164,6 +161,8 @@ public class SysRoleService implements ISysRoleService {
 		}
 		// 查询有效的菜单列表
 		List<SysMenu> sysMenuList = sysMenuDao.findAll();
+		// 转换为SysMenuVO列表
+		List<SysMenuVO> sysMenuVOList = sysMenuList.stream().map(sysMenuVOConverter::doForward).collect(Collectors.toList());
 		// 查询角色拥有的菜单列表
 		List<SysRoleMenu> sysRoleMenuList = sysRoleMenuDao.findAllByField("roleId", roleId);
 		// 转变成选中的menu的列表
@@ -180,18 +179,7 @@ public class SysRoleService implements ISysRoleService {
 		List<SysActionTopicVO> sysActionTopicVOList = sysActionTopicList.stream()
 				.map(sysActionTopic -> sysActionTopicVOConverter.doForward(sysActionTopic, actionSet))
 				.collect(Collectors.toList());
-
-		// 查询菜单动作主题列表
-		List<SysMenuTopic> sysMenuTopicList = sysMenuTopicDao.findAll();
-		// 循环遍历生成VO
-		if (sysMenuList != null && sysMenuList.size() > 0) {
-			List<SysMenuActionVO> sysMenuActionVOList = sysMenuList.stream()
-					.map(sysMenu -> sysMenuActionVOConverter.doForward(sysMenu, sysMenuTopicList, sysActionTopicVOList))
-					.collect(Collectors.toList());
-			return sysRoleMenuVOConverter.doForward(sysRole, sysMenuActionVOList, menuSet);
-		} else {
-			return null;
-		}
+		return sysRoleMenuVOConverter.doForward(sysRole, menuSet, sysMenuVOList, actionSet, sysActionTopicVOList);
 	}
 
 	/**
