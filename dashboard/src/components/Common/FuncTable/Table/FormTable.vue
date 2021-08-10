@@ -271,7 +271,7 @@ export default {
         this.$emit('table-func-action', action)
       } else {
         if (action.name === this.$default.ACTION_ADD.name) {
-          this.dataFormType = this.$default.ACTION_ADD.name
+          this.formType = this.$default.ACTION_ADD.name
           this.formVisible = true
         } else if (action.name === this.$default.ACTION_REFRESH.name || action.name === this.$default.ACTION_DOWNLOAD.name) {
           this.$emit('table-func-action', action)

@@ -90,9 +90,11 @@ export default {
     },
     // 外部传入值的改变
     modelValue: {
+      immediate: true,
       handler (newValue) {
         this.model = newValue
-      }
+      },
+      deep: true
     }
   },
   emits: ['update:modelValue', 'submit'],

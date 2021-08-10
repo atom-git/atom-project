@@ -91,7 +91,8 @@ export default {
     modelValue: {
       handler (newValue) {
         this.model = newValue
-      }
+      },
+      deep: true
     },
     // 监听外部visible变化
     visible (newValue) {
