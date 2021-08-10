@@ -117,7 +117,7 @@ export default {
       const md = { span: this.colSpan.md }
       const xl = { span: this.colSpan.xl }
       if (this.fields.length < this.maxCollapsed) {
-        xl.offset = (this.maxCollapsed - this.fields.length) * this.colSpan.md
+        xl.offset = (this.maxCollapsed - this.fields.length) * this.colSpan.xl
       } else if (this.fields.length === this.maxCollapsed) {
         md.offset = this.colSpan.md
         xl.offset = (this.maxCollapsed - this.fields.length) * this.colSpan.xl

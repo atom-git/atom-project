@@ -30,6 +30,8 @@ export default {
     return {
       // 表单处理类型
       formType: 'add',
+      // 新增默认的表单值
+      defaultModel: {},
       // 编辑form表单的值
       formModel: {},
       // 新增表单字段
@@ -61,6 +63,9 @@ export default {
         const addField = {}
         this.generateColumnForm(column, column.form, column.form.add, addField)
         this.addFields.push(addField)
+        if (this.$utils.isValid(addField.default)) {
+          this.defaultModel[addField.name] = addField.default
+        }
         if (addField.slot) {
           this.addSlots.push(addField.slot)
         }

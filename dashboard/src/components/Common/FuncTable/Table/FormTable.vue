@@ -207,6 +207,7 @@ export default {
       this.editFields = []
       this.addSlots = []
       this.editSlots = []
+      this.defaultModel = {}
       // 初始化列的form属性
       this.initColumns(columns)
     },
@@ -272,6 +273,7 @@ export default {
       } else {
         if (action.name === this.$default.ACTION_ADD.name) {
           this.formType = this.$default.ACTION_ADD.name
+          this.formModel = this.$utils.deepClone(this.defaultModel)
           this.formVisible = true
         } else if (action.name === this.$default.ACTION_REFRESH.name || action.name === this.$default.ACTION_DOWNLOAD.name) {
           this.$emit('table-func-action', action)

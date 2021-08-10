@@ -79,6 +79,7 @@
                  :value="modelValue"
                  @change="handleRadioChange"
                  :name="renderField.name"
+                 :buttonStyle="renderField.buttonStyle"
                  :disabled="renderField.disabled">
     <template v-if="renderField.mode === 'button'">
       <a-radio-button v-for="option in renderField.options"

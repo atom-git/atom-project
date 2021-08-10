@@ -112,7 +112,6 @@ export default {
         })
       }
       this.model = Object.assign(model, this.modelValue)
-      this.$emit('update:modelValue', this.model)
     },
     // 表单数据提交
     submitForm () {
