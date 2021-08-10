@@ -97,7 +97,7 @@ export default {
       deep: true
     }
   },
-  emits: ['update:modelValue', 'submit'],
+  emits: ['update:modelValue', 'submit', 'reset'],
   methods: {
     // 表单值初始化，默认值仅通过fields传入
     initModel (fields) {
@@ -206,6 +206,7 @@ export default {
     // 重置表单
     resetForm () {
       this.$refs.funcForm.resetFields()
+      this.$emit('reset', this.model)
     },
     // 暴露validate方法
     validate () {
