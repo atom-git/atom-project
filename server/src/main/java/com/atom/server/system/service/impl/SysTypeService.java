@@ -14,6 +14,7 @@ import com.atom.server.system.entity.SysTypeCode;
 import com.atom.server.system.pojo.dto.SysTypeCodeDTO;
 import com.atom.server.system.pojo.dto.SysTypeDTO;
 import com.atom.server.system.pojo.filter.SysTypeCodeFilter;
+import com.atom.server.system.pojo.filter.SysTypeFilter;
 import com.atom.server.system.pojo.vo.SysTypeCodeVO;
 import com.atom.server.system.pojo.vo.SysTypeVO;
 import com.atom.server.system.service.ISysTypeService;
@@ -23,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -53,6 +54,11 @@ public class SysTypeService implements ISysTypeService {
 	private final SysTypeVO.VOConverter sysTypeVOConverter = new SysTypeVO.VOConverter();
 
 	/**
+	 * 系统数据字典类型Filter转换器
+	 */
+	private final SysTypeFilter.FilterConverter sysTypeFilterConverter = new SysTypeFilter.FilterConverter();
+
+	/**
 	 * 系统数据字典类型VO转换器
 	 */
 	private final SysTypeCodeVO.VOConverter sysTypeCodeVOConverter = new SysTypeCodeVO.VOConverter();
@@ -63,39 +69,47 @@ public class SysTypeService implements ISysTypeService {
 	private final SysTypeDTO.DTOConverter sysTypeDTOConverter = new SysTypeDTO.DTOConverter();
 
 	/**
-	 * 系统数据字典DTO转换器
+	 * 系统数据字典维值DTO转换器
 	 */
 	private final SysTypeCodeDTO.DTOConverter sysTypeCodeDTOConverter = new SysTypeCodeDTO.DTOConverter();
 
 	/**
-	 * 系统数据字典类型Filter转换器
+	 * 系统数据字典维值Filter转换器
 	 */
 	private final SysTypeCodeFilter.FilterConverter sysTypeCodeFilterConverter = new SysTypeCodeFilter.FilterConverter();
 
 	/**
 	 * 查询数据字典的列表
+	 * @param sysTypeFilter 数字字典过滤器
 	 * @param pageData 分页信息
 	 * @param response 响应
 	 * @return 返回列表
 	 */
 	@Override
-	public TableData<SysTypeVO> list(PageData pageData, HttpServletResponse response) {
-		// 如果是下载，则下载整个数据字典，否则只按照分页查询类型
+	public TableData<SysTypeVO> list(SysTypeFilter sysTypeFilter, PageData pageData, HttpServletResponse response) {
+		// 转换为查询对象
+		DetachedCriteria dc = sysTypeFilterConverter.doForward(sysTypeFilter);
+		// 查询列表
+		List<SysType> sysTypeList = sysTypeDao.findPage(dc, pageData);
+		long totalCnt = 0;
+
+		// 如果是下载，则下载整个数据字典，生成excel
 		if (pageData.getDownload()) {
-			// 查询列表
-			List<SysTypeCode> sysTypeCodeList = sysTypeCodeDao.download(pageData.isAllRecord());
-			// 查询记录数
-			long totalCnt = sysTypeCodeDao.count();
-			// TODO 转换类型时加上父级信息
-			List<SysTypeCodeVO> sysTypeVOList = sysTypeCodeList.stream().map(sysTypeCodeVOConverter::doForward).collect(Collectors.toList());
-			FileUtil.downlodExcel("系统数据字典", SysTypeCodeVO.class, sysTypeVOList, totalCnt, response);
+			// 生成sysType的范围
+			if (Validator.isNotNull(sysTypeList) && sysTypeList.size() > 0) {
+				Set<Integer> sysTypeSet = new HashSet<>();
+				sysTypeList.forEach(sysType -> sysTypeSet.add(sysType.getId()));
+				List<SysTypeCode> sysTypeCodeList = sysTypeCodeDao.findByType(pageData, sysTypeSet.toArray());
+				// 查询记录数
+				totalCnt = sysTypeCodeDao.countByType(sysTypeSet.toArray());
+				List<SysTypeCodeVO> sysTypeVOList = sysTypeCodeList.stream().map(sysTypeCodeVOConverter::doForward).collect(Collectors.toList());
+				FileUtil.downlodExcel("系统数据字典", SysTypeCodeVO.class, sysTypeVOList, totalCnt, response);
+			}
 			return new TableData<>(pageData, totalCnt);
 		} else {
-			// 查询列表
-			List<SysType> sysTypeList = sysTypeDao.findPage(pageData);
 			List<SysTypeVO> sysTypeVOList = sysTypeList.stream().map(sysTypeVOConverter::doForward).collect(Collectors.toList());
 			// 查询记录数
-			long totalCnt = sysTypeDao.count();
+			totalCnt = sysTypeDao.countByDC(dc);
 			return new TableData<>(pageData, sysTypeVOList, totalCnt);
 		}
 	}

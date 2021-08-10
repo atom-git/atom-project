@@ -1,7 +1,10 @@
 package com.atom.server.system.dao;
 
 import com.atom.common.dao.IDao;
+import com.atom.common.pojo.table.PageData;
 import com.atom.server.system.entity.SysTypeCode;
+
+import java.util.List;
 
 /**
  * @author zr
@@ -9,5 +12,9 @@ import com.atom.server.system.entity.SysTypeCode;
  * @date 2021/4/22
  */
 public interface ISysTypeCodeDao extends IDao<SysTypeCode> {
+	List<SysTypeCode> findByType(PageData pageData, Object... sysTypeIds);
+
+	long countByType(Object... sysTypeIds);
+
 	boolean ifExist(SysTypeCode sysTypeCode);
 }

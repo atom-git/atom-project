@@ -48,7 +48,7 @@ public class PageData extends AbsEntity {
 	 * 是否全部记录
 	 */
 	@ApiModelProperty("是否全部记录")
-	private boolean allRecord;
+	private boolean allRecord = false;
 
 	/**
 	 * 总记录数

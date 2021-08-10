@@ -5,6 +5,7 @@ import com.atom.common.pojo.table.TableData;
 import com.atom.server.system.pojo.dto.SysTypeCodeDTO;
 import com.atom.server.system.pojo.dto.SysTypeDTO;
 import com.atom.server.system.pojo.filter.SysTypeCodeFilter;
+import com.atom.server.system.pojo.filter.SysTypeFilter;
 import com.atom.server.system.pojo.vo.SysTypeCodeVO;
 import com.atom.server.system.pojo.vo.SysTypeVO;
 
@@ -18,7 +19,7 @@ import java.util.List;
  */
 public interface ISysTypeService {
 
-	TableData<SysTypeVO> list(PageData pageData, HttpServletResponse response);
+	TableData<SysTypeVO> list(SysTypeFilter sysTypeFilter, PageData pageData, HttpServletResponse response);
 
 	void saveOrUpdate(SysTypeDTO sysTypeDTO);
 

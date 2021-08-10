@@ -9,6 +9,7 @@ import com.atom.common.pojo.table.TableData;
 import com.atom.server.system.pojo.dto.SysTypeCodeDTO;
 import com.atom.server.system.pojo.dto.SysTypeDTO;
 import com.atom.server.system.pojo.filter.SysTypeCodeFilter;
+import com.atom.server.system.pojo.filter.SysTypeFilter;
 import com.atom.server.system.pojo.vo.SysTypeCodeVO;
 import com.atom.server.system.pojo.vo.SysTypeVO;
 import com.atom.server.system.service.ISysTypeService;
@@ -41,6 +42,7 @@ public class SysTypeController {
 
 	/**
 	 * 查询数据字典的列表
+	 * @param sysTypeFilter 数字字典过滤器
 	 * @param pageData 分页信息
 	 * @param response 响应
 	 * @return 返回列表
@@ -48,8 +50,8 @@ public class SysTypeController {
 	@GetMapping("list")
 	@ApiOperation("查询数据字典的列表")
 	@Permission(actionType = ActionType.Q, grantType = GrantType.AUTO)
-	public RestResponse<TableData<SysTypeVO>> list(PageData pageData, HttpServletResponse response) {
-		TableData<SysTypeVO> tableData = sysTypeService.list(pageData, response);
+	public RestResponse<TableData<SysTypeVO>> list(SysTypeFilter sysTypeFilter, PageData pageData, HttpServletResponse response) {
+		TableData<SysTypeVO> tableData = sysTypeService.list(sysTypeFilter, pageData, response);
 		return RestResponse.success(tableData);
 	}
 

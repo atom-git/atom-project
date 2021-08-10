@@ -689,8 +689,8 @@ public abstract class AbsDao<T> implements IDao<T> {
 	public List<T> findPage(DetachedCriteria dc, PageData pageData) {
 		if (dc == null)
 			return new ArrayList<>();
-		if (pageData.isAllRecord()) {
-			return this.findByDC(dc);
+		if (pageData.getDownload()) {
+			return this.download(dc, pageData.isAllRecord());
 		} else {
 			int minResult = pageData.getStartIndex();
 			int maxResult = pageData.getPageSize();
