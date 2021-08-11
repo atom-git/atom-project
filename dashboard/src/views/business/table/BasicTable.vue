@@ -1,5 +1,9 @@
 <template>
-  <FormatTable title="FormatTable" :columns="columns" :funcZone="funcZone" :dataSource="dataSource"></FormatTable>
+  <FormatTable title="FormatTable" :columns="columns" :funcZone="funcZone" :dataSource="dataSource">
+    <template #head>
+      <a-avatar><template #icon><IconFont type="UserOutlined"/></template></a-avatar>
+    </template>
+  </FormatTable>
   <FormTable title="FormTable" :columns="columns" :funcZone="funcZone" :dataSource="dataSource"></FormTable>
 </template>
 
@@ -29,7 +33,8 @@ export default {
             {
               dataIndex: 'head',
               title: '头像',
-              format: 'formatAvatar'
+              format: 'formatAvatar',
+              // slots: { customRender: 'head' }
             },
             {
               type: 'input',

@@ -27,6 +27,7 @@
  */
 import Dialog from '@/components/Common/Dialog'
 import { FormList } from '@/components/Common/FuncForm'
+import Default from '@/config/default'
 export default {
   name: 'UpdateForm',
   components: {
@@ -47,7 +48,7 @@ export default {
     // 弹窗宽度大小
     width: {
       type: Number,
-      default: 720
+      default: Default.dialogSize
     },
     // 确认后的loading
     loading: {

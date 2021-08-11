@@ -75,6 +75,8 @@ import UpdateForm from '@/components/Common/FuncTable/Render/UpdateForm'
 import filter from '@/components/Common/FuncTable/mixins/filter'
 import update from '@/components/Common/FuncTable/mixins/update'
 import upload from '@/components/Common/FuncTable/mixins/upload'
+import { createVNode } from 'vue'
+import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
 export default {
   name: 'FormTable',
   components: {
@@ -301,8 +303,10 @@ export default {
           action.replaceFields = Object.assign({ id: 'id', name: 'name' }, column.form ? column.form.replaceFields || {} : {})
           const self = this
           action.messageTitle = this.tableTitle.concat('【', row[action.replaceFields.name], '】')
-          this.$confirm({
-            content: '确认要删除'.concat(action.messageTitle, '吗？'),
+          this.$modal.$confirm({
+            icon: createVNode(ExclamationCircleOutlined),
+            okType: 'danger',
+            content: `确认要删除${action.messageTitle}吗？`,
             onOk () {
               self.$emit('table-row-action', action, row, column)
             }

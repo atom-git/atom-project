@@ -1,8 +1,11 @@
 <template>
+  <!-- 数据字典列表 -->
   <FuncTable :apiUrl="apiUrl"
              :columns="columns"
              :funcZone="funcZone"
              @table-row-action="handleRowAction"></FuncTable>
+  <!-- 系统维值列表 -->
+  <SysTypeCode v-model="visible" :sysType="sysType"></SysTypeCode>
 </template>
 
 <script>
@@ -10,9 +13,10 @@
  * 数据字典管理
  */
 import { FuncTable } from '@/components/Common/FuncTable'
+import SysTypeCode from './SysTypeCode'
 export default {
   name: 'SysType',
-  components: { FuncTable },
+  components: { FuncTable, SysTypeCode },
   data () {
     return {
       // 请求url
@@ -46,7 +50,7 @@ export default {
             { title: '配置', name: 'setting' },
             { title: '删除', name: 'delete', apiUrl: '/system/type/delete' }
           ],
-          form: { replaceFields: { name: 'typeMeanName' } }
+          form: { replaceFields: { name: 'meanName' } }
         }
       ],
       // 功能按钮区域
@@ -60,13 +64,19 @@ export default {
       // 类型的数据字典列表
       sysTypeCodeList: [],
       // 请求loading
-      loading: false
+      loading: false,
+      // dialog是否显示
+      visible: false
     }
   },
   methods: {
     // 响应行级操作按钮
     handleRowAction (action, row) {
-      console.log(action, row)
+      this.sysType = row
+      // 配置系统维值
+      if (action.name === 'setting') {
+        this.visible = true
+      }
     }
   }
 }

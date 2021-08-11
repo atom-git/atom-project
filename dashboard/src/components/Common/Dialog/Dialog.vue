@@ -29,7 +29,7 @@
     <div class="atom-dialog-content">
       <slot></slot>
     </div>
-    <div class="atom-dialog-footer">
+    <div class="atom-dialog-footer" v-if="footer !== null || Object.keys($slots).includes('footer')">
       <!-- 如果外部有传入footer，则使用外部传入slot，否则根据footer属性判断 -->
       <template v-if="Object.keys($slots).includes('footer')">
         <slot name="footer"></slot>

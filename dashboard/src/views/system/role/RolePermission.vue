@@ -19,6 +19,7 @@
                             :header="sysActionTopic.name">
             <FormatTable :columns="actionColumns"
                          :dataSource="sysActionTopic['sysActionList']"
+                         :pagination="false"
                          :rowSelection="initRowSelection(index)"></FormatTable>
           </a-collapse-panel>
         </a-collapse>
