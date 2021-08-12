@@ -61,7 +61,14 @@ export default {
     },
     // 右侧span
     rightSpan () {
-      return { xs: 24 - this.leftSpan.xs, sm: 24 - this.leftSpan.sm, md: 24 - this.leftSpan.md, lg: 24 - this.leftSpan.lg, xl: 24 - this.leftSpan.xl, xxl: 24 - this.leftSpan.xxl }
+      return {
+        xs: (24 - this.leftSpan.xs) || 24,
+        sm: (24 - this.leftSpan.sm) || 24,
+        md: (24 - this.leftSpan.md) || 24,
+        lg: (24 - this.leftSpan.lg) || 24,
+        xl: (24 - this.leftSpan.xl) || 24,
+        xxl: (24 - this.leftSpan.xxl) || 24
+      }
     }
   }
 }

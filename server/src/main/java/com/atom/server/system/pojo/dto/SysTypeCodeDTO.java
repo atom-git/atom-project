@@ -32,6 +32,8 @@ public class SysTypeCodeDTO extends AbsEntity {
 	private String typeDesc;
 	@ApiModelProperty("类型父级编码，可以为空")
 	private Integer parentId;
+	@ApiModelProperty("类型内排序")
+	private Integer typeOrder;
 	@NotNull
 	@ApiModelProperty("字典编号ID")
 	private Integer meanId;

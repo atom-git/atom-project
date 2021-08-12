@@ -186,7 +186,7 @@ public class SysTypeService implements ISysTypeService {
 	 * @param sysTypeCodeDTO 字典数据
 	 */
 	@Override
-	public void saveOrUpdateCode(Integer meanId, SysTypeCodeDTO sysTypeCodeDTO) {
+	public SysTypeCodeVO saveOrUpdateCode(Integer meanId, SysTypeCodeDTO sysTypeCodeDTO) {
 		// 先判断字典类型是否存在
 		SysType sysType = sysTypeDao.findOne(meanId);
 		if (Validator.isNull(sysType)) {
@@ -205,6 +205,7 @@ public class SysTypeService implements ISysTypeService {
 			originTypeCode.setMeanId(meanId);
 			originTypeCode.setTypeOrder(sysTypeCode.getTypeOrder());
 			sysTypeCodeDao.update(originTypeCode);
+			return sysTypeCodeVOConverter.doForward(originTypeCode);
 		} else {
 			// 新增判断类型名称是否重复
 			if (sysTypeCodeDao.ifExist(sysTypeCode)) {
@@ -212,6 +213,8 @@ public class SysTypeService implements ISysTypeService {
 			}
 			sysTypeCode.setMeanId(meanId);
 			sysTypeCodeDao.save(sysTypeCode);
+			sysTypeCode.setSysType(sysType);
+			return sysTypeCodeVOConverter.doForward(sysTypeCode);
 		}
 	}
 

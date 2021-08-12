@@ -22,7 +22,7 @@
     <div :style="treeStyle">
       <a-spin :spinning="loading" v-if="loading || tree">
         <!-- 这里用v-if的原因是让第一级能够自动展开 -->
-        <a-tree v-if="tree"
+        <a-tree v-if="$utils.isValid(tree)"
                 :treeData="tree"
                 :replaceFields="replaceFields"
                 :blockNode="true"
@@ -50,8 +50,8 @@
             </a-dropdown>
           </template>
         </a-tree>
+        <a-empty v-else/>
       </a-spin>
-      <a-empty v-else/>
     </div>
   </a-card>
 </template>
@@ -131,6 +131,11 @@ export default {
     statusOptions: {
       type: Array,
       default: () => ([{ status: 'processing', value: 1 }, { status: 'warning', value: 0 }])
+    },
+    // 树结构的最大高度，可以设置为50%，或者500，数字时为像素，否则为高度百分比
+    maxHeight: {
+      type: [Number, String],
+      required: false
     }
   },
   data () {
@@ -160,7 +165,8 @@ export default {
     },
     // 树的最大高度，PC端，平板端是总高度的80%，手机端是50%
     treeStyle () {
-      const maxHeight = this.device.isMobile ? this.contentHeight * 0.6 : this.contentHeight * 0.9
+      let maxHeight = Number.isInteger(this.maxHeight) ? this.maxHeight : this.contentHeight * Number.parseInt(this.maxHeight)/100
+      maxHeight = maxHeight || (this.device.isMobile ? this.contentHeight * 0.6 : this.contentHeight * 0.9)
       return { maxHeight: maxHeight + 'px', overflow: 'auto' }
     }
   },

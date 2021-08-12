@@ -120,7 +120,7 @@ export default {
     handleAction (action, treeNode) {
       if (action === this.$default.ACTION_ADD.name) {
         // 新增时，重置右侧表单
-        this.formAction = this.$default.ACTION_ADD.name
+        this.formAction = this.$default.ACTION_ADD
         // 根据当前菜单的子集的order最大值，设置order默认值
         const children = treeNode.children
         let menuOrder = 1
@@ -154,9 +154,7 @@ export default {
           this.sysMenu = sysMenu
           this.$message.success('系统菜单顺序更新成功！')
           this.loadSysMenuTree()
-        }).finally(() => {
-          this.loading = false
-        })
+        }).finally(() => { this.loading = false })
       }
     },
     // 响应数据编辑提交

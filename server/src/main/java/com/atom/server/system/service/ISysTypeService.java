@@ -29,7 +29,7 @@ public interface ISysTypeService {
 
 	List<SysTypeCodeVO> codeTree(SysTypeCodeFilter sysTypeCodeFilter);
 
-	void saveOrUpdateCode(Integer meanId, SysTypeCodeDTO sysTypeCodeDTO);
+	SysTypeCodeVO saveOrUpdateCode(Integer meanId, SysTypeCodeDTO sysTypeCodeDTO);
 
 	void deleteCode(Integer codeId);
 

@@ -180,7 +180,7 @@ export default {
       if (action.name === 'reset') {
         const self = this
         this.$modal.$confirm({
-          content: '确认要重置用户【'.concat(row.name, '】的密码吗？'),
+          content: `确认要重置用户【${row.name}的密码吗？`,
           icon: createVNode(ExclamationCircleOutlined),
           confirmLoading: self.loading,
           onOk () {

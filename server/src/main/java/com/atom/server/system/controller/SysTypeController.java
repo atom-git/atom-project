@@ -103,8 +103,8 @@ public class SysTypeController {
 	@ApiOperation("查询数据字典树")
 	@Permission(actionType = ActionType.Q, grantType = GrantType.AUTO)
 	public RestResponse<List<SysTypeCodeVO>> codeTree(SysTypeCodeFilter sysTypeCodeFilter) {
-		List<SysTypeCodeVO> sysTypeCodeVOList = sysTypeService.codeTree(sysTypeCodeFilter);
-		return RestResponse.success(sysTypeCodeVOList);
+		List<SysTypeCodeVO> sysTypeCodeVOTree = sysTypeService.codeTree(sysTypeCodeFilter);
+		return RestResponse.success(sysTypeCodeVOTree);
 	}
 
 	/**
@@ -113,12 +113,11 @@ public class SysTypeController {
 	 * @param sysTypeCodeDTO 字典数据
 	 * @return 返回是否更新成功
 	 */
-	@PostMapping("{meanId}/code/update")
+	@PutMapping("{meanId}/code/update")
 	@ApiOperation(("新增或者编辑数据字典"))
 	@Permission(actionType = {ActionType.N, ActionType.E}, grantType = GrantType.MANUAL)
-	public RestResponse<?> updateCode(@PathVariable Integer meanId, @RequestBody SysTypeCodeDTO sysTypeCodeDTO) {
-		sysTypeService.saveOrUpdateCode(meanId, sysTypeCodeDTO);
-		return RestResponse.success();
+	public RestResponse<SysTypeCodeVO> updateCode(@PathVariable Integer meanId, @RequestBody SysTypeCodeDTO sysTypeCodeDTO) {
+		return RestResponse.success(sysTypeService.saveOrUpdateCode(meanId, sysTypeCodeDTO));
 	}
 
 	/**
