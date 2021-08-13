@@ -15,7 +15,7 @@
                     :accordion="true"
                     :bordered="false">
           <a-collapse-panel v-for="(sysActionTopic, index) in sysActionTopicList"
-                            :key="index + ''"
+                            :key="index"
                             :header="sysActionTopic.name">
             <FormatTable :columns="actionColumns"
                          :dataSource="sysActionTopic['sysActionList']"
@@ -60,7 +60,7 @@ export default {
         { dataIndex: 'grantType', title: '授权类型', format: 'formatStatus', options: [{ value: 0, title: '手动', status: 'warning' }, { value: 1, title: '自动', status: 'processing' }] }
       ],
       // 折叠面板的激活key，默认激活所有
-      activeKey: ['0'],
+      activeKey: [0],
       // 选中的权限
       sysPermission: {
         menusSet: [],

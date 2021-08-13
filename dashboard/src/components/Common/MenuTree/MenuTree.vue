@@ -27,12 +27,19 @@
                 :replaceFields="replaceFields"
                 :blockNode="true"
                 :checkable="checkable"
+                :draggable="draggable"
                 v-model:expandedKeys="expandedKeys"
                 v-model:checkedKeys="checkedKeys"
                 :selectedKeys="selectedKeys"
                 :showLine="true"
                 @select="handleTreeSelect"
-                @check="handleTreeCheck">
+                @check="handleTreeCheck"
+                @dragstart="handleDragStart"
+                @dragenter="handleDragEnter"
+                @dragover="handleDragOver"
+                @dragleave="handleDragLeave"
+                @dragend="handleDragEnd"
+                @drop="handleDragDrop">
           <template v-for="slot in slots" #[slot.name]>
             {{ slot.node[replaceFields.title] }}
             <a-badge v-if="slot.node[replaceFields.status] !== undefined && slot.node[replaceFields.status] !== null"
@@ -71,6 +78,11 @@ export default {
     tree: {
       type: Array,
       required: true
+    },
+    // 树结构是否可拖拽
+    draggable: {
+      type: Boolean,
+      default: false
     },
     // key值的字段名
     replaceKeys: {
@@ -197,7 +209,8 @@ export default {
       }
     }
   },
-  emits: ['tree-node-action', 'tree-search-select', 'tree-select', 'tree-check'],
+  emits: ['tree-node-action', 'tree-search-select', 'tree-select', 'tree-check',
+    'tree-drag-start', 'tree-drag-enter', 'tree-drag-over', 'tree-drag-leave', 'tree-drag-end', 'tree-drag-drop'],
   methods: {
     // 生成默认展示的第一个节点
     initExtendKeys (tree) {
@@ -252,6 +265,30 @@ export default {
     // 响应数据刷新，数据由外部进行控制
     handleRefresh () {
       this.$emit('refresh')
+    },
+    // 开始拖拽，node拖拽的节点
+    handleDragStart ({ event, node }) {
+      this.$emit('tree-drag-start', { event, node })
+    },
+    // 拖拽进入，node拖拽的节点，expandedKeys拖拽进入的可展开的key
+    handleDragEnter ({ event, node, expandedKeys }) {
+      this.$emit('tree-drag-enter', { event, node, expandedKeys })
+    },
+    // 拖拽滑过，node拖拽的节点
+    handleDragOver ({ event, node }) {
+      this.$emit('tree-drag-over', { event, node })
+    },
+    // 拖拽离开，node拖拽的节点
+    handleDragLeave ({ event, node }) {
+      this.$emit('tree-drag-leave', { event, node })
+    },
+    // 结束拖拽，node拖拽的节点
+    handleDragEnd ({ event, node }) {
+      this.$emit('tree-drag-end', { event, node })
+    },
+    // 结束拖拽，node结束时节点里或者后面，dragNode拖拽的节点，dragNodesKeys拖拽节点Keys可以直接拖一组，
+    handleDragDrop ({ event, node, dragNode, dragNodesKeys, dropPosition, dropToGap }) {
+      this.$emit('tree-drag-drop', { event, dropNode: node, dragNode, dragNodesKeys, dropPosition, dropToGap })
     }
   }
 }

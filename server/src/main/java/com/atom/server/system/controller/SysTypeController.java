@@ -146,17 +146,4 @@ public class SysTypeController {
 		sysTypeService.exchange(move, sysTypeCodeDTO);
 		return RestResponse.success();
 	}
-
-	/**
-	 * 字典顺序移动交换位置，传入的数据包括当前移动的类型（最重要的是其当前的parent），以及其当前层级的顺序关系
-	 * @param sysTypeCodeDTO 移动的菜单
-	 * @return 返回是否调整成功
-	 */
-	@PostMapping("exchange")
-	@ApiOperation("字典顺序上移或者下移")
-	@Permission(actionType = ActionType.E, grantType = GrantType.MANUAL)
-	public RestResponse<?> exchange(@RequestBody SysTypeCodeDTO sysTypeCodeDTO) {
-		sysTypeService.exchange("", sysTypeCodeDTO);
-		return RestResponse.success();
-	}
 }
