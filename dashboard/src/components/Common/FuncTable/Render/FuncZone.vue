@@ -1,7 +1,7 @@
 <template>
   <div v-if="funcZone" class="atom-table-func">
     <!-- 新增功能按钮 -->
-    <span class="atom-func-btn" v-permission="funcZone.add.permission">
+    <span class="atom-func-btn" v-permission="funcZone.add && funcZone.add.permission">
       <TipButton v-if="funcZone.add"
                  :type="funcZone.add.type || 'primary'"
                  :icon="funcZone.add.icon || Default.ACTION_ADD.icon"

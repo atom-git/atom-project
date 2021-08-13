@@ -33,6 +33,6 @@ public interface ISysTypeService {
 
 	void deleteCode(Integer codeId);
 
-	void exchange(String move, SysTypeCodeDTO sysTypeCodeDTO);
+	SysTypeCodeVO exchange(String move, SysTypeCodeDTO sysTypeCodeDTO);
 
 }

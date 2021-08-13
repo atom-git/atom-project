@@ -2,6 +2,7 @@ package com.atom.server.system.pojo.dto;
 
 import com.atom.common.dao.Converter;
 import com.atom.common.pojo.AbsEntity;
+import com.atom.server.system.entity.SysType;
 import com.atom.server.system.entity.SysTypeCode;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -34,6 +35,8 @@ public class SysTypeCodeDTO extends AbsEntity {
 	private Integer parentId;
 	@ApiModelProperty("类型内排序")
 	private Integer typeOrder;
+	@ApiModelProperty("数据字典")
+	private SysType sysType;
 	@NotNull
 	@ApiModelProperty("字典编号ID")
 	private Integer meanId;

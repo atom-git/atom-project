@@ -238,7 +238,7 @@ public class SysTypeService implements ISysTypeService {
 	 * @param sysTypeCodeDTO 移动的菜单
 	 */
 	@Override
-	public void exchange(String move, SysTypeCodeDTO sysTypeCodeDTO) {
+	public SysTypeCodeVO exchange(String move, SysTypeCodeDTO sysTypeCodeDTO) {
 		// 检查菜单是否存在
 		SysTypeCode sysTypeCode = sysTypeCodeDao.findOne(sysTypeCodeDTO.getId());
 		if (Validator.isNull(sysTypeCode)) {
@@ -280,6 +280,7 @@ public class SysTypeService implements ISysTypeService {
 				sysTypeCodeDao.update(sysTypeCode);
 				sysTypeCodeDao.update(nextTypeCode);
 			}
+			return sysTypeCodeVOConverter.doForward(sysTypeCode);
 		}
 	}
 }

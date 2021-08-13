@@ -142,8 +142,7 @@ public class SysTypeController {
 	@PostMapping("exchange/{move}")
 	@ApiOperation("字典顺序上移或者下移")
 	@Permission(actionType = ActionType.E, grantType = GrantType.MANUAL)
-	public RestResponse<?> exchange(@PathVariable String move, @RequestBody SysTypeCodeDTO sysTypeCodeDTO) {
-		sysTypeService.exchange(move, sysTypeCodeDTO);
-		return RestResponse.success();
+	public RestResponse<SysTypeCodeVO> exchange(@PathVariable String move, @RequestBody SysTypeCodeDTO sysTypeCodeDTO) {
+		return RestResponse.success(sysTypeService.exchange(move, sysTypeCodeDTO));
 	}
 }
