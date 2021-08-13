@@ -17,6 +17,14 @@
         </template>
       </FuncZone>
     </template>
+
+    <!-- 表格顶部提示区域 -->
+    <template v-if="$slots.alert">
+      <slot name="alter"></slot>
+    </template>
+    <a-alert v-if="alert && $utils.isValid(alert.message)"
+             :message="alert.message" :type="alert.type" :closable="alert.closable || false" />
+
     <!-- 表格主体区域 -->
     <a-table v-if="showColumns && showColumns.length > 0"
              v-bind="$attrs"
@@ -131,6 +139,11 @@ export default {
     rowKey: {
       type: [String, Function],
       default: 'id'
+    },
+    // 顶部提示区域
+    alert: {
+      type: Object,
+      required: false
     },
     // 是否加载中
     loading: {

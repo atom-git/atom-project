@@ -4,24 +4,31 @@
                :dataSource="sysTypeCodeList"
                :pagination="false"
                :funcZone="funcZone"
+               :alert="alert"
                :loading="loading"
                @table-func-action="handleFuncAction">
-    <template #typeName="{ text, row }">
-      <a-input v-if="row.editable" v-model:value="row.typeName" :maxLength="20" allowClear>
-        <template #prefix><a-tooltip title="最大长度20"><IconFont type="InfoCircleOutlined"/></a-tooltip></template>
-      </a-input>
-      <template v-else>{{ text }}</template>
-    </template>
-    <template #typeDesc="{ text, row }">
-      <a-input v-if="row.editable" v-model:value="row.typeDesc" :maxLength="50" allowClear>
-        <template #prefix><a-tooltip title="最大长度50"><IconFont type="InfoCircleOutlined"/></a-tooltip></template>
-      </a-input>
-      <template v-else>{{ text }}</template>
-    </template>
-    <template #action="{ row, index }">
-      <TipButtonGroup v-if="row.editable" :actions="saveActions" @click="handleRowAction($event, row, index)"></TipButtonGroup>
-      <TipButtonGroup v-else :actions="editActions" @click="handleRowAction($event, row, index)"></TipButtonGroup>
-    </template>
+      <template #typeName="{ text, row }">
+        <a-input v-if="row.editable" v-model:value="row.typeName" :maxLength="20" allowClear>
+          <template #prefix><a-tooltip title="最大长度20"><IconFont type="InfoCircleOutlined"/></a-tooltip></template>
+        </a-input>
+        <template v-else>{{ text }}</template>
+      </template>
+      <template #typeDesc="{ text, row }">
+        <a-input v-if="row.editable" v-model:value="row.typeDesc" :maxLength="50" allowClear>
+          <template #prefix><a-tooltip title="最大长度50"><IconFont type="InfoCircleOutlined"/></a-tooltip></template>
+        </a-input>
+        <template v-else>{{ text }}</template>
+      </template>
+      <template #typeOrder="{ text, row }">
+        <a-input-number v-if="row.editable" v-model:value="row.typeOrder" allowClear>
+          <template #prefix><a-tooltip title="优先级可自行生成或手动调整"><IconFont type="InfoCircleOutlined"/></a-tooltip></template>
+        </a-input-number>
+        <template v-else>{{ text }}</template>
+      </template>
+      <template #action="{ row, index }">
+        <TipButtonGroup v-if="row.editable" :actions="saveActions" @click="handleRowAction($event, row, index)"></TipButtonGroup>
+        <TipButtonGroup v-else :actions="editActions" @click="handleRowAction($event, row, index)"></TipButtonGroup>
+      </template>
   </FormatTable>
 </template>
 
@@ -31,7 +38,7 @@ import { TipButtonGroup } from '@/components/Common/FuncButton'
 import { createVNode } from 'vue'
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
 // sysTypeCode默认值
-const defaultSysTypeCode = { typeName: '', typeDesc: '', editable: true }
+const defaultSysTypeCode = { typeName: '', typeDesc: '', typeOrder: 1, editable: true }
 export default {
   name: 'TypeCodeList',
   components: { FormatTable, TipButtonGroup },
@@ -46,10 +53,16 @@ export default {
     return {
       // 维值字段列表
       columns: [
-        { dataIndex: 'typeName', title: '类型名称', width: 160, slots: { customRender: 'typeName' } },
-        { dataIndex: 'typeDesc', title: '类型描述', width: 160, slots: { customRender: 'typeDesc' } },
+        { dataIndex: 'typeName', title: '类型名称', width: 140, slots: { customRender: 'typeName' } },
+        { dataIndex: 'typeDesc', title: '类型描述', width: 140, slots: { customRender: 'typeDesc' } },
+        { dataIndex: 'typeOrder', title: '优先级', width: 60, slots: { customRender: 'typeOrder' } },
         { dataIndex: 'action', title: '操作', slots: { customRender: 'action' } }
       ],
+      // 表格内部编辑错误提示
+      alert: {
+        message: '',
+        type: 'error'
+      },
       // 数据字典维值列表
       sysTypeCodeList: [],
       // 功能按钮
@@ -119,7 +132,18 @@ export default {
           }
         })
       } else if (action.name === 'save') {
+        // 校验数据
+        if (!(row.typeName && row.typeName.length <= 20)) {
+          this.alert.message = '类型名称必须填写且不能大于20字符'
+          return
+        }
+        if (!this.$utils.isInt(row.typeOrder)) {
+          this.alert.message = '优先级必须指定'
+          return
+        }
         this.loading = true
+        // 删除错误信息
+        this.alert.message = ''
         this.$api.system.type.updateCode(this.sysType, row).then(sysTypeCode => {
           // 如果是新增，需要把id带入进去
           row.id = sysTypeCode.id
