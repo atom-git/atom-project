@@ -23,8 +23,8 @@ export default {
   name: 'ThemeMode',
   data () {
     return {
-      theme: this.$store.getters.theme,
-      primaryColor: this.$store.getters.primaryColor
+      theme: this.$store.getters.appConfig.theme,
+      primaryColor: this.$store.getters.appConfig.primaryColor
     }
   },
   methods: {

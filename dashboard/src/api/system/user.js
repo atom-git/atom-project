@@ -113,4 +113,16 @@ export default class user {
       data: userRoleList
     })
   }
+
+  /**
+   * 更新用户App配置
+   * @param appConfig 应用配置
+   */
+  static updateAppConfig (appConfig) {
+    return axios({
+      url: '/system/user/update/appConfig',
+      method: Default.HTTP_METHOD_PUT,
+      data: appConfig
+    })
+  }
 }

@@ -3,12 +3,14 @@ package com.atom.server.system.service.impl;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.util.RandomUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.atom.common.pojo.GlobalConstant;
 import com.atom.common.pojo.exception.BusException;
 import com.atom.common.pojo.http.RestError;
 import com.atom.common.pojo.mapper.IfValid;
 import com.atom.common.pojo.table.PageData;
 import com.atom.common.pojo.table.TableData;
+import com.atom.common.security.SessionUser;
 import com.atom.common.util.FileUtil;
 import com.atom.server.system.dao.ISysRoleDao;
 import com.atom.server.system.dao.ISysUserDao;
@@ -16,11 +18,13 @@ import com.atom.server.system.dao.ISysUserRoleDao;
 import com.atom.server.system.entity.SysRole;
 import com.atom.server.system.entity.SysUser;
 import com.atom.server.system.entity.SysUserRole;
+import com.atom.server.system.pojo.dto.AppConfigDTO;
 import com.atom.server.system.pojo.dto.SysUserDTO;
 import com.atom.server.system.pojo.filter.SysUserFilter;
 import com.atom.server.system.pojo.vo.SysUserRoleVO;
 import com.atom.server.system.pojo.vo.SysUserVO;
 import com.atom.server.system.service.ISysUserService;
+import com.google.gson.JsonObject;
 import org.hibernate.criterion.DetachedCriteria;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -242,6 +246,11 @@ public class SysUserService implements ISysUserService {
 		return sysUserRoleVOConverter.doForward(sysUser, sysRoleList, sysUserRoleList);
 	}
 
+	/**
+	 * 更新用户角色
+	 * @param userId 用户id
+	 * @param userRoleList 角色列表
+	 */
 	@Override
 	public void updateRole(Integer userId, Integer[] userRoleList) {
 		// 查询用户
@@ -263,5 +272,21 @@ public class SysUserService implements ISysUserService {
 			}
 			sysUserRoleDao.save(sysUserRoleList);
 		}
+	}
+
+	/**
+	 * 更新用户App配置
+	 * @param sessionUser 用户信息
+	 * @param appConfigDTO app配置DTO
+	 */
+	@Override
+	public void updateAppConfig(SessionUser sessionUser, AppConfigDTO appConfigDTO) {
+		SysUser sysUser = sysUserDao.findOne(sessionUser.getId());
+		if (Validator.isNull(sysUser)) {
+			throw new BusException(RestError.ERROR9000, "请确认用户是否有效");
+		}
+		// 设置用户App配置
+		sysUser.setAppConfig(JSONObject.toJSONString(appConfigDTO));
+		sysUserDao.update(sysUser);
 	}
 }

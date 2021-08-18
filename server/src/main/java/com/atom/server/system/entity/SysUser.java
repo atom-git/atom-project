@@ -50,6 +50,8 @@ public class SysUser {
 	private Date updateTime;
 	@Column(name = "platform")
 	private String platform;
+	@Column(name = "app_config")
+	private String appConfig;
 	@Column(name = "extra_info")
 	private String extraInfo;
 	@Column(name = "if_valid")

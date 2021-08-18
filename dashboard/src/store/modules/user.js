@@ -56,7 +56,8 @@ const user = {
           commit('setUserInfo', userInfo)
           resolve({
             menus: userInfo && userInfo.sysMenuTree,
-            actions: userInfo && userInfo.sysActionList
+            actions: userInfo && userInfo.sysActionList,
+            appConfig: userInfo && userInfo.appConfig
           })
         }).catch(error => {
           // 业务异常已在axios公共处理

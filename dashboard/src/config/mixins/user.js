@@ -9,8 +9,7 @@ export default {
       'userInfo',
       'menus',
       'actions',
-      'theme',
-      'waterMarkEnable'
+      'appConfig'
     ]),
     // 当前的菜单路由
     curMenu () {
@@ -20,8 +19,8 @@ export default {
     waterMark () {
       return {
         content: this.userInfo.name,
-        enable: this.waterMarkEnable,
-        theme: this.theme === 'dark' ? 'dark' : 'light'
+        enable: this.appConfig.waterMark,
+        theme: this.appConfig.theme === 'dark' ? 'dark' : 'light'
       }
     }
   }

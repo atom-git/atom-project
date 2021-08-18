@@ -2,6 +2,8 @@ package com.atom.server.system.service;
 
 import com.atom.common.pojo.table.PageData;
 import com.atom.common.pojo.table.TableData;
+import com.atom.common.security.SessionUser;
+import com.atom.server.system.pojo.dto.AppConfigDTO;
 import com.atom.server.system.pojo.dto.SysUserDTO;
 import com.atom.server.system.pojo.filter.SysUserFilter;
 import com.atom.server.system.pojo.vo.SysUserRoleVO;
@@ -31,4 +33,6 @@ public interface ISysUserService {
 	SysUserRoleVO roleList(Integer userId);
 
 	void updateRole(Integer userId, Integer[] userRoleList);
+
+	void updateAppConfig(SessionUser sessionUser, AppConfigDTO appConfigDTO);
 }

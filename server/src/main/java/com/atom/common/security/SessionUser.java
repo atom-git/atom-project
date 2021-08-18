@@ -55,6 +55,8 @@ public class SessionUser extends AbsEntity implements Authentication {
     private List<SysMenuVO> sysMenuTree;
     @ApiModelProperty("拥有的资源列表")
     private List<String> sysActionList;
+    @ApiModelProperty("App应用配置")
+    private String appConfig;
     @ApiModelProperty("是否认证成功")
     private boolean authenticated = false;
 
@@ -123,6 +125,7 @@ public class SessionUser extends AbsEntity implements Authentication {
         this.sysRoleIdSet = sysRoleIdSet;
         this.sysMenuTree = sysMenuTree;
         this.sysActionList = actionList;
+        this.appConfig = sysUser.getAppConfig();
     }
 
     /**

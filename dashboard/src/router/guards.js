@@ -41,11 +41,14 @@ export function createGuards (router) {
           return true
         } else {
           // 拉取用户信息
-          store.dispatch('getUser').then(({ menus, actions }) => {
-            store.dispatch('generatePermission', { menus, actions }).then(() => {
-              // 跳转至目标页面
-              return true
-            }).catch(() => { return { replace: true, name: 'signIn' } })
+          store.dispatch('getUser').then(({ menus, actions, appConfig }) => {
+            // 设置App应用配置信息
+            store.dispatch('setConfig', appConfig).then(() => {
+              store.dispatch('generatePermission', { menus, actions }).then(() => {
+                // 跳转至目标页面
+                return true
+              }).catch(() => { return { replace: true, name: 'signIn' } })
+            })
           }).catch(() => { return { replace: true, name: 'signIn' } })
         }
       } else {

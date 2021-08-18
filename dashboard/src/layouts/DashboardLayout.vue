@@ -1,17 +1,17 @@
 <template>
-  <a-layout :class="[layoutClass, theme, fixHeader ? 'fixed' : '']">
+  <a-layout :class="[layoutClass, appConfig.theme, appConfig.fixHeader ? 'fixed' : '']">
     <!-- 支持左右布局(sider)，上下布局(top)，顶部侧边布局(mix[top-sider])，移动端抽屉布局(drawer) -->
     <!-- 桌面端-sider -->
-    <SiderLayout v-if="layout === 'sider'"></SiderLayout>
+    <SiderLayout v-if="appConfig.layout === 'sider'"></SiderLayout>
 
     <!-- 桌面端-top -->
-    <TopLayout v-else-if="layout === 'top'"></TopLayout>
+    <TopLayout v-else-if="appConfig.layout === 'top'"></TopLayout>
 
     <!-- 桌面端-mix -->
-    <MixLayout v-else-if="layout === 'mix'"></MixLayout>
+    <MixLayout v-else-if="appConfig.layout === 'mix'"></MixLayout>
 
     <!-- 移动端 -->
-    <DrawerLayout v-else-if="layout === 'drawer'"></DrawerLayout>
+    <DrawerLayout v-else-if="appConfig.layout === 'drawer'"></DrawerLayout>
   </a-layout>
 </template>
 
@@ -32,7 +32,7 @@ export default {
   mixins: [config],
   computed: {
     layoutClass () {
-      return `atom-${this.layout}-layout`
+      return `atom-${this.appConfig.layout}-layout`
     }
   }
 }

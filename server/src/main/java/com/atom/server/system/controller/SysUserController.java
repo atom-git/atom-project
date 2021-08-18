@@ -7,6 +7,7 @@ import com.atom.common.pojo.mapper.GrantType;
 import com.atom.common.pojo.table.PageData;
 import com.atom.common.pojo.table.TableData;
 import com.atom.common.security.SessionUser;
+import com.atom.server.system.pojo.dto.AppConfigDTO;
 import com.atom.server.system.pojo.dto.SysUserDTO;
 import com.atom.server.system.pojo.filter.SysUserFilter;
 import com.atom.server.system.pojo.vo.SysUserRoleVO;
@@ -157,6 +158,20 @@ public class SysUserController {
 	@Permission(actionType = ActionType.E, grantType = GrantType.MANUAL)
 	public RestResponse<?> updateRole(@PathVariable Integer userId, @RequestBody Integer[] userRoleList) {
 		sysUserService.updateRole(userId, userRoleList);
+		return RestResponse.success();
+	}
+
+	/**
+	 * 更新用户App配置
+	 * @param sessionUser 用户信息
+	 * @param appConfigDTO app配置DTO
+	 * @return 返回是否修改配置成功
+	 */
+	@PutMapping("update/appConfig")
+	@ApiOperation("更新用户App配置")
+	@Permission(actionType = ActionType.E, grantType = GrantType.AUTO)
+	public RestResponse<?> updateAppConfig(SessionUser sessionUser, @RequestBody AppConfigDTO appConfigDTO) {
+		sysUserService.updateAppConfig(sessionUser, appConfigDTO);
 		return RestResponse.success();
 	}
 }

@@ -81,7 +81,7 @@ export default {
   computed: {
     // 弹窗大小
     dialogSize () {
-      return this.width || this.$store.getters.dialog.size
+      return this.width || this.$store.getters.appConfig.dialog.size
     }
   },
   emits: ['update:modelValue', 'table-editor-submit', 'table-editor-cancel'],

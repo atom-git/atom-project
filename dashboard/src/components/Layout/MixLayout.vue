@@ -20,10 +20,10 @@
       <SiderTrigger :theme="mixTheme" v-model:collapsed="collapsed"></SiderTrigger>
     </a-layout-sider>
     <!-- 右侧内容部分 -->
-    <a-layout :style="{ marginLeft: `${fixHeader ? collapsed ? 48 : 200 : 0}px`}">
-      <a-layout-content :class="multiTab ? 'atom-has-multitab' : ''">
+    <a-layout :style="{ marginLeft: `${appConfig.fixHeader ? collapsed ? 48 : 200 : 0}px`}">
+      <a-layout-content :class="appConfig.multiTab ? 'atom-has-multitab' : ''">
         <!-- 多标签栏 -->
-        <MultiTab v-if="multiTab" :style="{ width: `calc(100% - ${fixHeader ? collapsed ? 48 + 32 : 200 + 32 : 0}px)` }"></MultiTab>
+        <MultiTab v-if="appConfig.multiTab" :style="{ width: `calc(100% - ${appConfig.fixHeader ? collapsed ? 48 + 32 : 200 + 32 : 0}px)` }"></MultiTab>
         <RouteView v-if="isAlive"></RouteView>
       </a-layout-content>
       <!-- 底部footer -->
@@ -64,7 +64,7 @@ export default {
   computed: {
     // mix模式下的主题
     mixTheme () {
-      return this.theme === 'dark' ? 'dark' : 'light'
+      return this.appConfig.theme === 'dark' ? 'dark' : 'light'
     }
   },
   methods: {

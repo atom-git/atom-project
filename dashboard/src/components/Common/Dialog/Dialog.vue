@@ -86,11 +86,11 @@ export default {
     },
     // 弹窗形式
     dialogType () {
-      return this.type || this.$store.getters.dialog.type
+      return this.type || this.$store.getters.appConfig.dialog.type
     },
     // 弹窗大小
     dialogSize () {
-      return this.width || this.$store.getters.dialog.size
+      return this.width || this.$store.getters.appConfig.dialog.size
     }
   },
   watch: {

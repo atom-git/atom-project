@@ -6,9 +6,9 @@
     <!-- 右侧功能按钮 -->
     <HeaderRight></HeaderRight>
   </a-layout-header>
-  <a-layout-content :class="multiTab ? 'atom-has-multitab' : ''">
+  <a-layout-content :class="appConfig.multiTab ? 'atom-has-multitab' : ''">
     <!-- 多标签栏 -->
-    <MultiTab v-if="multiTab"></MultiTab>
+    <MultiTab v-if="appConfig.multiTab"></MultiTab>
     <RouteView v-if="isAlive"></RouteView>
   </a-layout-content>
   <!-- 底部footer -->

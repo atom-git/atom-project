@@ -9,7 +9,7 @@
  * multiTab: 多标签页是否开启 [true, false]
  * multiTabDraggable: 多标签页是否可拖拽 [true, false]
  * fixHeader: 固定顶部 [true, false]
- * waterMarkEnable: 是否开启水印 [true, false]
+ * waterMark: 是否开启水印 [true, false]
  * transition: 路由切换动画[fade, zoom, slide, bounce] fade隐进隐退，zoom放大缩小， slide滑出滑进，bounce弹跳进出
  * dialog: type弹窗类型[modal, drawer],size弹窗大小
  * storeOptions: vuex-persistedstate持久化插件配置[key:存储中的key值，storage:使用什么存储]
@@ -28,7 +28,7 @@ export default {
   multiTab: true,
   multiTabDraggable: false,
   fixHeader: true,
-  waterMarkEnable: false,
+  waterMark: false,
   transition: {
     name: 'slide',
     direction: 'Right',

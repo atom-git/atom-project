@@ -129,10 +129,13 @@ export default {
         // 登录
         this.$store.dispatch('signIn', this.signUser).then(() => {
           // 拉取用户信息
-          this.$store.dispatch('getUser').then(({ menus, actions }) => {
-            // 生成权限信息
-            this.$store.dispatch('generatePermission', { menus, actions }).then(() => {
-              this.$router.replace({ name: this.$default.HOME_PAGE })
+          this.$store.dispatch('getUser').then(({ menus, actions, appConfig }) => {
+            // 设置App应用配置信息
+            this.$store.dispatch('setConfig', appConfig).then(() => {
+              // 生成权限信息
+              this.$store.dispatch('generatePermission', { menus, actions }).then(() => {
+                this.$router.replace({ name: this.$default.HOME_PAGE })
+              }).catch(() => this.loading = false)
             }).catch(() => this.loading = false)
           }).catch(() => this.loading = false)
         }).catch(() => this.loading = false)

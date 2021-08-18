@@ -19,7 +19,7 @@ export default {
     reload () {
       this.$nextTick(() => {
         this.isAlive = true
-      })
+      }).then(() => {})
     }
   }
 }

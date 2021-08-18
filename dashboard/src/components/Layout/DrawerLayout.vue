@@ -57,7 +57,7 @@ export default {
   computed: {
     // drawer模式下的主题
     drawerTheme () {
-      return this.theme === 'dark' ? 'dark' : 'light'
+      return this.appConfig.theme === 'dark' ? 'dark' : 'light'
     },
     // drawer的宽度，最大不超过320
     drawerWidth () {

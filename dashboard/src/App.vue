@@ -17,10 +17,10 @@ export default {
   computed: {
     ...mapGetters([
       'device',
+      'appConfig',
       'scrollTop',
       'clientWidth',
-      'clientHeight',
-      'userInfo'
+      'clientHeight'
     ])
   },
   mounted () {
@@ -41,7 +41,7 @@ export default {
       self.$store.dispatch('setClientHeight', document.body.clientHeight)
       // 窗体大小变化时，布局的实时响应变化
       // 桌面模式必须大于768中断点宽度，在切换应该恢复成用户选中的布局，而非默认布局
-      self.$store.dispatch('setLayout', self.device.isMobile || document.body.clientWidth < 768 ? Default.mobileLayout : self.userInfo.layout || Default.layout)
+      self.$store.dispatch('setLayout', self.device.isMobile || document.body.clientWidth < 768 ? Default.mobileLayout : self.appConfig.layout || Default.layout)
     })
   }
 }

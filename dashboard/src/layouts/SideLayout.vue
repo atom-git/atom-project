@@ -1,6 +1,6 @@
 <template>
   <!-- 手机端的呈现方式 -->
-  <template v-if="layout === $default.mobileLayout">
+  <template v-if="appConfig.layout === $default.mobileLayout">
     <a-collapse :bordered="false" expandIconPosition="right">
       <template #expandIcon="{ isActive }">
         <IconFont type="CaretLeftOutlined" :rotate="isActive ? -90 : 0" />

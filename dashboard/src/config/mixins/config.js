@@ -1,4 +1,4 @@
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 /*
  * 默认配置的混入
  */
@@ -6,35 +6,16 @@ export default {
   computed: {
     ...mapGetters([
       'title',
-      'primaryColor',
-      'theme',
-      'layout',
-      'multiTab',
-      'multiTabDraggable',
-      'fixHeader',
-      'transition',
+      'appConfig',
       'device',
       'scrollTop',
       'clientWidth',
       'clientHeight',
-      'contentHeight',
-      'waterMarkEnable'
+      'contentHeight'
     ]),
     // 主题颜色 dark mix 均对应dark, light对应light
     colorTheme () {
-      return this.theme === 'light' ? 'light' : 'dark'
+      return this.appConfig.theme === 'light' ? 'light' : 'dark'
     }
-  },
-  methods: {
-    ...mapActions([
-      'setPrimaryColor',
-      'setTheme',
-      'setLayout',
-      'setMultiTab',
-      'setMultiTabDraggable',
-      'setFixHeader',
-      'setTransition',
-      'setWaterMarkEnable'
-    ])
   }
 }
