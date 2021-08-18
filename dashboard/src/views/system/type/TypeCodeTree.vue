@@ -63,7 +63,7 @@ export default {
         this.$default.ACTION_MOVE_UP,
         this.$default.ACTION_MOVE_DOWN
       ],
-      diaglogSize: this.$default.dialogSize,
+      diaglogSize: this.$default.dialog.size,
       // 请求loading
       loading: false
     }

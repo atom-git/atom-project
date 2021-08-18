@@ -194,11 +194,14 @@ export default {
     initRenderColumns (columns) {
       const renderColumns = []
       columns.map(column => {
-        this.generateSlot(column)
-        if (this.$utils.isValid(column.children)) {
-          column.children = this.initRenderColumns(column.children)
+        // dataIndex, key, title存在任何一项时，才作为表格字段，否则只用于传入form表单使用
+        if (column.dataIndex || column.key || column.title) {
+          this.generateSlot(column)
+          if (this.$utils.isValid(column.children)) {
+            column.children = this.initRenderColumns(column.children)
+          }
+          renderColumns.push(column)
         }
-        renderColumns.push(column)
       })
       return renderColumns
     },

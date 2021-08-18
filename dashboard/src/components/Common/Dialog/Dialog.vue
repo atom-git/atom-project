@@ -1,8 +1,8 @@
 <template>
-  <a-modal v-if="type === 'modal'"
+  <a-modal v-if="dialogType === 'modal'"
            v-bind="$attrs"
            class="atom-dialog"
-           :width="width"
+           :width="dialogSize"
            v-model:visible="visible"
            :confirmLoading="loading"
            :footer="footer">
@@ -14,7 +14,7 @@
   <a-drawer v-else
             v-bind="$attrs"
             class="atom-dialog"
-            :width="width"
+            :width="dialogSize"
             v-model:visible="visible"
             @close="$emit('cancel')">
     <!-- title挂载点 -->
@@ -44,14 +44,13 @@
 </template>
 
 <script>
-import Default from '@/config/default'
 export default {
   name: 'Dialog',
   props: {
     // 弹窗类型 modal 或者 drawer
     type: {
       type: String,
-      default: Default.dialogType
+      required: false
     },
     // 用于控制显隐
     modelValue: {
@@ -61,7 +60,7 @@ export default {
     // 弹窗的宽度
     width: {
       type: [String, Number],
-      default: Default.dialogSize
+      required: false
     },
     // 底部
     footer: {
@@ -84,6 +83,14 @@ export default {
     // locale信息用于命名按钮
     locale () {
       return this.$root.locale
+    },
+    // 弹窗形式
+    dialogType () {
+      return this.type || this.$store.getters.dialog.type
+    },
+    // 弹窗大小
+    dialogSize () {
+      return this.width || this.$store.getters.dialog.size
     }
   },
   watch: {

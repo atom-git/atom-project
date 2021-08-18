@@ -8,6 +8,7 @@
  * multiTabDraggable: 多标签页是否可拖拽
  * openRoutes: 已打开的路由列表
  * fixHeader: 是否固定头部
+ * dialog: 弹窗样式
  * device: 设备类型
  * transition: 页面切换动画
  * clientWidth: 浏览器可视窗口的宽度
@@ -28,6 +29,7 @@ export default {
   multiTab: state => state.app.multiTab,
   multiTabDraggable: state => state.app.multiTabDraggable,
   fixHeader: state => state.app.fixHeader,
+  dialog: state => state.app.dialog,
   transition: state => state.app.transition,
   device: state => state.app.device,
   scrollTop: state => state.app.scrollTop,

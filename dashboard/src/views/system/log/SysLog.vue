@@ -39,8 +39,10 @@ export default {
         },
         {
           dataIndex: 'createTime',
+          type: 'rangePicker',
           title: '请求时间',
-          format: 'formatDate|YY/MM/DD HH:mm:ss'
+          format: 'formatDate|YY/MM/DD HH:mm:ss',
+          form: { filter: { name: 'logTimeRange', showTime: true } }
         },
         {
           dataIndex: 'platformType',
@@ -63,6 +65,10 @@ export default {
           format: 'formatStatus',
           options: [{ value: 200, title: '成功', status: 'success' }, { value: 400, title: '失败', status: 'error' }, { value: 500, title: '异常', status: 'warning' }],
           form: { filter: true }
+        },
+        // 仅用于表单的字段
+        {
+          form: { filter: { type: 'text', name: 'keyword', label: '关键词' } }
         },
         {
           dataIndex: 'executionTime',

@@ -45,9 +45,21 @@
           </template>
         </a-list-item>
         <a-list-item>
+          <a-list-item-meta title="页面弹窗样式"></a-list-item-meta>
+          <template #actions>
+            <a-select size="small" v-model:value="dialog.type" :options="dialogOptions" @change="handleDialogChange"/>
+          </template>
+        </a-list-item>
+        <a-list-item>
+          <a-list-item-meta title="页面弹窗大小"></a-list-item-meta>
+          <template #actions>
+            <a-input-number size="small" step="10" v-model:value="dialog.size" @change="handleDialogChange"/>
+          </template>
+        </a-list-item>
+        <a-list-item>
           <a-list-item-meta title="开启页面水印"></a-list-item-meta>
           <template #actions>
-            <a-switch size="small" v-model:checked="waterMarkEnable" @change="handleWaterMarkEnable"/>
+            <a-select size="small" v-model:value="transition.name" :options="animateOptions" @change="handleAnimateToggle"></a-select>
           </template>
         </a-list-item>
       </a-list>
@@ -92,25 +104,43 @@ export default {
   },
   data () {
     return {
+      // 主题设置drawer是否展开
       drawerVisible: false,
+      // 主题选项
       themeOptions: [
         { icon: 'atom-theme-light', title: '纯白世界', value: 'light' },
         { icon: 'atom-theme-mix', title: '黑白无极', value: 'mix' },
         { icon: 'atom-theme-dark', title: '暗黑世界', value: 'dark' }
       ],
+      // 布局选项
       navOptions: [
         { icon: 'atom-layout-side', title: '左右布局', value: 'sider' },
         { icon: 'atom-layout-top', title: '上下布局', value: 'top' },
         { icon: 'atom-layout-mix', title: '混合布局', value: 'mix' },
         { icon: 'atom-layout-drawer', title: '移动抽屉', value: 'drawer' }
       ],
+      // 主题
       theme: this.$store.getters.theme,
+      // 主题色
       primaryColor: this.$store.getters.primaryColor,
+      // 布局
       layout: this.$store.getters.layout,
+      // 是否固定头
       fixHeader: this.$store.getters.fixHeader,
+      // 是否开启多标签
       multiTab: this.$store.getters.multiTab,
+      // 多标签是否可移动
       multiTabDraggable: this.$store.getters.multiTabDraggable,
+      // 弹窗
+      dialog: this.$store.getters.dialog,
+      // 弹窗样式
+      dialogOptions: [
+        { title: 'drawer', value: 'drawer' },
+        { title: 'modal', value: 'modal' },
+      ],
+      // 水印
       waterMarkEnable: this.$store.getters.waterMarkEnable,
+      // 切换动画
       transition: this.$store.getters.transition
     }
   },
@@ -150,6 +180,13 @@ export default {
       this.$store.dispatch('setFixHeader', fixHeader)
       this.$nextTick(() => {
         this.$message.success(`页面头部已${fixHeader ? '锁定' : '解锁'}`, 1)
+      })
+    },
+    // 响应弹窗改变
+    handleDialogChange () {
+      this.$store.dispatch('setDialog', this.dialog)
+      this.$nextTick(() => {
+        this.$message.success(`弹窗样式已设置为${this.dialog.type}宽度[${this.dialog.size}]`, 1)
       })
     },
     // 响应是否打开多标签

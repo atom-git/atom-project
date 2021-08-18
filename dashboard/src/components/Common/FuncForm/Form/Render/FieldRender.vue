@@ -118,7 +118,7 @@
   <a-date-picker v-else-if="isType('datePicker')" :value="modelValue"
                  v-bind="renderField"
                  @change="handleChange"
-                 :format="renderField.format || 'YYYY-MM-DD'" allowClear></a-date-picker>
+                 :format="initFormat('datePicker', renderField)" allowClear></a-date-picker>
   <!-- monthPicker -->
   <a-month-picker v-else-if="isType('monthPicker')" :value="modelValue"
                   @change="handleChange"
@@ -130,7 +130,7 @@
                   v-bind="renderField"
                   @change="handleChange"
                   :mode="initMode('rangePicker', renderField)"
-                  :format="renderField.format || 'YYYY-MM-DD'" allowClear></a-range-picker>
+                  :format="initFormat('rangePicker', renderField)" allowClear></a-range-picker>
   <!-- weekPicker -->
   <a-week-picker v-else-if="isType('weekPicker')" :value="modelValue"
                  v-bind="renderField"
@@ -306,6 +306,14 @@ export default {
         }
       } else {
         return field.mode
+      }
+    },
+    // 时间选择器的format格式化设置
+    initFormat (type, field) {
+      if ((type === 'datePicker' || type === 'rangePicker') && field.showTime) {
+        return field.format || 'YYYY-MM-DD HH:mm:ss'
+      } else {
+        return field.format || 'YYYY-MM-DD'
       }
     },
     // 初始化选项过滤

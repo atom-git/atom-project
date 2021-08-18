@@ -135,7 +135,11 @@ export default {
     // 格式化moment值
     formatModel (field, model) {
       if (field.type === 'datePicker') {
-        model[field.name] = this.model[field.name].format('YYYYMMDD')
+        if (field.showTime) {
+          model[field.name] = this.model[field.name].format(field.format || 'YYYY-MM-DD HH:mm:ss')
+        } else {
+          model[field.name] = this.model[field.name].format(field.format || 'YYYYMMDD')
+        }
       } else if (field.type === 'monthPicker') {
         model[field.name] = this.model[field.name].format('YYYYMM')
       } else if (field.type === 'weekPicker') {
@@ -150,10 +154,17 @@ export default {
             this.model[field.name][1].unix()
           ]
         } else if (mode === 'date') {
-          model[field.name] = [
-            this.model[field.name][0].set({ hour: 0, minute: 0, second: 0, millisecond: 0 }).unix(),
-            this.model[field.name][1].set({ hour: 23, minute: 59, second: 59, millisecond: 999 }).unix()
-          ]
+          if (field.showTime) {
+            model[field.name] = [
+              this.model[field.name][0].unix(),
+              this.model[field.name][1].unix()
+            ]
+          } else {
+            model[field.name] = [
+              this.model[field.name][0].set({ hour: 0, minute: 0, second: 0, millisecond: 0 }).unix(),
+              this.model[field.name][1].set({ hour: 23, minute: 59, second: 59, millisecond: 999 }).unix()
+            ]
+          }
         } else if (mode === 'month') {
           model[field.name] = [
             this.model[field.name][0].format('YYYYMM'),

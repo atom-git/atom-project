@@ -1,7 +1,7 @@
 <template>
   <Dialog v-model="dialogVisible"
           :title="title"
-          :width="width"
+          :width="dialogSize"
           :maskClosable="false"
           :loading="loading"
           :destroyOnClose="true"
@@ -27,7 +27,6 @@
  */
 import Dialog from '@/components/Common/Dialog'
 import { FormList } from '@/components/Common/FuncForm'
-import Default from '@/config/default'
 export default {
   name: 'UpdateForm',
   components: {
@@ -48,7 +47,7 @@ export default {
     // 弹窗宽度大小
     width: {
       type: Number,
-      default: Default.dialogSize
+      required: false
     },
     // 确认后的loading
     loading: {
@@ -77,6 +76,12 @@ export default {
       model: {},
       // 弹窗是否显示
       dialogVisible: false
+    }
+  },
+  computed: {
+    // 弹窗大小
+    dialogSize () {
+      return this.width || this.$store.getters.dialog.size
     }
   },
   emits: ['update:modelValue', 'table-editor-submit', 'table-editor-cancel'],

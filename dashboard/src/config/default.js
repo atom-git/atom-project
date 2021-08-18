@@ -11,8 +11,7 @@
  * fixHeader: 固定顶部 [true, false]
  * waterMarkEnable: 是否开启水印 [true, false]
  * transition: 路由切换动画[fade, zoom, slide, bounce] fade隐进隐退，zoom放大缩小， slide滑出滑进，bounce弹跳进出
- * dialogType: 弹窗类型[modal, drawer]
- * dialogSize: 弹窗大小
+ * dialog: type弹窗类型[modal, drawer],size弹窗大小
  * storeOptions: vuex-persistedstate持久化插件配置[key:存储中的key值，storage:使用什么存储]
  * colorSet: 主题颜色集
  * extendColorSet: 主题扩展颜色集
@@ -35,8 +34,10 @@ export default {
     direction: 'Right',
     disabled: false
   },
-  dialogType: 'drawer',
-  dialogSize: 520,
+  dialog: {
+    type: 'drawer',
+    size: 520
+  },
   storeOptions: {
     key: '_ATOM',
     storage: window.localStorage

@@ -9,6 +9,7 @@ import device from '@/config/lib/device'
  * multiTab: 多标签页是否开启
  * multiTabDraggable: 多标签页是否可拖拽
  * fixHeader: 固定顶部
+ * dialog: 弹窗样式
  * transition: 路由切换动画
  * device: 设备信息，根据userAgent信息自动获取
  * scrollTop: 滚动条上部偏移量
@@ -27,6 +28,7 @@ const app = {
     multiTab: Default.multiTab,
     multiTabDraggable: Default.multiTabDraggable,
     fixHeader: Default.fixHeader,
+    dialog: Default.dialog,
     transition: Default.transition,
     device: device(),
     scrollTop: 0,
@@ -58,6 +60,9 @@ const app = {
     },
     setFixHeader: (state, fixHeader) => {
       state.fixHeader = fixHeader
+    },
+    setDialog: (state, dialog) => {
+      state.dialog = dialog
     },
     setTransition: (state, transition) => {
       state.transition = transition
@@ -98,6 +103,9 @@ const app = {
     },
     setFixHeader ({ commit }, fixHeader) {
       commit('setFixHeader', fixHeader)
+    },
+    setDialog ({ commit }, dialog) {
+      commit('setDialog', dialog)
     },
     setTransition ({ commit }, transition) {
       commit('setTransition', transition)

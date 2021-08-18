@@ -41,6 +41,10 @@ import java.util.*;
 @Slf4j
 public class ControllerLogAspect {
     /**
+     * 日志查询请求url
+     */
+    private final String LOG_REQUEST_URL = "/system/log/list";
+    /**
      * 日志服务
      */
     @Resource
@@ -84,27 +88,33 @@ public class ControllerLogAspect {
         long startTime = System.currentTimeMillis();
         // 构建请求信息
         RestRequest restRequest = new RestRequest(requestUrl, requestParams, platformType, actionTypes);
+        // 获取用户信息
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        SessionUser sessionUser = null;
+        if (authentication instanceof SessionUser) {
+            sessionUser = (SessionUser) authentication;
+        }
         try {
             // 执行请求
             result = (RestResponse<?>) pdj.proceed();
-            // 写入请求结果
-            restRequest.setResult(result);
-            log.info("http请求：{},【controller:{}, method: {}】, 响应结果：{}", requestUrl, className, methodName, result);
+            // 写入请求结果，如果是日志查询，则不记录，结果，防止结果集太大，导致请求失败
+            if (!requestUrl.equals(LOG_REQUEST_URL)) {
+                restRequest.setResult(result);
+                log.info("http请求：{},【controller:{}, method: {}】, 响应结果：{}", requestUrl, className, methodName, result);
+            } else {
+                restRequest.setResult(RestResponse.success());
+                log.info("http请求：{},【controller:{}, method: {}】, 响应结果：{}", requestUrl, className, methodName, RestResponse.success());
+            }
             return result;
-        } catch (Throwable e) {
+        } catch (Exception e) {
             // 写入异常信息
             restRequest.setException(e.getMessage());
+            restRequest.setResult(RestResponse.error(e));
             // 异常放到全局异常处理中进行打印
             throw e;
         } finally {
             // 执行时长
             restRequest.setExecutionTime(System.currentTimeMillis() - startTime);
-            // 获取用户信息
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            SessionUser sessionUser = null;
-            if (authentication instanceof SessionUser) {
-                sessionUser = (SessionUser) authentication;
-            }
             // 日志类型 1：认证登录日志 2：服务调用日志 3：数据同步日志
             sysLogService.save(sessionUser, LogType.SERVE, restRequest);
         }

@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.List;
@@ -50,15 +51,16 @@ public class SysLogFilter extends AbsEntity {
 					dc.add(Restrictions.eq("resultStatus", sysLogFilter.getResultStatus()));
 				}
 				if (Validator.isNotNull(sysLogFilter.getLogTimeRange()) && sysLogFilter.getLogTimeRange().size() >= 2) {
-					dc.add(Restrictions.between("createTime", sysLogFilter.getLogTimeRange().get(0), sysLogFilter.getLogTimeRange().get(1)));
+					dc.add(Restrictions.between("createTime", sysLogFilter.getLogTimeRange().get(0) * 1000, sysLogFilter.getLogTimeRange().get(1)  * 1000));
 				}
 				if (Validator.isNotEmpty(sysLogFilter.getKeyword())) {
 					dc.add(Restrictions.or(
-						Restrictions.like("requestUrl", sysLogFilter.getAccount(), MatchMode.ANYWHERE),
-						Restrictions.like("exception", sysLogFilter.getAccount(), MatchMode.ANYWHERE)
+						Restrictions.like("requestUrl", sysLogFilter.getKeyword(), MatchMode.ANYWHERE),
+						Restrictions.like("exception", sysLogFilter.getKeyword(), MatchMode.ANYWHERE)
 					));
 				}
 			}
+			dc.addOrder(Order.desc("id"));
 			return dc;
 		}
 	}
