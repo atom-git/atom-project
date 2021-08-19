@@ -41,10 +41,6 @@ import java.util.*;
 @Slf4j
 public class ControllerLogAspect {
     /**
-     * 日志查询请求url
-     */
-    private final String LOG_REQUEST_URL = "/system/log/list";
-    /**
      * 日志服务
      */
     @Resource
@@ -97,7 +93,11 @@ public class ControllerLogAspect {
         try {
             // 执行请求
             result = (RestResponse<?>) pdj.proceed();
-            // 写入请求结果，如果是日志查询，则不记录，结果，防止结果集太大，导致请求失败
+            /*
+              日志查询请求url
+              写入请求结果，如果是日志查询，则不记录，结果，防止结果集太大，导致请求失败
+             */
+            String LOG_REQUEST_URL = "/system/log/list";
             if (!requestUrl.equals(LOG_REQUEST_URL)) {
                 restRequest.setResult(result);
                 log.info("http请求：{},【controller:{}, method: {}】, 响应结果：{}", requestUrl, className, methodName, result);

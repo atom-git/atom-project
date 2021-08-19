@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.4.5</version>
+		<version>2.5.3</version>
 		<relativePath/>
 	</parent>
 
@@ -22,8 +22,8 @@
 		<springboot.version>2.4.5</springboot.version>
 		<httpproxy.version>1.11</httpproxy.version>
 		<druid.version>1.2.5</druid.version>
-		<hutool.version>5.6.5</hutool.version>
-		<poi.version>4.1.2</poi.version>
+		<hutool.version>5.7.9</hutool.version>
+		<poi.version>5.0.0</poi.version>
 		<aliyun.oss.version>3.13.0</aliyun.oss.version>
 		<captcha.version>1.6.2</captcha.version>
 		<swagger.version>3.0.0</swagger.version>
