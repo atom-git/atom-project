@@ -84,7 +84,7 @@ module.exports = {
       '/api': {
         target: 'https://localhost:8443'
       },
-      '/cos': {
+      '/ws': {
         target: 'https://localhost:8443'
       }
     }

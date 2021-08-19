@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
  * @description 系统用户管理，包括portal(dept默认为1000)，dashboard(dept默认为1001)两类用户
  * 公共api:个人信息、个人密码修改、修改头像
  * portal:暂无
- * dashboard:列表（按照dept查询）、编辑（新增，修改）、重置密码、禁用/启用、用户角色列表
+ * dashboard:列表（按照dept查询）、编辑（新增，修改）、重置密码、禁用/启用、用户角色列表、更新用户App配置
  * @date 2021/4/23
  */
 @RestController

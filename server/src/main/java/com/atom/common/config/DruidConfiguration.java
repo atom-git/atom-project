@@ -16,7 +16,7 @@ import java.util.Map;
 
 /**
  * @author zr
- * @description druid监控配置，访问地址：http://ip:port/${serverContent}/druid
+ * @description druid监控配置，访问地址：http://ip:port/${serverContent}/druid 帐号密码参见：atom.druid.login.username、atom.druid.login.password
  * @date 2020/3/10
  */
 @Configuration

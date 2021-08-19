@@ -30,9 +30,7 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
      * 定义消息推送切面
      */
     @Pointcut("target(org.springframework.messaging.simp.SimpMessagingTemplate)")
-    public void broadcastPointcut() {
-
-    }
+    public void broadcastPointcut() {}
 
     /**
      * controller前的动作打印相关日志
