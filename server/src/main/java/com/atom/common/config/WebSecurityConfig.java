@@ -73,7 +73,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     private static final String[] AUTH_WHITELIST = {
             "/",
-            "/ws/**",
+            // websocket stomp消息
+            "/stomp/**",
+            // 系统登录前相关
             "/api/system/sign/up",
             "/api/system/captcha",
             "/api/system/judge/captcha",
@@ -87,13 +89,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/system/forget/password",
             "/system/send/*/verifyCode",
             "/system/third/state",
-            "/system/third/sign/in",
-            "/api/file/**",
-            "/oauth/**",
-            "/file/**",
-            "/temp/**",
-            "/messages/**",
-            "/test/**"
+            "/system/third/sign/in"
     };
 
     /**

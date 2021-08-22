@@ -21,7 +21,7 @@ public class AccountAuthentication extends UsernamePasswordAuthenticationToken {
 	private String platform;
 
 	/**
-	 * 平台类型, TODO 平台类型从request中来获取
+	 * 平台类型
 	 */
 	private PlatformType platformType;
 

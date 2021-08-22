@@ -80,6 +80,7 @@ public class UserLoginAuthProvider implements AuthenticationProvider {
         try {
             // 用户登录
             sessionUser = systemService.signIn(authRequest.getPlatform(), signUser);
+            sessionUser.setPlatformType(platformType);
             // 同平台用户是否能够同时登录根据配置信息来定
             String token;
             // 支持多人登录同一帐户时，直接取当前已登录的用户信息
@@ -102,6 +103,7 @@ public class UserLoginAuthProvider implements AuthenticationProvider {
         } finally {
             // 执行时长
             restRequest.setExecutionTime(System.currentTimeMillis() - startTime);
+            sessionUser.setPlatformType(platformType);
             // 日志类型 1：认证登录日志 2：服务调用日志 3：数据同步日志
             sysLogService.save(sessionUser, LogType.AUTH, restRequest);
         }

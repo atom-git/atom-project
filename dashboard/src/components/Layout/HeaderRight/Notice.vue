@@ -45,7 +45,7 @@
 
 <script>
 export default {
-  name: 'NoticeIcon',
+  name: 'Notice',
   data () {
     return {
       loading: false,

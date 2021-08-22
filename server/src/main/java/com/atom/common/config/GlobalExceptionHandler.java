@@ -150,7 +150,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(RuntimeException.class)
     public RestResponse<RestError> handleRuntimeException(HttpServletRequest request, RuntimeException e) {
-        log.error("请求：{}, params:{}, 数据库响应错误：{}", request.getRequestURI(), JSONObject.toJSONString(request.getParameterMap()), e);
+        log.error("请求：{}, params:{}, 服务器响应错误：{}", request.getRequestURI(), JSONObject.toJSONString(request.getParameterMap()), e);
         return RestResponse.error(RestError.ERROR9000);
     }
 

@@ -21,6 +21,7 @@
  */
 import { SiderLayout, TopLayout, MixLayout, DrawerLayout } from '@/components/Layout'
 import config from '@/config/mixins/config'
+import stomp from '@/config/mixins/stomp'
 export default {
   name: 'DashboardLayout',
   components: {
@@ -29,7 +30,7 @@ export default {
     MixLayout,
     DrawerLayout
   },
-  mixins: [config],
+  mixins: [config, stomp],
   computed: {
     layoutClass () {
       return `atom-${this.appConfig.layout}-layout`

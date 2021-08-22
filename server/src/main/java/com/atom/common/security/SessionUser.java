@@ -2,6 +2,7 @@ package com.atom.common.security;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.atom.common.pojo.AbsEntity;
+import com.atom.common.pojo.mapper.PlatformType;
 import com.atom.server.system.entity.SysUser;
 import com.atom.server.system.pojo.vo.SysDeptVO;
 import com.atom.server.system.pojo.vo.SysMenuVO;
@@ -59,6 +60,8 @@ public class SessionUser extends AbsEntity implements Authentication {
     private String appConfig;
     @ApiModelProperty("是否认证成功")
     private boolean authenticated = false;
+    @ApiModelProperty("平台类型")
+    private PlatformType platformType;
 
     @JSONField(serialize = false)
     @JsonIgnore

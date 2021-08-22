@@ -84,8 +84,9 @@ module.exports = {
       '/api': {
         target: 'https://localhost:8443'
       },
-      '/ws': {
-        target: 'https://localhost:8443'
+      '/stomp': {
+        target: 'https://localhost:8443',
+        ws: true
       }
     }
   },

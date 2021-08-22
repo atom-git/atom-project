@@ -16,6 +16,7 @@ import IconFont from '@/components/Common/IconFont'
 import moment from 'moment'
 import 'moment/dist/locale/zh-cn'
 import axios from './axios'
+import stomp from './stomp'
 import api from '@/api'
 import Utils from '@/utils'
 import Default from '@/config/default'
@@ -40,7 +41,7 @@ export function setUpPlugins (app) {
   // moment国际化
   moment.locale('zh-cn')
   app.use(moment)
-  // 挂载公共实例
+  // 挂载提示类公共实例
   app.config.globalProperties.$message = message
   app.config.globalProperties.$notification = notification
   app.config.globalProperties.$modal = {
@@ -51,9 +52,16 @@ export function setUpPlugins (app) {
     $confirm: Modal.confirm,
     $destroyAll: Modal.destroyAll
   }
+  // 挂载http网络请求
   app.config.globalProperties.$http = axios
+  // 挂载websocket stomp网络请求
+  app.config.globalProperties.$stomp = stomp
+  // 挂载时间
   app.config.globalProperties.$moment = moment
+  // 挂载全局api
   app.config.globalProperties.$api = api
+  // 挂载全局工具类
   app.config.globalProperties.$utils = Utils
+  // 挂载全局默认配置
   app.config.globalProperties.$default = Default
 }

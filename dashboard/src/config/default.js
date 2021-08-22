@@ -46,6 +46,8 @@ export default {
   extendColorSet: ['#BDD2FD', '#BDEFDB', '#C2C8D5', '#FBE5A2', '#F6C3B7', '#B6E3F5', '#D3C6EA', '#FFD8B8', '#AAD8D8', '#FFD6E7'],
   // 系统首页
   HOME_PAGE: 'dashboard',
+  // WebSocket连接endpoint
+  WEB_SOCKET_ENDPOINT: '/stomp',
   // HTTP方法常量
   HTTP_METHOD_GET: 'GET',
   HTTP_METHOD_POST: 'POST',

@@ -4,6 +4,7 @@
 import Axios from 'axios'
 import Qs from 'qs'
 import { store } from '@/store'
+import { router } from '@/router'
 import { message } from 'ant-design-vue'
 import Default from '@/config/default'
 
@@ -25,8 +26,16 @@ const err = (error) => {
     // axios请求异常响应
     message.error('服务响应错误，请稍后再试！')
   } else {
-    // 有响应时，处理业务异常
-    message.error(error.errorMsg)
+    if (error.errorCode === '9004') {
+      // 清除用户，清除权限
+      store.dispatch('clearUser')
+      store.dispatch('clearPermission')
+      // 回退到登录页
+      router.replace({ name: 'signIn' })
+    } else {
+      // 有响应时，处理业务异常
+      message.error(error.errorMsg)
+    }
   }
   return Promise.reject(error)
 }

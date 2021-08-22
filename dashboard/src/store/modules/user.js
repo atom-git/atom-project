@@ -20,6 +20,11 @@ const user = {
     },
     setOpenRoutes: (state, openRoutes) => {
       state.openRoutes = openRoutes
+    },
+    clearUser: (state) => {
+      state.token = null
+      state.userInfo = {}
+      state.openRoutes = []
     }
   },
   actions: {
@@ -40,13 +45,16 @@ const user = {
     signOut ({ commit }) {
       return new Promise(resolve => {
         $api.system.signOut().then(() => {
-          // 写入token
-          commit('setToken', null)
-          commit('setUserInfo', {})
-          commit('setOpenRoutes', [])
           resolve()
+        }).finally(() => {
+          // 清空用户信息
+          commit('clearUser')
         })
       })
+    },
+    // 清空用户
+    clearUser ({ commit }) {
+      commit('clearUser')
     },
     // 获取用户信息
     getUser ({ commit }) {
