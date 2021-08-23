@@ -25,12 +25,6 @@ import javax.annotation.Resource;
 public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer {
 
     /**
-     * 用户握手认证
-     */
-    @Resource
-    private SessionHandler sessionHandler;
-
-    /**
      * 消息拦截器
      */
     @Resource
@@ -44,7 +38,6 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // 注册STOMP协议的节点(endpoint)，指定用户拦截，指定使用SockJS
         registry.addEndpoint("/stomp")
-                .setHandshakeHandler(sessionHandler)
                 .setAllowedOriginPatterns("*")
                 .withSockJS();
     }
@@ -73,10 +66,12 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
         taskScheduler.setThreadNamePrefix("stomp-heart-beat-");
         // 初始化
         taskScheduler.initialize();
-        registry.enableSimpleBroker("/topic", "/user")
+        registry.enableSimpleBroker("/stomp/topic", "/stomp/user")
                 .setTaskScheduler(taskScheduler)
                 .setHeartbeatValue(new long[]{HEART_BEAT, HEART_BEAT});
         // 点对点使用的订阅前缀（客户端订阅路径上会体现出来），不设置的话，默认也是/user/
-        registry.setUserDestinationPrefix("/user");
+        registry.setUserDestinationPrefix("/stomp/user");
+        // app目的地前缀
+        registry.setApplicationDestinationPrefixes("/stomp");
     }
 }

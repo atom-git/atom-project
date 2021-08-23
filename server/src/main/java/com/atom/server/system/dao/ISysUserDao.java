@@ -14,6 +14,8 @@ public interface ISysUserDao extends IDao<SysUser> {
 
 	SysUser findByAccount(String platform, String account);
 
+	List<SysUser> searchByKeyword(String keyword);
+
 	SysUser findByPhone(String platform, String phone);
 
 	List<SysUser> findByDepts(Object... deptIds);

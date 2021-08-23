@@ -32,7 +32,11 @@ export default {
   connect: function (url = Default.WEB_SOCKET_ENDPOINT, headers) {
     // 订阅及发送信息均发生于登录后，因此未登录状态下不创建连接
     if (store.getters.token) {
-      // 创建websocket创建
+      // 创建websocket创建，先看是否已经连接，已连接则先关闭
+      if (this.socket != null) {
+        this.socket.close()
+        this.socket = null
+      }
       this.socket = new SockJS(url)
       // stomp客户端创建
       this.client = Stomp.over(this.socket)
@@ -100,35 +104,33 @@ export default {
   subscribe: function (destination, msgCallback, headers) {
     // 连接成功后订阅服务，返回信息中包括订阅id，以及取消订阅方法，取消订阅及订阅方自行发起，header中写入token
     if (this.status === 200) {
+      console.log('=====subscribe', this.status)
       // 外部传入参数，内部增加token值
       headers = Object.assign(headers || {}, this.headers, { 'Access-Token': store.getters.token })
-      const subscribe = this.client.subscribe(destination, (msg) => {
-        msgCallback(JSON.parse(msg) || msg)
+      const subscribe = this.client.subscribe(destination, frame => {
+        msgCallback(frame.body)
       }, headers)
       // 记录订阅了哪些信息，同一订阅多次发生时，记录每次订阅的返回信息
       this.subscribeMap[destination] = (this.subscribeMap[destination] || []).push(subscribe)
       return subscribe
     } else {
-      // 如果未连接，直接返回当前的状态及错误信息，订阅方自行判断
-      return {
-        status: this.status,
-        error: this.error
-      }
+      console.log('=====wait', this.status)
+      // 等待连接后再次发起订阅
+      setTimeout(() => { this.subscribe(destination, msgCallback, headers) }, 500)
     }
   },
   // 发送消息，headers用于自定义传入头部参数
   send: function (destination, msg, headers) {
     // 连接成功后发送信息
     if (this.status === 200) {
+      console.log('=====send', this.status)
       // 外部传入参数，内部增加token值
       headers = Object.assign(headers || {}, this.headers, { 'Access-Token': store.getters.token })
       return this.client.send(destination, headers, JSON.stringify(msg))
     } else {
-      // 如果未连接，直接返回当前的状态及错误信息，发送方自行判断
-      return {
-        status: this.status,
-        error: this.error
-      }
+      console.log('=====wait', this.status)
+      // 等待连接后再次发送
+      setTimeout(() => { this.send(destination, msg, headers) }, 500)
     }
   },
   // 获取状态

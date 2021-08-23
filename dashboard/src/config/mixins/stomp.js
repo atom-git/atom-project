@@ -6,7 +6,7 @@ export default {
     // 启动websocket连接
     this.$stomp.connect()
   },
-  unmount () {
+  unmounted () {
     // 销毁websocket连接
     this.$stomp.disconnect()
   }

@@ -17,7 +17,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @ApiModel("数据分页实体")
-@SuppressWarnings("unused")
 public class PageData extends AbsEntity {
 
 	/**

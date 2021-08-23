@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 /**
@@ -54,6 +55,7 @@ public class SysUserFilter {
 					dc.add(Restrictions.eq("ifValid", sysUserFilter.getIfValid()));
 				}
 			}
+			dc.addOrder(Order.desc("id"));
 			return dc;
 		}
 	}

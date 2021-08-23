@@ -86,6 +86,11 @@ export default {
       }
     }
   },
+  mounted () {
+    this.$stomp.subscribe(this.$api.system.news.STOMP_FETCH_NEWS, (msg) => {
+      console.log(msg)
+    })
+  },
   methods: {
     // 切换下拉菜单
     toogleDropDown () {
