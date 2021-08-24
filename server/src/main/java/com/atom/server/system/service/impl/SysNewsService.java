@@ -1,5 +1,10 @@
 package com.atom.server.system.service.impl;
 
+import cn.hutool.core.lang.Validator;
+import com.atom.common.pojo.exception.BusException;
+import com.atom.common.pojo.exception.RestException;
+import com.atom.common.pojo.http.RestError;
+import com.atom.common.pojo.mapper.IfValid;
 import com.atom.common.pojo.mapper.NewsType;
 import com.atom.common.pojo.table.PageData;
 import com.atom.common.pojo.table.TableData;
@@ -108,6 +113,39 @@ public class SysNewsService implements ISysNewsService {
 		if (sysNewsList != null && sysNewsList.size() > 0) {
 			sysNewsList.forEach(sysNews -> sysNews.setStatus(1));
 			sysNewsDao.update(sysNewsList);
+		}
+	}
+
+	/**
+	 * 设置消息为未读
+	 * @param newsId 消息id
+	 */
+	@Override
+	public void unread(Integer newsId) {
+		if (Validator.isNotNull(newsId)) {
+			SysNews sysNews = sysNewsDao.findOne(newsId);
+			if (Validator.isNull(sysNews)) {
+				throw new BusException(RestError.ERROR9000, "消息不存在，请检查！");
+			}
+			sysNews.setStatus(0);
+			sysNewsDao.update(sysNews);
+		}
+	}
+
+
+	/**
+	 * 删除消息
+	 * @param newsId 消息id
+	 */
+	@Override
+	public void delete(Integer newsId) {
+		if (Validator.isNotNull(newsId)) {
+			SysNews sysNews = sysNewsDao.findOne(newsId);
+			if (Validator.isNull(sysNews)) {
+				throw new BusException(RestError.ERROR9000, "消息不存在，请检查！");
+			}
+			sysNews.setIfValid(IfValid.INVALID.getCode());
+			sysNewsDao.update(sysNews);
 		}
 	}
 }

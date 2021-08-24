@@ -1,7 +1,12 @@
 <template>
-  <FuncTable :apiUrl="apiUrl"
+  <FuncTable ref="funcTable"
+             :apiUrl="apiUrl"
              :columns="columns"
-             :funcZone="funcZone"></FuncTable>
+             :funcZone="funcZone">
+    <template #action="{ row }">
+      <TipButtonGroup :actions="initActions(row)" @click="handleRowAction($event, row)"></TipButtonGroup>
+    </template>
+  </FuncTable>
 </template>
 
 <script>
@@ -9,9 +14,10 @@
  * 提醒消息待办管理
  */
 import { FuncTable } from '@/components/Common/FuncTable'
+import { TipButtonGroup } from '@/components/Common/FuncButton'
 export default {
   name: 'SysNews',
-  components: { FuncTable },
+  components: { FuncTable, TipButtonGroup },
   data () {
     return {
       // 请求url
@@ -71,8 +77,13 @@ export default {
           type: 'radio',
           format: 'formatStatus',
           options: [{ value: 1, title: '有效', status: 'success' }, { value: 0, title: '删除', status: 'error' }],
-          form: { filter: true },
+          form: { filter: true, default: 1 },
           hidden: true
+        },
+        {
+          dataIndex: 'action',
+          title: '操作',
+          slots: { customRender: 'action' }
         }
       ],
       // 功能按钮区域
@@ -80,7 +91,45 @@ export default {
         download: true,
         refresh: true,
         setting: true
+      },
+      // 当前编辑的消息
+      sysNews: {}
+    }
+  },
+  methods: {
+    // 响应行级操作按钮
+    handleRowAction (action, row) {
+      this.sysNews = row
+      // 标记未读
+      if (action.name === 'unread') {
+        if (row.status === 1) {
+          this.$api.system.news.unread(row.id).then(() => {
+            this.$message.success('消息标记为未读！')
+            row.status = 0
+          })
+        }
+      } else if (action.name === 'read') {
+        // 标记已读
+        if (row.status === 0) {
+          this.$api.system.news.read(row.id).then(() => {
+            this.$message.success('消息标记为已读！')
+            row.status = 1
+          })
+        }
+      } else if (action.name === 'delete') {
+        // 删除
+        this.$api.system.news.delete(row.id).then(() => {
+          this.$message.success('消息已删除！')
+          this.$refs.funcTable.refresh()
+        })
       }
+    },
+    // 初始化操作按钮，根据当前状态来进行设置
+    initActions (row) {
+      return [
+        { title: row && row.status ? '未读' : '已读', name: row && row.status ? 'unread' : 'read' },
+        { title: '删除', name: 'delete', apiUrl: '/system/news/delete' }
+      ]
     }
   }
 }

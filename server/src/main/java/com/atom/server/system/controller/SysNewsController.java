@@ -96,4 +96,30 @@ public class SysNewsController {
 		sysNewsService.read(newsIds);
 		return RestResponse.success();
 	}
+
+	/**
+	 * 设置一条消息为未读
+	 * @param newsId 消息id
+	 * @return 返回是否请求成功
+	 */
+	@PutMapping("unread/{newsId}")
+	@ApiOperation("设置一条消息为未读")
+	@Permission(actionType = ActionType.E, grantType = GrantType.MANUAL)
+	public RestResponse<?> unread(@PathVariable Integer newsId) {
+		sysNewsService.unread(newsId);
+		return RestResponse.success();
+	}
+
+	/**
+	 * 删除消息
+	 * @param newsId 消息id
+	 * @return 返回是否请求成功
+	 */
+	@DeleteMapping("delete/{newsId}")
+	@ApiOperation("删除消息")
+	@Permission(actionType = ActionType.D, grantType = GrantType.MANUAL)
+	public RestResponse<?> delete(@PathVariable Integer newsId) {
+		sysNewsService.delete(newsId);
+		return RestResponse.success();
+	}
 }

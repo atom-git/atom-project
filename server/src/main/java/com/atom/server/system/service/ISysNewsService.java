@@ -20,4 +20,8 @@ public interface ISysNewsService {
 	TableData<SysNewsVO> list(SysNewsFilter sysNewsFilter, PageData pageData, HttpServletResponse response);
 
 	void read(Integer... newsIds);
+
+	void unread(Integer newsId);
+
+	void delete(Integer newsId);
 }

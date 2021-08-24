@@ -22,7 +22,7 @@
 import FormTable from './FormTable'
 export default {
   name: 'FuncTable',
-  components: {FormTable},
+  components: { FormTable },
   props: {
     // 数据请求url
     apiUrl: {

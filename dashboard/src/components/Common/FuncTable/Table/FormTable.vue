@@ -24,8 +24,8 @@
                @table-func-action="handleFuncAction"
                @change="handleTableChange">
     <!-- 外部$slots传入的自定义挂载点 -->
-    <template v-for="slotName in slotColumns" #[slotName]="{ text, record, index }">
-      <slot :name="slotName" :text="text" :row="record" :index="index"></slot>
+    <template v-for="slotName in slotColumns" #[slotName]="{ text, row, index }">
+      <slot :name="slotName" :text="text" :row="row" :index="index"></slot>
     </template>
   </FormatTable>
   <!-- 统一表单处理 -->
