@@ -15,9 +15,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -71,5 +69,31 @@ public class SysNewsController {
 	public RestResponse<TableData<SysNewsVO>> list(SysNewsFilter sysNewsFilter, PageData pageData, HttpServletResponse response) {
 		TableData<SysNewsVO> tableData = sysNewsService.list(sysNewsFilter, pageData, response);
 		return RestResponse.success(tableData);
+	}
+
+	/**
+	 * 设置一条消息为已读
+	 * @param newsId 消息id
+	 * @return 返回是否请求成功
+	 */
+	@PutMapping("read/{newsId}")
+	@ApiOperation("设置一条消息为已读")
+	@Permission(actionType = ActionType.E, grantType = GrantType.MANUAL)
+	public RestResponse<?> read(@PathVariable Integer newsId) {
+		sysNewsService.read(newsId);
+		return RestResponse.success();
+	}
+
+	/**
+	 * 设置多条消息为已读
+	 * @param newsIds 消息id
+	 * @return 返回是否请求成功
+	 */
+	@PutMapping("read")
+	@ApiOperation("设置多条消息为已读")
+	@Permission(actionType = ActionType.E, grantType = GrantType.MANUAL)
+	public RestResponse<?> read(@RequestBody Integer... newsIds) {
+		sysNewsService.read(newsIds);
+		return RestResponse.success();
 	}
 }

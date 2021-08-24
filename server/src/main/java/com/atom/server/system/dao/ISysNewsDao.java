@@ -15,4 +15,10 @@ import java.util.List;
 public interface ISysNewsDao extends IDao<SysNews> {
 
 	List<SysNews> findValidByUser(Integer userId, NewsType newsType, PageData pageData);
+
+	List<SysNews> findUnreadByUser(Integer userId, NewsType newsType, PageData pageData);
+
+	long countUnreadByUser(Integer userId, NewsType newsType);
+
+	List<SysNews> findByIds(Integer... newsIds);
 }

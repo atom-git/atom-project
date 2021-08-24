@@ -8,7 +8,6 @@ import com.atom.server.system.pojo.vo.SysNewsVO;
 import com.atom.server.system.pojo.vo.UserNewsVO;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  * @author zr
@@ -19,4 +18,6 @@ public interface ISysNewsService {
 	UserNewsVO fetchNews(SessionUser sessionUser);
 
 	TableData<SysNewsVO> list(SysNewsFilter sysNewsFilter, PageData pageData, HttpServletResponse response);
+
+	void read(Integer... newsIds);
 }

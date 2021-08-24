@@ -41,7 +41,7 @@ public class SysNewsService implements ISysNewsService {
 	private final SysNewsVO.VOConverter sysNewsVOConverter = new SysNewsVO.VOConverter();
 
 	/**
-	 * 用户通知消息待办VO转换器
+	 * 用户通知消息待办未读VO转换器
 	 */
 	private final UserNewsVO.VOConverter userNewsVOConverter = new UserNewsVO.VOConverter();
 
@@ -61,13 +61,15 @@ public class SysNewsService implements ISysNewsService {
 		PageData pageData = new PageData();
 		// 获取用户通知
 		List<SysNews> noticeList = sysNewsDao.findValidByUser(sessionUser.getId(), NewsType.NOTICE, pageData);
+		long noticeUnreadCnt = sysNewsDao.countUnreadByUser(sessionUser.getId(), NewsType.NOTICE);
 		// 获取用户消息
 		List<SysNews> messageList = sysNewsDao.findValidByUser(sessionUser.getId(), NewsType.MESSAGE, pageData);
+		long messageUnreadCnt = sysNewsDao.countUnreadByUser(sessionUser.getId(), NewsType.MESSAGE);
 		// 获取用户待办
 		List<SysNews> todoList = sysNewsDao.findValidByUser(sessionUser.getId(), NewsType.TODO, pageData);
-
+		long todoUnreadCnt = sysNewsDao.countUnreadByUser(sessionUser.getId(), NewsType.TODO);
 		// 转换为VO
-		return userNewsVOConverter.doForward(noticeList, messageList, todoList);
+		return userNewsVOConverter.doForward(noticeUnreadCnt, noticeList, messageUnreadCnt, messageList, todoUnreadCnt, todoList);
 	}
 
 	/**
@@ -92,6 +94,20 @@ public class SysNewsService implements ISysNewsService {
 			return new TableData<>(pageData, totalCnt);
 		} else {
 			return new TableData<>(pageData, sysNewsVOList, totalCnt);
+		}
+	}
+
+	/**
+	 * 设置消息为已读
+	 * @param newsIds 消息id
+	 */
+	@Override
+	public void read(Integer... newsIds) {
+		// 查询消息是否存在
+		List<SysNews> sysNewsList = sysNewsDao.findByIds(newsIds);
+		if (sysNewsList != null && sysNewsList.size() > 0) {
+			sysNewsList.forEach(sysNews -> sysNews.setStatus(1));
+			sysNewsDao.update(sysNewsList);
 		}
 	}
 }

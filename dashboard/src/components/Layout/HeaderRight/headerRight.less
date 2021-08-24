@@ -44,7 +44,7 @@ header右侧样式
   }
 }
 /*消息提醒*/
-.atom-notice-container {
+.atom-news-container {
   width: 336px;
   border-radius: 4px;
   background: @component-background;
@@ -57,24 +57,18 @@ header右侧样式
       padding: 12px 6px;
     }
   }
-  .atom-notice-item-list {
+  .ant-list {
     .ant-list-item {
       padding: 12px 24px;
-      border-bottom: 1px solid @border-color-base;
       cursor: pointer;
-      .ant-list-item {
-        .atom-read {
-          opacity: 0.4;
-        }
-        &:last-child {
-          border-bottom: 0 !important;
-        }
-        &:hover, &:focus {
-          background: @item-hover-bg;
-        }
-        .ant-list-item-meta-title {
-          font-weight: 400;
-        }
+      &.atom-read {
+        opacity: 0.4;
+      }
+      &:hover, &:focus {
+        background: @primary-1;
+      }
+      .ant-list-item-meta-title {
+        font-weight: 400;
       }
     }
     .ant-list-footer {
@@ -83,9 +77,8 @@ header右侧样式
       vertical-align: middle;
       padding: 0;
       cursor: pointer;
-      border-top: 1px solid @border-color-base;
       .ant-col:first-child {
-        border-right: 1px solid @border-color-base;
+        border-right: 1px solid @border-color-split;
       }
     }
   }

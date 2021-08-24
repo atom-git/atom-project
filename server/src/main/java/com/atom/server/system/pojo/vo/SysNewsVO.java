@@ -59,11 +59,13 @@ public class SysNewsVO extends AbsEntity {
 				if (Validator.isNotNull(sysNews.getFromSysUser().getSysDept())) {
 					sysNews.getFromSysUser().getSysDept().setChildren(null);
 				}
+				sysNews.getFromSysUser().setAppConfig(null);
 			}
 			if (Validator.isNotNull(sysNews.getToSysUser())) {
 				if (Validator.isNotNull(sysNews.getToSysUser().getSysDept())) {
 					sysNews.getToSysUser().getSysDept().setChildren(null);
 				}
+				sysNews.getToSysUser().setAppConfig(null);
 			}
 			BeanUtils.copyProperties(sysNews, sysNewsVO);
 			return sysNewsVO;

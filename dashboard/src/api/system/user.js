@@ -6,6 +6,7 @@ import Utils from '@/utils'
  * 系统用户api
  */
 export default class user {
+
   /*
    * 根据token获取用户，token由axios自动配置
    */

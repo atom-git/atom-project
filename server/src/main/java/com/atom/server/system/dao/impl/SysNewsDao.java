@@ -42,4 +42,62 @@ public class SysNewsDao extends AbsDao<SysNews> implements ISysNewsDao {
 		dc.addOrder(Order.desc("id"));
 		return this.findPage(dc, pageData);
 	}
+
+	/**
+	 * 根据用户id获取有效系统提醒消息待办未读信息
+	 * @param userId 用户id
+	 * @param newsType 系统信息类型1通知，2消息，3待办
+	 * @param pageData 分页信息
+	 * @return 返回未读消息列表
+	 */
+	@Override
+	public List<SysNews> findUnreadByUser(Integer userId, NewsType newsType, PageData pageData) {
+		DetachedCriteria dc = DetachedCriteria.forClass(SysNews.class);
+		if (Validator.isNotNull(userId)) {
+			dc.add(Restrictions.eq("toUser", userId));
+		}
+		if (Validator.isNotNull(newsType)) {
+			dc.add(Restrictions.eq("type", newsType.getCode()));
+		}
+		// 未读消息
+		dc.add(Restrictions.eq("status", 0));
+		dc.add(Restrictions.eq("ifValid", IfValid.VALID.getCode()));
+		dc.addOrder(Order.desc("id"));
+		return this.findPage(dc, pageData);
+	}
+
+	/**
+	 * 根据用户id获取有效系统提醒消息待办信息
+	 * @param userId 用户id
+	 * @param newsType 系统信息类型1通知，2消息，3待办
+	 * @return 返回未读消息数
+	 */
+	@Override
+	public long countUnreadByUser(Integer userId, NewsType newsType) {
+		DetachedCriteria dc = DetachedCriteria.forClass(SysNews.class);
+		if (Validator.isNotNull(userId)) {
+			dc.add(Restrictions.eq("toUser", userId));
+		}
+		if (Validator.isNotNull(newsType)) {
+			dc.add(Restrictions.eq("type", newsType.getCode()));
+		}
+		// 未读消息
+		dc.add(Restrictions.eq("status", 0));
+		dc.add(Restrictions.eq("ifValid", IfValid.VALID.getCode()));
+		return this.countByDC(dc);
+	}
+
+	/**
+	 * 根据ids查询消息列表
+	 * @param newsIds 消息ids
+	 * @return 消息列表
+	 */
+	@Override
+	public List<SysNews> findByIds(Integer... newsIds) {
+		DetachedCriteria dc = DetachedCriteria.forClass(SysNews.class);
+		if (newsIds != null && newsIds.length > 0) {
+			dc.add(Restrictions.in("id", (Object[]) newsIds));
+		}
+		return this.findByDC(dc);
+	}
 }

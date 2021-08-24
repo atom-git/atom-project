@@ -32,11 +32,7 @@ export default {
   connect: function (url = Default.WEB_SOCKET_ENDPOINT, headers) {
     // 订阅及发送信息均发生于登录后，因此未登录状态下不创建连接
     if (store.getters.token) {
-      // 创建websocket创建，先看是否已经连接，已连接则先关闭
-      if (this.socket != null) {
-        this.socket.close()
-        this.socket = null
-      }
+      // 创建websocket创建
       this.socket = new SockJS(url)
       // stomp客户端创建
       this.client = Stomp.over(this.socket)
@@ -64,22 +60,26 @@ export default {
         message.success('消息服务已连接成功！')
         // 该位置一般用于连接成功后，订阅事件
       }, (frame) => {
-        // errorCallback连接失败后的回调，等待连接状态时，才做重连动作
-        if (this.status === 100) {
-          // 记录错误信息
-          this.error = frame
-          // 设置连接失败
-          this.status = 400
-          // 清空订阅列表
-          this.subscribeMap = {}
-          // 该位置一般用于清理或者发送提示,以及断线重连
-          if (this.reconnect === null) {
-            this.reconnect = {
-              msgCloser: message.error('消息服务连接失败，正在断线重连！', 0),
-              timer: setInterval(((_this) => {
-                return () => { _this.connect(headers) }
-              })(this), this.heartbeat)
-            }
+        console.log(this.status, this.subscribeMap)
+        // errorCallback连接失败后的回调
+        // 记录错误信息
+        this.error = frame
+        // 设置连接失败
+        this.status = 400
+        // 创建websocket创建，先看是否已经连接，已连接则先关闭
+        if (this.socket != null) {
+          this.socket.close()
+          this.socket = null
+        }
+        // 清空订阅列表
+        this.subscribeMap = {}
+        // 该位置一般用于清理或者发送提示,以及断线重连
+        if (this.reconnect === null) {
+          this.reconnect = {
+            msgCloser: message.error('消息服务连接失败，正在断线重连！', 0),
+            timer: setInterval(((_this) => {
+              return () => { _this.connect(url, headers) }
+            })(this), this.heartbeat)
           }
         }
       })
@@ -108,7 +108,7 @@ export default {
       // 外部传入参数，内部增加token值
       headers = Object.assign(headers || {}, this.headers, { 'Access-Token': store.getters.token })
       const subscribe = this.client.subscribe(destination, frame => {
-        msgCallback(frame.body)
+        msgCallback((JSON.parse(frame.body) || {}).data)
       }, headers)
       // 记录订阅了哪些信息，同一订阅多次发生时，记录每次订阅的返回信息
       this.subscribeMap[destination] = (this.subscribeMap[destination] || []).push(subscribe)
