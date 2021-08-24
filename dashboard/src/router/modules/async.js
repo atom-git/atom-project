@@ -111,9 +111,9 @@ export default [
             meta: { title: '数据字典' }
           },
           {
-            path: 'sysmessage',
-            name: 'sysmessage',
-            component: () => import(/* webpackChunkName: "system" */ '@/views/system/message/SysMessage'),
+            path: 'sysnews',
+            name: 'sysnews',
+            component: () => import(/* webpackChunkName: "system" */ '@/views/system/news/SysNews'),
             meta: { title: '消息管理' }
           },
           {

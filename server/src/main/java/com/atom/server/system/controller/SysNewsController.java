@@ -2,6 +2,8 @@ package com.atom.server.system.controller;
 
 import com.atom.common.pojo.annotation.Permission;
 import com.atom.common.pojo.http.RestResponse;
+import com.atom.common.pojo.mapper.ActionType;
+import com.atom.common.pojo.mapper.GrantType;
 import com.atom.common.pojo.table.PageData;
 import com.atom.common.pojo.table.TableData;
 import com.atom.common.security.SessionUser;
@@ -10,14 +12,15 @@ import com.atom.server.system.pojo.vo.SysNewsVO;
 import com.atom.server.system.pojo.vo.UserNewsVO;
 import com.atom.server.system.service.ISysNewsService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SubscribeMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  * @author zr
@@ -62,6 +65,9 @@ public class SysNewsController {
 	 * @param response 请求响应
 	 * @return 系统提醒消息待办列表
 	 */
+	@GetMapping("list")
+	@ApiOperation("获取系统提醒消息待办列表")
+	@Permission(actionType = ActionType.Q, grantType = GrantType.MANUAL)
 	public RestResponse<TableData<SysNewsVO>> list(SysNewsFilter sysNewsFilter, PageData pageData, HttpServletResponse response) {
 		TableData<SysNewsVO> tableData = sysNewsService.list(sysNewsFilter, pageData, response);
 		return RestResponse.success(tableData);

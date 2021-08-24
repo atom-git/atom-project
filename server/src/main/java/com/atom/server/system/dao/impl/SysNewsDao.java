@@ -33,7 +33,7 @@ public class SysNewsDao extends AbsDao<SysNews> implements ISysNewsDao {
 	public List<SysNews> findValidByUser(Integer userId, NewsType newsType, PageData pageData) {
 		DetachedCriteria dc = DetachedCriteria.forClass(SysNews.class);
 		if (Validator.isNotNull(userId)) {
-			dc.add(Restrictions.eq("to_user", userId));
+			dc.add(Restrictions.eq("toUser", userId));
 		}
 		if (Validator.isNotNull(newsType)) {
 			dc.add(Restrictions.eq("type", newsType.getCode()));

@@ -1,5 +1,6 @@
 package com.atom.server.system.pojo.vo;
 
+import cn.hutool.core.lang.Validator;
 import com.atom.common.dao.Converter;
 import com.atom.common.pojo.AbsEntity;
 import com.atom.server.system.entity.SysNews;
@@ -53,6 +54,17 @@ public class SysNewsVO extends AbsEntity {
 				return null;
 			}
 			SysNewsVO sysNewsVO = new SysNewsVO();
+			// 取消来源及发送用户的组织机构深层数据，防止深层次递归查询带来的性能问题
+			if (Validator.isNotNull(sysNews.getFromSysUser())) {
+				if (Validator.isNotNull(sysNews.getFromSysUser().getSysDept())) {
+					sysNews.getFromSysUser().getSysDept().setChildren(null);
+				}
+			}
+			if (Validator.isNotNull(sysNews.getToSysUser())) {
+				if (Validator.isNotNull(sysNews.getToSysUser().getSysDept())) {
+					sysNews.getToSysUser().getSysDept().setChildren(null);
+				}
+			}
 			BeanUtils.copyProperties(sysNews, sysNewsVO);
 			return sysNewsVO;
 		}

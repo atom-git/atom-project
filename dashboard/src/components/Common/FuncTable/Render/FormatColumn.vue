@@ -6,6 +6,11 @@
       <template #icon><IconFont type="UserOutlined"/></template>
     </a-avatar>
   </template>
+  <!-- 格式化标签 -->
+  <template v-else-if="isFormat('formatTag')">
+    <a-tag v-if="formatTag && formatTag().color" :color="formatTag && formatTag().color">{{ formatTag && formatTag().title }}</a-tag>
+    <a-tag v-else>值缺失</a-tag>
+  </template>
   <!-- 格式化状态，无法判断时显示default灰色 -->
   <template v-else-if="isFormat('formatStatus')">
     <a-badge v-if="formatStatus && formatStatus().status" :status="formatStatus().status || 'default'" :text="formatStatus().title" />
@@ -31,7 +36,8 @@
 /**
  * 格式化单元格
  * 格式化头像: formatAvatar, avatar用于设置头像的属性，属性可以参考avatar组件
- * 格式化状态: formatStatus, options { value, label, status }，应用状态字段更好的展示
+ * 格式化标签: formatTag, options { value, title, status }配置tag展示选项，属性可以参考tag组件
+ * 格式化状态: formatStatus, options { value, title, status }，应用状态字段更好的展示
  * 格式化操作按钮: formatAction|type[icon, text, both], actions [ a-tooltip, a-button ] 属性合集
  * 下面的均为值变化
  * 格式化对象: formatObject|ObjectKey，应用于外键属性渲染
@@ -111,6 +117,10 @@ export default {
     formatAvatarError () {
       return true
     },
+    // 格式化标签
+    formatTag () {
+      return !this.column.options || this.column.options.filter(option => option.value === this.text)[0] || { color: 'default' }
+    },
     // 格式化状态
     formatStatus () {
       return !this.column.options || this.column.options.filter(option => option.value === this.text)[0] || { status: 'default' }
@@ -123,7 +133,7 @@ export default {
       } else {
         const keyPath = formater[1]
         let content = this.row
-        keyPath.split('.').forEach(key => { content = content[key] })
+        keyPath.split('.').forEach(key => { content = this.$utils.isValid(content) ? content[key] : '' })
         return content || ''
       }
     },
