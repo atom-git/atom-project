@@ -1,6 +1,7 @@
 <template>
   <!-- 筛选条件区域 -->
   <FormFilter v-if="filterFields && filterFields.length > 0"
+              ref="formFilter"
               v-model="filterModel"
               :fields="filterFields"
               :labelCol="labelCol"

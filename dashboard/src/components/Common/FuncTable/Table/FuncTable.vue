@@ -212,8 +212,12 @@ export default {
     }
   },
   mounted () {
-    // 挂载时加载数据，保障过滤器已经初始化完成
-    this.loadTableData()
+    /**
+     * 挂载时加载数据，需考虑保过滤器是否已经初始化完成
+     * 因此第一次加载数据，由handleFilter方法驱动
+     * 若没有filter由于是基于FormTable组件mounted方法驱动的，因此也无影响
+     */
+    // this.loadTableData()
   }
 }
 </script>

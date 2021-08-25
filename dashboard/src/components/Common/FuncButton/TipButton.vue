@@ -4,7 +4,7 @@
       <slot v-if="$slots.title" name="title"></slot>
       <template v-else-if="title">{{ title }}</template>
     </template>
-    <a-button :type="type" :size="size">
+    <a-button :type="type" :size="size" :disabled="disabled">
       <template #icon>
         <IconFont :type="$attrs.icon" />
       </template>
@@ -34,6 +34,11 @@ export default {
     size: {
       type: String,
       default: 'default'
+    },
+    // 是否禁用
+    disabled: {
+      type: Boolean,
+      default: false
     }
   }
 }

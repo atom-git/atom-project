@@ -13,6 +13,10 @@ export default {
     }
   },
   emits: ['table-filter'],
+  mounted () {
+    // 在formTable挂载时提交一次filter数据，好让FuncTable中能够正常的进行数据初始化
+    this.handleFilterSubmit(this.filterModel)
+  },
   methods: {
     // 根据column构建filterForm，存在filter属性时才生成
     generateFilterForm (column) {

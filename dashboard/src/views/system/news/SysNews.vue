@@ -78,7 +78,7 @@ export default {
           format: 'formatStatus',
           options: [{ value: 1, title: '有效', status: 'success' }, { value: 0, title: '删除', status: 'error' }],
           form: { filter: true, default: 1 },
-          hidden: true
+          // hidden: true
         },
         {
           dataIndex: 'action',
@@ -127,8 +127,8 @@ export default {
     // 初始化操作按钮，根据当前状态来进行设置
     initActions (row) {
       return [
-        { title: row && row.status ? '未读' : '已读', name: row && row.status ? 'unread' : 'read' },
-        { title: '删除', name: 'delete', apiUrl: '/system/news/delete' }
+        { title: row && row.status ? '标记未读' : '标记已读', name: row && row.status ? 'unread' : 'read' },
+        { title: '删除', name: 'delete', disabled: !row.ifValid, apiUrl: '/system/news/delete' }
       ]
     }
   }

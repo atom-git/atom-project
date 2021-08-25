@@ -97,7 +97,11 @@ export default {
       deep: true
     }
   },
-  emits: ['update:modelValue', 'submit', 'reset'],
+  created () {
+    // 初始化表单数据
+    this.initModel(this.$utils.deepClone(this.fields))
+  },
+  emits: ['update:modelValue', 'submit', 'reset', 'form-ready'],
   methods: {
     // 表单值初始化，默认值仅通过fields传入
     initModel (fields) {
