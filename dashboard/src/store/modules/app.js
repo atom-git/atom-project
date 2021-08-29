@@ -1,5 +1,6 @@
 import Default from '@/config/default'
 import device from '@/config/lib/device'
+import Utils from '@/utils'
 import { toggleTheme } from '@/config/theme'
 /**
  * 应用配置相关信息
@@ -95,14 +96,24 @@ const app = {
   actions: {
     setConfig ({ commit }, config) {
       return new Promise(resolve => {
-        const appConfig = JSON.parse(config)
-        if (appConfig) {
-          commit('setConfig', appConfig)
-          toggleTheme(appConfig.theme, appConfig.primaryColor).then(() => {
-            console.log('主题已切换')
+        if (config) {
+          let appConfig
+          if (Utils.isObject(config)) {
+            appConfig = config
+          } else {
+            appConfig = JSON.parse(config)
+          }
+          if (appConfig) {
+            commit('setConfig', appConfig)
+            toggleTheme(appConfig.theme, appConfig.primaryColor).then(() => {
+              console.log('主题已切换')
+              resolve()
+            })
+          } else {
             resolve()
-          })
+          }
         } else {
+          console.log(this.state.config)
           resolve()
         }
       })

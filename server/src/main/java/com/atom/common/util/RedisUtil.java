@@ -36,6 +36,14 @@ public class RedisUtil {
     }
 
     /**
+     * redisTemplate获取方法用于特殊的取值行为
+     * @return 返回redisTemplate
+     */
+    public static RedisTemplate<Serializable, Object> getRedisTemplate() {
+        return redisTemplate;
+    }
+
+    /**
      * 写入缓存
      *
      * @param key   key

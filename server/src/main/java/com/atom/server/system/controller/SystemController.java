@@ -15,11 +15,18 @@ import com.atom.server.system.pojo.vo.CaptchaVO;
 import com.atom.server.system.service.ISystemService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.annotation.SubscribeMapping;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.Serializable;
+import java.util.Set;
 
 /**
  * @author zr
@@ -31,6 +38,7 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/system")
 @Api("系统管理")
 @Permission
+@Slf4j
 public class SystemController {
 
 	/**
@@ -38,6 +46,12 @@ public class SystemController {
 	 */
 	@Resource
 	private ISystemService systemService;
+
+	/**
+	 * 消息发送模板
+	 */
+	@Resource
+	private SimpMessagingTemplate messagingTemplate;
 
 	/**
 	 * 系统注册
@@ -145,5 +159,20 @@ public class SystemController {
 	@Permission(actionType = ActionType.E, grantType = GrantType.AUTO)
 	public RestResponse<SessionUser> thirdSignIn(HttpServletRequest request, @RequestHeader String platform, @RequestBody SignInDTO signInDTO) {
 		return RestResponse.success(systemService.thirdSignIn(request, platform, signInDTO));
+	}
+
+	/**
+	 * 发送当前在线用户数给前台
+	 */
+	@Scheduled(fixedRate = 10 * 1000L)
+	public void onlineUser() {
+		// 在线用户数
+		int onlineUser = 0;
+		Set<Serializable> stompTokenKeys = RedisUtil.getRedisTemplate().keys("*_STOMP_TOKEN");
+		if (stompTokenKeys != null && stompTokenKeys.size() > 0) {
+			onlineUser = stompTokenKeys.stream().mapToInt(mapKey -> RedisUtil.getRedisTemplate().opsForHash().keys(mapKey).size()).sum();
+		}
+		messagingTemplate.convertAndSend("/stomp/topic/onlineUser", RestResponse.success(onlineUser));
+		log.info("==============/stomp/topic/onlineUser " + onlineUser);
 	}
 }

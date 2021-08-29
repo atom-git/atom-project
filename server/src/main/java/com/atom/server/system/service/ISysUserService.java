@@ -20,7 +20,7 @@ public interface ISysUserService {
 
 	void updatePassword(Integer userId, SysUserDTO sysUserDTO);
 
-	void updateHead(Integer userId, SysUserDTO sysUserDTO);
+	void updateHead(SessionUser sessionUser, Integer userId, SysUserDTO sysUserDTO);
 
 	TableData<SysUserVO> list(SysUserFilter sysUserFilter, PageData pageData, HttpServletResponse response);
 

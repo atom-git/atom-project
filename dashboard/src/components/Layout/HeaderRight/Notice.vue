@@ -66,7 +66,7 @@ export default {
     }
   },
   mounted () {
-    this.$stomp.subscribe(this.$api.system.news.STOMP_FETCH_NEWS, (userNews) => {
+    this.$stomp.subscribe(this.$api.system.news.STOMP_FETCH_NEWS, userNews => {
       this.unreadCnt = userNews['noticeUnreadCnt'] + userNews['messageUnreadCnt'] + userNews['todoUnreadCnt']
       this.newsMap.notice = {
         unRead: userNews['noticeUnreadCnt'],

@@ -68,7 +68,8 @@ public class SysUserController {
 	}
 
 	/**
-	 * 更新用户头像
+	 * 用户自己更新用户头像
+	 * @param sessionUser sessionUser
 	 * @param userId 用户ID
 	 * @param sysUserDTO 用户信息实体
 	 * @return 返回是否成功
@@ -76,8 +77,8 @@ public class SysUserController {
 	@PostMapping("update/{userId}/head")
 	@ApiOperation("更新用户头像")
 	@Permission(actionType = ActionType.E, grantType = GrantType.AUTO)
-	public RestResponse<?> updateHead(@PathVariable Integer userId, @RequestBody SysUserDTO sysUserDTO) {
-		sysUserService.updateHead(userId, sysUserDTO);
+	public RestResponse<?> updateHead(SessionUser sessionUser, @PathVariable Integer userId, @RequestBody SysUserDTO sysUserDTO) {
+		sysUserService.updateHead(sessionUser, userId, sysUserDTO);
 		return RestResponse.success();
 	}
 

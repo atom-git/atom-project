@@ -52,7 +52,7 @@
       <a-checkbox>自动登录</a-checkbox>
       <a-button type="link" @click="handleForget">忘记密码</a-button>
     </a-form-item>
-    <a-form-item>
+    <a-form-item v-bind="signError">
       <a-button type="primary" :loading="loading" size="large" block @click="handleSignIn">登录</a-button>
     </a-form-item>
     <a-form-item class="atom-form-flex">
@@ -84,6 +84,8 @@ export default {
         // 验证码
         verifyCode: ''
       },
+      // 认证错误信息
+      signError: {},
       // 登录超时时间
       timeOut: null,
       // 是否正在加载
@@ -124,6 +126,7 @@ export default {
     // 响应登录
     handleSignIn () {
       this.loading = true
+      this.signError = {}
       // 校验输入
       this.$refs.signForm.validate().then(() => {
         // 登录
@@ -138,7 +141,13 @@ export default {
               }).catch(() => this.loading = false)
             }).catch(() => this.loading = false)
           }).catch(() => this.loading = false)
-        }).catch(() => this.loading = false)
+        }).catch(error => {
+          this.loading = false
+          this.signError = {
+            validateStatus: 'error',
+            help: error.errorMsg
+          }
+        })
       }).catch(() => this.loading = false)
     },
     // 响应忘记密码

@@ -4,7 +4,6 @@ import cn.hutool.core.lang.Validator;
 import com.atom.common.dao.Converter;
 import com.atom.common.pojo.AbsEntity;
 import com.atom.server.system.entity.SysNews;
-import com.atom.server.system.entity.SysUser;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -32,11 +31,11 @@ public class SysNewsVO extends AbsEntity {
 	@ApiModelProperty("源用户，系统提示用户为空")
 	private Integer fromUser;
 	@ApiModelProperty("源用户")
-	private SysUser fromSysUser;
+	private User fromSysUser;
 	@ApiModelProperty("目标用户id")
 	private Integer toUser;
 	@ApiModelProperty("目标用户")
-	private SysUser toSysUser;
+	private User toSysUser;
 	@ApiModelProperty("路由")
 	private String route;
 	@ApiModelProperty("消息状态：0未读 1已读")
@@ -46,6 +45,24 @@ public class SysNewsVO extends AbsEntity {
 	@ApiModelProperty("是否有效1有效，0失效")
 	private Integer ifValid;
 
+	/**
+	 * 消息来源或者目标用户
+	 */
+	@Getter
+	@Setter
+	static class User extends AbsEntity {
+		@ApiModelProperty("用户ID")
+		private Integer id;
+		@ApiModelProperty("帐户")
+		private String account;
+		@ApiModelProperty("手机号")
+		private String phone;
+		@ApiModelProperty("昵称")
+		private String name;
+		@ApiModelProperty("头像")
+		private String head;
+	}
+
 	public static class VOConverter extends Converter<SysNewsVO, SysNews> {
 
 		@Override
@@ -53,21 +70,27 @@ public class SysNewsVO extends AbsEntity {
 			if (sysNews == null) {
 				return null;
 			}
+			// 转换用户信息
 			SysNewsVO sysNewsVO = new SysNewsVO();
-			// 取消来源及发送用户的组织机构深层数据，防止深层次递归查询带来的性能问题
+			// 转换来源人
+			User fromUser;
 			if (Validator.isNotNull(sysNews.getFromSysUser())) {
-				if (Validator.isNotNull(sysNews.getFromSysUser().getSysDept())) {
-					sysNews.getFromSysUser().getSysDept().setChildren(null);
-				}
-				sysNews.getFromSysUser().setAppConfig(null);
+				fromUser = new User();
+				BeanUtils.copyProperties(sysNews.getFromSysUser(), fromUser, "sysDept", "appConfig");
+			} else {
+				fromUser = null;
 			}
+			// 转换目标人
+			User toUser;
 			if (Validator.isNotNull(sysNews.getToSysUser())) {
-				if (Validator.isNotNull(sysNews.getToSysUser().getSysDept())) {
-					sysNews.getToSysUser().getSysDept().setChildren(null);
-				}
-				sysNews.getToSysUser().setAppConfig(null);
+				toUser = new User();
+				BeanUtils.copyProperties(sysNews.getToSysUser(), toUser, "sysDept", "appConfig");
+			} else {
+				toUser = null;
 			}
-			BeanUtils.copyProperties(sysNews, sysNewsVO);
+			BeanUtils.copyProperties(sysNews, sysNewsVO, "fromSysUser", "toSysUser");
+			sysNewsVO.setFromSysUser(fromUser);
+			sysNewsVO.setToSysUser(toUser);
 			return sysNewsVO;
 		}
 	}

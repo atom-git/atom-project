@@ -11,6 +11,7 @@ import com.atom.common.pojo.mapper.IfValid;
 import com.atom.common.pojo.table.PageData;
 import com.atom.common.pojo.table.TableData;
 import com.atom.common.security.SessionUser;
+import com.atom.common.security.cache.IUserCacheStore;
 import com.atom.common.util.FileUtil;
 import com.atom.server.system.dao.ISysRoleDao;
 import com.atom.server.system.dao.ISysUserDao;
@@ -24,7 +25,6 @@ import com.atom.server.system.pojo.filter.SysUserFilter;
 import com.atom.server.system.pojo.vo.SysUserRoleVO;
 import com.atom.server.system.pojo.vo.SysUserVO;
 import com.atom.server.system.service.ISysUserService;
-import com.google.gson.JsonObject;
 import org.hibernate.criterion.DetachedCriteria;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -71,6 +71,12 @@ public class SysUserService implements ISysUserService {
 	private ISysUserRoleDao sysUserRoleDao;
 
 	/**
+	 * 用户缓存
+	 */
+	@Resource
+	private IUserCacheStore userCacheStore;
+
+	/**
 	 * 系统用户VO转换器
 	 */
 	private final SysUserVO.VOConverter sysUserVOConverter = new SysUserVO.VOConverter();
@@ -114,17 +120,21 @@ public class SysUserService implements ISysUserService {
 
 	/**
 	 * 更新用户头像
+	 * @param sessionUser sessionUser
 	 * @param userId 用户ID
 	 * @param sysUserDTO 用户信息实体
 	 */
 	@Override
-	public void updateHead(Integer userId, SysUserDTO sysUserDTO) {
+	public void updateHead(SessionUser sessionUser, Integer userId, SysUserDTO sysUserDTO) {
 		// 查询原用户
 		SysUser sysUser = sysUserDao.findOne(userId);
 		if (Validator.isNotNull(sysUser)) {
 			// 设置为新的头像，页面需自行上传文件后再调用此接口
 			sysUser.setHead(sysUserDTO.getHead());
 			sysUserDao.update(sysUser);
+			// 更新用户缓存
+			sessionUser.setHeadUrl(sysUserDTO.getHead());
+			userCacheStore.register(sessionUser.getPlatformType(), sessionUser);
 		} else {
 			throw new AuthenticationServiceException(RestError.ERROR1006.getErrorMsg());
 		}
@@ -288,5 +298,8 @@ public class SysUserService implements ISysUserService {
 		// 设置用户App配置
 		sysUser.setAppConfig(JSONObject.toJSONString(appConfigDTO));
 		sysUserDao.update(sysUser);
+		// 更新用户缓存
+		sessionUser.setAppConfig(JSONObject.toJSONString(appConfigDTO));
+		userCacheStore.register(sessionUser.getPlatformType(), sessionUser);
 	}
 }

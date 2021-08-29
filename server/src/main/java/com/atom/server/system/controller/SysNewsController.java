@@ -34,12 +34,6 @@ import javax.servlet.http.HttpServletResponse;
 public class SysNewsController {
 
 	/**
-	 * 消息发送模板
-	 */
-	@Resource
-	private SimpMessagingTemplate messagingTemplate;
-
-	/**
 	 * 系统通知消息待办服务
 	 */
 	@Resource
