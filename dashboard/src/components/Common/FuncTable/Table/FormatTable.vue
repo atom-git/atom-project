@@ -74,7 +74,7 @@
  *           upload: 导入按钮点击后，如查有提供模板地址，则生成导入模板的下载提示
  *           默认功能按钮包括，refresh 刷新 可选[定时刷新], setting 列设置
  */
-import FuncTitle from '@/components/Common/FuncTitle/FuncTitle'
+import FuncTitle from '@/components/Common/FuncTitle'
 import FuncZone from '@/components/Common/FuncTable/Render/FuncZone'
 import FormatColumn from '@/components/Common/FuncTable/Render/FormatColumn'
 // 用于生成rowKey的默认index序列，rowKey不存在时，不能放到this对象中会出现无限循环

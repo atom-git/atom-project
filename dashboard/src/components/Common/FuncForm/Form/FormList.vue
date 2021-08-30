@@ -71,7 +71,7 @@
 /**
  * 列表展示类型的表单
  */
-import FuncTitle from '@/components/Common/FuncTitle/FuncTitle'
+import FuncTitle from '@/components/Common/FuncTitle'
 import FieldRender from './Render/FieldRender'
 import form from './mixins/form'
 export default {

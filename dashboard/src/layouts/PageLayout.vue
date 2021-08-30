@@ -14,7 +14,7 @@ export default {
 
 <style lang="less">
 .atom-page-layout {
-  &>.ant-card {
+  .ant-card {
     &:not(:first-child) {
       margin-top: 16px;
     }
