@@ -62,7 +62,9 @@ export default {
       // 消息列表
       newsMap: {},
       // 获取随机颜色
-      colorSet: this.$default.colorSet
+      colorSet: this.$default.colorSet,
+      // 系统消息订阅
+      subscribe: null
     }
   },
   mounted () {
@@ -80,7 +82,11 @@ export default {
         unRead: userNews['todoUnreadCnt'],
         list: userNews['todoList']
       }
-    })
+    }).then(subscribe => this.subscribe = subscribe)
+  },
+  unmounted () {
+    // 取消系统消息订阅
+    this.$stomp.unsubscribe(this.subscribe)
   },
   methods: {
     // 切换下拉菜单

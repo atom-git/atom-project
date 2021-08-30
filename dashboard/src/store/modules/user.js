@@ -21,6 +21,9 @@ const user = {
     setOpenRoutes: (state, openRoutes) => {
       state.openRoutes = openRoutes
     },
+    setAppConfig: (state, appConfig) => {
+      state.userInfo.appConfig = JSON.stringify(appConfig)
+    },
     clearUser: (state) => {
       state.token = null
       state.userInfo = {}
@@ -76,6 +79,10 @@ const user = {
     // 设置openRoutes打开的路由
     setOpenRoutes ({ commit }, openRoutes) {
       commit('setOpenRoutes', openRoutes)
+    },
+    // 设置用户的appConfig
+    setAppConfig ({ commit }, appConfig) {
+      commit('setAppConfig', appConfig)
     }
   }
 }

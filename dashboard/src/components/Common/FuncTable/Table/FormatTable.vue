@@ -282,6 +282,7 @@ export default {
 <style lang="less">
 .atom-table {
   .ant-table-wrapper.center {
+    overflow-x: auto;
     .ant-table {
       td {
         white-space: nowrap;

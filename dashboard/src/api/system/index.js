@@ -6,6 +6,11 @@ import Utils from '@/utils'
  * 系统管理api
  */
 export default class system {
+  /**
+   * 在线用户数订阅
+   */
+  static STOMP_ONLINE_USER = '/stomp/topic/onlineUser'
+
   /*
    * 登录请求
    */

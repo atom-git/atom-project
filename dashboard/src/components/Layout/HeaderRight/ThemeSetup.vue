@@ -233,6 +233,7 @@ export default {
     toggleUserAppConfig (callback) {
       this.$api.system.user.updateAppConfig(this.appConfig).then(() => {
         callback()
+        this.$store.dispatch('setAppConfig', this.appConfig)
       })
     }
   }

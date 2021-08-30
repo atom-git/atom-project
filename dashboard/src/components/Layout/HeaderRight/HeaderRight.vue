@@ -2,8 +2,8 @@
   <div class="atom-header-right">
     <Notice></Notice>
     <Global></Global>
-    <FullScreen v-if="showFullScreen && !device.isMobile"></FullScreen>
-    <ThemeSetup v-if="!device.isMobile"></ThemeSetup>
+    <FullScreen v-if="showFullScreen && !device.isMobile && clientWidth > 375"></FullScreen>
+    <ThemeSetup v-if="!device.isMobile && clientWidth > 375"></ThemeSetup>
     <UserMenu></UserMenu>
   </div>
 </template>
@@ -25,10 +25,11 @@ export default {
     ThemeSetup
   },
   computed: {
-    ...mapGetters(['device'])
+    ...mapGetters(['device', 'clientWidth'])
   },
   data () {
     return {
+      // 是否显示全屏
       showFullScreen: window.navigator.userAgent.indexOf('MSIE') < 0
     }
   }

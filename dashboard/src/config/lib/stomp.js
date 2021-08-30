@@ -102,36 +102,48 @@ export default {
   },
   // 订阅服务，headers用于自定义传入头部参数
   subscribe: function (destination, msgCallback, headers) {
-    // 连接成功后订阅服务，返回信息中包括订阅id，以及取消订阅方法，取消订阅及订阅方自行发起，header中写入token
+    return new Promise(resolve => {
+      if (this.status === 200) {
+        console.log('=====subscribe', this.status)
+        // 外部传入参数，内部增加token值
+        headers = Object.assign(headers || {}, this.headers, { 'Access-Token': store.getters.token })
+        const subscribe = this.client.subscribe(destination, frame => {
+          msgCallback((JSON.parse(frame.body) || {}).data)
+        }, headers)
+        // 记录订阅了哪些信息
+        this.subscribeMap[destination] = subscribe
+        resolve(subscribe)
+      } else {
+        console.log('=====wait', this.status)
+        // 等待连接后再次发起订阅
+        setTimeout(() => { this.subscribe(destination, msgCallback, headers).then(subscribe => resolve(subscribe)) }, 500)
+      }
+    })
+  },
+  // 取消订阅
+  unsubscribe: function (subscribe) {
     if (this.status === 200) {
-      console.log('=====subscribe', this.status)
-      // 外部传入参数，内部增加token值
-      headers = Object.assign(headers || {}, this.headers, { 'Access-Token': store.getters.token })
-      const subscribe = this.client.subscribe(destination, frame => {
-        msgCallback((JSON.parse(frame.body) || {}).data)
-      }, headers)
-      // 记录订阅了哪些信息，同一订阅多次发生时，记录每次订阅的返回信息
-      this.subscribeMap[destination] = (this.subscribeMap[destination] || []).push(subscribe)
-      return subscribe
+      this.client.unsubscribe(subscribe.id)
     } else {
-      console.log('=====wait', this.status)
       // 等待连接后再次发起订阅
-      setTimeout(() => { this.subscribe(destination, msgCallback, headers) }, 500)
+      setTimeout(() => { this.unsubscribe(subscribe) }, 500)
     }
   },
   // 发送消息，headers用于自定义传入头部参数
   send: function (destination, msg, headers) {
-    // 连接成功后发送信息
-    if (this.status === 200) {
-      console.log('=====send', this.status)
-      // 外部传入参数，内部增加token值
-      headers = Object.assign(headers || {}, this.headers, { 'Access-Token': store.getters.token })
-      return this.client.send(destination, headers, JSON.stringify(msg))
-    } else {
-      console.log('=====wait', this.status)
-      // 等待连接后再次发送
-      setTimeout(() => { this.send(destination, msg, headers) }, 500)
-    }
+    return new Promise(resolve => {
+      // 连接成功后发送信息
+      if (this.status === 200) {
+        console.log('=====send', this.status)
+        // 外部传入参数，内部增加token值
+        headers = Object.assign(headers || {}, this.headers, { 'Access-Token': store.getters.token })
+        resolve(this.client.send(destination, headers, JSON.stringify(msg)))
+      } else {
+        console.log('=====wait', this.status)
+        // 等待连接后再次发送
+        setTimeout(() => { return this.send(destination, msg, headers).then(frame => resolve(frame)) }, 500)
+      }
+    })
   },
   // 获取状态
   getStatus: function () {
