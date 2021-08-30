@@ -51,7 +51,7 @@
       </a-input>
     </a-form-item>
     <a-form-item name="verifyCode" class="atom-form-flex">
-      <a-input v-model:value="signUser.verifyCode" placeholder="请输入验证码" size="large" allowClear>
+      <a-input v-model:value="signUser.verifyCode" placeholder="请输入验证码" size="large" @keyup.enter="handleSignUp" allowClear>
         <template #prefix>
           <IconFont type="MessageOutlined"/>
         </template>
@@ -71,7 +71,7 @@
                                @finish="onFinished"></a-statistic-countdown>
       </a-button>
     </a-form-item>
-    <a-form-item>
+    <a-form-item v-bind="signError">
       <a-button type="primary" :loading="loading" size="large" block @click="handleSignUp">注册</a-button>
     </a-form-item>
     <a-form-item class="atom-form-flex">
@@ -116,6 +116,8 @@ export default {
         2: { title: '中', class: 'middle', percent: 66, color: '#faad14' },
         3: { title: '高', class: 'strong', percent: 100, color: '#52c41a' }
       },
+      // 认证错误信息
+      signError: {},
       passwordLevel: 1,
       // 登录超时时间
       timeOut: null,
@@ -154,7 +156,13 @@ export default {
           // 注册成功提示并跳转
           this.$message.success(`用户【${this.signUser.account}】帐号注册成功！`)
           this.$router.replace({ name: 'signIn' })
-        }).catch(() => this.loading = false)
+        }).catch(error => {
+          this.loading = false
+          this.signError = {
+            validateStatus: 'error',
+            help: error.errorMsg
+          }
+        })
       }).catch(() => this.loading = false)
     }
   }

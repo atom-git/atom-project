@@ -2,13 +2,16 @@ package com.atom.common.websocket;
 
 import cn.hutool.core.lang.Validator;
 import com.atom.common.pojo.http.RestError;
+import com.atom.common.pojo.http.RestResponse;
 import com.atom.common.pojo.mapper.PlatformType;
 import com.atom.common.security.SessionUser;
 import com.atom.common.security.cache.IUserCacheStore;
 import com.atom.common.util.RedisUtil;
+import com.atom.server.system.service.ISystemService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
@@ -34,6 +37,18 @@ public class MessageInterceptor implements ChannelInterceptor {
 	private IUserCacheStore userCacheStore;
 
 	/**
+	 * 系统服务
+	 */
+	@Resource
+	private ISystemService systemService;
+
+	/**
+	 * 消息发送模板
+	 */
+	@Resource
+	private SimpMessagingTemplate messagingTemplate;
+
+	/**
 	 * 在消息发送之前调用，方法中可以对消息进行修改，如果此方法返回值为空，则不会发生实际的消息发送调用
 	 * @param message 消息
 	 * @param channel 通道
@@ -54,13 +69,18 @@ public class MessageInterceptor implements ChannelInterceptor {
 				if (Validator.isNotEmpty(token)) {
 					platformType = PlatformType.matchName(accessor.getFirstNativeHeader("Platform-Type"));
 					sessionUser = userCacheStore.getTokenUser(platformType, token);
-					stompTokenKey = platformType.name() + "_STOMP_TOKEN";
-					// 设置用户信息
-					accessor.setUser(sessionUser);
-					// 存入缓存可用于统计在线用户等信息 TODO 分布式系统中需要考虑多节点认证问题
-					// 记录用户连接信息
-					RedisUtil.setMap(stompTokenKey, token, sessionUser);
-					log.info("用户【{}】已上线", sessionUser.getAccount());
+					if (Validator.isNotNull(sessionUser)) {
+						stompTokenKey = platformType.name() + "_STOMP_TOKEN";
+						// 设置用户信息
+						accessor.setUser(sessionUser);
+						// 存入缓存可用于统计在线用户等信息 TODO 分布式系统中需要考虑多节点认证问题
+						// 记录用户连接信息
+						RedisUtil.setMap(stompTokenKey, token, sessionUser);
+						// 发送在线用户数到前台
+						int onlineUser = systemService.onlineUser();
+						log.info("用户【{}】已上线，当前在线用户数【{}】", sessionUser.getAccount(), onlineUser);
+						messagingTemplate.convertAndSend("/stomp/topic/onlineUser", RestResponse.success(onlineUser));
+					}
 					return message;
 				} else {
 					return MessageBuilder.withPayload(RestError.ERROR9004).build();
@@ -74,7 +94,10 @@ public class MessageInterceptor implements ChannelInterceptor {
 					stompTokenKey = platformType.name() + "_STOMP_TOKEN";
 					// 断开连接时用户下线
 					RedisUtil.remove(stompTokenKey, token);
-					log.info("用户【{}】已下线", sessionUser.getAccount());
+					// 发送在线用户数到前台
+					int onlineUser = systemService.onlineUser();
+					log.info("用户【{}】已下线，当前在线用户数【{}】", sessionUser.getAccount(), onlineUser);
+					messagingTemplate.convertAndSend("/stomp/topic/onlineUser", RestResponse.success(onlineUser));
 				}
 				return message;
 			} else {

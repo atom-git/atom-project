@@ -31,4 +31,5 @@ public interface ISystemService {
 
 	SessionUser thirdSignIn(HttpServletRequest request, String platform, SignInDTO signInDTO);
 
+	int onlineUser();
 }

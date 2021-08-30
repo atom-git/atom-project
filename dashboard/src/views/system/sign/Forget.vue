@@ -36,7 +36,7 @@
       </a-button>
     </a-form-item>
     <a-form-item v-if="device.isMobile" name="password">
-      <a-input-password v-model:value="forgetUser.password" placeholder="请输入密码" size="large" @change="handlePasswordChange" allowClear>
+      <a-input-password v-model:value="forgetUser.password" placeholder="请输入密码" size="large" @change="handlePasswordChange" @keyup.enter="handleForget" allowClear>
         <template #prefix>
           <IconFont type="LockOutlined"/>
         </template>
@@ -54,7 +54,7 @@
     </a-form-item>
     <a-form-item v-else name="password">
       <a-popover placement="left">
-        <a-input-password v-model:value="forgetUser.password" placeholder="请输入密码" size="large" @change="handlePasswordChange" allowClear>
+        <a-input-password v-model:value="forgetUser.password" placeholder="请输入密码" size="large" @change="handlePasswordChange" @keyup.enter="handleForget" allowClear>
           <template #prefix>
             <IconFont type="LockOutlined"/>
           </template>
@@ -71,7 +71,7 @@
         </template>
       </a-popover>
     </a-form-item>
-    <a-form-item>
+    <a-form-item v-bind="forgetError">
       <a-button type="primary" :loading="loading" size="large" block @click="handleForget">重置密码</a-button>
     </a-form-item>
     <a-form-item class="atom-form-flex">
@@ -116,6 +116,8 @@ export default {
         2: { title: '中', class: 'middle', percent: 66, color: '#faad14' },
         3: { title: '高', class: 'strong', percent: 100, color: '#52c41a' }
       },
+      // 认证错误信息
+      forgetError: {},
       passwordLevel: 1,
       // 登录超时时间
       timeOut: null,
@@ -154,7 +156,13 @@ export default {
           // 注册成功提示并跳转
           this.$message.success(`用户【${this.forgetUser.account}】帐号密码重置成功！`)
           this.$router.replace({ name: 'signIn' })
-        }).catch(() => this.loading = false)
+        }).catch(error => {
+          this.loading = false
+          this.signError = {
+            validateStatus: 'error',
+            help: error.errorMsg
+          }
+        })
       }).catch(() => this.loading = false)
     }
   }

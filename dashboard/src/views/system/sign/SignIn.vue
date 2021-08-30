@@ -10,7 +10,7 @@
           </a-input>
         </a-form-item>
         <a-form-item name="password">
-          <a-input-password v-model:value="signUser.password" placeholder="请输入密码" size="large" allowClear>
+          <a-input-password v-model:value="signUser.password" placeholder="请输入密码" size="large" @keyup.enter="handleSignIn" allowClear>
             <template #prefix>
               <IconFont type="LockOutlined"/>
             </template>
@@ -26,7 +26,7 @@
           </a-input>
         </a-form-item>
         <a-form-item name="verifyCode" class="atom-form-flex">
-          <a-input v-model:value="signUser.verifyCode" placeholder="请输入验证码" size="large" allowClear>
+          <a-input v-model:value="signUser.verifyCode" placeholder="请输入验证码" size="large" @keyup.enter="handleSignIn" allowClear>
             <template #prefix>
               <IconFont type="MessageOutlined"/>
             </template>

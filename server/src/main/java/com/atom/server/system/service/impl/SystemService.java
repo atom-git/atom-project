@@ -38,6 +38,7 @@ import org.springframework.util.ObjectUtils;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -400,5 +401,20 @@ public class SystemService implements ISystemService {
 		} else {
 			throw new AuthenticationServiceException(RestError.ERROR1005.getErrorMsg());
 		}
+	}
+
+	/**
+	 * 统计在线用户数推送给前台`
+	 * @return 在线用户数
+	 */
+	@Override
+	public int onlineUser() {
+		// 在线用户数
+		int onlineUser = 0;
+		Set<Serializable> stompTokenKeys = RedisUtil.getRedisTemplate().keys("*_STOMP_TOKEN");
+		if (stompTokenKeys != null && stompTokenKeys.size() > 0) {
+			onlineUser = stompTokenKeys.stream().mapToInt(mapKey -> RedisUtil.getRedisTemplate().opsForHash().keys(mapKey).size()).sum();
+		}
+		return onlineUser;
 	}
 }
