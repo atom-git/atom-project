@@ -111,7 +111,7 @@ export default {
           msgCallback((JSON.parse(frame.body) || {}).data)
         }, headers)
         // 记录订阅了哪些信息
-        this.subscribeMap[destination] = subscribe
+        this.subscribeMap[subscribe.id] = Object.assign({ destination }, subscribe)
         resolve(subscribe)
       } else {
         console.log('=====wait', this.status)
@@ -124,6 +124,8 @@ export default {
   unsubscribe: function (subscribe) {
     if (this.status === 200) {
       this.client.unsubscribe(subscribe.id)
+      // 删除订阅信息
+      delete this.subscribeMap[subscribe.id]
     } else {
       // 等待连接后再次发起订阅
       setTimeout(() => { this.unsubscribe(subscribe) }, 500)
