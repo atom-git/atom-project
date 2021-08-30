@@ -94,7 +94,7 @@ public class FileUtil {
 		Map<String, String> headers = parseHeader(clazz);
 		// 写出总的记录数
 		excelWriter.merge(headers.size() - 1, sheetName + "总记录数");
-		excelWriter.merge(headers.size() - 1, totalCnt, false);
+		excelWriter.merge(headers.size() - 1, totalCnt + "", false);
 		// 重命名列
 		for (Map.Entry<String, String> header : headers.entrySet()) {
 			excelWriter.addHeaderAlias(header.getKey(), header.getValue());
