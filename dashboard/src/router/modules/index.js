@@ -8,8 +8,9 @@ import asyncRoutes from './async'
 import constantRoutes from './constant'
 import errorRoutes from './error'
 // 合并默认路由
-const defaultRoutes = [...constantRoutes, ...errorRoutes]
+const defaultRoutes = [...constantRoutes]
 export {
   defaultRoutes,
-  asyncRoutes
+  asyncRoutes,
+  errorRoutes
 }

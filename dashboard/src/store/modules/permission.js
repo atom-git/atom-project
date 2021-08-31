@@ -1,5 +1,5 @@
 import Utils from '@/utils'
-import { asyncRoutes } from '@/router/modules'
+import { asyncRoutes, errorRoutes } from '@/router/modules'
 import { router } from '@/router'
 /**
  * 系统权限相关
@@ -59,6 +59,10 @@ const permission = {
           asyncRoute.forEach(route => {
             router.addRoute(route)
           })
+          // 加入异常路由
+          errorRoutes.forEach(route => {
+            router.addRoute(route)
+          })
           commit('setAsyncRoute', asyncRoute)
           // 设置权限生成标志位
           commit('setGenerated', true)
@@ -80,6 +84,10 @@ const permission = {
         // 根据菜单树构建动态路由
         const asyncRoute = filterAsyncRoute(asyncRoutes, menuMap)
         asyncRoute.forEach(route => {
+          router.addRoute(route)
+        })
+        // 加入异常路由
+        errorRoutes.forEach(route => {
           router.addRoute(route)
         })
         commit('setAsyncRoute', asyncRoute)
