@@ -1,11 +1,11 @@
 <template>
-  <SideLayout sideTitle="数据字典维值" :side="diaglogSize >= 720 ? 8 : 24">
+  <SideLayout sideTitle="数据字典维值" :side="dialogSize >= 720 ? 8 : 24">
     <template #sider>
       <MenuTree :loading="loading"
                 :tree="sysTypeCodeTree"
                 :replaceKeys="replaceFields"
                 :actions="actions"
-                maxHeight="45%"
+                :maxHeight="dialogSize >= 720 ? treeHeight : '45%'"
                 @tree-select="handleTreeSelect"
                 @tree-node-action="handleAction"></MenuTree>
     </template>
@@ -63,7 +63,7 @@ export default {
         this.$default.ACTION_MOVE_UP,
         this.$default.ACTION_MOVE_DOWN
       ],
-      diaglogSize: this.$default.dialog.size,
+      dialogSize: this.$store.getters.appConfig.dialog.size,
       // 请求loading
       loading: false
     }
@@ -81,6 +81,10 @@ export default {
     // 表单的标题
     formTitle () {
       return `【${this.formAction.title}】系统数据字典维值信息`
+    },
+    // 树结构的最大高度
+    treeHeight () {
+      return this.$store.getters.appConfig.dialog.type === 'drawer' ? '95%' : '70%'
     }
   },
   watch: {

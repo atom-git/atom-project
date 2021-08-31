@@ -5,9 +5,9 @@
            :width="dialogSize"
            v-model:visible="visible"
            :confirmLoading="loading"
-           :footer="footer">
+           :footer="$slots.footer ? undefined : footer">
     <!-- 外部自定义的slot传入 -->
-    <template v-for="slotName in Object.keys($slots)">
+    <template v-for="slotName in Object.keys($slots)" #[slotName]>
       <slot :name="slotName"></slot>
     </template>
   </a-modal>
@@ -18,11 +18,11 @@
             v-model:visible="visible"
             @close="$emit('cancel')">
     <!-- title挂载点 -->
-    <template v-if="Object.keys($slots).includes('title')">
+    <template v-if="Object.keys($slots).includes('title')" #title>
       <slot name="title"></slot>
     </template>
     <!-- handle挂载点 -->
-    <template v-if="Object.keys($slots).includes('handle')">
+    <template v-if="Object.keys($slots).includes('handle')" #handle>
       <slot name="handle"></slot>
     </template>
     <!-- 内容部分挂载点 -->
@@ -92,6 +92,9 @@ export default {
     dialogSize () {
       return this.width || this.$store.getters.appConfig.dialog.size
     }
+  },
+  mounted () {
+    console.log(this.$slots)
   },
   watch: {
     // 监听外部传入的显示与否

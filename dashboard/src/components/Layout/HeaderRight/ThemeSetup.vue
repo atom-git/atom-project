@@ -53,7 +53,7 @@
         <a-list-item>
           <a-list-item-meta title="页面弹窗大小"></a-list-item-meta>
           <template #actions>
-            <a-input-number size="small" step="10" v-model:value="appConfig.dialog.size" @change="handleDialogChange"/>
+            <a-input-number size="small" step="10" v-model:value="appConfig.dialog.size" @blur="handleDialogChange"/>
           </template>
         </a-list-item>
         <a-list-item>
@@ -175,6 +175,10 @@ export default {
     },
     // 响应弹窗改变
     handleDialogChange () {
+      // modal的最小宽度设置为720
+      if (this.appConfig.dialog.type === 'modal') {
+        this.appConfig.dialog.size = this.appConfig.dialog.size < 720 ? 720 : this.appConfig.dialog.size
+      }
       this.$store.dispatch('setDialog', this.appConfig.dialog)
       this.toggleUserAppConfig(() => {
         this.$nextTick(() => {
