@@ -75,10 +75,9 @@ export default {
           dataIndex: 'ifValid',
           title: '状态',
           type: 'radio',
-          format: 'formatStatus',
+          format: 'formatSwitch',
           options: [{ value: 1, title: '有效', status: 'success' }, { value: 0, title: '删除', status: 'error' }],
-          form: { filter: true, default: 1 },
-          // hidden: true
+          form: { filter: true, default: 1 }
         },
         {
           dataIndex: 'action',

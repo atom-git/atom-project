@@ -17,6 +17,10 @@
     <a-badge v-else-if="formatStatus && formatStatus().color" :color="formatStatus().color || 'cyan'" :text="formatStatus().title" />
     <a-badge v-else status="default" text="值缺失"/>
   </template>
+  <!-- 格式化开关，switch -->
+  <template v-else-if="isFormat('formatSwitch')">
+    <a-switch v-bind="switchOption" :checked="content" @change="handleAction({ name: column.key || column.dataIndex, extend: true })"></a-switch>
+  </template>
   <!-- 格式化操作按钮 -->
   <template v-else-if="isFormat('formatAction')">
     <TipButtonGroup :actions="column.actions" @click="handleAction"></TipButtonGroup>
@@ -38,6 +42,7 @@
  * 格式化头像: formatAvatar, avatar用于设置头像的属性，属性可以参考avatar组件
  * 格式化标签: formatTag, options { value, title, status }配置tag展示选项，属性可以参考tag组件
  * 格式化状态: formatStatus, options { value, title, status }，应用状态字段更好的展示
+ * 格式化开关: formatSwitch, options { value, title, status }，应用状态字段更好的展示，以及直接操作其状态
  * 格式化操作按钮: formatAction|type[icon, text, both], actions [ a-tooltip, a-button ] 属性合集
  * 下面的均为值变化
  * 格式化对象: formatObject|ObjectKey，应用于外键属性渲染
@@ -81,6 +86,15 @@ export default {
     // 格式化后的内容
     content () {
       return this.initContent()
+    },
+    // switch的属性
+    switchOption () {
+      return {
+        checkedValue: this.$utils.isValid(this.column.form.checkedValue) || 1,
+        checkedChildren: this.column.form.checkedChildren || '启',
+        unCheckedValue: this.$utils.isValid(this.column.form.checkedValue) || 0,
+        unCheckedChildren: this.column.form.checkedChildren || '禁'
+      }
     }
   },
   emits: ['table-row-action'],

@@ -192,7 +192,7 @@ export default {
     },
     // 响应form表单的提交
     handleFormSubmit (action, model, onFinish) {
-      this.$http.post(action.apiUrl, model).then(() => {
+      this.$http.put(action.apiUrl, model).then(() => {
         this.$message.success('数据'.concat(action.name === this.$default.ACTION_ADD.name ? this.$default.ACTION_ADD.title : this.$default.ACTION_EDIT.title, '成功！'))
         // 重新加载数据
         this.loadTableData()

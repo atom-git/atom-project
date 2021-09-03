@@ -122,8 +122,7 @@ export default {
           type: 'radio',
           dataIndex: 'ifValid',
           title: '状态',
-          format: 'formatStatus',
-          options: [{ value: 1, title: '启用', status: 'success' }, { value: 0, title: '禁用', status: 'error' }],
+          format: 'formatSwitch',
           form: { filter: true, edit: true, rules: [{ required: true, type: 'any' }] }
         },
         {
@@ -177,8 +176,8 @@ export default {
     // 响应行级操作按钮
     handleRowAction (action, row) {
       this.sysUser = row
+      const self = this
       if (action.name === 'reset') {
-        const self = this
         this.$modal.$confirm({
           content: `确认要重置用户【${row.name}的密码吗？`,
           icon: createVNode(ExclamationCircleOutlined),
@@ -196,6 +195,19 @@ export default {
           this.sysRoleList = sysUserRole.sysRoleList
           this.userRole.userRoleList = sysUserRole.userRoleList
           this.visible = true
+        })
+      } else if (action.name === 'ifValid') {
+        this.$modal.$confirm({
+          content: `确认要${row.ifValid ? '禁用' : '启用'}用户【${row.name}】吗？`,
+          icon: createVNode(ExclamationCircleOutlined),
+          confirmLoading: self.loading,
+          onOk () {
+            self.loading = true
+            row.ifValid = row.ifValid ? 0 : 1
+            self.$api.system.user.update(row).then(() => {
+              self.$message.success(`用户【${row.name}】已被${row.ifValid ? '禁用' : '启用'}！`)
+            }).finally(() => { self.loading = false })
+          }
         })
       }
     },

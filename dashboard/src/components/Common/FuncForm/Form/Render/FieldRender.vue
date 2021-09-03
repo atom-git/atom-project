@@ -102,7 +102,9 @@
             :style="{ width: 'auto' }"
             :checked="modelValue"
             :checkedValue="renderField.checkedValue || 1"
+            :checkedChildren="renderField.checkedChildren || '启'"
             :unCheckedValue="renderField.unCheckedValue || 0"
+            :unCheckedChildren="renderField.unCheckedChildren || '禁'"
             @change="handleChange"/>
   <!-- cascader TODO 分级loadData -->
   <a-cascader v-else-if="isType('cascader')"
