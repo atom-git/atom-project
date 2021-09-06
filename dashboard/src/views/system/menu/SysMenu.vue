@@ -56,13 +56,13 @@ export default {
       // 当前菜单对象
       sysMenu: defaultSysMenu,
       // 表单的动作
-      formAction: this.$default.ACTION_ADD,
+      formAction: this.$default.ACTION.ADD,
       // 菜单树的按钮
       actions: [
-        this.$default.ACTION_ADD,
-        this.$default.ACTION_DELETE,
-        this.$default.ACTION_MOVE_UP,
-        this.$default.ACTION_MOVE_DOWN
+        this.$default.ACTION.ADD,
+        this.$default.ACTION.DELETE,
+        this.$default.ACTION.MOVE_UP,
+        this.$default.ACTION.MOVE_DOWN
       ],
       // 请求loading
       loading: false
@@ -108,19 +108,19 @@ export default {
     },
     // 响应树节点的选择
     handleTreeSelect (nodeKey, treeNode) {
-      this.formAction = this.$default.ACTION_EDIT
+      this.formAction = this.$default.ACTION.EDIT
       this.sysMenu = treeNode
     },
     // 响应角色新增
     handleAdd () {
-      this.formAction = this.$default.ACTION_ADD
+      this.formAction = this.$default.ACTION.ADD
       this.sysMenu = defaultSysMenu
     },
     // 响应菜单扩展操作
     handleAction (action, treeNode) {
-      if (action === this.$default.ACTION_ADD.name) {
+      if (action === this.$default.ACTION.ADD.name) {
         // 新增时，重置右侧表单
-        this.formAction = this.$default.ACTION_ADD
+        this.formAction = this.$default.ACTION.ADD
         // 根据当前菜单的子集的order最大值，设置order默认值
         const children = treeNode.children
         let menuOrder = 1
@@ -130,7 +130,7 @@ export default {
           menuOrder = orderArray[0] + 1
         }
         this.sysMenu = { parentId: treeNode.id, menuOrder: menuOrder, hidden: 0, ifValid: 1 }
-      } else if (action === this.$default.ACTION_DELETE.name) {
+      } else if (action === this.$default.ACTION.DELETE.name) {
         this.sysMenu = treeNode
         // 删除时弹出删除框
         const self = this
@@ -148,7 +148,7 @@ export default {
             })
           }
         })
-      } else if (action === this.$default.ACTION_MOVE_UP.name || action === this.$default.ACTION_MOVE_DOWN.name) {
+      } else if (action === this.$default.ACTION.MOVE_UP.name || action === this.$default.ACTION.MOVE_DOWN.name) {
         this.loading = true
         this.$api.system.menu.exchange(action, treeNode).then(sysMenu => {
           this.sysMenu = sysMenu

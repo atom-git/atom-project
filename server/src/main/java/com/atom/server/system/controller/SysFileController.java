@@ -9,6 +9,7 @@ import com.atom.common.pojo.table.PageData;
 import com.atom.common.pojo.table.TableData;
 import com.atom.common.security.SessionUser;
 import com.atom.server.system.pojo.dto.SysFileDTO;
+import com.atom.server.system.pojo.dto.UploadDTO;
 import com.atom.server.system.pojo.filter.SysFileFilter;
 import com.atom.server.system.pojo.vo.SysFileVO;
 import com.atom.server.system.service.ISysFileService;
@@ -79,16 +80,30 @@ public class SysFileController {
 	}
 
 	/**
+	 * 上传文件，主要用于组件使用过程中的附件上传，根据当前路由分不同目录进行上传
+	 * @param sessionUser 当前操作人
+	 * @param folder 文件夹路径
+	 * @param file   文件
+	 * @return 文件上传成功的结果
+	 */
+	@PostMapping("upload")
+	@ApiOperation("新增")
+	@Permission(actionType = ActionType.N, grantType = GrantType.MANUAL)
+	public RestResponse<UploadResult> upload(SessionUser sessionUser, String folder, @RequestBody MultipartFile file) {
+		return RestResponse.success(sysFileService.upload(sessionUser, folder, file));
+	}
+
+	/**
 	 * 上传文件
 	 * @param sessionUser 当前操作人
 	 * @param file        文件
 	 * @param parentId    父节点ID
 	 * @return 文件上传成功的结果
 	 */
-	@PostMapping("upload")
+	@PostMapping("upload/{parentId}")
 	@ApiOperation("新增")
 	@Permission(actionType = ActionType.N, grantType = GrantType.MANUAL)
-	public RestResponse<UploadResult> upload(SessionUser sessionUser, @NotNull @RequestBody MultipartFile file, Integer parentId) {
+	public RestResponse<UploadResult> upload(SessionUser sessionUser, @NotNull @RequestBody MultipartFile file, @PathVariable Integer parentId) {
 		return RestResponse.success(sysFileService.upload(sessionUser, file, parentId));
 	}
 

@@ -14,7 +14,7 @@ export default class menu {
   static tree () {
     return axios({
       url: '/system/menu/tree',
-      method: Default.HTTP_METHOD_GET
+      method: Default.HTTP_METHOD.GET
     })
   }
 
@@ -25,7 +25,7 @@ export default class menu {
   static update (sysMenu) {
     return axios({
       url: '/system/menu/update',
-      method: Default.HTTP_METHOD_PUT,
+      method: Default.HTTP_METHOD.PUT,
       data: sysMenu
     })
   }
@@ -37,7 +37,7 @@ export default class menu {
   static delete (menuId) {
     return axios({
       url: Utils.formatStr('/system/menu/delete/{s}', menuId),
-      method: Default.HTTP_METHOD_DELETE
+      method: Default.HTTP_METHOD.DELETE
     })
   }
 
@@ -49,7 +49,7 @@ export default class menu {
   static exchange (move, sysMenu) {
     return axios({
       url: Utils.formatStr('/system/menu/exchange/{s}', move),
-      method: Default.HTTP_METHOD_POST,
+      method: Default.HTTP_METHOD.POST,
       data: sysMenu
     })
   }

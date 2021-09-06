@@ -17,7 +17,7 @@ export default class system {
   static signIn (signUser) {
     return axios({
       url: '/login',
-      method: Default.HTTP_METHOD_POST,
+      method: Default.HTTP_METHOD.POST,
       data: signUser
     })
   }
@@ -28,7 +28,7 @@ export default class system {
   static signUp (signUser) {
     return axios({
       url: '/system/user/sign/up',
-      method: Default.HTTP_METHOD_POST,
+      method: Default.HTTP_METHOD.POST,
       data: signUser
     })
   }
@@ -39,7 +39,7 @@ export default class system {
   static captcha () {
     return axios({
       url: '/system/captcha',
-      method: Default.HTTP_METHOD_GET
+      method: Default.HTTP_METHOD.GET
     })
   }
 
@@ -50,7 +50,7 @@ export default class system {
   static judgeCaptcha (captcha) {
     return axios({
       url: '/system/judge/captcha',
-      method: Default.HTTP_METHOD_POST,
+      method: Default.HTTP_METHOD.POST,
       data: captcha
     })
   }
@@ -62,7 +62,7 @@ export default class system {
   static forgetPassword (forget) {
     return axios({
       url: '/system/forget/password',
-      method: Default.HTTP_METHOD_POST,
+      method: Default.HTTP_METHOD.POST,
       data: forget
     })
   }
@@ -73,7 +73,7 @@ export default class system {
   static signOut () {
     return axios({
       url: '/system/logout',
-      method: Default.HTTP_METHOD_POST
+      method: Default.HTTP_METHOD.POST
     })
   }
 
@@ -84,7 +84,7 @@ export default class system {
   static sendVerifyCode (phone) {
     return axios({
       url: Utils.formatStr('/system/send/{s}/verifyCode', phone),
-      method: Default.HTTP_METHOD_POST
+      method: Default.HTTP_METHOD.POST
     })
   }
 
@@ -94,7 +94,7 @@ export default class system {
   static thirdState () {
     return axios({
       url: '/system/third/state',
-      method: Default.HTTP_METHOD_GET
+      method: Default.HTTP_METHOD.GET
     })
   }
 
@@ -105,7 +105,7 @@ export default class system {
   static thirdSignIn (signUser) {
     return axios({
       url: '/system/third/sign/in',
-      method: Default.HTTP_METHOD_POST,
+      method: Default.HTTP_METHOD.POST,
       data: signUser
     })
   }

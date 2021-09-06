@@ -22,25 +22,23 @@ import java.util.List;
 public class SysFile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     @Column(name = "file_name")
     private String name;
     @Column(name = "file_type")
     private String fileType;
     @Column(name = "file_size")
     private Long size;
-    @Column(name = "file_authority")
-    private Integer authority;
-    @Column(name = "file_key")
-    private String key;
-    @Column(name = "bucket_name")
-    private String bucketName;
     @Column(name = "parent_id")
-    private Integer parentId;
+    private Long parentId;
+    @Column(name = "file_key")
+    private String fileKey;
+    @Column(name = "file_url")
+    private String fileUrl;
     @Column(name = "creator_id")
     private Integer creatorId;
     @Column(name = "creator_name")
-    private Integer creatorName;
+    private String creatorName;
     @Column(name = "modify_time")
     private Date modifyTime;
 }

@@ -274,11 +274,11 @@ export default {
       if (extend) {
         this.$emit('table-func-action', action)
       } else {
-        if (action.name === this.$default.ACTION_ADD.name) {
-          this.formType = this.$default.ACTION_ADD.name
+        if (action.name === this.$default.ACTION.ADD.name) {
+          this.formType = this.$default.ACTION.ADD.name
           this.formModel = this.$utils.deepClone(this.defaultModel)
           this.formVisible = true
-        } else if (action.name === this.$default.ACTION_REFRESH.name || action.name === this.$default.ACTION_DOWNLOAD.name) {
+        } else if (action.name === this.$default.ACTION.REFRESH.name || action.name === this.$default.ACTION.DOWNLOAD.name) {
           this.$emit('table-func-action', action)
         }
       }
@@ -295,11 +295,11 @@ export default {
         this.$emit('table-row-action', action, row, column)
       } else {
         // 默认编辑
-        if (action.name === this.$default.ACTION_EDIT.name) {
-          this.formType = this.$default.ACTION_EDIT.name
+        if (action.name === this.$default.ACTION.EDIT.name) {
+          this.formType = this.$default.ACTION.EDIT.name
           this.formModel = row
           this.formVisible = true
-        } else if (action.name === this.$default.ACTION_DELETE.name) {
+        } else if (action.name === this.$default.ACTION.DELETE.name) {
           // 默认删除
           action.replaceFields = Object.assign({ id: 'id', name: 'name' }, column.form ? column.form.replaceFields || {} : {})
           const self = this

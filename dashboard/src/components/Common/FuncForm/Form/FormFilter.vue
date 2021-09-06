@@ -18,12 +18,12 @@
             <!-- inputGroup字段 -->
             <FieldRender v-else-if="field.type === 'inputGroup'"
                          :field="field"
-                         :size="size">
+                         :size="field.size || size">
               <template #group>
                 <FieldRender v-for="groupField in field.group"
                              :key="groupField.name"
                              :field="groupField"
-                             :size="size"
+                             :size="groupField.size || size"
                              v-model="model[groupField.name]"></FieldRender>
               </template>
             </FieldRender>

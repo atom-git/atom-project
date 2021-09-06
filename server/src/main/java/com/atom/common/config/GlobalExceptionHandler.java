@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,6 +34,19 @@ import java.util.stream.Collectors;
 @ResponseBody
 @Slf4j
 public class GlobalExceptionHandler {
+
+    /**
+     * 拦截MultipartFile文件过大异常
+     * @param request 请求
+     * @param e 权限不足异常
+     * @return 响应
+     */
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public RestResponse<RestError> handleMaxUploadSizeException(HttpServletRequest request, MaxUploadSizeExceededException e) {
+        log.error("【上传文件超大异常】请求：{}, 原因：{}", request.getRequestURI(), e);
+        return RestResponse.error(RestError.ERROR9005);
+    }
 
     /**
      * 拦截权限不足的异常

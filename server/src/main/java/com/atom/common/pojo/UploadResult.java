@@ -1,5 +1,6 @@
 package com.atom.common.pojo;
 
+import com.atom.server.system.entity.SysFile;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,6 +38,11 @@ public class UploadResult {
     private Double progress;
 
     /**
+     * 文件key
+     */
+    private Long key;
+
+    /**
      * 文件名称
      */
     private String name;
@@ -47,17 +53,42 @@ public class UploadResult {
     private String type;
 
     /**
-     * cos上的key
-     */
-    private String key;
-
-    /**
      * 文件预览地址
      */
     private String url;
 
     /**
-     * 关联表主键id
+     * 创建失败的请求响应
+     * @param errCode 失败code
+     * @param errMsg 失败原因
      */
-    private Integer uid;
+    public UploadResult(String errCode, String errMsg) {
+        this.errCode = errCode;
+        this.errMsg = errMsg;
+    }
+
+    /**
+     * 创建上传成功的返回
+     * @param sysFile 系统附件对象
+     * @return 上传结果
+     */
+    public static UploadResult success (SysFile sysFile) {
+        UploadResult uploadResult = new UploadResult();
+        uploadResult.setSuccess(true);
+        uploadResult.setKey(sysFile.getId());
+        uploadResult.setName(sysFile.getName());
+        uploadResult.setType(sysFile.getFileType());
+        uploadResult.setUrl(sysFile.getFileKey());
+        return uploadResult;
+    }
+
+    /**
+     * 创建上传失败的返回
+     * @param errCode 失败code
+     * @param errMsg 失败原因
+     * @return 上传结果
+     */
+    public static UploadResult error (String errCode, String errMsg) {
+        return new UploadResult(errCode, errMsg);
+    }
 }

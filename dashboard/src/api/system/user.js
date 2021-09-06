@@ -13,7 +13,7 @@ export default class user {
   static me () {
     return axios({
       url: '/system/user/me',
-      method: Default.HTTP_METHOD_GET
+      method: Default.HTTP_METHOD.GET
     })
   }
 
@@ -25,7 +25,7 @@ export default class user {
   static updatePassword (userId, sysUser) {
     return axios({
       url: Utils.formatStr('/system/user/update/{s}/password', userId),
-      method: Default.HTTP_METHOD_POST,
+      method: Default.HTTP_METHOD.POST,
       data: sysUser
     })
   }
@@ -38,7 +38,7 @@ export default class user {
   static updateHead (userId, sysUser) {
     return axios({
       url: Utils.formatStr('/system/user/update/{s}/head', userId),
-      method: Default.HTTP_METHOD_POST,
+      method: Default.HTTP_METHOD.POST,
       data: sysUser
     })
   }
@@ -52,7 +52,7 @@ export default class user {
   static list (filter, page, order) {
     return axios({
       url: '/system/user/list',
-      method: Default.HTTP_METHOD_GET,
+      method: Default.HTTP_METHOD.GET,
       params: { ...filter, ...page, ...{ orderData: order } }
     })
   }
@@ -64,7 +64,7 @@ export default class user {
   static update (sysUser) {
     return axios({
       url: '/system/user/update',
-      method: Default.HTTP_METHOD_PUT,
+      method: Default.HTTP_METHOD.PUT,
       data: sysUser
     })
   }
@@ -76,7 +76,7 @@ export default class user {
   static resetPassword (userId) {
     return axios({
       url: Utils.formatStr('/system/user/reset/{s}/password', userId),
-      method: Default.HTTP_METHOD_POST
+      method: Default.HTTP_METHOD.POST
     })
   }
 
@@ -87,7 +87,7 @@ export default class user {
   static toggleValid (userId) {
     return axios({
       url: Utils.formatStr('/system/user/toggle/valid/{s}', userId),
-      method: Default.HTTP_METHOD_GET
+      method: Default.HTTP_METHOD.GET
     })
   }
 
@@ -98,7 +98,7 @@ export default class user {
   static roleList (userId) {
     return axios({
       url: Utils.formatStr('/system/user/{s}/role', userId),
-      method: Default.HTTP_METHOD_GET
+      method: Default.HTTP_METHOD.GET
     })
   }
 
@@ -110,7 +110,7 @@ export default class user {
   static updateRole (userId, userRoleList) {
     return axios({
       url: Utils.formatStr('/system/user/{s}/update/role', userId),
-      method: Default.HTTP_METHOD_POST,
+      method: Default.HTTP_METHOD.POST,
       data: userRoleList
     })
   }
@@ -122,7 +122,7 @@ export default class user {
   static updateAppConfig (appConfig) {
     return axios({
       url: '/system/user/update/appConfig',
-      method: Default.HTTP_METHOD_PUT,
+      method: Default.HTTP_METHOD.PUT,
       data: appConfig
     })
   }

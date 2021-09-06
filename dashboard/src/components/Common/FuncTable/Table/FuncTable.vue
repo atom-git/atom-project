@@ -160,12 +160,12 @@ export default {
       if (action.extend) {
         this.$emit('table-func-action', action)
       } else {
-        if (action.name === this.$default.ACTION_REFRESH.name) {
+        if (action.name === this.$default.ACTION.REFRESH.name) {
           // 刷新表格
           this.loadTableData().then(() => {
             this.$message.success('数据刷新成功！')
           })
-        } else if (action.name === this.$default.ACTION_DOWNLOAD.name) {
+        } else if (action.name === this.$default.ACTION.DOWNLOAD.name) {
           // 下载数据
           this.download = true
           this.loadTableData().then(() => {
@@ -180,7 +180,7 @@ export default {
       if (action.extend) {
         this.$emit('table-row-action', action, row, column)
       } else {
-        if (action.name === this.$default.ACTION_DELETE.name) {
+        if (action.name === this.$default.ACTION.DELETE.name) {
           const apiUrl = this.$utils.concatStr(action.apiUrl, row[action.replaceFields.id])
           this.$http.delete(apiUrl).then(() => {
             // 提示删除成功
@@ -193,7 +193,7 @@ export default {
     // 响应form表单的提交
     handleFormSubmit (action, model, onFinish) {
       this.$http.put(action.apiUrl, model).then(() => {
-        this.$message.success('数据'.concat(action.name === this.$default.ACTION_ADD.name ? this.$default.ACTION_ADD.title : this.$default.ACTION_EDIT.title, '成功！'))
+        this.$message.success('数据'.concat(action.name === this.$default.ACTION.ADD.name ? this.$default.ACTION.ADD.title : this.$default.ACTION.EDIT.title, '成功！'))
         // 重新加载数据
         this.loadTableData()
         this.$emit('table-form-submit', action, model)

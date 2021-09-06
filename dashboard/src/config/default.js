@@ -15,6 +15,7 @@
  * storeOptions: vuex-persistedstate持久化插件配置[key:存储中的key值，storage:使用什么存储]
  * colorSet: 主题颜色集
  * extendColorSet: 主题扩展颜色集
+ * acceptType: 上传接收的文件类型
  * 其他常量配置
  */
 export default {
@@ -44,23 +45,34 @@ export default {
   },
   colorSet: ['#5B8FF9', '#5AD8A6', '#5D7092', '#F6BD16', '#E8684A', '#6DC8EC', '#9270CA', '#FF9D4D', '#269A99', '#FF99C3'],
   extendColorSet: ['#BDD2FD', '#BDEFDB', '#C2C8D5', '#FBE5A2', '#F6C3B7', '#B6E3F5', '#D3C6EA', '#FFD8B8', '#AAD8D8', '#FFD6E7'],
+  acceptType: {
+    file: '.doc,.docx,.xls,.xlsx,.ppt,.pptx,.wps,.pdf',
+    img: '.png,.jpg,.jpeg,.bmp,.gif,.svg,.ico',
+    radio: '.mpeg,.mp3,.wav',
+    video: '.mp4,.rmvb,.avi,.mkv,.wmv'
+  },
   // 系统首页
   HOME_PAGE: 'dashboard',
   // WebSocket连接endpoint
   WEB_SOCKET_ENDPOINT: '/stomp',
   // HTTP方法常量
-  HTTP_METHOD_GET: 'GET',
-  HTTP_METHOD_POST: 'POST',
-  HTTP_METHOD_PUT: 'PUT',
-  HTTP_METHOD_DELETE: 'DELETE',
+  HTTP_METHOD: {
+    GET: 'GET',
+    POST: 'POST',
+    PUT: 'PUT',
+    DELETE: 'DELETE'
+  },
   // 系统运转的功能性常量
-  ACTION_ADD: { icon: 'FileAddOutlined', title: '新增', name: 'add' },
-  ACTION_EDIT: { icon: 'FormOutlined', title: '编辑', name: 'edit' },
-  ACTION_DELETE: { icon: 'DeleteOutlined', title: '删除', name: 'delete' },
-  ACTION_UPLOAD: { icon: 'CloudUploadOutlined', title: '导入', name: 'upload' },
-  ACTION_DOWNLOAD: { icon: 'CloudDownloadOutlined', title: '下载', name: 'download' },
-  ACTION_REFRESH: { icon: 'ReloadOutlined', title: '刷新', name: 'refresh' },
-  ACTION_SETTING: { icon: 'SettingOutlined', title: '列设置', name: 'setting' },
-  ACTION_MOVE_UP: { icon: 'ArrowUpOutlined', title: '上移', name: 'moveup' },
-  ACTION_MOVE_DOWN: { icon: 'ArrowDownOutlined', title: '下移', name: 'movedown' }
+  ACTION: {
+    ADD: { icon: 'FileAddOutlined', title: '新增', name: 'add' },
+    EDIT: { icon: 'FormOutlined', title: '编辑', name: 'edit' },
+    PREVIEW: { icon: 'EyeOutlined', title: '预览', name: 'preview' },
+    DELETE: { icon: 'DeleteOutlined', title: '删除', name: 'delete' },
+    UPLOAD: { icon: 'CloudUploadOutlined', title: '导入', name: 'upload' },
+    DOWNLOAD: { icon: 'CloudDownloadOutlined', title: '下载', name: 'download' },
+    REFRESH: { icon: 'ReloadOutlined', title: '刷新', name: 'refresh' },
+    SETTING: { icon: 'SettingOutlined', title: '列设置', name: 'setting' },
+    MOVE_UP: { icon: 'ArrowUpOutlined', title: '上移', name: 'moveup' },
+    MOVE_DOWN: { icon: 'ArrowDownOutlined', title: '下移', name: 'movedown' }
+  }
 }

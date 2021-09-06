@@ -29,17 +29,17 @@
         <!-- inputGroup字段 -->
         <FieldRender v-else-if="field.type === 'inputGroup'"
                      :field="field"
-                     :size="size">
+                     :size="field.size || size">
           <template #group>
             <FieldRender v-for="groupField in field.group"
                          :key="groupField.name"
                          :field="groupField"
-                         :size="size"
+                         :size="groupField.size || size"
                          v-model="model[groupField.name]"></FieldRender>
           </template>
         </FieldRender>
         <!-- 非inputGroup字段 -->
-        <FieldRender v-else :field="field" :size="size" v-model="model[field.name]"></FieldRender>
+        <FieldRender v-else :field="field" :size="field.size || size" v-model="model[field.name]"></FieldRender>
       </a-form-item>
       <!-- 操作按钮区域 -->
       <a-form-item v-if="!hiddenFooter"

@@ -16,7 +16,9 @@
       <TipButton :key="index"
                  v-bind="action"
                  :size="size"
-                 @click="$emit('click', action)">{{ action.title }}</TipButton>
+                 @click="$emit('click', action)">
+        <template v-if="type === 'text' || type === 'both'">{{ action.title }}</template>
+      </TipButton>
     </template>
     <a-divider :key="'divider_' + index" v-if="index < (actions.length - 1)" type="vertical"/>
   </template>
@@ -34,6 +36,11 @@ export default {
     TipButton
   },
   props: {
+    // 按钮的类型 text | icon | both
+    type: {
+      type: String,
+      default: 'text'
+    },
     // TipButtonGroup的操作按钮绑定
     actions: {
       type: Array,

@@ -20,12 +20,12 @@ export default class news {
       if (newsIds.length === 1) {
         return axios({
           url: Utils.formatStr('/system/news/read/{s}', newsIds[0]),
-          method: Default.HTTP_METHOD_PUT
+          method: Default.HTTP_METHOD.PUT
         })
       } else {
         return axios({
           url: '/system/news/read',
-          method: Default.HTTP_METHOD_PUT,
+          method: Default.HTTP_METHOD.PUT,
           data: newsIds
         })
       }
@@ -39,7 +39,7 @@ export default class news {
   static unread (newsId) {
     return axios({
       url: Utils.formatStr('/system/news/unread/{s}', newsId),
-      method: Default.HTTP_METHOD_PUT
+      method: Default.HTTP_METHOD.PUT
     })
   }
 
@@ -50,7 +50,7 @@ export default class news {
   static delete (newsId) {
     return axios({
       url: Utils.formatStr('/system/news/delete/{s}', newsId),
-      method: Default.HTTP_METHOD_DELETE
+      method: Default.HTTP_METHOD.DELETE
     })
   }
 }

@@ -1,0 +1,38 @@
+/**
+文件组件样式
+ */
+.atom-file.ant-card {
+  &.uploading {
+    border-color: @primary-4;
+    box-shadow: 0 0 5px @primary-4;
+  }
+  &.error {
+    border-color: @red-4;
+    box-shadow: 0 0 5px @red-4;
+  }
+  &.done {
+    border-color: @green-4;
+    box-shadow: 0 0 5px @green-4;
+  }
+  .ant-card-body {
+    padding: 8px;
+    .ant-list-item-meta {
+      align-items: center;
+      .ant-list-item-meta-avatar {
+        .ant-avatar {
+          background: @primary-color;
+        }
+      }
+      .ant-list-item-meta-content {
+        .ant-list-item-meta-title {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        .ant-list-item-meta-description {
+
+        }
+      }
+    }
+  }
+}

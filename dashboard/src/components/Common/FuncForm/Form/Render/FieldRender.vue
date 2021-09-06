@@ -187,7 +187,7 @@
 
   <!-- 自定义组件 -->
   <!-- fileUpload 文件上传 -->
-  <FileUpload v-else-if="isType('fileUpload')" v-bind="renderField" :value="modelValue"/>
+  <FileUpload v-else-if="isType('fileUpload')" v-bind="renderField" name="file" :modelValue="modelValue"/>
   <!-- iconPicker -->
   <IconPicker v-else-if="isType('iconPicker')" v-bind="renderField" :modelValue="modelValue" @change="handleChange"/>
   <!-- iconRadio -->

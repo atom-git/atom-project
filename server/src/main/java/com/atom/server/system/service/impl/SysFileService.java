@@ -1,9 +1,18 @@
 package com.atom.server.system.service.impl;
 
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.io.file.FileWriter;
+import cn.hutool.core.lang.Validator;
+import com.atom.common.pojo.GlobalConstant;
 import com.atom.common.pojo.UploadResult;
+import com.atom.common.pojo.http.RestError;
 import com.atom.common.pojo.table.PageData;
 import com.atom.common.pojo.table.TableData;
 import com.atom.common.security.SessionUser;
+import com.atom.common.util.FileNameUtil;
+import com.atom.server.system.dao.ISysFileDao;
+import com.atom.server.system.entity.SysFile;
 import com.atom.server.system.pojo.dto.SysFileDTO;
 import com.atom.server.system.pojo.filter.SysFileFilter;
 import com.atom.server.system.pojo.vo.SysFileVO;
@@ -12,6 +21,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -22,6 +34,12 @@ import java.util.List;
 @Service
 @Transactional
 public class SysFileService implements ISysFileService {
+
+	/**
+	 * 系统附件Dao
+	 */
+	@Resource
+	private ISysFileDao sysFileDao;
 
 	/**
 	 * 查询附件列表
@@ -54,8 +72,80 @@ public class SysFileService implements ISysFileService {
 		return null;
 	}
 
+
 	/**
-	 * 上传文件
+	 * 上传文件，主要用于组件使用过程中的附件上传，根据当前路由分不同目录进行上传，配置了静态资源的目录位置 atom.file.path
+	 * @param sessionUser 当前操作人
+	 * @param folder   文件上传参数
+	 * @param file        文件
+	 * @return 文件上传成功的结果
+	 */
+	@Override
+	public UploadResult upload(SessionUser sessionUser, String folder, MultipartFile file) {
+		// 判断文件存储路径是否存在，文件路径为${atom.file.address}后拼接文件夹路径
+		File storeFolder = FileUtil.file(GlobalConstant.FILE_STORAGE, folder);
+		Long folderId;
+		if (storeFolder.exists()) {
+			SysFile folderFile = sysFileDao.findOneByField("fileKey", "file/" + folder);
+			if (Validator.isNotNull(folderFile)) {
+				folderId = folderFile.getId();
+			} else {
+				// 创建文件夹记录
+				folderFile = new SysFile();
+				folderFile.setName(folder);
+				folderFile.setFileType("folder");
+				folderFile.setFileKey("/file/" + folder);
+				folderFile.setFileUrl(storeFolder.getAbsolutePath());
+				folderFile.setCreatorId(sessionUser.getId());
+				folderFile.setCreatorName(sessionUser.getName());
+				folderFile.setModifyTime(DateUtil.date());
+				folderId = (Long) sysFileDao.save(folderFile);
+			}
+		} else {
+			// 创建文件夹
+			boolean folderExist = storeFolder.mkdirs();
+			if (folderExist) {
+				// 创建文件夹记录
+				SysFile folderFile = new SysFile();
+				folderFile.setName(folder);
+				folderFile.setFileType("folder");
+				folderFile.setFileKey("/file/" + folder);
+				folderFile.setFileUrl(storeFolder.getAbsolutePath());
+				folderFile.setCreatorId(sessionUser.getId());
+				folderFile.setCreatorName(sessionUser.getName());
+				folderFile.setModifyTime(DateUtil.date());
+				folderId = (Long) sysFileDao.save(folderFile);
+			} else {
+				return UploadResult.error(RestError.ERROR9000.getErrorCode(), "文件夹不存在");
+			}
+		}
+		// 获取文件名称，在文件名后面
+		FileNameUtil.FileName fileName = FileNameUtil.getFileName(file.getOriginalFilename(), "/file/" + folder + "/");
+		String fileUrl = storeFolder.getAbsolutePath() + "/" + fileName.getName();
+		// 写入文件
+		FileWriter fileWriter = FileWriter.create(FileUtil.file(fileUrl));
+		try {
+			fileWriter.writeFromStream(file.getInputStream());
+			SysFile sysFile = new SysFile();
+			sysFile.setName(fileName.getName());
+			sysFile.setFileType(fileName.getSuffix());
+			sysFile.setSize(file.getSize());
+			// 设置父级文件夹
+			sysFile.setParentId(folderId);
+			sysFile.setFileKey(fileName.getNameKey());
+			sysFile.setFileUrl(fileUrl);
+			sysFile.setCreatorId(sessionUser.getId());
+			sysFile.setCreatorName(sessionUser.getName());
+			sysFile.setModifyTime(DateUtil.date());
+			sysFileDao.save(sysFile);
+			return UploadResult.success(sysFile);
+		} catch (IOException e) {
+			return UploadResult.error(RestError.ERROR9000.getErrorCode(), "文件读写异常");
+		}
+	}
+
+	/**
+	 * 上传文件，主要用于文件管理模块上传文件
 	 * @param sessionUser 当前操作人
 	 * @param file        文件
 	 * @param parentId    父节点ID

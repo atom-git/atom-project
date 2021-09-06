@@ -103,10 +103,10 @@ export default {
     },
     // 响应表格功能按钮
     handleFuncAction (action) {
-      if (action.name === this.$default.ACTION_ADD.name) {
+      if (action.name === this.$default.ACTION.ADD.name) {
         // 新增
         this.sysTypeCodeList.push(this.$utils.deepClone(defaultSysTypeCode))
-      } else if (action.name === this.$default.ACTION_REFRESH.name) {
+      } else if (action.name === this.$default.ACTION.REFRESH.name) {
         // 刷新
         this.loadSysTypeCodeList(this.sysType)
       }

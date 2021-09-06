@@ -36,7 +36,7 @@ public class FileUtil {
 	 * @return 返回文件
 	 */
 	public static <T> String createExcel(String fileName, Class<T> clazz, Iterable<T> data, long totalCnt) {
-		return createExcel(GlobalConstant.DEFAULT_FILE_PATH, fileName, fileName, clazz, data, totalCnt);
+		return createExcel(GlobalConstant.FILE_STORAGE, fileName, fileName, clazz, data, totalCnt);
 	}
 
 	/**

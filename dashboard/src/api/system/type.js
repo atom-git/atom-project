@@ -16,7 +16,7 @@ export default class type {
   static codeList (filter) {
     return axios({
       url: '/system/type/code/list',
-      method: Default.HTTP_METHOD_GET,
+      method: Default.HTTP_METHOD.GET,
       params: filter
     })
   }
@@ -28,7 +28,7 @@ export default class type {
   static codeTree (filter) {
     return axios({
       url: '/system/type/code/tree',
-      method: Default.HTTP_METHOD_GET,
+      method: Default.HTTP_METHOD.GET,
       params: filter
     })
   }
@@ -40,7 +40,7 @@ export default class type {
   static deleteCode (codeId) {
     return axios({
       url: Utils.formatStr('/system/type/code/delete/{s}', codeId),
-      method: Default.HTTP_METHOD_DELETE
+      method: Default.HTTP_METHOD.DELETE
     })
   }
 
@@ -52,7 +52,7 @@ export default class type {
   static updateCode (sysType, sysTypeCode) {
     return axios({
       url: Utils.formatStr('/system/type/{s}/code/update', sysType.id),
-      method: Default.HTTP_METHOD_PUT,
+      method: Default.HTTP_METHOD.PUT,
       data: sysTypeCode
     })
   }
@@ -65,7 +65,7 @@ export default class type {
   static exchange (move, sysTypeCode) {
     return axios({
       url: Utils.formatStr('/system/type/exchange/{s}', move),
-      method: Default.HTTP_METHOD_POST,
+      method: Default.HTTP_METHOD.POST,
       data: sysTypeCode
     })
   }

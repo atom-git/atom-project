@@ -14,7 +14,7 @@ export default class dept {
   static tree () {
     return axios({
       url: '/system/dept/tree',
-      method: Default.HTTP_METHOD_GET
+      method: Default.HTTP_METHOD.GET
     })
   }
 
@@ -25,7 +25,7 @@ export default class dept {
   static update (sysDept) {
     return axios({
       url: '/system/dept/update/',
-      method: Default.HTTP_METHOD_PUT,
+      method: Default.HTTP_METHOD.PUT,
       data: sysDept
     })
   }
@@ -37,7 +37,7 @@ export default class dept {
   static delete (deptId) {
     return axios({
       url: Utils.formatStr('/system/dept/delete/{s}', deptId),
-      method: Default.HTTP_METHOD_DELETE
+      method: Default.HTTP_METHOD.DELETE
     })
   }
 }

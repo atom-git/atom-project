@@ -27,13 +27,13 @@ public class GlobalConstant {
 	}
 
 	/**
-	 * 默认文件路径
+	 * 文件存储位置
 	 */
-	public static String DEFAULT_FILE_PATH;
+	public static String FILE_STORAGE;
 
-	@Value("${atom.default.file.path}")
-	public void setDefaultFilePath(String defaultFilePath) {
-		DEFAULT_FILE_PATH = defaultFilePath;
+	@Value("${atom.file.address}")
+	public void setFileStorage(String fileStorage) {
+		FILE_STORAGE = fileStorage;
 	}
 
 	/**

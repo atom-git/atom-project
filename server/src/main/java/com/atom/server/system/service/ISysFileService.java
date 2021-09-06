@@ -5,6 +5,7 @@ import com.atom.common.pojo.table.PageData;
 import com.atom.common.pojo.table.TableData;
 import com.atom.common.security.SessionUser;
 import com.atom.server.system.pojo.dto.SysFileDTO;
+import com.atom.server.system.pojo.dto.UploadDTO;
 import com.atom.server.system.pojo.filter.SysFileFilter;
 import com.atom.server.system.pojo.vo.SysFileVO;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,6 +23,8 @@ public interface ISysFileService {
 	List<SysFileVO> folderTree();
 
 	SysFileVO addFolder(SysFileDTO sysFileDTO);
+
+	UploadResult upload(SessionUser sessionUser, String folder, MultipartFile file);
 
 	UploadResult upload(SessionUser sessionUser, MultipartFile file, Integer parentId);
 

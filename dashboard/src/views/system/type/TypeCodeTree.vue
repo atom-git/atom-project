@@ -55,13 +55,13 @@ export default {
       // 数据字典维值
       sysTypeCode: defaultSysTypeCode,
       // 表单的动作
-      formAction: this.$default.ACTION_ADD,
+      formAction: this.$default.ACTION.ADD,
       // 菜单树的按钮
       actions: [
-        this.$default.ACTION_ADD,
-        this.$default.ACTION_DELETE,
-        this.$default.ACTION_MOVE_UP,
-        this.$default.ACTION_MOVE_DOWN
+        this.$default.ACTION.ADD,
+        this.$default.ACTION.DELETE,
+        this.$default.ACTION.MOVE_UP,
+        this.$default.ACTION.MOVE_DOWN
       ],
       dialogSize: this.$store.getters.appConfig.dialog.size,
       // 请求loading
@@ -110,19 +110,19 @@ export default {
     },
     // 响应树节点的选择
     handleTreeSelect (nodeKey, treeNode) {
-      this.formAction = this.$default.ACTION_EDIT
+      this.formAction = this.$default.ACTION.EDIT
       this.sysTypeCode = treeNode
     },
     // 响应角色新增
     handleAdd () {
-      this.formAction = this.$default.ACTION_ADD
+      this.formAction = this.$default.ACTION.ADD
       this.sysTypeCode = this.$utils.deepClone(defaultSysTypeCode)
     },
     // 响应字典扩展操作
     handleAction (action, treeNode) {
-      if (action === this.$default.ACTION_ADD.name) {
+      if (action === this.$default.ACTION.ADD.name) {
         // 新增时，重置右侧表单
-        this.formAction = this.$default.ACTION_ADD
+        this.formAction = this.$default.ACTION.ADD
         // 根据当前菜单的子集的order最大值，设置order默认值
         const children = treeNode.children
         let typeOrder = 1
@@ -132,7 +132,7 @@ export default {
           typeOrder = orderArray[0] + 1
         }
         this.sysTypeCode = { parentId: treeNode.id, typeOrder: typeOrder }
-      } else if (action === this.$default.ACTION_DELETE.name) {
+      } else if (action === this.$default.ACTION.DELETE.name) {
         this.sysTypeCode = treeNode
         // 删除时弹出删除框
         const self = this
@@ -150,7 +150,7 @@ export default {
             })
           }
         })
-      } else if (action === this.$default.ACTION_MOVE_UP.name || action === this.$default.ACTION_MOVE_DOWN.name) {
+      } else if (action === this.$default.ACTION.MOVE_UP.name || action === this.$default.ACTION.MOVE_DOWN.name) {
         this.loading = true
         this.$api.system.type.exchange(action, treeNode).then(sysTypeCode => {
           this.sysTypeCode = sysTypeCode

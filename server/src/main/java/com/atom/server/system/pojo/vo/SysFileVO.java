@@ -29,18 +29,14 @@ public class SysFileVO extends AbsEntity {
     private String fileType;
     @ApiModelProperty("文件大小")
     private Long size;
-    @ApiModelProperty("文件/文件夹的操作权限")
-    private Integer authority;
-    @ApiModelProperty("cos上的key")
-    private String key;
-    @ApiModelProperty("cos上的桶名称")
-    private String bucketName;
-    @ApiModelProperty("附件预览地址")
-    private String url;
     @ApiModelProperty("文件的父节点（文件夹）id")
     private Integer parentId;
+    @ApiModelProperty("文件路径")
+    private String fileUrl;
     @ApiModelProperty("创建人ID")
     private Integer creatorId;
+    @ApiModelProperty("创建人名称")
+    private Integer creatorName;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty("创建/修改时间")
     private Date modifyTime;

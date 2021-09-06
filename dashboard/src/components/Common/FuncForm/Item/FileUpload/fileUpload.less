@@ -1,0 +1,45 @@
+/**
+文件上传组件样式
+ */
+.atom-upload {
+  &.small {
+    .ant-upload.ant-upload-drag .ant-upload-btn {
+      padding: 8px 0;
+    }
+  }
+  &.large {
+    .ant-upload.ant-upload-drag .ant-upload-btn {
+      padding: 24px 0;
+    }
+  }
+  .ant-upload.ant-upload-drag {
+    margin-bottom: 16px;
+    .ant-upload-drag-container {
+      color: @primary-color;
+      &:hover {
+        color: @primary-5;
+      }
+      .anticon {
+        font-size: 32px;
+      }
+      .atom-upload-tip {
+        vertical-align: top;
+        height: 32px;
+        line-height: 32px;
+        margin-left: 8px;
+      }
+    }
+  }
+  &.small {
+    .ant-upload.ant-upload-select-picture-card, .ant-upload-list-picture-card .ant-upload-list-item {
+      width: 60px;
+      height: 60px;
+    }
+  }
+  &.large {
+    .ant-upload.ant-upload-select-picture-card, .ant-upload-list-picture-card .ant-upload-list-item {
+      width: 100px;
+      height: 100px;
+    }
+  }
+}

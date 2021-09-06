@@ -4,9 +4,9 @@
     <span class="atom-func-btn" v-permission="funcZone.add && funcZone.add.permission">
       <TipButton v-if="funcZone.add"
                  :type="funcZone.add.type || 'primary'"
-                 :icon="funcZone.add.icon || Default.ACTION_ADD.icon"
-                 @click="handleClick(funcZone.add, Default.ACTION_ADD, funcZone.add.extend || false)">
-        {{ funcZone.add.title || Default.ACTION_ADD.title }}
+                 :icon="funcZone.add.icon || Default.ACTION.ADD.icon"
+                 @click="handleClick(funcZone.add, Default.ACTION.ADD, funcZone.add.extend || false)">
+        {{ funcZone.add.title || Default.ACTION.ADD.title }}
       </TipButton>
     </span>
 
@@ -26,28 +26,28 @@
     <!-- 默认功能按钮 -->
     <!-- download 下载 -->
     <a-tooltip v-if="funcZone.download"
-               :title="funcZone.download.title || Default.ACTION_DOWNLOAD.title">
-      <IconFont :type="funcZone.download.icon || Default.ACTION_DOWNLOAD.icon"
-                @click="handleClick(funcZone.download, Default.ACTION_DOWNLOAD, funcZone.download.extend || false)"/>
+               :title="funcZone.download.title || Default.ACTION.DOWNLOAD.title">
+      <IconFont :type="funcZone.download.icon || Default.ACTION.DOWNLOAD.icon"
+                @click="handleClick(funcZone.download, Default.ACTION.DOWNLOAD, funcZone.download.extend || false)"/>
     </a-tooltip>
     <!-- upload 导入 -->
     <a-tooltip v-if="funcZone.upload"
-               :title="funcZone.upload.title || Default.ACTION_UPLOAD.title">
-      <IconFont :type="funcZone.upload.icon || Default.ACTION_UPLOAD.icon"
-                @click="handleClick(funcZone.upload, Default.ACTION_UPLOAD, funcZone.upload.extend || false)"/>
+               :title="funcZone.upload.title || Default.ACTION.UPLOAD.title">
+      <IconFont :type="funcZone.upload.icon || Default.ACTION.UPLOAD.icon"
+                @click="handleClick(funcZone.upload, Default.ACTION.UPLOAD, funcZone.upload.extend || false)"/>
     </a-tooltip>
     <!-- refresh 刷新 -->
     <a-tooltip v-if="funcZone.refresh"
-               :title="funcZone.refresh.title || Default.ACTION_REFRESH.title">
-      <IconFont :type="funcZone.refresh.icon || Default.ACTION_REFRESH.icon"
-                @click="handleClick(funcZone.refresh, Default.ACTION_REFRESH, funcZone.refresh.extend || false)"/>
+               :title="funcZone.refresh.title || Default.ACTION.REFRESH.title">
+      <IconFont :type="funcZone.refresh.icon || Default.ACTION.REFRESH.icon"
+                @click="handleClick(funcZone.refresh, Default.ACTION.REFRESH, funcZone.refresh.extend || false)"/>
     </a-tooltip>
     <!-- setting 列配置 -->
     <a-popover v-if="funcZone.setting"
                placement="bottomRight"
                :trigger="['click']">
-      <a-tooltip :title="funcZone.setting.title || Default.ACTION_SETTING.title">
-        <IconFont :type="funcZone.setting.icon || Default.ACTION_SETTING.icon"/>
+      <a-tooltip :title="funcZone.setting.title || Default.ACTION.SETTING.title">
+        <IconFont :type="funcZone.setting.icon || Default.ACTION.SETTING.icon"/>
       </a-tooltip>
       <template #title>
         <a-row>

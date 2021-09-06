@@ -14,7 +14,7 @@ export default class action {
   static topicList () {
     return axios({
       url: '/system/action/topic/list',
-      method: Default.HTTP_METHOD_GET
+      method: Default.HTTP_METHOD.GET
     })
   }
 
@@ -24,7 +24,7 @@ export default class action {
   static list () {
     return axios({
       url: '/system/action/list',
-      method: Default.HTTP_METHOD_GET
+      method: Default.HTTP_METHOD.GET
     })
   }
 }

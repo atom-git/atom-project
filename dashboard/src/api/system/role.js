@@ -15,7 +15,7 @@ export default class role {
   static list () {
     return axios({
       url: '/system/role/list',
-      method: Default.HTTP_METHOD_GET
+      method: Default.HTTP_METHOD.GET
     })
   }
 
@@ -26,7 +26,7 @@ export default class role {
   static update (sysRole) {
     return axios({
       url: '/system/role/update',
-      method: Default.HTTP_METHOD_PUT,
+      method: Default.HTTP_METHOD.PUT,
       data: sysRole
     })
   }
@@ -38,7 +38,7 @@ export default class role {
   static delete (roleId) {
     return axios({
       url: Utils.formatStr('/system/role/delete/{s}', roleId),
-      method: Default.HTTP_METHOD_DELETE
+      method: Default.HTTP_METHOD.DELETE
     })
   }
 
@@ -49,7 +49,7 @@ export default class role {
   static permission (roleId) {
     return axios({
       url: Utils.formatStr('/system/role/{s}/permission', roleId),
-      method: Default.HTTP_METHOD_GET
+      method: Default.HTTP_METHOD.GET
     })
   }
 
@@ -61,7 +61,7 @@ export default class role {
   static updatePermission (roleId, permission) {
     return axios({
       url: Utils.formatStr('/system/role/{s}/update/permission', roleId),
-      method: Default.HTTP_METHOD_POST,
+      method: Default.HTTP_METHOD.POST,
       data: permission
     })
   }

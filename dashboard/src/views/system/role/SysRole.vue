@@ -63,11 +63,11 @@ export default {
       // 当前操作的角色
       sysRole: defaultSysRole,
       // 表单的动作
-      formAction: this.$default.ACTION_ADD,
+      formAction: this.$default.ACTION.ADD,
       // 组织树的按钮
       actions: [
         { icon: 'ContactsOutlined', title: '赋权', name: 'permission' },
-        this.$default.ACTION_DELETE
+        this.$default.ACTION.DELETE
       ],
       // 当前激活的信息窗
       activeKey: 'edit',
@@ -127,7 +127,7 @@ export default {
     },
     // 响应角色新增
     handleAdd () {
-      this.formAction = this.$default.ACTION_ADD
+      this.formAction = this.$default.ACTION.ADD
       this.sysRole = defaultSysRole
       this.activeKey = 'edit'
     },
@@ -135,7 +135,7 @@ export default {
     handleAction (action, treeNode) {
       if (action === 'permission') {
         // 赋权
-        this.formAction = this.$default.ACTION_EDIT
+        this.formAction = this.$default.ACTION.EDIT
         this.sysRole = treeNode
         // 切换至赋权tab
         this.activeKey = 'permission'
