@@ -6,6 +6,7 @@ import cn.hutool.core.io.file.FileWriter;
 import cn.hutool.core.lang.Validator;
 import com.atom.common.pojo.GlobalConstant;
 import com.atom.common.pojo.UploadResult;
+import com.atom.common.pojo.exception.BusException;
 import com.atom.common.pojo.http.RestError;
 import com.atom.common.pojo.table.PageData;
 import com.atom.common.pojo.table.TableData;
@@ -141,6 +142,27 @@ public class SysFileService implements ISysFileService {
 			return UploadResult.success(sysFile);
 		} catch (IOException e) {
 			return UploadResult.error(RestError.ERROR9000.getErrorCode(), "文件读写异常");
+		}
+	}
+
+	/**
+	 * 删除文件
+	 * @param fileId 文件id
+	 */
+	@Override
+	public boolean delete(Integer fileId) {
+		// 查询文件是否存在
+		SysFile sysFile = sysFileDao.findOne(fileId);
+		if (Validator.isNull(sysFile)) {
+			throw new BusException(RestError.ERROR9000, "文件不存在");
+		}
+		// 根据目录删除文件
+		String fileUrl = sysFile.getFileUrl();
+		File file = FileUtil.file(fileUrl);
+		if (Validator.isNotNull(file)) {
+			return file.delete();
+		} else {
+			return false;
 		}
 	}
 

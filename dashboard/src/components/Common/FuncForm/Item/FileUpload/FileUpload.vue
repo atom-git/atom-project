@@ -15,7 +15,7 @@
       <IconFont type="CloudUploadOutlined" /><span class="atom-upload-tip">上传文件</span>
     </a-tooltip>
   </a-upload-dragger>
-  <FileList :fileList="fileList"></FileList>
+  <FileList :fileList="fileList" @file-action="handleAction"></FileList>
 </template>
 
 <script>
@@ -126,27 +126,23 @@ export default {
         this.$message.error(`文件上传失败，原因:【${file.response.errorMsg}】`)
       }
     },
-    // 响应文件预览
-    handlePreview (file) {
-      console.log(file)
-      this.curFile = file
-    },
-    // 响应文件下载
-    handleDownload (file) {
-      console.log(file)
-      this.curFile = file
-    },
     // 响应拖拽文件不符合 accept 类型时的回调
     handleReject () {
       this.$message.warn(`允许上传的文件类型为【${this.acceptType}】`)
     },
-    // 响应文件删除
-    handleRemove (file) {
-      console.log(file)
-      this.curFile = file
-      return new Promise(resolve => {
-        resolve(true)
-      })
+    // 响应文件操作
+    handleAction (action, file) {
+      if (action.name === this.$default.ACTION.DELETE.name) {
+        // 删除
+        this.fileList.forEach((curFile, index) => {
+          if (curFile.key === file.key) {
+            this.fileList.slice(index, 1)
+          }
+        })
+      } else {
+        // 其他操作
+        this.$emit('file-action', action, this.file)
+      }
     }
   }
 }

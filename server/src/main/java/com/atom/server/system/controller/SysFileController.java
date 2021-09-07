@@ -87,10 +87,22 @@ public class SysFileController {
 	 * @return 文件上传成功的结果
 	 */
 	@PostMapping("upload")
-	@ApiOperation("新增")
+	@ApiOperation("上传文件")
 	@Permission(actionType = ActionType.N, grantType = GrantType.MANUAL)
 	public RestResponse<UploadResult> upload(SessionUser sessionUser, String folder, @RequestBody MultipartFile file) {
 		return RestResponse.success(sysFileService.upload(sessionUser, folder, file));
+	}
+
+	/**
+	 * 删除文件
+	 * @param fileId 文件id
+	 * @return 是否删除成功
+	 */
+	@DeleteMapping("delete/{fileId}")
+	@ApiOperation("删除文件")
+	@Permission(actionType = ActionType.D, grantType = GrantType.MANUAL)
+	public RestResponse<Boolean> delete(@PathVariable Integer fileId) {
+		return RestResponse.success(sysFileService.delete(fileId));
 	}
 
 	/**
@@ -101,7 +113,7 @@ public class SysFileController {
 	 * @return 文件上传成功的结果
 	 */
 	@PostMapping("upload/{parentId}")
-	@ApiOperation("新增")
+	@ApiOperation("上传文件到文件夹")
 	@Permission(actionType = ActionType.N, grantType = GrantType.MANUAL)
 	public RestResponse<UploadResult> upload(SessionUser sessionUser, @NotNull @RequestBody MultipartFile file, @PathVariable Integer parentId) {
 		return RestResponse.success(sysFileService.upload(sessionUser, file, parentId));

@@ -26,6 +26,8 @@ public interface ISysFileService {
 
 	UploadResult upload(SessionUser sessionUser, String folder, MultipartFile file);
 
+	boolean delete(Integer fileId);
+
 	UploadResult upload(SessionUser sessionUser, MultipartFile file, Integer parentId);
 
 	void operate(String operate, SysFileDTO sysFileDTO);

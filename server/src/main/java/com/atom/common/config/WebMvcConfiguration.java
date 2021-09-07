@@ -40,6 +40,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
         registry.addResourceHandler("/dashboard/**", "/html/dashboard/**")
                 .addResourceLocations("classpath:/dashboard/");
         // 配置静态资源文件的路径解析
+        // 与采用spring.mvc.static-path-pattern,spring.web.resources.static-locations的配置方式能力一样
         registry.addResourceHandler(filePath).addResourceLocations("file:" + fileAddress);
     }
 

@@ -6,7 +6,8 @@
       <File :key="index"
             :file="item"
             :actions="actions"
-            :replaceKeys="replaceKeys"></File>
+            :replaceKeys="replaceKeys"
+            @file-action="handleAction"></File>
     </template>
   </a-list>
 </template>
@@ -34,6 +35,12 @@ export default {
     replaceKeys: {
       type: Object,
       required: false
+    }
+  },
+  methods: {
+    // 响应文件操作
+    handleAction (action, file) {
+      this.$emit('file-action', action, file)
     }
   }
 }

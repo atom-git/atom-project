@@ -13,7 +13,7 @@
           <!-- 标题 -->
           <template #title>
             <a-tooltip :title="file[replaceFields.title]">
-              <a :to="file[replaceFields.url]" target='_blank'>{{ file[replaceFields.title] }}</a>
+              {{ file[replaceFields.title] }}
             </a-tooltip>
           </template>
           <!-- 操作按钮 -->
@@ -34,7 +34,7 @@
           </template>
           <!-- 上传成功显示操作按钮 -->
           <template v-else #description>
-            <TipButtonGroup type="icon" :actions="actions"></TipButtonGroup>
+            <TipButtonGroup type="icon" :actions="actions" @click="handleAction"></TipButtonGroup>
           </template>
         </a-list-item-meta>
       </a-card>
@@ -59,7 +59,7 @@ export default {
     // 文件的操作动作
     actions: {
       type: Array,
-      default: () => ([Default.ACTION.PREVIEW, Default.ACTION.DELETE])
+      default: () => ([Default.ACTION.PREVIEW, Default.ACTION.DOWNLOAD, Default.ACTION.DELETE])
     },
     // item替换字段
     replaceKeys: {
@@ -82,6 +82,30 @@ export default {
         return { status: 'success' }
       } else {
         return { status: 'normal' }
+      }
+    }
+  },
+  methods: {
+    // 响应文件操作
+    handleAction (action) {
+      if (action.name === this.$default.ACTION.PREVIEW.name) {
+        // 预览文件
+      } else if (action.name === this.$default.ACTION.DOWNLOAD.name) {
+        // 下载文件
+        this.$api.system.file.download(this.file)
+      } else if (action.name === this.$default.ACTION.DELETE.name) {
+        // 删除文件
+        this.$api.system.file.delete(this.file).then(state => {
+          if (state) {
+            this.$message.success(`文件【${this.file.name}】删除成功！`)
+            this.$emit('file-action', action, this.file)
+          } else {
+            this.$message.warn(`文件【${this.file.name}】删除失败！`)
+          }
+        })
+      } else {
+        // 其他操作
+        this.$emit('file-action', action, this.file)
       }
     }
   }
