@@ -1,6 +1,7 @@
 package com.atom.common.pojo.http;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.lang.Validator;
 import com.atom.common.pojo.mapper.ActionType;
 import com.atom.common.pojo.mapper.PlatformType;
 import lombok.AllArgsConstructor;
@@ -85,7 +86,7 @@ public class RestRequest {
 	 */
 	public void setResult(RestResponse<?> result) {
 		this.result = result;
-		this.status = result.getStatus();
+		this.status = Validator.isNotNull(result) ? result.getStatus() : 200;
 	}
 
 	/**

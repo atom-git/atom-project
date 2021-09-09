@@ -5,7 +5,7 @@ import com.atom.common.pojo.exception.BusException;
 import com.atom.common.pojo.http.RestError;
 import com.atom.common.pojo.table.PageData;
 import com.atom.common.pojo.table.TableData;
-import com.atom.common.util.FileUtil;
+import com.atom.common.util.DownloadUtil;
 import com.atom.common.util.TreeUtil;
 import com.atom.server.system.dao.ISysTypeCodeDao;
 import com.atom.server.system.dao.ISysTypeDao;
@@ -103,7 +103,7 @@ public class SysTypeService implements ISysTypeService {
 				// 查询记录数
 				totalCnt = sysTypeCodeDao.countByType(sysTypeSet.toArray());
 				List<SysTypeCodeVO> sysTypeVOList = sysTypeCodeList.stream().map(sysTypeCodeVOConverter::doForward).collect(Collectors.toList());
-				FileUtil.downlodExcel("系统数据字典", SysTypeCodeVO.class, sysTypeVOList, totalCnt, response);
+				DownloadUtil.downlodExcel("系统数据字典", SysTypeCodeVO.class, sysTypeVOList, totalCnt, response);
 			}
 			return new TableData<>(pageData, totalCnt);
 		} else {

@@ -2,7 +2,7 @@ package com.atom.server.system.service.impl;
 
 import com.atom.common.pojo.table.PageData;
 import com.atom.common.pojo.table.TableData;
-import com.atom.common.util.FileUtil;
+import com.atom.common.util.DownloadUtil;
 import com.atom.server.system.dao.ISysActionDao;
 import com.atom.server.system.dao.ISysActionTopicDao;
 import com.atom.server.system.entity.SysAction;
@@ -84,7 +84,7 @@ public class SysActionService implements ISysActionService {
 		long totalCnt = sysActionDao.countByDC(dc);
 		// 如果是下载，则生成excel
 		if (pageData.getDownload()) {
-			FileUtil.downlodExcel("系统动作资源", SysActionVO.class, sysActionVOList, totalCnt, response);
+			DownloadUtil.downlodExcel("系统动作资源", SysActionVO.class, sysActionVOList, totalCnt, response);
 			return new TableData<>(pageData, totalCnt);
 		} else {
 			return new TableData<>(pageData, sysActionVOList, totalCnt);

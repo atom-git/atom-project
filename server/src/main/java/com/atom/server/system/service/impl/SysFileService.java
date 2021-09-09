@@ -11,6 +11,7 @@ import com.atom.common.pojo.http.RestError;
 import com.atom.common.pojo.table.PageData;
 import com.atom.common.pojo.table.TableData;
 import com.atom.common.security.SessionUser;
+import com.atom.common.util.DownloadUtil;
 import com.atom.common.util.FileNameUtil;
 import com.atom.server.system.dao.ISysFileDao;
 import com.atom.server.system.entity.SysFile;
@@ -23,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -55,26 +57,6 @@ public class SysFileService implements ISysFileService {
 	}
 
 	/**
-	 * 查询文件夹目录
-	 * @return 附件列表及分页数据
-	 */
-	@Override
-	public List<SysFileVO> folderTree() {
-		return null;
-	}
-
-	/**
-	 * 新增文件夹
-	 * @param sysFileDTO 系统附件传输对象
-	 * @return 返回文件夹信息
-	 */
-	@Override
-	public SysFileVO addFolder(SysFileDTO sysFileDTO) {
-		return null;
-	}
-
-
-	/**
 	 * 上传文件，主要用于组件使用过程中的附件上传，根据当前路由分不同目录进行上传，配置了静态资源的目录位置 atom.file.path
 	 * @param sessionUser 当前操作人
 	 * @param folder   文件上传参数
@@ -86,39 +68,28 @@ public class SysFileService implements ISysFileService {
 		// 判断文件存储路径是否存在，文件路径为${atom.file.address}后拼接文件夹路径
 		File storeFolder = FileUtil.file(GlobalConstant.FILE_STORAGE, folder);
 		Long folderId;
-		if (storeFolder.exists()) {
-			SysFile folderFile = sysFileDao.findOneByField("fileKey", "file/" + folder);
-			if (Validator.isNotNull(folderFile)) {
-				folderId = folderFile.getId();
-			} else {
-				// 创建文件夹记录
-				folderFile = new SysFile();
-				folderFile.setName(folder);
-				folderFile.setFileType("folder");
-				folderFile.setFileKey("/file/" + folder);
-				folderFile.setFileUrl(storeFolder.getAbsolutePath());
-				folderFile.setCreatorId(sessionUser.getId());
-				folderFile.setCreatorName(sessionUser.getName());
-				folderFile.setModifyTime(DateUtil.date());
-				folderId = (Long) sysFileDao.save(folderFile);
-			}
-		} else {
+		if (!storeFolder.exists()) {
 			// 创建文件夹
 			boolean folderExist = storeFolder.mkdirs();
-			if (folderExist) {
-				// 创建文件夹记录
-				SysFile folderFile = new SysFile();
-				folderFile.setName(folder);
-				folderFile.setFileType("folder");
-				folderFile.setFileKey("/file/" + folder);
-				folderFile.setFileUrl(storeFolder.getAbsolutePath());
-				folderFile.setCreatorId(sessionUser.getId());
-				folderFile.setCreatorName(sessionUser.getName());
-				folderFile.setModifyTime(DateUtil.date());
-				folderId = (Long) sysFileDao.save(folderFile);
-			} else {
+			if (!folderExist) {
 				return UploadResult.error(RestError.ERROR9000.getErrorCode(), "文件夹不存在");
 			}
+		}
+		// 判断文件夹记录存在与否
+		SysFile folderFile = sysFileDao.findOneByField("fileKey", "/file/" + folder);
+		if (Validator.isNotNull(folderFile)) {
+			folderId = folderFile.getId();
+		} else {
+			// 创建文件夹记录
+			folderFile = new SysFile();
+			folderFile.setName(folder);
+			folderFile.setFileType("folder");
+			folderFile.setFileKey("/file/" + folder);
+			folderFile.setFileUrl(storeFolder.getAbsolutePath());
+			folderFile.setCreatorId(sessionUser.getId());
+			folderFile.setCreatorName(sessionUser.getName());
+			folderFile.setModifyTime(DateUtil.date());
+			folderId = (Long) sysFileDao.save(folderFile);
 		}
 		// 获取文件名称，在文件名后面
 		FileNameUtil.FileName fileName = FileNameUtil.getFileName(file.getOriginalFilename(), "/file/" + folder + "/");
@@ -150,7 +121,7 @@ public class SysFileService implements ISysFileService {
 	 * @param fileId 文件id
 	 */
 	@Override
-	public boolean delete(Integer fileId) {
+	public boolean delete(Long fileId) {
 		// 查询文件是否存在
 		SysFile sysFile = sysFileDao.findOne(fileId);
 		if (Validator.isNull(sysFile)) {
@@ -160,10 +131,46 @@ public class SysFileService implements ISysFileService {
 		String fileUrl = sysFile.getFileUrl();
 		File file = FileUtil.file(fileUrl);
 		if (Validator.isNotNull(file)) {
+			sysFileDao.delete(sysFile);
 			return file.delete();
 		} else {
-			return false;
+			throw new BusException(RestError.ERROR9000, "文件不存在");
 		}
+	}
+
+	/**
+	 * 下载文件
+	 * @param fileId 文件id
+	 * @param response 响应
+	 */
+	@Override
+	public void download(Long fileId, HttpServletResponse response) {
+		// 查询文件是否存在
+		SysFile sysFile = sysFileDao.findOne(fileId);
+		if (Validator.isNull(sysFile)) {
+			throw new BusException(RestError.ERROR9000, "文件不存在");
+		}
+		// 下载文件
+		DownloadUtil.download(sysFile.getFileUrl(), response);
+	}
+
+	/**
+	 * 查询文件夹目录
+	 * @return 附件列表及分页数据
+	 */
+	@Override
+	public List<SysFileVO> folderTree() {
+		return null;
+	}
+
+	/**
+	 * 新增文件夹
+	 * @param sysFileDTO 系统附件传输对象
+	 * @return 返回文件夹信息
+	 */
+	@Override
+	public SysFileVO addFolder(SysFileDTO sysFileDTO) {
+		return null;
 	}
 
 	/**
@@ -174,7 +181,7 @@ public class SysFileService implements ISysFileService {
 	 * @return 文件上传成功的结果
 	 */
 	@Override
-	public UploadResult upload(SessionUser sessionUser, MultipartFile file, Integer parentId) {
+	public UploadResult upload(SessionUser sessionUser, MultipartFile file, Long parentId) {
 		return null;
 	}
 

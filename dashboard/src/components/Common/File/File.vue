@@ -90,12 +90,16 @@ export default {
     handleAction (action) {
       if (action.name === this.$default.ACTION.PREVIEW.name) {
         // 预览文件
+        this.$message.success(`文件预览功能暂未开放`)
       } else if (action.name === this.$default.ACTION.DOWNLOAD.name) {
         // 下载文件
-        this.$api.system.file.download(this.file)
+        this.$api.system.file.download(this.file.key).then(response => {
+          this.$utils.download(response)
+          this.$message.success(`文件【${this.file.name}】下载成功！`)
+        })
       } else if (action.name === this.$default.ACTION.DELETE.name) {
         // 删除文件
-        this.$api.system.file.delete(this.file).then(state => {
+        this.$api.system.file.delete(this.file.key).then(state => {
           if (state) {
             this.$message.success(`文件【${this.file.name}】删除成功！`)
             this.$emit('file-action', action, this.file)

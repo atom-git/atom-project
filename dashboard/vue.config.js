@@ -87,9 +87,6 @@ module.exports = {
       '/stomp': {
         target: 'https://localhost:8443',
         ws: true
-      },
-      '/file': {
-        target: 'https://localhost:8443'
       }
     }
   },

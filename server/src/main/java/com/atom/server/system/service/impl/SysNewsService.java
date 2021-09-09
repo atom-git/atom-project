@@ -2,14 +2,13 @@ package com.atom.server.system.service.impl;
 
 import cn.hutool.core.lang.Validator;
 import com.atom.common.pojo.exception.BusException;
-import com.atom.common.pojo.exception.RestException;
 import com.atom.common.pojo.http.RestError;
 import com.atom.common.pojo.mapper.IfValid;
 import com.atom.common.pojo.mapper.NewsType;
 import com.atom.common.pojo.table.PageData;
 import com.atom.common.pojo.table.TableData;
 import com.atom.common.security.SessionUser;
-import com.atom.common.util.FileUtil;
+import com.atom.common.util.DownloadUtil;
 import com.atom.server.system.dao.ISysNewsDao;
 import com.atom.server.system.entity.SysNews;
 import com.atom.server.system.pojo.filter.SysNewsFilter;
@@ -95,7 +94,7 @@ public class SysNewsService implements ISysNewsService {
 		long totalCnt = sysNewsDao.countByDC(dc);
 		// 如果是下载，则生成excel
 		if (pageData.getDownload()) {
-			FileUtil.downlodExcel("系统消息", SysNewsVO.class, sysNewsVOList, totalCnt, response);
+			DownloadUtil.downlodExcel("系统消息", SysNewsVO.class, sysNewsVOList, totalCnt, response);
 			return new TableData<>(pageData, totalCnt);
 		} else {
 			return new TableData<>(pageData, sysNewsVOList, totalCnt);

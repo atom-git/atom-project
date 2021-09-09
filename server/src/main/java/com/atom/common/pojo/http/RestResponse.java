@@ -59,7 +59,7 @@ public class RestResponse<T> extends AbsEntity {
 	 * 数据
 	 */
 	@ApiModelProperty("响应具体数据")
-	private T data;
+	private T data = null;
 
 	/**
 	 * 正常响应

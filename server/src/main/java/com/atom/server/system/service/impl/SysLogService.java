@@ -5,7 +5,7 @@ import com.atom.common.pojo.mapper.LogType;
 import com.atom.common.pojo.table.PageData;
 import com.atom.common.pojo.table.TableData;
 import com.atom.common.security.SessionUser;
-import com.atom.common.util.FileUtil;
+import com.atom.common.util.DownloadUtil;
 import com.atom.server.system.dao.ISysLogDao;
 import com.atom.server.system.entity.SysLog;
 import com.atom.server.system.pojo.filter.SysLogFilter;
@@ -72,7 +72,7 @@ public class SysLogService implements ISysLogService {
 		long totalCnt = sysLogDao.countByDC(dc);
 		// 如果是下载，则生成excel
 		if (pageData.getDownload()) {
-			FileUtil.downlodExcel("系统日志", SysLogVO.class, sysLogVOList, totalCnt, response);
+			DownloadUtil.downlodExcel("系统日志", SysLogVO.class, sysLogVOList, totalCnt, response);
 			return new TableData<>(pageData, totalCnt);
 		} else {
 			return new TableData<>(pageData, sysLogVOList, totalCnt);

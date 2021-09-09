@@ -136,7 +136,7 @@ export default {
         // 删除
         this.fileList.forEach((curFile, index) => {
           if (curFile.key === file.key) {
-            this.fileList.slice(index, 1)
+            this.fileList.splice(index, 1)
           }
         })
       } else {

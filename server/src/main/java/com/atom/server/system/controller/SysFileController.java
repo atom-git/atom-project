@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -57,6 +58,44 @@ public class SysFileController {
 	}
 
 	/**
+	 * 上传文件，主要用于组件使用过程中的附件上传，根据当前路由分不同目录进行上传
+	 * @param sessionUser 当前操作人
+	 * @param folder 文件夹路径
+	 * @param file   文件
+	 * @return 文件上传成功的结果
+	 */
+	@PostMapping("upload")
+	@ApiOperation("上传文件")
+	@Permission(actionType = ActionType.N, grantType = GrantType.MANUAL)
+	public RestResponse<UploadResult> upload(SessionUser sessionUser, String folder, @RequestBody MultipartFile file) {
+		return RestResponse.success(sysFileService.upload(sessionUser, folder, file));
+	}
+
+	/**
+	 * 删除文件
+	 * @param fileId 文件id
+	 * @return 是否删除成功
+	 */
+	@DeleteMapping("delete/{fileId}")
+	@ApiOperation("删除文件")
+	@Permission(actionType = ActionType.D, grantType = GrantType.MANUAL)
+	public RestResponse<Boolean> delete(@PathVariable Long fileId) {
+		return RestResponse.success(sysFileService.delete(fileId));
+	}
+
+	/**
+	 * 下载文件
+	 * @param fileId 文件id
+	 * @param response 响应
+	 */
+	@GetMapping("download/{fileId}")
+	@ApiOperation("下载文件")
+	@Permission(actionType = ActionType.Q, grantType = GrantType.MANUAL)
+	public void download(@PathVariable Long fileId, HttpServletResponse response) {
+		sysFileService.download(fileId, response);
+	}
+
+	/**
 	 * 查询文件夹目录
 	 * @return 附件列表及分页数据
 	 */
@@ -80,32 +119,6 @@ public class SysFileController {
 	}
 
 	/**
-	 * 上传文件，主要用于组件使用过程中的附件上传，根据当前路由分不同目录进行上传
-	 * @param sessionUser 当前操作人
-	 * @param folder 文件夹路径
-	 * @param file   文件
-	 * @return 文件上传成功的结果
-	 */
-	@PostMapping("upload")
-	@ApiOperation("上传文件")
-	@Permission(actionType = ActionType.N, grantType = GrantType.MANUAL)
-	public RestResponse<UploadResult> upload(SessionUser sessionUser, String folder, @RequestBody MultipartFile file) {
-		return RestResponse.success(sysFileService.upload(sessionUser, folder, file));
-	}
-
-	/**
-	 * 删除文件
-	 * @param fileId 文件id
-	 * @return 是否删除成功
-	 */
-	@DeleteMapping("delete/{fileId}")
-	@ApiOperation("删除文件")
-	@Permission(actionType = ActionType.D, grantType = GrantType.MANUAL)
-	public RestResponse<Boolean> delete(@PathVariable Integer fileId) {
-		return RestResponse.success(sysFileService.delete(fileId));
-	}
-
-	/**
 	 * 上传文件
 	 * @param sessionUser 当前操作人
 	 * @param file        文件
@@ -115,7 +128,7 @@ public class SysFileController {
 	@PostMapping("upload/{parentId}")
 	@ApiOperation("上传文件到文件夹")
 	@Permission(actionType = ActionType.N, grantType = GrantType.MANUAL)
-	public RestResponse<UploadResult> upload(SessionUser sessionUser, @NotNull @RequestBody MultipartFile file, @PathVariable Integer parentId) {
+	public RestResponse<UploadResult> upload(SessionUser sessionUser, @NotNull @RequestBody MultipartFile file, @PathVariable Long parentId) {
 		return RestResponse.success(sysFileService.upload(sessionUser, file, parentId));
 	}
 

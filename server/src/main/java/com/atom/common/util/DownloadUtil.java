@@ -1,6 +1,7 @@
 package com.atom.common.util;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.poi.excel.BigExcelWriter;
 import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.ExcelWriter;
@@ -8,11 +9,12 @@ import com.atom.common.pojo.GlobalConstant;
 import com.atom.common.pojo.exception.BusException;
 import com.atom.common.pojo.http.RestError;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.entity.ContentType;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.net.URLEncoder;
 import java.util.LinkedHashMap;
@@ -23,8 +25,71 @@ import java.util.Map;
  * @description 文件工具类
  * @date 2020/6/4
  */
+@Slf4j
 @SuppressWarnings("unused")
-public class FileUtil {
+public class DownloadUtil {
+
+	/**
+	 * 下载文件
+	 * @param url 待下载文件uri
+	 * @param response 响应
+	 */
+	public static void download(String url, HttpServletResponse response) {
+		// 查找文件
+		File file = FileUtil.file(url);
+		if (file.exists()) {
+			download(file, response);
+		} else {
+			throw new BusException(RestError.ERROR9000, "文件不存在！");
+		}
+	}
+
+	/**
+	 * 下载文件
+	 * @param file 待下载文件
+	 * @param response 响应
+	 */
+	public static void download(File file, HttpServletResponse response) {
+		if (file.exists()) {
+			BufferedInputStream fis = FileUtil.getInputStream(file);
+			download(fis, file.getName(), file.length(), response);
+		} else {
+			throw new BusException(RestError.ERROR9000, "文件不存在！");
+		}
+	}
+
+	/**
+	 * 下载文件
+	 * @param is 待下载文件输入流
+	 * @param fileName 文件名称
+	 * @param size 文件大小
+	 * @param response 响应
+	 */
+	public static void download(InputStream is, String fileName, long size, HttpServletResponse response) {
+		response.setContentType(ContentType.APPLICATION_OCTET_STREAM.toString());
+		ServletOutputStream out = null;
+		try {
+			response.setHeader("Content-Disposition","attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
+			response.setHeader("Content-Length", "" + size);
+			out = response.getOutputStream();
+			byte[] buff = new byte[1024];
+			int length;
+			while ((length = is.read(buff)) > 0) {
+				out.write(buff, 0, length);
+			}
+			out.flush();
+		} catch (IOException e) {
+			throw new BusException(RestError.ERROR9000, "文件下载出错，请联系管理员！");
+		} finally {
+			if (out != null) {
+				try {
+					out.close();
+				} catch (IOException e) {
+					log.warn("文件下载response输出关闭失败！");
+				}
+			}
+		}
+	}
 
 	/**
 	 * 生成单sheet页面的excel
@@ -52,7 +117,7 @@ public class FileUtil {
 	 */
 	public static <T> String createExcel(String filePath, String fileName, String sheetName, Class<T> clazz, Iterable<T> data, long totalCnt) {
 		String targetFile = filePath + fileName + DateUtil.format(DateUtil.date(), "yyyyMMddHH:mm:ss.SSS") + ".xlsx";
-		BigExcelWriter excelWriter = ExcelUtil.getBigWriter(targetFile, sheetName);
+		BigExcelWriter excelWriter = cn.hutool.poi.excel.ExcelUtil.getBigWriter(targetFile, sheetName);
 		Map<String, String> headers = parseHeader(clazz);
 		// 写出总的记录数
 		excelWriter.merge(headers.size() - 1, sheetName + "总记录数");
@@ -101,15 +166,23 @@ public class FileUtil {
 		}
 		// 写出数据
 		excelWriter.write(data, true);
+		ServletOutputStream out = null;
 		try {
-
 			response.setContentType(ContentType.APPLICATION_OCTET_STREAM.toString());
 			response.setHeader("Content-Disposition","attachment;filename=" + URLEncoder.encode(targetFile, "UTF-8"));
-			ServletOutputStream out = response.getOutputStream();
+			out = response.getOutputStream();
 			excelWriter.flush(out, true);
 			excelWriter.close();
 		} catch (IOException e) {
 			throw new BusException(RestError.ERROR9000, "文件下载出错，请联系管理员！");
+		} finally {
+			if (out != null) {
+				try {
+					out.close();
+				} catch (IOException e) {
+					log.warn("文件下载response输出关闭失败！");
+				}
+			}
 		}
 	}
 
