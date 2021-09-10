@@ -93,7 +93,7 @@ public class SysFileService implements ISysFileService {
 		}
 		// 获取文件名称，在文件名后面
 		FileNameUtil.FileName fileName = FileNameUtil.getFileName(file.getOriginalFilename(), "/file/" + folder + "/");
-		String fileUrl = storeFolder.getAbsolutePath() + "/" + fileName.getName();
+		String fileUrl = storeFolder.getAbsolutePath() + "/" + fileName.getKey();
 		// 写入文件
 		FileWriter fileWriter = FileWriter.create(FileUtil.file(fileUrl));
 		try {
@@ -104,7 +104,7 @@ public class SysFileService implements ISysFileService {
 			sysFile.setSize(file.getSize());
 			// 设置父级文件夹
 			sysFile.setParentId(folderId);
-			sysFile.setFileKey(fileName.getNameKey());
+			sysFile.setFileKey(fileName.getUrlKey());
 			sysFile.setFileUrl(fileUrl);
 			sysFile.setCreatorId(sessionUser.getId());
 			sysFile.setCreatorName(sessionUser.getName());
@@ -151,7 +151,7 @@ public class SysFileService implements ISysFileService {
 			throw new BusException(RestError.ERROR9000, "文件不存在");
 		}
 		// 下载文件
-		DownloadUtil.download(sysFile.getFileUrl(), response);
+		DownloadUtil.download(sysFile.getFileUrl(), sysFile.getName(), response);
 	}
 
 	/**

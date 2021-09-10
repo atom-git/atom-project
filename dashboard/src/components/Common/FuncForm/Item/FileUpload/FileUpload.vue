@@ -8,7 +8,9 @@
                     :listType="listType"
                     :accept="acceptType"
                     :showUploadList="false"
+                    :multiple="multiple"
                     v-model:fileList="fileList"
+                    :beforeUpload="handleBeforeUpload"
                     @change="handleChange"
                     @reject="handleReject">
     <a-tooltip title="点击或者拖入文件上传">
@@ -53,6 +55,16 @@ export default {
     listType: {
       type: String,
       default: 'picture-card'
+    },
+    // 是否支持多文件
+    multiple: {
+      type: Boolean,
+      default: false
+    },
+    // 最大允许上传的文件数量
+    max: {
+      type: Number,
+      default: 5
     }
   },
   data () {
@@ -62,7 +74,9 @@ export default {
       // 当前操作的文件
       curFile: null,
       // 已经上传的文件列表
-      fileList: []
+      fileList: [],
+      // 待上传的文件列表，用于上传前判断是否需要取消上传动作
+      waitUpload: []
     }
   },
   computed: {
@@ -98,11 +112,29 @@ export default {
   },
   emits: ['update:modelValue', 'change'],
   methods: {
+    // 响应文件上传前
+    handleBeforeUpload (file) {
+      if ((this.fileList.length + this.waitUpload.length) >= this.max) {
+        this.$message.warn(`仅允许最多上传${this.max}个文件`)
+        file.status = 'over'
+        return false;
+      } else {
+        // 写入待上传列表
+        this.waitUpload.push(file)
+        return true;
+      }
+    },
     // 响应文件上传状态变化
     handleChange ({ file }) {
       if (file.status === 'uploading') {
         file.key = file.uid
         file.icon = Thumb.default
+        // 删除等待上传的列表
+        this.waitUpload.forEach((curFile, index) => {
+          if (curFile.uid === file.uid) {
+            this.waitUpload.splice(index, 1)
+          }
+        })
       } else if (file.status === 'done') {
         // 上传成功后写入相关信息
         if (file.response && file.response.data.success) {
@@ -124,6 +156,9 @@ export default {
         file.key = file.uid
         file.icon = Thumb.default
         this.$message.error(`文件上传失败，原因:【${file.response.errorMsg}】`)
+      } else {
+        // 删除无法上传的文件
+        this.fileList = [...this.fileList.filter(curFile => curFile.status !== 'over')]
       }
     },
     // 响应拖拽文件不符合 accept 类型时的回调

@@ -13,7 +13,7 @@ export default {
   data () {
     return {
       fields: [
-        { name: 'fileUpload', label: 'FileUpload', type: 'fileUpload', fileType: 'file' }
+        { name: 'fileUpload', label: 'FileUpload', type: 'fileUpload', fileType: 'file', multiple: true, max: 2 }
       ],
       model: {}
     }

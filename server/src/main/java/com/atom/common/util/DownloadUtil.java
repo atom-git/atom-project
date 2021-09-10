@@ -2,6 +2,7 @@ package com.atom.common.util;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.lang.Validator;
 import cn.hutool.poi.excel.BigExcelWriter;
 import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.ExcelWriter;
@@ -35,10 +36,21 @@ public class DownloadUtil {
 	 * @param response 响应
 	 */
 	public static void download(String url, HttpServletResponse response) {
+		download(url, null, response);
+	}
+
+	/**
+	 * 下载文件
+	 * @param url 待下载文件uri
+	 * @param name 待下载文件名称
+	 * @param response 响应
+	 */
+	public static void download(String url, String name, HttpServletResponse response) {
 		// 查找文件
 		File file = FileUtil.file(url);
 		if (file.exists()) {
-			download(file, response);
+			name = Validator.isEmpty(name) ? file.getName() : name;
+			download(file, name, response);
 		} else {
 			throw new BusException(RestError.ERROR9000, "文件不存在！");
 		}
@@ -50,9 +62,18 @@ public class DownloadUtil {
 	 * @param response 响应
 	 */
 	public static void download(File file, HttpServletResponse response) {
+		download(file, file.getName(), response);
+	}
+
+	/**
+	 * 下载文件
+	 * @param file 待下载文件
+	 * @param response 响应
+	 */
+	public static void download(File file, String name, HttpServletResponse response) {
 		if (file.exists()) {
 			BufferedInputStream fis = FileUtil.getInputStream(file);
-			download(fis, file.getName(), file.length(), response);
+			download(fis, name, file.length(), response);
 		} else {
 			throw new BusException(RestError.ERROR9000, "文件不存在！");
 		}
