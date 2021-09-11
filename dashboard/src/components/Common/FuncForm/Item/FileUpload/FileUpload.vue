@@ -64,7 +64,7 @@ export default {
     // 最大允许上传的文件数量
     max: {
       type: Number,
-      default: 5
+      required: false
     }
   },
   data () {
@@ -99,6 +99,7 @@ export default {
       immediate: true,
       deep: true,
       handler (newValue) {
+        // 对uid进行兼容处理，防止在文件超出时，导致的文件超出上传异常
         newValue&&newValue.forEach(file => { file.uid = file.uid || file.key })
         this.fileList = newValue
       }
@@ -116,7 +117,8 @@ export default {
   methods: {
     // 响应文件上传前
     handleBeforeUpload (file) {
-      if ((this.fileList.length + this.waitUpload.length) >= this.max) {
+      // max指定时，判断是否超出最大上传数量
+      if (this.$utils.isInt(this.max) && ((this.fileList.length + this.waitUpload.length) >= this.max)) {
         this.$message.warn(`仅允许最多上传${this.max}个文件`)
         file.status = 'over'
         return false;

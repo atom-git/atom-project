@@ -14,12 +14,18 @@ export default {
     return {
       fields: [
         {
-          name: 'fileUpload',
-          label: 'FileUpload',
+          name: 'fileUpload1',
+          label: 'FileUpload2',
           type: 'fileUpload',
           fileType: 'file',
           multiple: true,
           max: 2
+        },
+        {
+          name: 'fileUpload2',
+          label: 'FileUpload2',
+          type: 'fileUpload',
+          fileType: 'file'
         },
         {
           name: 'tagCheck',
@@ -60,7 +66,7 @@ export default {
         }
       ],
       model: {
-        fileUpload: [
+        fileUpload1: [
           { key: 2, url: '/file/advanceForm/报销单120210911155709669.pdf', name: '报销单1.pdf' },
           { key: 3, url: '/file/advanceForm/报销单220210911155709865.pdf', name: '报销单2.pdf' }
         ],

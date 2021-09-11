@@ -5,14 +5,26 @@
   &.uploading {
     border-color: @primary-3;
     box-shadow: 0 0 3px @primary-3;
+    &.ant-card-hoverable:hover {
+      border-color: @primary-3;
+      box-shadow: 0 2px 8px @primary-3;
+    }
   }
   &.error {
     border-color: @red-3;
     box-shadow: 0 0 3px @red-3;
+    &.ant-card-hoverable:hover {
+      border-color: @red-3;
+      box-shadow: 0 2px 8px @red-3;
+    }
   }
   &.done {
     border-color: @green-3;
     box-shadow: 0 0 3px @green-3;
+    &.ant-card-hoverable:hover {
+      border-color: @green-3;
+      box-shadow: 0 2px 8px @green-3;
+    }
   }
   .ant-card-body {
     padding: 8px;
