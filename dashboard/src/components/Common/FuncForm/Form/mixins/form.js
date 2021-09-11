@@ -136,7 +136,7 @@ export default {
         console.log(error)
       })
     },
-    // 格式化moment值
+    // 格式化field modelValue值
     formatModel (field, model) {
       if (field.type === 'datePicker') {
         if (field.showTime) {
@@ -195,6 +195,8 @@ export default {
               model[field.name][groupField.name] = this.model[groupField.name]
             }
           })
+        } else if (field.type === 'fileUpload') {
+          model[field.name] = [...this.model[field.name]].map(file => file.key)
         } else {
           model[field.name] = this.model[field.name]
         }

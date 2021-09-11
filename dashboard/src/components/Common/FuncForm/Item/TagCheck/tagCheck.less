@@ -1,0 +1,33 @@
+/**
+标签选择样式
+ */
+.atom-tag-check {
+  width: 100%;
+  white-space: normal;
+  &.small {
+    .ant-tag-checkable {
+      font-size: 12px;
+      line-height: 22px;
+    }
+  }
+  &.large {
+    .ant-tag-checkable {
+      line-height: 38px;
+      font-size: 16px;
+    }
+  }
+  .ant-tag-checkable {
+    line-height: 30px;
+    font-size: 14px;
+    padding: 0 10px;
+    margin-bottom: 16px;
+    cursor: pointer;
+    .anticon {
+      margin-right: 6px;
+    }
+    &:not(.ant-tag-checkable-checked):hover {
+      background-color: @primary-5;
+      color: #FFFFFF;
+    }
+  }
+}

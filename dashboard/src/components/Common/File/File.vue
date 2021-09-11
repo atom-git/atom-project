@@ -1,6 +1,6 @@
 <template>
     <a-list-item>
-      <a-card :class="['atom-file', file.status]">
+      <a-card :class="['atom-file', file.status]" hoverable>
         <a-list-item-meta>
           <!-- 图标 -->
           <template #avatar>

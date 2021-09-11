@@ -187,19 +187,19 @@
 
   <!-- 自定义组件 -->
   <!-- fileUpload 文件上传 -->
-  <FileUpload v-else-if="isType('fileUpload')" v-bind="renderField" name="file" :modelValue="modelValue"/>
+  <FileUpload v-else-if="isType('fileUpload')" v-bind="renderField" name="file" :modelValue="modelValue" @change="handleChange"/>
   <!-- iconPicker -->
   <IconPicker v-else-if="isType('iconPicker')" v-bind="renderField" :modelValue="modelValue" @change="handleChange"/>
   <!-- iconRadio -->
   <IconRadio v-else-if="isType('iconRadio')" v-bind="renderField" :modelValue="modelValue" @change="handleChange"/>
+  <!-- tagCheck -->
+  <TagCheck v-else-if="isType('tagCheck')" v-bind="renderField" :modelValue="modelValue" @change="handleChange"/>
   <!-- imagePicker -->
   <ImagePicker v-else-if="isType('imagePicker')" v-bind="renderField" :value="modelValue"/>
   <!-- mapPicker -->
   <MapPicker v-else-if="isType('mapPicker')" v-bind="renderField" :value="modelValue"/>
   <!-- tableSelect -->
   <TableSelect v-else-if="isType('tableSelect')" v-bind="renderField" :value="modelValue"/>
-  <!-- tagCheck -->
-  <TagCheck v-else-if="isType('tagCheck')" v-bind="renderField" :value="modelValue"/>
 
   <!-- 未定义默认组件 -->
   <a-input v-else :value="modelValue" @change="handleInputChange" v-bind="renderField" allowClear/>

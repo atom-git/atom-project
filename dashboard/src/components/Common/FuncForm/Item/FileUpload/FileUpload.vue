@@ -96,6 +96,7 @@ export default {
   watch: {
     // 监听外部的值变化
     modelValue: {
+      immediate: true,
       deep: true,
       handler (newValue) {
         this.fileList = newValue
