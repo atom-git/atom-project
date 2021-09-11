@@ -99,6 +99,7 @@ export default {
       immediate: true,
       deep: true,
       handler (newValue) {
+        newValue&&newValue.forEach(file => { file.uid = file.uid || file.key })
         this.fileList = newValue
       }
     },
