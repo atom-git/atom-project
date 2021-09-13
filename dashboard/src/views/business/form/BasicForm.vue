@@ -35,6 +35,9 @@ export default {
         },
         { type: 'number', name: 'number3', label: 'number3' },
         { type: 'select', name: 'select', label: 'select', options: [
+            { value: '1', title: 'select选项1' }, { value: '2', title: 'select选项2' }, { value: '3', title: 'select选项3' }, { value: '4', title: 'select选项4' }
+          ] },
+        { type: 'select', name: 'numberSelect', label: 'numberSelect', options: [
             { value: 1, title: 'select选项1' }, { value: 2, title: 'select选项2' }, { value: 3, title: 'select选项3' }, { value: 4, title: 'select选项4' }
           ] },
         { type: 'select', name: 'multiple', label: 'multiple-select', mode: 'multiple', options: [
