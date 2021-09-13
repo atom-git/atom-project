@@ -1,5 +1,5 @@
 <template>
-  <a-dropdown :trigger="['hover', 'click']">
+  <a-dropdown :trigger="['click']">
     <span class="atom-header-button"><IconFont type="BgColorsOutlined"/></span>
     <template #overlay>
       <a-menu @click="handleThemeToggle">

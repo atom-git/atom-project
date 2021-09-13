@@ -6,14 +6,10 @@
 
 <script>
 import zhCN from 'ant-design-vue/es/locale-provider/zh_CN'
+import enUS from 'ant-design-vue/es/locale-provider/en_US'
 import { mapGetters } from 'vuex'
 import Default from '@/config/default'
 export default {
-  data () {
-    return {
-      locale: zhCN
-    }
-  },
   computed: {
     ...mapGetters([
       'device',
@@ -21,7 +17,11 @@ export default {
       'scrollTop',
       'clientWidth',
       'clientHeight'
-    ])
+    ]),
+    // 国际化
+    locale () {
+      return this.appConfig.locale === 'zh-CN' ? zhCN : enUS
+    }
   },
   mounted () {
     const self = this

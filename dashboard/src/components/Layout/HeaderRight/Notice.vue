@@ -30,8 +30,8 @@
               </template>
               <template #footer>
                 <a-row>
-                  <a-col span="12" @click="handleClearNews(newsTab.key)">清空{{ newsTab.name }}</a-col>
-                  <a-col span="12" @click="handleMoreNews(newsTab.key)">查看更多</a-col>
+                  <a-col span="12" @click="handleClearNews(newsTab.key)">{{ $t('common.clear') }}</a-col>
+                  <a-col span="12" @click="handleMoreNews(newsTab.key)">{{ $t('common.more') }}</a-col>
                 </a-row>
               </template>
             </a-list>
@@ -51,12 +51,6 @@ export default {
       loading: false,
       // 下拉是否显示
       dropdown: false,
-      // 系统消息tabs
-      newsTabs: [
-        { name: '通知', key: 'notice' },
-        { name: '消息', key: 'message' },
-        { name: '待办', key: 'todo' }
-      ],
       // 未读信息数量
       unreadCnt: 0,
       // 消息列表
@@ -65,6 +59,16 @@ export default {
       colorSet: this.$default.colorSet,
       // 系统消息订阅
       subscribe: null
+    }
+  },
+  computed: {
+    // 系统消息tabs
+    newsTabs () {
+      return [
+        { name: this.$t('layout.header.right.notice.notice'), key: 'notice' },
+        { name: this.$t('layout.header.right.notice.message'), key: 'message' },
+        { name: this.$t('layout.header.right.notice.todo'), key: 'todo' }
+      ]
     }
   },
   mounted () {

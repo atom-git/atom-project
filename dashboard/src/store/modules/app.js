@@ -2,11 +2,14 @@ import Default from '@/config/default'
 import device from '@/config/lib/device'
 import Utils from '@/utils'
 import { toggleTheme } from '@/config/theme'
+import { loadLanguage } from '@/config/lib/i18n'
+
 /**
  * 应用配置相关信息
  * title: 项目名称
  * config: App应用配置
  * theme: 主题
+ * locale: 语言
  * primaryColor: 主题色
  * layout: 整体布局方式
  * fixHeader: 固定顶部
@@ -27,6 +30,7 @@ const app = {
     title: Default.title,
     config: {
       theme: Default.theme,
+      locale: Default.locale,
       primaryColor: Default.primaryColor,
       layout: device().isMobile || (document.body.clientWidth || window.innerWidth) < 768 ? Default.mobileLayout : Default.layout,
       fixHeader: Default.fixHeader,
@@ -49,6 +53,9 @@ const app = {
     },
     setTheme: (state, theme) => {
       state.config.theme = theme
+    },
+    setLocale: (state, locale) => {
+      state.config.locale = locale
     },
     setPrimaryColor: (state, primaryColor) => {
       state.config.primaryColor = primaryColor
@@ -120,6 +127,14 @@ const app = {
     },
     setTheme ({ commit }, theme) {
       commit('setTheme', theme)
+    },
+    setLocale ({ commit }, locale) {
+      return new Promise(resolve => {
+        loadLanguage(locale).then(() => {
+          commit('setLocale', locale)
+          resolve(locale)
+        })
+      })
     },
     setPrimaryColor ({ commit }, primaryColor) {
       commit('setPrimaryColor', primaryColor)

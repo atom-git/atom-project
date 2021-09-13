@@ -5,6 +5,7 @@
  * title: 项目名称[自定义]
  * primaryColor: 主题色 [#1890ff]
  * theme: 主题 [dark, light, mix]
+ * locale: 语言 [zh-CN, en-US]
  * layout: 整体布局方式 [sider, top, mix(top-sider), drawer]
  * multiTab: 多标签页是否开启 [true, false]
  * multiTabDraggable: 多标签页是否可拖拽 [true, false]
@@ -24,6 +25,7 @@ export default {
   title: 'Atom Pro',
   primaryColor: '#5B8FF9',
   theme: 'mix',
+  locale: 'zh-CN',
   layout: 'sider',
   mobileLayout: 'drawer',
   multiTab: true,
