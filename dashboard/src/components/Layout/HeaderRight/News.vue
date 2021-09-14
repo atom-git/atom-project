@@ -11,7 +11,7 @@
       <a-spin :spinning="loading">
         <a-tabs class="atom-news-container">
           <a-tab-pane v-for="newsTab in newsTabs"
-                      :tab="`${newsTab.name}(${newsMap[newsTab.key].unRead})`"
+                      :tab="`${newsTab.name} [${newsMap[newsTab.key].unRead}]`"
                       :key="newsTab.key">
             <a-list :dataSource="newsMap[newsTab.key].list">
               <template #renderItem="{ item, index }">
@@ -30,8 +30,8 @@
               </template>
               <template #footer>
                 <a-row>
-                  <a-col span="12" @click="handleClearNews(newsTab.key)">{{ $t('common.clear') }}</a-col>
-                  <a-col span="12" @click="handleMoreNews(newsTab.key)">{{ $t('common.more') }}</a-col>
+                  <a-col span="12" @click="handleClearNews(newsTab.key)">{{ $t('global.clear') + ' ' + newsTab.name }}</a-col>
+                  <a-col span="12" @click="handleMoreNews(newsTab.key)">{{ $t('global.more') }}</a-col>
                 </a-row>
               </template>
             </a-list>
@@ -44,7 +44,7 @@
 
 <script>
 export default {
-  name: 'Notice',
+  name: 'News',
   data () {
     return {
       // 是否加载中
@@ -65,9 +65,9 @@ export default {
     // 系统消息tabs
     newsTabs () {
       return [
-        { name: this.$t('layout.header.right.notice.notice'), key: 'notice' },
-        { name: this.$t('layout.header.right.notice.message'), key: 'message' },
-        { name: this.$t('layout.header.right.notice.todo'), key: 'todo' }
+        { name: this.$t('Layout.HeaderRight.News.notice'), key: 'notice' },
+        { name: this.$t('Layout.HeaderRight.News.message'), key: 'message' },
+        { name: this.$t('Layout.HeaderRight.News.todo'), key: 'todo' }
       ]
     }
   },

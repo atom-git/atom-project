@@ -1,6 +1,6 @@
 <template>
   <div class="atom-header-right">
-    <Notice></Notice>
+    <News></News>
     <Global></Global>
     <FullScreen v-if="showFullScreen && !device.isMobile && clientWidth > 375"></FullScreen>
     <ThemeSetup v-if="!device.isMobile && clientWidth > 375"></ThemeSetup>
@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import Notice from './Notice'
+import News from './News'
 import UserMenu from './UserMenu'
 import Global from './Global'
 import FullScreen from './FullScreen'
@@ -18,7 +18,7 @@ import { mapGetters } from 'vuex'
 export default {
   name: 'HeaderRight',
   components: {
-    Notice,
+    News,
     UserMenu,
     Global,
     FullScreen,

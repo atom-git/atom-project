@@ -4,10 +4,10 @@
     <template #overlay>
       <a-menu @click="handleThemeToggle">
         <a-menu-item key="light">
-          <IconFont type="atom-theme-light"/>纯白世界
+          <IconFont type="atom-theme-light"/>{{ $t('Layout.HeaderRight.ThemeMode.light') }}
         </a-menu-item>
         <a-menu-item key="dark">
-          <IconFont type="atom-theme-dark"/>暗黑世界
+          <IconFont type="atom-theme-dark"/>{{ $t('Layout.HeaderRight.ThemeMode.dark') }}
         </a-menu-item>
       </a-menu>
     </template>
@@ -31,11 +31,11 @@ export default {
     // 响应主题切换
     handleThemeToggle ($event) {
       const theme = $event.key || this.theme
-      const loadding = this.$message.loading('正在切换主题！', 1)
+      const loadding = this.$message.loading(this.$t('message.theme.loading'), 1)
       toggleTheme(theme, this.primaryColor).then(() => {
         loadding.then(
-            () => { this.$message.success('主题切换成功！', 1) },
-            () => { this.$message.error('主题切换失败！', 2) })
+            () => { this.$message.success(this.$t('message.theme.success'), 1) },
+            () => { this.$message.error(this.$t('message.theme.error'), 2) })
         // 保存主题到缓存
         this.$store.dispatch('setTheme', theme)
         this.$store.dispatch('setPrimaryColor', this.primaryColor)

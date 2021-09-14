@@ -1,5 +1,6 @@
 <template>
-  <a-tooltip placement="bottom" :title="fullScreen ? '全屏' : '退出全屏'">
+  <a-tooltip placement="bottom"
+             :title="fullScreen ? $t('Layout.HeaderRight.FullScreen.exitFull') : $t('Layout.HeaderRight.FullScreen.full')">
     <span class="atom-header-button">
       <IconFont :type="fullScreen ? 'CompressOutlined' : 'ExpandOutlined'" @click="toggleScreen"/>
     </span>

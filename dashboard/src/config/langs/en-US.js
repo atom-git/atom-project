@@ -1,16 +1,29 @@
 export default {
-  common: {
+  global: {
     clear: 'Empty',
     more: 'See More'
   },
-  layout: {
-    header: {
-      right: {
-        notice: {
-          notice: 'Notify',
-          message: 'Message',
-          todo: 'To Do'
-        }
+  message: {
+    theme: {
+      loading: 'Loading Theme!',
+      success: 'Theme Toggled Success!',
+      error: 'Theme Toggled Fail!'
+    }
+  },
+  Layout: {
+    HeaderRight: {
+      FullScreen: {
+        full: 'Full Screen',
+        exitFull: 'Exit Full Screen'
+      },
+      News: {
+        notice: 'Notify',
+        message: 'Message',
+        todo: 'To Do'
+      },
+      ThemeMode: {
+        light: 'Light Theme',
+        dark: 'Dark Theme'
       }
     }
   }
