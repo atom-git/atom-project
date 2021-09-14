@@ -17,6 +17,8 @@ public class AppConfigDTO {
 
 	@ApiModelProperty("主题")
 	private String theme;
+	@ApiModelProperty("语言")
+	private String locale;
 	@ApiModelProperty("主题色")
 	private String primaryColor;
 	@ApiModelProperty("布局")
