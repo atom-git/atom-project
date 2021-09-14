@@ -1,14 +1,18 @@
 <template>
   <div class="atom-sider-menu">
-    <a-menu mode="inline"
+    <a-menu v-if="!refresh"
+            mode="inline"
             v-model:openKeys="openKeys"
             v-model:selectedKeys="selectedKeys"
             :theme="theme"
             @click="handleClick">
       <template v-for="(menu, index) in menus">
-        <a-menu-item v-if="!$utils.isValid(menu[replaceFields.children])" :key="menu[replaceFields.key]">
-          <IconFont :type="menu[replaceFields.icon]" />
-          <span>{{ menu[replaceFields.title] }}</span>
+        <a-menu-item v-if="!$utils.isValid(menu[replaceFields.children])"
+                     :key="menu[replaceFields.key]">
+          <template #icon>
+            <IconFont :type="menu[replaceFields.icon]" />
+          </template>
+          {{ menu[replaceFields.title] }}
         </a-menu-item>
         <SubMenu v-else
                  :key="index"

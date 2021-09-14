@@ -7,7 +7,7 @@
     <!-- logo -->
     <Logo :title="title" :collapsed="collapsed"></Logo>
     <!-- 菜单 -->
-    <SideMenu :menus="menus" :theme="colorTheme" :replaceKeys="{ title: 'name', key: 'route' }"></SideMenu>
+    <SideMenu :menus="menus" :theme="colorTheme" :replaceKeys="menuReplaceKeys"></SideMenu>
     <!-- 折叠弹出按钮 -->
     <SiderTrigger :theme="colorTheme" v-model:collapsed="collapsed"></SiderTrigger>
   </a-layout-sider>
@@ -41,7 +41,7 @@ import user from '@/config/mixins/user'
 import HeaderRight from './HeaderRight'
 import MultiTab from './MultiTab'
 import Footer from './Footer'
-import refresh from './mixins/refresh'
+import refresh from '@/config/mixins/refresh'
 export default {
   name: 'SiderLayout',
   components: {

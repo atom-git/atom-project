@@ -1,6 +1,7 @@
 /**
  * 菜单的操作整体混入
  */
+import { mapGetters } from 'vuex'
 const defaultKeys = { title: 'title', key: 'id', icon: 'icon', children: 'children', disabled: 'disabled', hidden: 'hidden' }
 const SubMenu = {
   name: 'SubMenu',
@@ -18,15 +19,19 @@ const SubMenu = {
   },
   template: `
     <a-sub-menu :key="subMenu[replaceFields.key]">
-      <template #title>
+      <template #icon>
         <IconFont :type="subMenu[replaceFields.icon]" />
-        <span>{{ subMenu[replaceFields.title] }}</span>
+      </template>
+      <template #title>
+        {{ subMenu[replaceFields.title] }}
       </template>
       <template v-for="(menu, index) in subMenu[replaceFields.children]">
         <template v-if="!$utils.isValid(menu[replaceFields.children])">
           <a-menu-item :key="menu[replaceFields.key]">
-            <IconFont :type="menu[replaceFields.icon]" />
-            <span>{{ menu[replaceFields.title] }}</span>
+            <template #icon>
+              <IconFont :type="menu[replaceFields.icon]" />
+            </template>
+            {{ menu[replaceFields.title] }}
           </a-menu-item>
         </template>
         <template v-else>
@@ -37,7 +42,6 @@ const SubMenu = {
   `
 }
 export default {
-  name: 'SideMenu',
   props: {
     // 主题色
     theme: {
@@ -63,10 +67,13 @@ export default {
       // 展开的菜单
       openKeys: [],
       // 当前选中的菜单
-      selectedKeys: [this.$route.name]
+      selectedKeys: [this.$route.name],
+      // 是否刷新菜单
+      refresh: false
     }
   },
   computed: {
+    ...mapGetters(['appConfig']),
     // 实际替代字段
     replaceFields () {
       return Object.assign(defaultKeys, this.replaceKeys)
@@ -86,6 +93,13 @@ export default {
     // 对$route进行监听，发生变化时，设置新的选中菜单
     '$route' (newRoute) {
       this.selectedKeys = [newRoute.name]
+    },
+    // 监听语言的变化重新渲染菜单
+    'appConfig.locale' () {
+      this.refresh = true
+      this.$nextTick(() => {
+        this.refresh = false
+      }).then(() => {})
     }
   }
 }

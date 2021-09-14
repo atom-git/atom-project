@@ -11,14 +11,14 @@
     <template #overlay>
       <a-menu @click="handleClick">
         <a-menu-item key="userCenter">
-          <IconFont type="GithubOutlined"/><span>个人中心</span>
+          <IconFont type="GithubOutlined"/><span>{{ $t('Layout.UserMenu.center') }}</span>
         </a-menu-item>
         <a-menu-item key="userSetUp">
-          <IconFont type="WindowsOutlined"/><span>个人设置</span>
+          <IconFont type="WindowsOutlined"/><span>{{ $t('Layout.UserMenu.setup') }}</span>
         </a-menu-item>
         <a-menu-divider />
         <a-menu-item key="signOut">
-          <IconFont type="LogoutOutlined"/><span>退出登录</span>
+          <IconFont type="LogoutOutlined"/><span>{{ $t('Layout.UserMenu.logout') }}</span>
         </a-menu-item>
       </a-menu>
     </template>

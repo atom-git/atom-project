@@ -1,13 +1,13 @@
 <template>
-  <a-dropdown :trigger="['click']">
+  <a-dropdown :trigger="['hover', 'click']">
     <span class="atom-header-button"><IconFont type="BgColorsOutlined"/></span>
     <template #overlay>
       <a-menu @click="handleThemeToggle">
         <a-menu-item key="light">
-          <IconFont type="atom-theme-light"/>{{ $t('Layout.HeaderRight.ThemeMode.light') }}
+          <IconFont type="atom-theme-light"/>{{ $t('Layout.ThemeMode.light') }}
         </a-menu-item>
         <a-menu-item key="dark">
-          <IconFont type="atom-theme-dark"/>{{ $t('Layout.HeaderRight.ThemeMode.dark') }}
+          <IconFont type="atom-theme-dark"/>{{ $t('Layout.ThemeMode.dark') }}
         </a-menu-item>
       </a-menu>
     </template>

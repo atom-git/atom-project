@@ -1,5 +1,5 @@
 <template>
-  <a-dropdown :trigger="['click']" v-model="dropdown" placement="bottomCenter">
+  <a-dropdown :trigger="['hover', 'click']" v-model="dropdown" placement="bottomCenter">
     <span class="atom-header-button">
       <a-badge @click="toogleDropDown"
                :count="unreadCnt"
@@ -65,9 +65,9 @@ export default {
     // 系统消息tabs
     newsTabs () {
       return [
-        { name: this.$t('Layout.HeaderRight.News.notice'), key: 'notice' },
-        { name: this.$t('Layout.HeaderRight.News.message'), key: 'message' },
-        { name: this.$t('Layout.HeaderRight.News.todo'), key: 'todo' }
+        { name: this.$t('Layout.News.notice'), key: 'notice' },
+        { name: this.$t('Layout.News.message'), key: 'message' },
+        { name: this.$t('Layout.News.todo'), key: 'todo' }
       ]
     }
   },

@@ -16,7 +16,7 @@
               v-model:visible="drawerVisible">
       <SideMenu :menus="menus"
                 :theme="drawerTheme"
-                :replaceKeys="{ title: 'name', key: 'route' }"
+                :replaceKeys="menuReplaceKeys"
                 @on-menu-click="drawerVisible = false"></SideMenu>
       <!-- drawer中的footer -->
       <Footer></Footer>
@@ -37,7 +37,7 @@ import config from '@/config/mixins/config'
 import user from '@/config/mixins/user'
 import HeaderRight from './HeaderRight'
 import Footer from './Footer'
-import refresh from './mixins/refresh'
+import refresh from '@/config/mixins/refresh'
 export default {
   name: 'DrawerLayout',
   components: {

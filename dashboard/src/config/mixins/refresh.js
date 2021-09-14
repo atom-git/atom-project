@@ -17,6 +17,7 @@ export default {
   methods: {
     // 子组件刷新
     reload () {
+      this.isAlive = false
       this.$nextTick(() => {
         this.isAlive = true
       }).then(() => {})

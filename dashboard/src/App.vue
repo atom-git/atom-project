@@ -7,9 +7,11 @@
 <script>
 import zhCN from 'ant-design-vue/es/locale-provider/zh_CN'
 import enUS from 'ant-design-vue/es/locale-provider/en_US'
+import refresh from '@/config/mixins/refresh'
 import { mapGetters } from 'vuex'
 import Default from '@/config/default'
 export default {
+  mixins: [refresh],
   computed: {
     ...mapGetters([
       'device',

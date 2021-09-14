@@ -27,6 +27,8 @@ public class SysMenu {
 	private Integer id;
 	@Column(name = "menu_name")
 	private String name;
+	@Column(name = "english_name")
+	private String englishName;
 	@Column(name = "menu_desc")
 	private String desc;
 	@Column(name = "menu_icon")

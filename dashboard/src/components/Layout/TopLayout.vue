@@ -2,7 +2,7 @@
   <a-layout-header>
     <!-- logo -->
     <Logo :title="title"></Logo>
-    <TopMenu :menus="menus" :theme="colorTheme" :replaceKeys="{ title: 'name', key: 'route' }"></TopMenu>
+    <TopMenu :menus="menus" :theme="colorTheme" :replaceKeys="menuReplaceKeys"></TopMenu>
     <!-- 右侧功能按钮 -->
     <HeaderRight></HeaderRight>
   </a-layout-header>
@@ -24,7 +24,7 @@ import user from '@/config/mixins/user'
 import HeaderRight from './HeaderRight'
 import MultiTab from './MultiTab'
 import Footer from './Footer'
-import refresh from './mixins/refresh'
+import refresh from '@/config/mixins/refresh'
 export default {
   name: 'TopLayout',
   components: {

@@ -15,7 +15,7 @@
       <!-- 菜单 -->
       <SideMenu :menus="menus"
                 :theme="mixTheme"
-                :replaceKeys="{ title: 'name', key: 'route' }"></SideMenu>
+                :replaceKeys="menuReplaceKeys"></SideMenu>
       <!-- 折叠弹出按钮 -->
       <SiderTrigger :theme="mixTheme" v-model:collapsed="collapsed"></SiderTrigger>
     </a-layout-sider>
@@ -42,7 +42,7 @@ import user from '@/config/mixins/user'
 import HeaderRight from './HeaderRight'
 import MultiTab from './MultiTab'
 import Footer from './Footer'
-import refresh from './mixins/refresh'
+import refresh from '@/config/mixins/refresh'
 export default {
   name: 'MixLayout',
   components: {

@@ -1,5 +1,5 @@
 <template>
-  <a-dropdown :trigger="['click']">
+  <a-dropdown :trigger="['hover', 'click']">
     <span class="atom-header-button"><IconFont type="GlobalOutlined"/></span>
     <template #overlay>
       <a-menu @click="handleClick" :selectedKeys="[appConfig.locale]">
@@ -28,10 +28,8 @@ export default {
       this.$store.dispatch('setLocale', key).then(() => {
         // 更新用户个性化配置
         this.$api.system.user.updateAppConfig(this.appConfig).then(() => {
+          // 设置当前用户信息中的配置信息
           this.$store.dispatch('setAppConfig', this.appConfig)
-          this.$nextTick(() => {
-            this.$message.success('语言设置成功！', 1)
-          })
         })
       })
     }

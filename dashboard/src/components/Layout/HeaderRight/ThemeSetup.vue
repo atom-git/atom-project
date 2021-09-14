@@ -1,22 +1,22 @@
  <template>
-  <a-tooltip placement="bottom" title="主题设置">
+  <a-tooltip placement="bottom" :title="$t('Layout.ThemeSetup.theme')">
     <span class="atom-header-button">
       <IconFont type="BgColorsOutlined" @click="drawerVisible = !drawerVisible"/>
     </span>
     <!-- 主题设置drawer -->
     <a-drawer v-model:visible="drawerVisible" width="300" wrapClassName="atom-theme-container">
-      <a-divider class="atom-theme-divider">主题设置</a-divider>
+      <a-divider class="atom-theme-divider">{{ $t('Layout.ThemeSetup.theme') }}</a-divider>
       <div class="atom-theme-setting-item">
         <IconRadio name="theme"
                    :options="themeOptions"
                    v-model="appConfig.theme"
                    @change="handleThemeToggle"></IconRadio>
       </div>
-      <a-divider class="atom-theme-divider">主题色</a-divider>
+      <a-divider class="atom-theme-divider">{{ $t('Layout.ThemeSetup.primaryColor') }}</a-divider>
       <div class="atom-theme-setting-item">
         <ColorPicker v-model="appConfig.primaryColor" @change="handleThemeToggle"></ColorPicker>
       </div>
-      <a-divider class="atom-theme-divider">布局模式</a-divider>
+      <a-divider class="atom-theme-divider">{{ $t('Layout.ThemeSetup.layout.title') }}</a-divider>
       <div class="atom-theme-setting-item">
         <IconRadio name="layout"
                    :options="navOptions"
@@ -24,61 +24,61 @@
                    size="small"
                    @change="handleLayoutSwitch"></IconRadio>
       </div>
-      <a-divider class="atom-theme-divider">页面设置</a-divider>
+      <a-divider class="atom-theme-divider">{{ $t('Layout.ThemeSetup.layout.page') }}</a-divider>
       <a-list class="atom-theme-page-setting" :split="false">
         <a-list-item>
-          <a-list-item-meta title="固定顶栏"></a-list-item-meta>
+          <a-list-item-meta :title="$t('Layout.ThemeSetup.layout.header')"></a-list-item-meta>
           <template #actions>
             <a-switch :disabled="appConfig.layout === 'mix'" size="small" v-model:checked="appConfig.fixHeader" @change="handleFixToggle"/>
           </template>
         </a-list-item>
         <a-list-item>
-          <a-list-item-meta title="开启多页签"></a-list-item-meta>
+          <a-list-item-meta :title="$t('Layout.ThemeSetup.layout.multiTab')"></a-list-item-meta>
           <template #actions>
             <a-switch size="small" v-model:checked="appConfig.multiTab" @change="handleMultiTabToggle"/>
           </template>
         </a-list-item>
         <a-list-item>
-          <a-list-item-meta title="开启页签拖拽"></a-list-item-meta>
+          <a-list-item-meta :title="$t('Layout.ThemeSetup.layout.multiTabDraggable')"></a-list-item-meta>
           <template #actions>
             <a-switch size="small" v-model:checked="appConfig.multiTabDraggable" @change="handleMultiTabDraggable"/>
           </template>
         </a-list-item>
         <a-list-item>
-          <a-list-item-meta title="页面弹窗样式"></a-list-item-meta>
+          <a-list-item-meta :title="$t('Layout.ThemeSetup.layout.dialog.type')"></a-list-item-meta>
           <template #actions>
             <a-select size="small" v-model:value="appConfig.dialog.type" :options="dialogOptions" @change="handleDialogChange"/>
           </template>
         </a-list-item>
         <a-list-item>
-          <a-list-item-meta title="页面弹窗大小"></a-list-item-meta>
+          <a-list-item-meta :title="$t('Layout.ThemeSetup.layout.dialog.size')"></a-list-item-meta>
           <template #actions>
             <a-input-number size="small" step="10" v-model:value="appConfig.dialog.size" @blur="handleDialogChange"/>
           </template>
         </a-list-item>
         <a-list-item>
-          <a-list-item-meta title="开启页面水印"></a-list-item-meta>
+          <a-list-item-meta :title="$t('Layout.ThemeSetup.layout.waterMark')"></a-list-item-meta>
           <template #actions>
             <a-switch size="small" v-model:checked="appConfig.waterMark" @change="handleWaterMarkToggle"/>
           </template>
         </a-list-item>
       </a-list>
-      <a-divider class="atom-theme-divider">动画效果</a-divider>
+      <a-divider class="atom-theme-divider">{{ $t('Layout.ThemeSetup.transition.title') }}</a-divider>
       <a-list class="atom-theme-page-setting" :split="false">
         <a-list-item>
-          <a-list-item-meta title="禁用动画"></a-list-item-meta>
+          <a-list-item-meta :title="$t('Layout.ThemeSetup.transition.disabled')"></a-list-item-meta>
           <template #actions>
             <a-switch size="small" v-model:checked="appConfig.transition.disabled" @change="handleTransitionToggle"/>
           </template>
         </a-list-item>
         <a-list-item>
-          <a-list-item-meta title="动画效果"></a-list-item-meta>
+          <a-list-item-meta :title="$t('Layout.ThemeSetup.transition.name')"></a-list-item-meta>
           <template #actions>
             <a-select size="small" v-model:value="appConfig.transition.name" :options="animateOptions" @change="handleAnimateToggle"></a-select>
           </template>
         </a-list-item>
         <a-list-item>
-          <a-list-item-meta title="动画方向"></a-list-item-meta>
+          <a-list-item-meta :title="$t('Layout.ThemeSetup.transition.direction')"></a-list-item-meta>
           <template #actions>
             <a-select size="small" v-model:value="appConfig.transition.direction" :options="directionOptions" @change="handleTransitionToggle"></a-select>
           </template>
@@ -106,19 +106,6 @@ export default {
     return {
       // 主题设置drawer是否展开
       drawerVisible: false,
-      // 主题选项
-      themeOptions: [
-        { icon: 'atom-theme-light', title: '纯白世界', value: 'light' },
-        { icon: 'atom-theme-mix', title: '黑白无极', value: 'mix' },
-        { icon: 'atom-theme-dark', title: '暗黑世界', value: 'dark' }
-      ],
-      // 布局选项
-      navOptions: [
-        { icon: 'atom-layout-side', title: '左右布局', value: 'sider' },
-        { icon: 'atom-layout-top', title: '上下布局', value: 'top' },
-        { icon: 'atom-layout-mix', title: '混合布局', value: 'mix' },
-        { icon: 'atom-layout-drawer', title: '移动抽屉', value: 'drawer' }
-      ],
       // 弹窗样式
       dialogOptions: [
         { title: 'drawer', value: 'drawer' },
@@ -129,6 +116,23 @@ export default {
     }
   },
   computed: {
+    // 主题选项
+    themeOptions () {
+      return [
+        { icon: 'atom-theme-light', title: this.$t('Layout.ThemeMode.light'), value: 'light' },
+        { icon: 'atom-theme-mix', title: this.$t('Layout.ThemeMode.mix'), value: 'mix' },
+        { icon: 'atom-theme-dark', title: this.$t('Layout.ThemeMode.dark'), value: 'dark' }
+      ]
+    },
+    // 布局选项
+    navOptions () {
+      return [
+        { icon: 'atom-layout-side', title: this.$t('Layout.Mode.side'), value: 'sider' },
+        { icon: 'atom-layout-top', title: this.$t('Layout.Mode.top'), value: 'top' },
+        { icon: 'atom-layout-mix', title: this.$t('Layout.Mode.mix'), value: 'mix' },
+        { icon: 'atom-layout-drawer', title: this.$t('Layout.Mode.drawer'), value: 'drawer' }
+      ]
+    },
     // 动画效果选项
     animateOptions () {
       return Object.values(animateSet).map(animate => { return { value: animate.name, label: animate.title } })
@@ -141,12 +145,12 @@ export default {
   methods: {
     // 响应主题切换
     handleThemeToggle ({ theme = this.appConfig.theme, primaryColor = this.appConfig.primaryColor }) {
-      const loadding = this.$message.loading('正在切换主题！', 1)
+      const loadding = this.$message.loading(this.$t('message.theme.loading'), 1)
       toggleTheme(theme, primaryColor).then(() => {
         this.toggleUserAppConfig(() => {
           loadding.then(
-              () => { this.$message.success('主题切换成功！', 1) },
-              () => { this.$message.error('主题切换失败！', 2) })
+              () => { this.$message.success(this.$t('message.theme.success'), 1) },
+              () => { this.$message.error(this.$t('message.theme.error'), 2) })
         })
         // 保存主题到缓存
         this.$store.dispatch('setTheme', theme)
@@ -158,18 +162,14 @@ export default {
     handleLayoutSwitch (layout) {
       // 保存布局到缓存
       this.$store.dispatch('setLayout', layout)
-      this.toggleUserAppConfig(() => {
-        this.$nextTick(() => {
-          this.$message.success('布局切换成功！', 1)
-        })
-      })
+      this.toggleUserAppConfig(() => {})
     },
     // 响应Header是否固定
     handleFixToggle (fixHeader) {
       this.$store.dispatch('setFixHeader', fixHeader)
       this.toggleUserAppConfig(() => {
         this.$nextTick(() => {
-          this.$message.success(`页面头部已${fixHeader ? '锁定' : '解锁'}`, 1)
+          this.$message.success(`${this.$t('message.header.message')}${fixHeader ? this.$t('message.header.fixed') : this.$t('message.header.unfixed')}`, 1)
         })
       })
     },
@@ -182,7 +182,7 @@ export default {
       this.$store.dispatch('setDialog', this.appConfig.dialog)
       this.toggleUserAppConfig(() => {
         this.$nextTick(() => {
-          this.$message.success(`弹窗样式已设置为${this.appConfig.dialog.type}宽度[${this.appConfig.dialog.size}]`, 1)
+          this.$message.success(this.$t('message.dialog', { type: this.appConfig.type, size: this.appConfig.size }), 1)
         })
       })
     },
@@ -191,7 +191,7 @@ export default {
       this.$store.dispatch('setMultiTab', multiTab)
       this.toggleUserAppConfig(() => {
         this.$nextTick(() => {
-          this.$message.success(`多标签已${multiTab ? '开启' : '关闭'}`, 1)
+          this.$message.success(`${this.$t('message.multiTab.message')}${multiTab ? this.$t('message.multiTab.open') : this.$t('message.multiTab.close')}`, 1)
         })
       })
     },
@@ -200,7 +200,7 @@ export default {
       this.$store.dispatch('setMultiTabDraggable', multiTabDraggable)
       this.toggleUserAppConfig(() => {
         this.$nextTick(() => {
-          this.$message.success(`多标签拖拽已${multiTabDraggable ? '开启' : '关闭'}`, 1)
+          this.$message.success(`${this.$t('message.multiTabDraggable.message')}${multiTabDraggable ? this.$t('message.multiTabDraggable.open') : this.$t('message.multiTabDraggable.close')}`, 1)
         })
       })
     },
@@ -209,7 +209,7 @@ export default {
       this.$store.dispatch('setWaterMark', waterMark)
       this.toggleUserAppConfig(() => {
         this.$nextTick(() => {
-          this.$message.success('已经开启水印！', 1)
+          this.$message.success(`${this.$t('message.waterMark.message')}${waterMark ? this.$t('message.waterMark.open') : this.$t('message.waterMark.close')}`, 1)
         })
       })
     },
@@ -220,7 +220,7 @@ export default {
       this.$store.dispatch('setTransition', this.appConfig.transition)
       this.toggleUserAppConfig(() => {
         this.$nextTick(() => {
-          this.$message.success('动画效果设置成功！', 1)
+          this.$message.success(this.$t('message.transition'), 1)
         })
       })
     },
@@ -229,7 +229,7 @@ export default {
       this.$store.dispatch('setTransition', this.appConfig.transition)
       this.toggleUserAppConfig(() => {
         this.$nextTick(() => {
-          this.$message.success('动画效果设置成功！', 1)
+          this.$message.success(this.$t('message.transition'), 1)
         })
       })
     },

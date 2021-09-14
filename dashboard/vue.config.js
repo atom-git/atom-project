@@ -27,6 +27,8 @@ module.exports = {
   chainWebpack: (config) => {
     // 设置路径别称
     config.resolve.alias.set('@', resolve('./src'))
+    // 解决i18n告警问题
+    config.resolve.alias.set('vue-i18n', 'vue-i18n/dist/vue-i18n.cjs.js')
   },
   configureWebpack: {
     plugins: [

@@ -13,10 +13,10 @@
         <span><IconFont type="DownOutlined"/></span>
         <template #overlay>
           <a-menu @click="handleDropdownClick">
-            <a-menu-item key="left"><IconFont type="LeftCircleOutlined"/>关闭左侧</a-menu-item>
-            <a-menu-item key="right"><IconFont type="RightCircleOutlined"/>关闭右侧</a-menu-item>
-            <a-menu-item key="other"><IconFont type="SwapOutlined"/>关闭其他</a-menu-item>
-            <a-menu-item key="all"><IconFont type="RetweetOutlined"/>关闭全部</a-menu-item>
+            <a-menu-item key="left"><IconFont type="LeftCircleOutlined"/>{{ $t('MultiTab.left') }}</a-menu-item>
+            <a-menu-item key="right"><IconFont type="RightCircleOutlined"/>{{ $t('MultiTab.right') }}</a-menu-item>
+            <a-menu-item key="other"><IconFont type="SwapOutlined"/>{{ $t('MultiTab.other') }}</a-menu-item>
+            <a-menu-item key="all"><IconFont type="RetweetOutlined"/>{{ $t('MultiTab.all') }}</a-menu-item>
           </a-menu>
         </template>
       </a-dropdown>
@@ -87,12 +87,15 @@ export default {
     },
     // 响应路由重新加载
     handleReload () {
-      this.refreshing = true
       const self = this
-      setTimeout(() => {
-        self.reload()
-        self.refreshing = false
-      }, 500)
+      if (!this.refreshing) {
+        this.refreshing = true
+        setTimeout(() => {
+          self.reload()
+          self.refreshing = false
+        }, 500)
+      }
+
     },
     // 构建openRoute
     generateOpenRoute (newRoute) {

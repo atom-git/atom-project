@@ -29,6 +29,8 @@ public class SysMenuVO extends AbsEntity {
 	private Integer id;
 	@ApiModelProperty("菜单名称")
 	private String name;
+	@ApiModelProperty("英文名称")
+	private String englishName;
 	@ApiModelProperty("菜单描述")
 	private String desc;
 	@ApiModelProperty("菜单图标")
