@@ -11,6 +11,9 @@
 </template>
 
 <script>
+/**
+ * 基础表单示例
+ */
 import { FormFilter, FormList } from '@/components/Common/FuncForm'
 export default {
   name: 'BasicForm',

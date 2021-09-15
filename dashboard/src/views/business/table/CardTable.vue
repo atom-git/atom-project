@@ -3,6 +3,9 @@
 </template>
 
 <script>
+/**
+ * 卡片列表示例
+ */
 export default {
   name: 'CardTable'
 }

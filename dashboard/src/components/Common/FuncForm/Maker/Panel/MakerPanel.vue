@@ -1,12 +1,12 @@
 <template>
-  <div>分步表单</div>
+  <div>画布面板</div>
 </template>
 
 <script>
 /**
- * 分步表单示例
+ * 画布面板
  */
 export default {
-  name: 'StepForm'
+  name: 'MakerPanel'
 }
 </script>

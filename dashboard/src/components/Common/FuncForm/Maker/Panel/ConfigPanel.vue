@@ -1,12 +1,12 @@
 <template>
-  <div>分步表单</div>
+  <div>配置面板</div>
 </template>
 
 <script>
 /**
- * 分步表单示例
+ * 配置面板
  */
 export default {
-  name: 'StepForm'
+  name: 'ConfigPanel'
 }
 </script>
