@@ -6,12 +6,12 @@
     <swatches-picker v-else-if="type === 'swatches'" v-model="checkedColor"></swatches-picker>
     <material-picker v-else-if="type === 'material'" v-model="checkedColor"></material-picker>
     <photoshop-picker v-else-if="type === 'photoshop'" v-model="checkedColor"
-                      head="颜色选择器"
-                      acceptLabel="确定"
-                      cancelLabel="取消"
-                      resetLabel="重置"
-                      newLabel="新建"
-                      currentLabel="当前"></photoshop-picker>
+                      :head="$t('ColorPicker')"
+                      :acceptLabel="$t('global.ok')"
+                      :cancelLabel="$t('global.cancel')"
+                      :resetLabel="$t('global.reset')"
+                      :newLabel="$t('global.new')"
+                      :currentLabel="$t('global.now')"></photoshop-picker>
     <grayscale-picker v-else-if="type === 'grayscale'" v-model="checkedColor"></grayscale-picker>
     <!-- 默认 compact -->
     <div v-else

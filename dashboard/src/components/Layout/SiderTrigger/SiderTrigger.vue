@@ -6,7 +6,7 @@
             @click="toggleCollapsed">
       <a-menu-item>
         <IconFont :type="collapsed ? 'MenuUnfoldOutlined' : 'MenuFoldOutlined'"></IconFont>
-        <span v-if="collapsed">{{ $t('global.unfold') }}</span>
+        <span v-if="collapsed">{{ $t('global.expand') }}</span>
       </a-menu-item>
     </a-menu>
   </div>

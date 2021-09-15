@@ -13,8 +13,8 @@
                     :beforeUpload="handleBeforeUpload"
                     @change="handleChange"
                     @reject="handleReject">
-    <a-tooltip title="点击或者拖入文件上传">
-      <IconFont type="CloudUploadOutlined" /><span class="atom-upload-tip">上传文件</span>
+    <a-tooltip :title="$t('global.dragUpload')">
+      <IconFont type="CloudUploadOutlined" /><span class="atom-upload-tip">{{ $t('global.upload') }}</span>
     </a-tooltip>
   </a-upload-dragger>
   <FileList :fileList="fileList" @file-action="handleAction"></FileList>
@@ -101,7 +101,7 @@ export default {
       handler (newValue) {
         // 对uid进行兼容处理，防止在文件超出时，导致的文件超出上传异常
         newValue&&newValue.forEach(file => { file.uid = file.uid || file.key })
-        this.fileList = newValue
+        this.fileList = newValue || []
       }
     },
     // 监听内部文件列表的变化

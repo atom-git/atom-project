@@ -2,9 +2,25 @@ export default {
   global: {
     clear: '清空',
     more: '查看更多',
-    fold: '收起',
-    unfold: '展开'
+    all: '全部',
+    expand: '展开',
+    collapse: '收起',
+    query: '查询',
+    submit: '提交',
+    ok: '确认',
+    cancel: '取消',
+    reset: '重置',
+    new: '新建',
+    now: '当前',
+    source: '来源',
+    target: '目标',
+    upload: '上传文件',
+    refresh: '刷新',
+    select: '请选择',
+    dragUpload: '点击或者拖入文件上传',
+    columnSetting: '列设置'
   },
+  ColorPicker: '颜色选择器',
   MultiTab: {
     left: '关闭左侧',
     right: '关闭右侧',

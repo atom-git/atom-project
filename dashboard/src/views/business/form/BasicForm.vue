@@ -81,7 +81,7 @@ export default {
             { value: '3', title: 'treeSelect选项3', children: [{ value: '3-1', title: 'treeSelect选项3-1' }, { value: '3-2', title: 'treeSelect选项3-2' }, { value: '3-3', title: 'treeSelect选项3-3' }] },
             { value: '4', title: 'treeSelect选项4' }
           ] },
-        { type: 'transfer', name: 'transfer', label: 'transfer', titles: ['来源', '目标'], dataSource: [
+        { type: 'transfer', name: 'transfer', label: 'transfer', dataSource: [
             { key: '1', title: 'transfer选项1' }, { key: '2', title: 'transfer选项2' }, { key: '3', title: 'transfer选项3' }, { key: '4', title: 'transfer选项4' },
             { key: '5', title: 'transfer选项5' }, { key: '6', title: 'transfer选项6' }, { key: '7', title: 'transfer选项7' }, { key: '8', title: 'transfer选项8' },
             { key: '9', title: 'transfer选项9' }

@@ -57,10 +57,10 @@
         <!-- 默认操作按钮-优先级最低 -->
         <template v-else>
           <a-button key="cancel"
-                    @click="handleAction('cancel')">取消</a-button>
+                    @click="handleAction('cancel')">{{ $t('global.cancel') }}</a-button>
           <a-button key="submit"
                     type="primary"
-                    @click="handleAction('submit')">确认</a-button>
+                    @click="handleAction('submit')">{{ $t('global.submit') }}</a-button>
         </template>
       </a-form-item>
     </a-form>

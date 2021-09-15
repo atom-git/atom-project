@@ -1,23 +1,27 @@
 <template>
   <template v-for="(action, index) in actions" v-permission="action.permission">
     <a-dropdown v-if="action.children" :key="index">
-      <TipButton v-bind="action" :size="size" @click="$emit('click', action)">
-        {{ action.title }}<IconFont type="DownOutlined"/>
+      <TipButton v-bind="action"
+                 :title="initTitle(action)"
+                 :size="size"
+                 @click="$emit('click', action)">
+        {{ initTitle(action) }}<IconFont type="DownOutlined"/>
       </TipButton>
       <template #overlay>
         <a-menu>
           <a-menu-item v-for="child in action.children"
                        :key="child.action"
-                       @click="$emit('click', child)">{{ child.title }}</a-menu-item>
+                       @click="$emit('click', child)">{{ initTitle(child) }}</a-menu-item>
         </a-menu>
       </template>
     </a-dropdown>
     <template v-else>
       <TipButton :key="index"
                  v-bind="action"
+                 :title="initTitle(action)"
                  :size="size"
                  @click="$emit('click', action)">
-        <template v-if="type === 'text' || type === 'both'">{{ action.title }}</template>
+        <template v-if="type === 'text' || type === 'both'">{{ initTitle(action) }}</template>
       </TipButton>
     </template>
     <a-divider :key="'divider_' + index" v-if="index < (actions.length - 1)" type="vertical"/>
@@ -30,6 +34,7 @@
  * actions为[{title, icon, name, apiUrl}]的一组操作按钮，是否需要展示icon由icon属性是否配置来决定
  */
 import TipButton from './TipButton'
+import { mapGetters } from 'vuex'
 export default {
   name: 'TipButtonGroup',
   components: {
@@ -50,6 +55,15 @@ export default {
     size: {
       type: String,
       default: 'small'
+    }
+  },
+  computed: {
+    ...mapGetters(['appConfig'])
+  },
+  methods: {
+    // 根据语言初始化名称
+    initTitle (action) {
+      return this.appConfig.locale === 'zh-CN' ? action.title : this.$utils.firstUpperCase(action.name)
     }
   },
   emits: ['click']

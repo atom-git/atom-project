@@ -2,9 +2,25 @@ export default {
   global: {
     clear: 'Empty',
     more: 'See More',
-    fold: 'Fold',
-    unfold: 'Unfold'
+    all: 'All',
+    expand: 'Expand',
+    collapse: 'Collapse',
+    query: 'Query',
+    submit: 'Submit',
+    ok: 'OK',
+    cancel: 'Cancel',
+    reset: 'Reset',
+    new: 'New',
+    now: 'Now',
+    source: 'Source',
+    target: 'Target',
+    upload: 'Upload',
+    refresh: 'Refresh',
+    select: 'Select',
+    dragUpload: 'Drag Or Click Upload',
+    columnSetting: 'Column Setting'
   },
+  ColorPicker: 'Color Picker',
   MultiTab: {
     left: 'Close Left',
     right: 'Close Right',

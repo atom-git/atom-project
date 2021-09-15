@@ -36,8 +36,8 @@
       </template>
       <!-- 如果footer为空，则不显示footer，否则默认为取消，确认两个按钮 -->
       <template v-else-if="!footer">
-        <a-button @click="() => { this.visible = false; $emit('cancel') }">{{ locale.Modal.cancelText }}</a-button>
-        <a-button type="primary" :loading="loading" @click="$emit('ok')">{{ locale.Modal.okText }}</a-button>
+        <a-button @click="() => { this.visible = false; $emit('cancel') }">{{ $t('global.cancel') }}</a-button>
+        <a-button type="primary" :loading="loading" @click="$emit('ok')">{{ $t('global.ok') }}</a-button>
       </template>
     </div>
   </a-drawer>
@@ -80,10 +80,6 @@ export default {
     }
   },
   computed: {
-    // locale信息用于命名按钮
-    locale () {
-      return this.$root.locale
-    },
     // 弹窗形式
     dialogType () {
       return this.type || this.$store.getters.appConfig.dialog.type

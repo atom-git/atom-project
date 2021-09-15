@@ -6,7 +6,7 @@
                  :type="funcZone.add.type || 'primary'"
                  :icon="funcZone.add.icon || Default.ACTION.ADD.icon"
                  @click="handleClick(funcZone.add, Default.ACTION.ADD, funcZone.add.extend || false)">
-        {{ funcZone.add.title || Default.ACTION.ADD.title }}
+        {{ initTitle((funcZone.add && funcZone.add.title) || Default.ACTION.ADD) }}
       </TipButton>
     </span>
 
@@ -18,7 +18,7 @@
             v-permission="tipButton.permission">
         <TipButton :type="tipButton.type || 'default'"
                    :icon="tipButton.icon || ''"
-                   @click="handleClick(tipButton, tipButton, true)">{{ tipButton.title || '' }}</TipButton>
+                   @click="handleClick(tipButton, tipButton, true)">{{ initTitle(tipButton.title || '') }}</TipButton>
       </span>
     </template>
     <a-divider v-if="funcZone.add || funcZone.extend" type="vertical"/>
@@ -26,19 +26,19 @@
     <!-- 默认功能按钮 -->
     <!-- download 下载 -->
     <a-tooltip v-if="funcZone.download"
-               :title="funcZone.download.title || Default.ACTION.DOWNLOAD.title">
+               :title="initTitle((funcZone.download && funcZone.download.title) || Default.ACTION.DOWNLOAD)">
       <IconFont :type="funcZone.download.icon || Default.ACTION.DOWNLOAD.icon"
                 @click="handleClick(funcZone.download, Default.ACTION.DOWNLOAD, funcZone.download.extend || false)"/>
     </a-tooltip>
     <!-- upload 导入 -->
     <a-tooltip v-if="funcZone.upload"
-               :title="funcZone.upload.title || Default.ACTION.UPLOAD.title">
+               :title="initTitle((funcZone.upload && funcZone.upload.title) || Default.ACTION.UPLOAD)">
       <IconFont :type="funcZone.upload.icon || Default.ACTION.UPLOAD.icon"
                 @click="handleClick(funcZone.upload, Default.ACTION.UPLOAD, funcZone.upload.extend || false)"/>
     </a-tooltip>
     <!-- refresh 刷新 -->
     <a-tooltip v-if="funcZone.refresh"
-               :title="funcZone.refresh.title || Default.ACTION.REFRESH.title">
+               :title="initTitle((funcZone.refresh && funcZone.refresh.title) || Default.ACTION.REFRESH)">
       <IconFont :type="funcZone.refresh.icon || Default.ACTION.REFRESH.icon"
                 @click="handleClick(funcZone.refresh, Default.ACTION.REFRESH, funcZone.refresh.extend || false)"/>
     </a-tooltip>
@@ -46,16 +46,16 @@
     <a-popover v-if="funcZone.setting"
                placement="bottomRight"
                :trigger="['click']">
-      <a-tooltip :title="funcZone.setting.title || Default.ACTION.SETTING.title">
+      <a-tooltip :title="initTitle((funcZone.setting && funcZone.setting.title) || Default.ACTION.SETTING)">
         <IconFont :type="funcZone.setting.icon || Default.ACTION.SETTING.icon"/>
       </a-tooltip>
       <template #title>
         <a-row>
           <a-col span="12" :style="{ lineHeight: '32px' }">
-            <a-checkbox v-model:checked="checkedAll" @change="toogleChecked" :indeterminate="indeterminate">列设置</a-checkbox>
+            <a-checkbox v-model:checked="checkedAll" @change="toogleChecked" :indeterminate="indeterminate">{{ $t('global.columnSetting') }}</a-checkbox>
           </a-col>
           <a-col span="12" :style="{ textAlign: 'right' }">
-            <a-button type="link" @click="handleReset">重置</a-button>
+            <a-button type="link" @click="handleReset">{{ $t('global.reset') }}</a-button>
           </a-col>
         </a-row>
       </template>
@@ -92,6 +92,7 @@
  *           默认功能按钮包括，refresh 刷新 可选[定时刷新],setting 列设置
  */
 import { TipButton } from '@/components/Common/FuncButton'
+import { mapGetters } from 'vuex'
 export default {
   name: 'FuncZone',
   components: {
@@ -131,6 +132,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['appConfig']),
     // 刷新选项
     refreshOptions () {
       if (this.funcZone.refresh && this.funcZone.refresh.option) {
@@ -184,6 +186,14 @@ export default {
         }
       })
       return checkedColumns
+    },
+    // 初始化action的名称
+    initTitle (action) {
+      if (this.$utils.isObject(action)) {
+        return this.appConfig.locale === 'zh-CN' ? action.title : this.$utils.firstUpperCase(action.name)
+      } else {
+        return this.$utils.firstUpperCase(action)
+      }
     },
     // 响应按钮点击
     handleClick (action, defaultAction, extend) {

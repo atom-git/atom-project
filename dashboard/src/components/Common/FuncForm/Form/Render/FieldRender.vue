@@ -150,6 +150,7 @@
   <!-- transfer -->
   <a-transfer v-else-if="isType('transfer')"
               v-bind="renderField"
+              :titles="renderField.titles || [$t('global.source'), $t('global.target')]"
               :render="renderField.render || (item => item[renderField.replaceFields.title])"
               :targetKeys="modelValue" @change="handleChange"/>
   <!-- slider -->
@@ -208,6 +209,7 @@
 <script>
 // 默认替换key
 import { FileUpload, IconPicker, IconRadio, ImagePicker, MapPicker, TableSelect, TagCheck } from '@/components/Common/FuncForm/Item'
+import { mapGetters } from 'vuex'
 const defaultKeys = { key: 'key', title: 'title', children: 'children', label: 'label', value: 'value', status: 'status', color: 'color' }
 /**
  * Form表单字段渲染
@@ -267,6 +269,11 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['appConfig']),
+    // placeholder文本，根据语言选择
+    placeholderText () {
+      return this.appConfig.locale === 'zh-CN' ? placeholderTextZH : placeholderTextEN
+    },
     // 构建用于渲染的field
     renderField () {
       return Object.assign(this.field, {
@@ -288,13 +295,12 @@ export default {
     // 初始化field空值提示文本
     initPlaceholder () {
       let placeholder = this.field.placeholder
-      // TODO 如果inputGroup时需要单独处理内部placeholder
       if (placeholder) {
         return placeholder
       } else if (this.field.type === 'rangePicker') {
-        return ['开始日期', '结束日期']
+        return this.appConfig.locale === 'zh-CN' ? ['开始日期', '结束日期'] : ['Start Date', 'End Date']
       } else {
-        placeholder = this.$utils.isValid(placeholderText[this.field.type]) ? placeholderText[this.field.type] : placeholderText.default
+        placeholder = this.$utils.isValid(this.placeholderText[this.field.type]) ? this.placeholderText[this.field.type] : this.placeholderText.default
         return placeholder + this.field.label
       }
     },
@@ -373,9 +379,9 @@ export default {
   }
 }
 /**
- * 内置placeholderText
+ * 内置placeholderTextZH
  */
-const placeholderText = {
+const placeholderTextZH = {
   text: '请输入',
   textarea: '请输入',
   select: '请选择',
@@ -395,12 +401,39 @@ const placeholderText = {
   autoComplete: '请输入',
   mentions: '请输入',
   rate: '请选择',
-  inputGroup: '',
-  fieldPreview: '',
   fileUpload: '请选择',
   iconPicker: '请选择',
   iconRadio: '请选择',
   tagCheck: '请选择',
   default: '请输入'
+}
+/**
+ * 内置placeholderTextEN
+ */
+const placeholderTextEN = {
+  text: 'Input ',
+  textarea: 'Input ',
+  select: 'Select ',
+  number: 'Input ',
+  radio: 'Select ',
+  cascader: 'Select ',
+  checkbox: 'Select ',
+  switch: 'Select ',
+  treeSelect: 'Select ',
+  datePicker: 'Select ',
+  monthPicker: 'Select ',
+  RangePicker: 'Select ',
+  weekPicker: 'Select ',
+  timePicker: 'Select ',
+  transfer: 'Select ',
+  slider: 'Drag ',
+  autoComplete: 'Input ',
+  mentions: 'Input ',
+  rate: 'Select ',
+  fileUpload: 'Select ',
+  iconPicker: 'Select ',
+  iconRadio: 'Select ',
+  tagCheck: 'Select ',
+  default: 'Input '
 }
 </script>

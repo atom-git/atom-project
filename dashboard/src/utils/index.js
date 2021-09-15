@@ -12,6 +12,7 @@ import Default from '@/config/default'
  * deepClone: 对象深度克隆，采对属性部门进行克隆
  * buildArray: 根据长度构建array
  * arrayRemove: 删除数组中从from到to的元素
+ * firstUpperCase: 字符串首字母大写
  * fromNow: 从目前开始的时间命名
  * toDate: 把时间字符串转日期
  * formatDate: 格式化日期
@@ -121,6 +122,16 @@ export default class Utils {
     const rest = array.slice((to || from) + 1 || array.length)
     array.length = from < 0 ? array.length + from : from
     array.push(...rest)
+  }
+
+  /**
+   * 首字母大写
+   * @param str
+   */
+  static firstUpperCase (str) {
+    return str.toLowerCase().replace(/(\s|^)[a-z]/g, function(char){
+      return char.toUpperCase()
+    })
   }
 
   /**

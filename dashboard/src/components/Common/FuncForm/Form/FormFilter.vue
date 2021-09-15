@@ -35,13 +35,13 @@
         <a-col v-bind="buttonSpan">
           <a-form-item :wrapperCol="{ span: 24 }" class="atom-form-footer filter">
             <a-button type="primary" @click="handleSubmit">
-              <template #icon><IconFont type="SearchOutlined" /></template>查询
+              <template #icon><IconFont type="SearchOutlined" /></template>{{ $t('global.query') }}
             </a-button>
             <a-button @click="handleReset">
-              <template #icon><IconFont type="UndoOutlined" /></template>重置
+              <template #icon><IconFont type="UndoOutlined" /></template>{{ $t('global.reset') }}
             </a-button>
             <a-button v-if="fields.length > maxCollapsed" type="link" @click="handleCollapse">
-              {{ collapsed ? '展开' : '收起' }}
+              {{ collapsed ? $t('global.expand') : $t('global.collapse') }}
               <IconFont type="DownOutlined" :style="{ transform: `rotate(${collapsed ? '0turn' : '0.5turn' })` }" />
             </a-button>
           </a-form-item>

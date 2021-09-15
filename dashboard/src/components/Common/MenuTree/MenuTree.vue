@@ -4,7 +4,7 @@
       <a-select v-if="search"
                 class="atom-tree-select"
                 showSearch
-                placeholder="--请选择--"
+                :placeholder="`--${$t('global.select')}--`"
                 :allowClear="true"
                 :filterOption="true"
                 optionFilterProp="title"
@@ -13,7 +13,7 @@
           {{ option[optionFields.title] }}
         </a-select-option>
       </a-select>
-      <a-tooltip v-if="refresh" title="刷新">
+      <a-tooltip v-if="refresh" :title="$t('global.refresh')">
         <a-button type="primary" shape="circle" class="atom-refresh" @click="handleRefresh">
           <template #icon><IconFont type="SyncOutlined" /></template>
         </a-button>

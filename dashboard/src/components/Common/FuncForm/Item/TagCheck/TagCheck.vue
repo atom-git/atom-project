@@ -1,7 +1,7 @@
 <template>
   <div ref="tag-box" :class="['atom-tag-check', size]">
     <a-checkable-tag v-if="multiple" key="all" v-model:checked="allChecked" @change="handleAllToggle">
-      全部
+      {{ $t('global.all') }}
     </a-checkable-tag>
     <a-checkable-tag v-for="(option, index) in tagOptions"
                      v-show="index < showTagLength"
@@ -12,7 +12,7 @@
       {{ option.title }}
     </a-checkable-tag>
     <a-button v-if="maxShowTag !== tagOptions.length" type="link" @click="togglecollapsed">
-      {{ collapsed ? '展开' : '收起' }}
+      {{ collapsed ? $t('global.expand') : $t('global.collapse') }}
       <IconFont type="DownOutlined" :style="{ transform: `rotate(${collapsed ? '0turn' : '0.5turn' })` }" />
     </a-button>
   </div>
