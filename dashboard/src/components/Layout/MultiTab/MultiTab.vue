@@ -42,7 +42,7 @@ export default {
   data () {
     return {
       // 已打开的路由，把首页永远固定在tab中
-      openRoutes: this.$store.state.openRoutes && this.$store.state.openRoutes.length > 0 ? this.$store.state.openRoutes : [homeRoute],
+      openRoutes: [],
       // 激活的路由
       activeRoute: '',
       // 是否正在刷新
@@ -60,6 +60,8 @@ export default {
     }
   },
   created () {
+    // 已打开的路由，把首页永远固定在tab中
+    this.openRoutes = this.$utils.isValid(this.$store.getters.openRoutes) ? this.$store.getters.openRoutes : [homeRoute]
     // 生成已打开的路由
     this.generateOpenRoute(this.$route)
   },
