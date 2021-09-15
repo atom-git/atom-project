@@ -6,22 +6,22 @@ mix布局样式，仅包括颜色变化部分
   min-height: 100vh !important;
   &.fixed {
     /*头部固定*/
-    .ant-layout-header {
+    &>.ant-layout-header {
       position: fixed;
       z-index: 99;
       width: 100%;
     }
     /*内容部分下移*/
-    .ant-layout-has-sider {
+    &>.ant-layout-has-sider {
       margin-top: 48px;
-    }
-    /*内容部分下移*/
-    .ant-layout-content {
-      &.atom-has-multitab .atom-page-layout {
-        margin-top: 44px;
-      }
-      .atom-page-layout {
-        margin-top: 16px;
+      /*内容部分下移*/
+      .ant-layout-content {
+        &.atom-has-multitab .atom-page-layout {
+          margin-top: 44px;
+        }
+        .atom-page-layout {
+          margin-top: 16px;
+        }
       }
     }
   }
@@ -85,17 +85,21 @@ mix布局样式，仅包括颜色变化部分
   /*页脚部分*/
   .ant-layout-footer {
     padding: 8px 16px;
-    margin: 16px 0 8px;
+    margin: 8px 0;
     text-align: center;
     .atom-footer-links a, .atom-footer-copyright {
       color: @text-color-secondary;
       font-size: 14px;
     }
+    .atom-footer-copyright {
+      margin-top: 8px;
+      text-align: center;
+    }
   }
   /**
-  混合主题 mix
+  混合主题 color
   */
-  &.mix {
+  &.color {
     /*header部分*/
     .ant-layout-header {
       /*logo*/

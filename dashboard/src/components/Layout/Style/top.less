@@ -6,13 +6,13 @@ top布局样式，仅包括颜色变化部分
   min-height: 100vh !important;
   &.fixed {
     /*头部固定*/
-    .ant-layout-header {
+    &>.ant-layout-header {
       position: fixed;
       z-index: 99;
       width: 100%;
     }
     /*内容部分下移*/
-    .ant-layout-content {
+    &>.ant-layout-content, &>.ant-layout-content.atom-has-multitab {
       margin-top: 48px;
       .atom-multi-tabs {
         position: fixed;
@@ -42,7 +42,10 @@ top布局样式，仅包括颜色变化部分
   }
   /*页面内容*/
   .ant-layout-content {
-    margin: 0 16px 16px;
+    margin: 16px 16px;
+    &.atom-has-multitab {
+      margin-top: 0;
+    }
     .atom-multi-tabs {
       position: unset;
     }
@@ -50,7 +53,7 @@ top布局样式，仅包括颜色变化部分
   /*页脚部分*/
   .ant-layout-footer {
     padding: 8px 16px;
-    margin: 16px 0 8px;
+    margin: 8px 0;
     text-align: center;
     .atom-footer-links a, .atom-footer-copyright {
       font-size: 14px;
@@ -62,9 +65,9 @@ top布局样式，仅包括颜色变化部分
     }
   }
   /**
-  混合主题 mix
+  混合主题 color
   */
-  &.mix {
+  &.color {
     /*页眉样式*/
     .ant-layout-header {
       /*logo部分*/

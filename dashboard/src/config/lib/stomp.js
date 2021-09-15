@@ -50,11 +50,7 @@ export default {
       this.client.connect(headers, () => {
         // connectCallback连接成功后的回调
         // 重连后删除重连且删除消息提示
-        if (this.reconnect !== null) {
-          this.reconnect.msgCloser()
-          clearInterval(this.reconnect.timer)
-          this.reconnect = null
-        }
+        this.clear()
         // 设置连接成功
         this.status = 200
         message.success('消息服务已连接成功！')
@@ -94,10 +90,12 @@ export default {
         if (this.socket !== null) {
           this.socket.close()
         }
-        this.socket = this.client = this.error = this.reconnect = null
-        this.status = 0
-        this.subscribeMap = {}
+        this.clear()
+        this.reset()
       }, headers)
+    } else {
+      this.clear()
+      this.reset()
     }
   },
   // 订阅服务，headers用于自定义传入头部参数
@@ -146,6 +144,20 @@ export default {
         setTimeout(() => { return this.send(destination, msg, headers).then(frame => resolve(frame)) }, 500)
       }
     })
+  },
+  // 清除信息
+  clear () {
+    if (this.reconnect !== null) {
+      this.reconnect.msgCloser()
+      clearInterval(this.reconnect.timer)
+      this.reconnect = null
+    }
+  },
+  // 重置为初始状态
+  reset () {
+    this.socket = this.client = this.error = this.reconnect = null
+    this.status = 0
+    this.subscribeMap = {}
   },
   // 获取状态
   getStatus: function () {
