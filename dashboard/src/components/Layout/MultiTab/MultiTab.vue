@@ -87,12 +87,14 @@ export default {
     },
     // 响应路由重新加载
     handleReload () {
-      this.refreshing = true
       const self = this
-      setTimeout(() => {
-        self.reload()
-        self.refreshing = false
-      }, 500)
+      if (!self.refreshing) {
+        this.refreshing = true
+        setTimeout(() => {
+          self.reload()
+          self.refreshing = false
+        }, 500)
+      }
     },
     // 构建openRoute
     generateOpenRoute (newRoute) {

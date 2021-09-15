@@ -35,9 +35,9 @@ import { SideMenu } from './Menu'
 import RouteView from './RouteView'
 import config from '@/config/mixins/config'
 import user from '@/config/mixins/user'
+import refresh from '@/config/mixins/refresh'
 import HeaderRight from './HeaderRight'
 import Footer from './Footer'
-import refresh from './mixins/refresh'
 export default {
   name: 'DrawerLayout',
   components: {

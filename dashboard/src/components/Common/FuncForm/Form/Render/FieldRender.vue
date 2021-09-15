@@ -150,6 +150,7 @@
   <!-- transfer -->
   <a-transfer v-else-if="isType('transfer')"
               v-bind="renderField"
+              :titles="renderField.titles || ['来源', '目标']"
               :render="renderField.render || (item => item[renderField.replaceFields.title])"
               :targetKeys="modelValue" @change="handleChange"/>
   <!-- slider -->
@@ -288,7 +289,6 @@ export default {
     // 初始化field空值提示文本
     initPlaceholder () {
       let placeholder = this.field.placeholder
-      // TODO 如果inputGroup时需要单独处理内部placeholder
       if (placeholder) {
         return placeholder
       } else if (this.field.type === 'rangePicker') {
@@ -395,8 +395,6 @@ const placeholderText = {
   autoComplete: '请输入',
   mentions: '请输入',
   rate: '请选择',
-  inputGroup: '',
-  fieldPreview: '',
   fileUpload: '请选择',
   iconPicker: '请选择',
   iconRadio: '请选择',

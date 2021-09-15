@@ -8,7 +8,9 @@
 import zhCN from 'ant-design-vue/es/locale-provider/zh_CN'
 import { mapGetters } from 'vuex'
 import Default from '@/config/default'
+import refresh from '@/config/mixins/refresh'
 export default {
+  mixins: [refresh],
   data () {
     return {
       locale: zhCN

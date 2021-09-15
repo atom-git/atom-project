@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title><%= htmlWebpackPlugin.options.title %></title>
+    <style>.atom-loading{position:relative;text-align:center;width:100%;margin-top:100px}.atom-loading h1{font-size:80px;}.atom-loading-icon{width:80px;margin:auto}.atom-loading-icon div{background-color:#5b8ff9;width:80px;height:80px;position:absolute;border-radius:100%;-webkit-animation-fill-mode:both;animation-fill-mode:both;-webkit-animation:ball-scale-multiple 1s 0s linear infinite;animation:ball-scale-multiple 1s 0s linear infinite}.atom-loading-icon>div:nth-child(2){-webkit-animation-delay:-.4s;animation-delay:-.4s}.atom-loading-icon>div:nth-child(3){-webkit-animation-delay:-.2s;animation-delay:-.2s}@keyframes ball-scale-multiple{0%{-webkit-transform:scale(0);transform:scale(0);opacity:0}5%{opacity:1}100%{-webkit-transform:scale(1);transform:scale(1);opacity:0}}</style>
 </head>
 <body>
     <!-- 只能放在最前面否则切换不生效 -->
@@ -15,7 +16,13 @@
     <noscript>
         <strong>We're sorry but dashboard doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
-    <div id="app"></div>
+    <div id="app">
+        <!-- loading动画 -->
+        <div class="atom-loading">
+            <h1>Atom Project</h1>
+            <div class="atom-loading-icon"><div></div><div></div><div></div></div>
+        </div>
+    </div>
     <!-- built files will be auto injected -->
 </body>
 </html>

@@ -18,15 +18,19 @@ const SubMenu = {
   },
   template: `
     <a-sub-menu :key="subMenu[replaceFields.key]">
-      <template #title>
+      <template #icon>
         <IconFont :type="subMenu[replaceFields.icon]" />
-        <span>{{ subMenu[replaceFields.title] }}</span>
+      </template>
+      <template #title>
+        {{ subMenu[replaceFields.title] }}
       </template>
       <template v-for="(menu, index) in subMenu[replaceFields.children]">
         <template v-if="!$utils.isValid(menu[replaceFields.children])">
           <a-menu-item :key="menu[replaceFields.key]">
-            <IconFont :type="menu[replaceFields.icon]" />
-            <span>{{ menu[replaceFields.title] }}</span>
+            <template #icon>
+              <IconFont :type="menu[replaceFields.icon]" />
+            </template>
+            {{ menu[replaceFields.title] }}
           </a-menu-item>
         </template>
         <template v-else>
