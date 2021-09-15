@@ -4,7 +4,7 @@
  * platformType: 平台类型用于区分应用场景，同平台用户多人登录的问题
  * title: 项目名称[自定义]
  * primaryColor: 主题色 [#1890ff]
- * theme: 主题 [dark, light, mix]
+ * theme: 主题 [dark, light, color]
  * layout: 整体布局方式 [sider, top, mix(top-sider), drawer]
  * multiTab: 多标签页是否开启 [true, false]
  * multiTabDraggable: 多标签页是否可拖拽 [true, false]
@@ -23,7 +23,7 @@ export default {
   platformType: 'WEB',
   title: 'Atom Pro',
   primaryColor: '#5B8FF9',
-  theme: 'mix',
+  theme: 'color',
   layout: 'sider',
   mobileLayout: 'drawer',
   multiTab: true,

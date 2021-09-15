@@ -35,7 +35,7 @@
         <a-list-item>
           <a-list-item-meta title="开启多页签"></a-list-item-meta>
           <template #actions>
-            <a-switch size="small" v-model:checked="appConfig.multiTab" @change="handleMultiTabToggle"/>
+            <a-switch :disabled="appConfig.layout === 'drawer'" size="small" v-model:checked="appConfig.multiTab" @change="handleMultiTabToggle"/>
           </template>
         </a-list-item>
         <a-list-item>
@@ -109,7 +109,7 @@ export default {
       // 主题选项
       themeOptions: [
         { icon: 'atom-theme-light', title: '纯白世界', value: 'light' },
-        { icon: 'atom-theme-mix', title: '黑白无极', value: 'mix' },
+        { icon: 'atom-theme-color', title: '黑白无极', value: 'color' },
         { icon: 'atom-theme-dark', title: '暗黑世界', value: 'dark' }
       ],
       // 布局选项

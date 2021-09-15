@@ -40,7 +40,7 @@ const app = {
     scrollTop: 0,
     clientWidth: document.body.clientWidth || window.innerWidth,
     clientHeight: document.body.clientHeight || window.innerHeight,
-    contentHeight: (document.body.clientHeight || window.innerHeight) - 48 - 68 - (8 * 2 + 16),
+    contentHeight: document.body.clientHeight || window.innerHeight,
     loading: false
   },
   mutations: {
@@ -56,8 +56,12 @@ const app = {
     setLayout: (state, layout) => {
       state.config.layout = state.device.isMobile || (document.body.clientWidth || window.innerWidth) < 768 ? Default.mobileLayout : layout
       // 如果是mix布局，fixHeader一定为true，并且不可更改，drawer默认为fixed，但是可以改变
-      if (layout === 'mix' || layout === 'drawer') {
+      if (layout === 'mix') {
         state.config.fixHeader = true
+      } else if (layout === 'drawer') {
+        state.config.fixHeader = true
+        state.config.multiTab = false
+        state.config.multiTabDraggable = false
       }
     },
     setFixHeader: (state, fixHeader) => {
@@ -86,8 +90,9 @@ const app = {
     },
     setClientHeight: (state, clientHeight) => {
       state.clientHeight = clientHeight
-      // 48:header高度 68:footer高度 (8*2 + 16):content上下边距，footer上边距
-      state.contentHeight = clientHeight - 48 - 68 - (8 * 2 + 16)
+      // 修改内容部分高度
+      // 48:header高度 68:footer高度 footer边距(边距8+8)content上下边距(16+16)multiTabs高度44
+      state.contentHeight = clientHeight - 48 - 68 - (8 + 8) - (16 + 16) - (state.config.multiTab ? 44 : 0)
     },
     setLoading: (state, loading) => {
       state.loading = loading

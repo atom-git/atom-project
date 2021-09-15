@@ -9,15 +9,15 @@
   <a-layout>
     <a-layout-sider class="atom-sider"
                     breakpoint="xl"
-                    :theme="mixTheme"
+                    :theme="contentTheme"
                     :collapsedWidth="48"
                     v-model:collapsed="collapsed">
       <!-- 菜单 -->
       <SideMenu :menus="menus"
-                :theme="mixTheme"
+                :theme="contentTheme"
                 :replaceKeys="{ title: 'name', key: 'route' }"></SideMenu>
       <!-- 折叠弹出按钮 -->
-      <SiderTrigger :theme="mixTheme" v-model:collapsed="collapsed"></SiderTrigger>
+      <SiderTrigger :theme="contentTheme" v-model:collapsed="collapsed"></SiderTrigger>
     </a-layout-sider>
     <!-- 右侧内容部分 -->
     <a-layout :style="{ marginLeft: `${appConfig.fixHeader ? collapsed ? 48 : 200 : 0}px`}">
@@ -59,12 +59,6 @@ export default {
     return {
       // 菜单折叠展开
       collapsed: false
-    }
-  },
-  computed: {
-    // mix模式下的主题
-    mixTheme () {
-      return this.appConfig.theme === 'dark' ? 'dark' : 'light'
     }
   },
   methods: {

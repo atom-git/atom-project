@@ -15,7 +15,7 @@
               :width="drawerWidth"
               v-model:visible="drawerVisible">
       <SideMenu :menus="menus"
-                :theme="drawerTheme"
+                :theme="contentTheme"
                 :replaceKeys="{ title: 'name', key: 'route' }"
                 @on-menu-click="drawerVisible = false"></SideMenu>
       <!-- drawer中的footer -->
@@ -55,10 +55,6 @@ export default {
     }
   },
   computed: {
-    // drawer模式下的主题
-    drawerTheme () {
-      return this.appConfig.theme === 'dark' ? 'dark' : 'light'
-    },
     // drawer的宽度，最大不超过320
     drawerWidth () {
       return this.clientWidth > 320 ? 300 : '100%'

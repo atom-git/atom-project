@@ -57,6 +57,9 @@ export default {
           this.$router.push({ name: menu.key })
         }
       } else if (menu.key === 'signOut') {
+        // 清除消息服务
+        this.$stomp.disconnect()
+        // 登出
         this.$store.dispatch('signOut').then(() => {
           // 清空权限
           this.$store.dispatch('clearPermission')

@@ -13,9 +13,13 @@ export default {
       'clientHeight',
       'contentHeight'
     ]),
-    // 主题颜色 dark mix 均对应dark, light对应light
+    // 布局主题颜色 dark color 均对应dark, light对应light
     colorTheme () {
       return this.appConfig.theme === 'light' ? 'light' : 'dark'
+    },
+    // 内容部分主题色
+    contentTheme () {
+      return this.appConfig.theme === 'dark' ? 'dark' : 'light'
     }
   }
 }

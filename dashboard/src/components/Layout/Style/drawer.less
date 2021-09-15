@@ -6,13 +6,13 @@ drawer布局样式
   min-height: 100vh !important;
   &.fixed {
     /*头部固定*/
-    .ant-layout-header {
+    &>.ant-layout-header {
       position: fixed;
       z-index: 99;
       width: 100%;
     }
     /*内容部分下移*/
-    .ant-layout-content {
+    &>.ant-layout-content {
       margin-top: 56px;
     }
   }
@@ -49,29 +49,31 @@ drawer布局样式
   .ant-layout-content {
     margin: 8px;
     /*card body样式*/
-    .atom-page-layout .ant-card {
-      /*常规card模块*/
-      .ant-card-body {
-        padding: 8px;
-        /*折叠窗体样式*/
-        .ant-collapse .ant-collapse-item .ant-collapse-header {
-          padding: 10px 10px 10px 8px;
+    .atom-page-layout {
+      .ant-card {
+        /*常规card模块*/
+        .ant-card-body {
+          padding: 8px;
+          /*折叠窗体样式*/
+          .ant-collapse .ant-collapse-item .ant-collapse-header {
+            padding: 10px 10px 10px 8px;
+          }
         }
-      }
-      /*filter模块*/
-      &.atom-form.filter .ant-card-body {
-        padding: 16px 8px 0 8px;
-      }
-      /*drawer模式下formItem下边距变小*/
-      .ant-form-item {
-        margin-bottom: 16px;
+        /*filter模块*/
+        &.atom-form.filter .ant-card-body {
+          padding: 16px 8px 0 8px;
+        }
+        /*drawer模式下formItem下边距变小*/
+        .ant-form-item {
+          margin-bottom: 16px;
+        }
       }
     }
   }
   /*页脚部分*/
   .ant-layout-footer {
     padding: 8px 16px;
-    margin: 16px 0 8px;
+    margin: 8px 0;
     text-align: center;
     .atom-footer-links a, .atom-footer-copyright {
       font-size: 14px;
@@ -83,9 +85,9 @@ drawer布局样式
     }
   }
   /**
-  混合主题 mix
+  混合主题 color
   */
-  &.mix {
+  &.color {
     /*页眉样式*/
     .ant-layout-header {
       /*logo部分*/
