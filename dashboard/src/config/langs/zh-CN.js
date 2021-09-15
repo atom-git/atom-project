@@ -68,7 +68,7 @@ export default {
     },
     ThemeMode: {
       light: '纯白世界',
-      mix: '黑白无极',
+      color: '黑白无极',
       dark: '暗黑世界'
     },
     Mode: {

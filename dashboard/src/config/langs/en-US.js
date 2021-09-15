@@ -68,7 +68,7 @@ export default {
     },
     ThemeMode: {
       light: 'Light Theme',
-      mix: 'Mix Theme',
+      color: 'Mix Theme',
       dark: 'Dark Theme'
     },
     Mode: {
