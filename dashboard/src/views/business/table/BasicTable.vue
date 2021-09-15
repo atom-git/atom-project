@@ -8,6 +8,9 @@
 </template>
 
 <script>
+/**
+ * 基础列表示例
+ */
 import { FormatTable, FormTable } from '@/components/Common/FuncTable'
 export default {
   name: 'BasicTable',

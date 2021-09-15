@@ -19,6 +19,9 @@
 </template>
 
 <script>
+/**
+ * 高级列表示例
+ */
 import { FuncTable, TabTable } from '@/components/Common/FuncTable'
 export default {
   name: 'AdvanceTable',

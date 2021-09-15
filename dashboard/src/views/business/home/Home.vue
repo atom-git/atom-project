@@ -15,6 +15,9 @@
 </template>
 
 <script>
+/**
+ * 首页示例
+ */
 export default {
   name: 'Home',
   data () {

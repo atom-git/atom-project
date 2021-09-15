@@ -6,6 +6,9 @@
 </template>
 
 <script>
+/**
+ * 高级表单示例
+ */
 import { FormList } from '@/components/Common/FuncForm'
 export default {
   name: 'AdvanceForm',
