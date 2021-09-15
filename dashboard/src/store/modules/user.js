@@ -37,6 +37,8 @@ const user = {
         $api.system.signIn(signUser).then(token => {
           // 写入token
           commit('setToken', token)
+          // 重新登录时清空已打开的路由
+          commit('setOpenRoutes', [])
           resolve(token)
         }).catch(error => {
           // 业务异常已在axios公共处理
