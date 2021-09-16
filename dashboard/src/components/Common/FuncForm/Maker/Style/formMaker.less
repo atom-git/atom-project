@@ -1,19 +1,51 @@
 /**
-表单生成器样式
+表单生成器样式，这里的样式只针对于此组件在外部组件中的通用样式
  */
 .atom-form-maker {
+  width: 100%;
+  height: 100%;
   /*左侧组件面板区域*/
   .atom-widget-panel {
-
+    overflow: auto;
+    .ant-collapse-borderless {
+      background-color: @component-background;
+      /*组件item样式*/
+      .ant-list-grid .ant-col > .ant-list-item {;
+        background: @primary-1;
+        border: 1px solid @primary-1;
+        line-height: 26px;
+        padding: 0 8px;
+        margin-bottom: 8px;
+        font-size: 13px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        cursor: move;
+        .anticon {
+          margin-right: 6px;
+        }
+        &:hover, &:focus {
+          border: 1px dashed @primary-color;
+          color: @primary-color;
+        }
+      }
+    }
   }
   /*中间画布面板区域*/
   .atom-maker-panel {
-    .ant-layout-header {
-      background: @component-background;
+    flex: 1;
+    border-left: 1px solid @border-color-base;
+    border-right: 1px solid @border-color-base;
+    border-radius: 0;
+    height: 100%;
+    .ant-card-head {
+      border-bottom-width: 2px;
+    }
+    .ant-card-body {
+      background: @layout-body-background;
     }
   }
   /*右侧配置面板区域*/
   .atom-config-panel {
-
   }
 }

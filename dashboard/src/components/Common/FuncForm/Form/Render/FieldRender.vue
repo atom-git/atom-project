@@ -96,6 +96,10 @@
       </a-radio>
     </template>
   </a-radio-group>
+
+  <!-- checkbox -->
+  <a-checkbox-group v-else-if="isType('checkbox')" v-bind="renderField" :value="modelValue" @change="handleChange"/>
+
   <!-- switch -->
   <a-switch v-else-if="isType('switch')"
             v-bind="renderField"
@@ -112,8 +116,6 @@
               :fieldNames="renderField.replaceFields"
               :value="modelValue"
               @change="handleChange" allowClear/>
-  <!-- checkbox -->
-  <a-checkbox-group v-else-if="isType('checkbox')" v-bind="renderField" :value="modelValue" @change="handleChange"/>
 
   <!-- 时间组件 -->
   <!-- datePicker -->
@@ -189,16 +191,18 @@
   <!-- 自定义组件 -->
   <!-- fileUpload 文件上传 -->
   <FileUpload v-else-if="isType('fileUpload')" v-bind="renderField" name="file" :modelValue="modelValue" @change="handleChange"/>
+  <!-- imagePicker -->
+  <ImagePicker v-else-if="isType('imagePicker')" v-bind="renderField" :value="modelValue"/>
   <!-- iconPicker -->
   <IconPicker v-else-if="isType('iconPicker')" v-bind="renderField" :modelValue="modelValue" @change="handleChange"/>
   <!-- iconRadio -->
   <IconRadio v-else-if="isType('iconRadio')" v-bind="renderField" :modelValue="modelValue" @change="handleChange"/>
   <!-- tagCheck -->
   <TagCheck v-else-if="isType('tagCheck')" v-bind="renderField" :modelValue="modelValue" @change="handleChange"/>
-  <!-- imagePicker -->
-  <ImagePicker v-else-if="isType('imagePicker')" v-bind="renderField" :value="modelValue"/>
   <!-- mapPicker -->
   <MapPicker v-else-if="isType('mapPicker')" v-bind="renderField" :value="modelValue"/>
+  <!-- richText -->
+  <RichText v-else-if="isType('richText')" v-bind="renderField" :value="modelValue"/>
   <!-- tableSelect -->
   <TableSelect v-else-if="isType('tableSelect')" v-bind="renderField" :value="modelValue"/>
 
@@ -208,7 +212,7 @@
 
 <script>
 // 默认替换key
-import { FileUpload, IconPicker, IconRadio, ImagePicker, MapPicker, TableSelect, TagCheck } from '@/components/Common/FuncForm/Item'
+import { FileUpload, IconPicker, IconRadio, ImagePicker, MapPicker, RichText, TableSelect, TagCheck } from '@/components/Common/FuncForm/Item'
 const defaultKeys = { key: 'key', title: 'title', children: 'children', label: 'label', value: 'value', status: 'status', color: 'color' }
 /**
  * Form表单字段渲染
@@ -216,7 +220,7 @@ const defaultKeys = { key: 'key', title: 'title', children: 'children', label: '
 export default {
   name: 'FieldRender',
   components: {
-    FileUpload, IconPicker, IconRadio, ImagePicker, MapPicker, TableSelect, TagCheck
+    FileUpload, IconPicker, IconRadio, ImagePicker, MapPicker, RichText, TableSelect, TagCheck
   },
   // 防止v-bind绑定时继承多个onChange等异常现象
   inheritAttrs: false,
@@ -227,7 +231,7 @@ export default {
      *    基础类组件：[text, number, textarea, select|multiple|tags|combobox|remoteSelect, radio, radioButton, cascader, checkbox, switch, treeSelect]
      *    时间类组件：[datePicker, monthPicker, rangePicker, weekPicker, timePicker]
      *    高阶类组件：[transfer, slider, autoComplete, mentions, rate, inputGroup]
-     *    自定义组件：[fileUpload, iconPicker, iconRadio, imagePicker, mapPicker, tableSelect, tagCheck]
+     *    自定义组件：[fileUpload, iconPicker, iconRadio, imagePicker, mapPicker, richText, tableSelect, tagCheck]
      *    默认不填写时是text
      *    inputGroup 内部为field对象，属性一致，采用group包裹内部fields
      * label: String 控件label

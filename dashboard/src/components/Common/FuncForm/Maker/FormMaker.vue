@@ -1,18 +1,13 @@
 <template>
-  <a-layout class="atom-form-maker" :style="formMakerStyle">
+  <a-layout class="atom-form-maker">
     <!-- 左侧组件面板区域 -->
-    <a-layout-sider :theme="contentTheme" class="atom-widget-panel">
+    <a-layout-sider :theme="contentTheme" class="atom-widget-panel" :width="280">
       <WidgetPanel></WidgetPanel>
     </a-layout-sider>
     <!-- 中间画布面板区域 -->
-    <a-layout class="atom-maker-panel">
-      <a-layout-header>Header</a-layout-header>
-      <a-layout-content>
-        <MakerPanel></MakerPanel>
-      </a-layout-content>
-    </a-layout>
+    <MakerPanel></MakerPanel>
     <!-- 右侧配置面板区域 -->
-    <a-layout-sider :theme="contentTheme" class="atom-config-panel">
+    <a-layout-sider :theme="contentTheme" class="atom-config-panel" :width="280">
       <ConfigPanel></ConfigPanel>
     </a-layout-sider>
   </a-layout>
@@ -29,13 +24,7 @@ import config from '@/config/mixins/config'
 export default {
   name: 'FormMaker',
   components: { WidgetPanel, MakerPanel, ConfigPanel },
-  mixins: [config],
-  computed: {
-    // 可视区域样式
-    formMakerStyle () {
-      return { height: this.appConfig.layout === 'top' || this.appConfig.layout === 'drawer' ? this.contentHeight + 'px' : '100%' }
-    }
-  }
+  mixins: [config]
 }
 </script>
 
