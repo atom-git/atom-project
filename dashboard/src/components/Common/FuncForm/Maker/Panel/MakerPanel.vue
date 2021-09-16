@@ -1,5 +1,7 @@
 <template>
-  <div>画布面板</div>
+  <a-card title="Header" :bordered="false" class="atom-maker-panel">
+
+  </a-card>
 </template>
 
 <script>

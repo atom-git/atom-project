@@ -96,6 +96,10 @@
       </a-radio>
     </template>
   </a-radio-group>
+
+  <!-- checkbox -->
+  <a-checkbox-group v-else-if="isType('checkbox')" v-bind="renderField" :value="modelValue" @change="handleChange"/>
+
   <!-- switch -->
   <a-switch v-else-if="isType('switch')"
             v-bind="renderField"
@@ -112,8 +116,6 @@
               :fieldNames="renderField.replaceFields"
               :value="modelValue"
               @change="handleChange" allowClear/>
-  <!-- checkbox -->
-  <a-checkbox-group v-else-if="isType('checkbox')" v-bind="renderField" :value="modelValue" @change="handleChange"/>
 
   <!-- 时间组件 -->
   <!-- datePicker -->
@@ -150,7 +152,7 @@
   <!-- transfer -->
   <a-transfer v-else-if="isType('transfer')"
               v-bind="renderField"
-              :titles="renderField.titles || [$t('global.source'), $t('global.target')]"
+              :titles="renderField.titles || ['来源', '目标']"
               :render="renderField.render || (item => item[renderField.replaceFields.title])"
               :targetKeys="modelValue" @change="handleChange"/>
   <!-- slider -->
@@ -189,16 +191,18 @@
   <!-- 自定义组件 -->
   <!-- fileUpload 文件上传 -->
   <FileUpload v-else-if="isType('fileUpload')" v-bind="renderField" name="file" :modelValue="modelValue" @change="handleChange"/>
+  <!-- imagePicker -->
+  <ImagePicker v-else-if="isType('imagePicker')" v-bind="renderField" :value="modelValue"/>
   <!-- iconPicker -->
   <IconPicker v-else-if="isType('iconPicker')" v-bind="renderField" :modelValue="modelValue" @change="handleChange"/>
   <!-- iconRadio -->
   <IconRadio v-else-if="isType('iconRadio')" v-bind="renderField" :modelValue="modelValue" @change="handleChange"/>
   <!-- tagCheck -->
   <TagCheck v-else-if="isType('tagCheck')" v-bind="renderField" :modelValue="modelValue" @change="handleChange"/>
-  <!-- imagePicker -->
-  <ImagePicker v-else-if="isType('imagePicker')" v-bind="renderField" :value="modelValue"/>
   <!-- mapPicker -->
   <MapPicker v-else-if="isType('mapPicker')" v-bind="renderField" :value="modelValue"/>
+  <!-- richText -->
+  <RichText v-else-if="isType('richText')" v-bind="renderField" :value="modelValue"/>
   <!-- tableSelect -->
   <TableSelect v-else-if="isType('tableSelect')" v-bind="renderField" :value="modelValue"/>
 
@@ -208,8 +212,7 @@
 
 <script>
 // 默认替换key
-import { FileUpload, IconPicker, IconRadio, ImagePicker, MapPicker, TableSelect, TagCheck } from '@/components/Common/FuncForm/Item'
-import { mapGetters } from 'vuex'
+import { FileUpload, IconPicker, IconRadio, ImagePicker, MapPicker, RichText, TableSelect, TagCheck } from '@/components/Common/FuncForm/Item'
 const defaultKeys = { key: 'key', title: 'title', children: 'children', label: 'label', value: 'value', status: 'status', color: 'color' }
 /**
  * Form表单字段渲染
@@ -217,7 +220,7 @@ const defaultKeys = { key: 'key', title: 'title', children: 'children', label: '
 export default {
   name: 'FieldRender',
   components: {
-    FileUpload, IconPicker, IconRadio, ImagePicker, MapPicker, TableSelect, TagCheck
+    FileUpload, IconPicker, IconRadio, ImagePicker, MapPicker, RichText, TableSelect, TagCheck
   },
   // 防止v-bind绑定时继承多个onChange等异常现象
   inheritAttrs: false,
@@ -228,7 +231,7 @@ export default {
      *    基础类组件：[text, number, textarea, select|multiple|tags|combobox|remoteSelect, radio, radioButton, cascader, checkbox, switch, treeSelect]
      *    时间类组件：[datePicker, monthPicker, rangePicker, weekPicker, timePicker]
      *    高阶类组件：[transfer, slider, autoComplete, mentions, rate, inputGroup]
-     *    自定义组件：[fileUpload, iconPicker, iconRadio, imagePicker, mapPicker, tableSelect, tagCheck]
+     *    自定义组件：[fileUpload, iconPicker, iconRadio, imagePicker, mapPicker, richText, tableSelect, tagCheck]
      *    默认不填写时是text
      *    inputGroup 内部为field对象，属性一致，采用group包裹内部fields
      * label: String 控件label
@@ -269,11 +272,6 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['appConfig']),
-    // placeholder文本，根据语言选择
-    placeholderText () {
-      return this.appConfig.locale === 'zh-CN' ? placeholderTextZH : placeholderTextEN
-    },
     // 构建用于渲染的field
     renderField () {
       return Object.assign(this.field, {
@@ -298,9 +296,9 @@ export default {
       if (placeholder) {
         return placeholder
       } else if (this.field.type === 'rangePicker') {
-        return this.appConfig.locale === 'zh-CN' ? ['开始日期', '结束日期'] : ['Start Date', 'End Date']
+        return ['开始日期', '结束日期']
       } else {
-        placeholder = this.$utils.isValid(this.placeholderText[this.field.type]) ? this.placeholderText[this.field.type] : this.placeholderText.default
+        placeholder = this.$utils.isValid(placeholderText[this.field.type]) ? placeholderText[this.field.type] : placeholderText.default
         return placeholder + this.field.label
       }
     },
@@ -379,9 +377,9 @@ export default {
   }
 }
 /**
- * 内置placeholderTextZH
+ * 内置placeholderText
  */
-const placeholderTextZH = {
+const placeholderText = {
   text: '请输入',
   textarea: '请输入',
   select: '请选择',
@@ -406,34 +404,5 @@ const placeholderTextZH = {
   iconRadio: '请选择',
   tagCheck: '请选择',
   default: '请输入'
-}
-/**
- * 内置placeholderTextEN
- */
-const placeholderTextEN = {
-  text: 'Input ',
-  textarea: 'Input ',
-  select: 'Select ',
-  number: 'Input ',
-  radio: 'Select ',
-  cascader: 'Select ',
-  checkbox: 'Select ',
-  switch: 'Select ',
-  treeSelect: 'Select ',
-  datePicker: 'Select ',
-  monthPicker: 'Select ',
-  RangePicker: 'Select ',
-  weekPicker: 'Select ',
-  timePicker: 'Select ',
-  transfer: 'Select ',
-  slider: 'Drag ',
-  autoComplete: 'Input ',
-  mentions: 'Input ',
-  rate: 'Select ',
-  fileUpload: 'Select ',
-  iconPicker: 'Select ',
-  iconRadio: 'Select ',
-  tagCheck: 'Select ',
-  default: 'Input '
 }
 </script>
