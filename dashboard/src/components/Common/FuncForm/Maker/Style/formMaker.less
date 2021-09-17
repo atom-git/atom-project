@@ -33,16 +33,60 @@
   }
   /*中间画布面板区域*/
   .atom-maker-panel {
-    flex: 1;
-    border-left: 1px solid @border-color-base;
-    border-right: 1px solid @border-color-base;
-    border-radius: 0;
-    height: 100%;
-    .ant-card-head {
-      border-bottom-width: 2px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: inset 0 0 3px 0 @border-color-base;
+    /*功能按钮的响应*/
+    .atom-maker-header {
+      padding: 6px 8px;
+      background: @component-background;
+      .atom-maker-header-left {
+        .ant-btn-icon-only {
+          width: auto;
+          padding: 4px 6px;
+          &.active {
+            background: @primary-3;
+            color: @text-color-inverse;
+          }
+          .anticon {
+            font-size: 20px;
+          }
+        }
+      }
+      .atom-maker-header-right {
+        line-height: 32px;
+        text-align: right;
+        .ant-btn-icon-only {
+          width: auto;
+          padding: 4px 6px;
+          .anticon {
+            font-size: 20px;
+          }
+        }
+      }
     }
-    .ant-card-body {
-      background: @layout-body-background;
+    .atom-maker-canvas-panel {
+      flex: 1;
+      padding: 16px;
+      overflow: auto;
+      /* 默认mac pc画布*/
+      .atom-maker-canvas {
+        min-height: 100%;
+        background: @component-background;
+        overflow: auto;
+        /* pad画布*/
+        &.pad {
+          width: 770px;
+          max-width: 100%;
+          border-radius: 5px;
+        }
+        /* phone画布*/
+        &.phone {
+          width: 375px;
+          margin: 0 auto;
+          border-radius: 12px;
+        }
+      }
     }
   }
   /*右侧配置面板区域*/

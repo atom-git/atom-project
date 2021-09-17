@@ -4,7 +4,7 @@
       <slot v-if="$slots.title" name="title"></slot>
       <template v-else-if="title">{{ title }}</template>
     </template>
-    <a-button :type="type" :size="size" :disabled="disabled">
+    <a-button :type="type" :size="size" :disabled="disabled" @click="handleClick">
       <template #icon>
         <IconFont :type="$attrs.icon" />
       </template>
@@ -39,6 +39,13 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    }
+  },
+  emits: ['click'],
+  methods: {
+    // 响应按钮点击
+    handleClick () {
+      this.$emit('click')
     }
   }
 }

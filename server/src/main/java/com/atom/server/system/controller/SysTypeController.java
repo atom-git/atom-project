@@ -52,7 +52,12 @@ public class SysTypeController {
 	@Permission(actionType = ActionType.Q, grantType = GrantType.AUTO)
 	public RestResponse<TableData<SysTypeVO>> list(SysTypeFilter sysTypeFilter, PageData pageData, HttpServletResponse response) {
 		TableData<SysTypeVO> tableData = sysTypeService.list(sysTypeFilter, pageData, response);
-		return RestResponse.success(tableData);
+		// 下载时必须返回空，否则会继续做类型转换为报错
+		if (pageData.getDownload()) {
+			return null;
+		} else {
+			return RestResponse.success(tableData);
+		}
 	}
 
 	/**
