@@ -13,8 +13,8 @@
             :model="model"
             :layout="layout"
             :labelAlign="labelAlign"
-            :labelCol="labelCol"
-            :wrapperCol="wrapperCol">
+            :labelCol="layout !== 'vertical' ? labelCol : null"
+            :wrapperCol="layout !== 'vertical' ? wrapperCol : null">
       <!-- FormItem渲染 -->
       <a-form-item v-for="field in renderFields"
                    :key="field.name"

@@ -40,6 +40,7 @@
     .atom-maker-header {
       padding: 6px 8px;
       background: @component-background;
+      box-shadow: 0 2px 2px @border-color-base;
       .atom-maker-header-left {
         .ant-btn-icon-only {
           width: auto;
@@ -86,10 +87,36 @@
           margin: 0 auto;
           border-radius: 12px;
         }
+        .ant-empty {
+          margin-top: 120px;
+          .ant-empty-description {
+            color: @text-color-secondary;
+          }
+        }
       }
     }
   }
   /*右侧配置面板区域*/
   .atom-config-panel {
+    /*tab页基本样式*/
+    .ant-tabs {
+      .ant-tabs-bar {
+        .ant-tabs-nav .ant-tabs-tab {
+          width: 140px;
+          margin: unset;
+          text-align: center;
+        }
+      }
+      .ant-tabs-content {
+        .ant-tabs-tabpane {
+          .ant-empty {
+            margin-top: 120px;
+            .ant-empty-description {
+              color: @text-color-secondary;
+            }
+          }
+        }
+      }
+    }
   }
 }

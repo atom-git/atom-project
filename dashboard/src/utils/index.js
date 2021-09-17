@@ -8,6 +8,7 @@ import Default from '@/config/default'
  * isObject: 是否对象
  * isInt: 是否正整数
  * isBoolean: 是否布尔值
+ * isFunction: 是否函数
  * clearObject: 清除obj中undefined或者null的key
  * deepClone: 对象深度克隆，采对属性部门进行克隆
  * buildArray: 根据长度构建array
@@ -40,7 +41,6 @@ export default class Utils {
   /**
    * 判断一个值是否有效
    * 即非空，非undefined，非空数组，非空对象
-   * @param obj 值
    */
   static isValid (obj) {
     if (this.isArray(obj)) {
@@ -54,7 +54,6 @@ export default class Utils {
 
   /**
    * 判断是否是一个数组
-   * @param obj
    */
   static isArray (obj) {
     return Array.isArray(obj)
@@ -62,7 +61,6 @@ export default class Utils {
 
   /**
    * 判断是否是一个对象
-   * @param obj
    */
   static isObject (obj) {
     return Object.prototype.toString.call(obj) === '[object Object]'
@@ -70,8 +68,6 @@ export default class Utils {
 
   /**
    * 验证是否是正整数
-   * @param value
-   * @returns {boolean}
    */
   static isInt (value) {
     return new RegExp(/^[0-9]*$/).test(value)
@@ -79,11 +75,16 @@ export default class Utils {
 
   /**
    * 验证是否是true false
-   * @param value
-   * @returns {boolean}
    */
   static isBoolean (value) {
     return typeof value === 'boolean'
+  }
+
+  /**
+   * 判断参数是否是方法
+   */
+  static isFunction (value) {
+    return typeof value === 'function'
   }
 
   /**
@@ -97,11 +98,42 @@ export default class Utils {
   }
 
   /**
-   * 对象深度克隆，采对属性部门进行克隆
+   * 对象深度克隆，通过递归，除函数外采用JSON深复，函数采用直接复制
    * @param obj source对象
    */
   static deepClone (obj) {
-    return JSON.parse(JSON.stringify(obj))
+    if (this.isValid(obj)) {
+      // 对象的处理方式
+      if (this.isObject(obj)) {
+        const clone = {}
+        Object.getOwnPropertyNames(obj).forEach(key => {
+          if (this.isFunction(obj[key])) {
+            clone[key] = obj[key]
+          } else {
+            clone[key] = this.deepClone(obj[key])
+          }
+        })
+        return clone
+        // 数组的处理方法
+      } else if (this.isArray(obj)) {
+        let clone = []
+        for (let index = 0; index < obj.length; index++) {
+          if (this.isFunction(obj[index])) {
+            clone[index] = obj[index]
+          } else {
+            clone[index] = this.deepClone(obj[index])
+          }
+        }
+        return clone
+        // 函数的处理方法
+      } else if (this.isFunction(obj)) {
+        return obj
+      } else {
+        return JSON.parse(JSON.stringify(obj))
+      }
+    } else {
+      return obj
+    }
   }
 
   /**
