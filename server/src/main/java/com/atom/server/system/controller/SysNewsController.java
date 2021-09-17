@@ -47,7 +47,12 @@ public class SysNewsController {
 	@Permission(actionType = ActionType.Q, grantType = GrantType.MANUAL)
 	public RestResponse<TableData<SysNewsVO>> list(SysNewsFilter sysNewsFilter, PageData pageData, HttpServletResponse response) {
 		TableData<SysNewsVO> tableData = sysNewsService.list(sysNewsFilter, pageData, response);
-		return RestResponse.success(tableData);
+		// 下载时必须返回空，否则会继续做类型转换为报错
+		if (pageData.getDownload()) {
+			return null;
+		} else {
+			return RestResponse.success(tableData);
+		}
 	}
 
 	/**

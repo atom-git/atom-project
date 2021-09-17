@@ -95,7 +95,11 @@ public class SysUserController {
 	public RestResponse<TableData<SysUserVO>> list(SysUserFilter sysUserFilter, PageData pageData, HttpServletResponse response) {
 		TableData<SysUserVO> tableData = sysUserService.list(sysUserFilter, pageData, response);
 		// 下载时必须返回空，否则会继续做类型转换为报错
-		return RestResponse.success(tableData);
+		if (pageData.getDownload()) {
+			return null;
+		} else {
+			return RestResponse.success(tableData);
+		}
 	}
 
 	/**
