@@ -16,6 +16,8 @@ export default {
   data () {
     return {
       fields: [
+        { type: 'colorPicker', name: 'colorPicker1', label: 'colorPicker1', pickType: 'compact', default: '#9270CA' },
+        { type: 'colorPicker', name: 'colorPicker2', label: 'colorPicker2', default: '#FFFFFF' },
         {
           name: 'fileUpload1',
           label: 'FileUpload2',

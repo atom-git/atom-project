@@ -196,13 +196,24 @@
   <!-- iconRadio -->
   <IconRadio v-else-if="isType('iconRadio')" v-bind="renderField" :modelValue="modelValue" @change="handleChange"/>
   <!-- tagCheck -->
-  <TagCheck v-else-if="isType('tagCheck')" v-bind="renderField" :modelValue="modelValue" @change="handleChange"/>
+  <TagCheck v-else-if="isType('tagCheck')"
+            :modelValue="modelValue"
+            :options="renderField.options"
+            :multiple="renderField.multiple"
+            :size="renderField.size"
+            @change="handleChange"/>
   <!-- mapPicker -->
-  <MapPicker v-else-if="isType('mapPicker')" v-bind="renderField" :value="modelValue"/>
+  <MapPicker v-else-if="isType('mapPicker')" v-bind="renderField" :modelValue="modelValue"/>
   <!-- richText -->
-  <RichText v-else-if="isType('richText')" v-bind="renderField" :value="modelValue"/>
+  <RichText v-else-if="isType('richText')" v-bind="renderField" :modelValue="modelValue"/>
   <!-- tableSelect -->
-  <TableSelect v-else-if="isType('tableSelect')" v-bind="renderField" :value="modelValue"/>
+  <TableSelect v-else-if="isType('tableSelect')" v-bind="renderField" :modelValue="modelValue"/>
+  <!-- colorPicker -->
+  <ColorPicker v-else-if="isType('colorPicker')"
+               :modelValue="modelValue"
+               :pickType="renderField.pickType"
+               :size="renderField.size"
+               @change="handleChange"/>
 
   <!-- 未定义默认组件 -->
   <a-input v-else :value="modelValue" @change="handleInputChange" v-bind="renderField" allowClear/>
@@ -210,7 +221,7 @@
 
 <script>
 // 默认替换key
-import { FileUpload, IconPicker, IconRadio, ImagePicker, MapPicker, RichText, TableSelect, TagCheck } from '@/components/Common/FuncForm/Item'
+import { ColorPicker, FileUpload, IconPicker, IconRadio, ImagePicker, MapPicker, RichText, TableSelect, TagCheck } from '@/components/Common/FuncForm/Item'
 const defaultKeys = { key: 'key', title: 'title', children: 'children', label: 'label', value: 'value', status: 'status', color: 'color' }
 /**
  * Form表单字段渲染
@@ -218,7 +229,7 @@ const defaultKeys = { key: 'key', title: 'title', children: 'children', label: '
 export default {
   name: 'FieldRender',
   components: {
-    FileUpload, IconPicker, IconRadio, ImagePicker, MapPicker, RichText, TableSelect, TagCheck
+    ColorPicker, FileUpload, IconPicker, IconRadio, ImagePicker, MapPicker, RichText, TableSelect, TagCheck
   },
   // 防止v-bind绑定时继承多个onChange等异常现象
   inheritAttrs: false,
@@ -229,7 +240,7 @@ export default {
      *    基础类组件：[text, number, textarea, select|multiple|tags|combobox|remoteSelect, radio, radioButton, cascader, checkbox, switch, treeSelect]
      *    时间类组件：[datePicker, monthPicker, rangePicker, weekPicker, timePicker]
      *    高阶类组件：[transfer, slider, autoComplete, mentions, rate, inputGroup]
-     *    自定义组件：[fileUpload, iconPicker, iconRadio, imagePicker, mapPicker, richText, tableSelect, tagCheck]
+     *    自定义组件：[fileUpload, iconPicker, iconRadio, imagePicker, mapPicker, richText, tableSelect, tagCheck, colorPicker]
      *    默认不填写时是text
      *    inputGroup 内部为field对象，属性一致，采用group包裹内部fields
      * label: String 控件label
