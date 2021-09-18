@@ -6,13 +6,17 @@
       <template #header>
         <FuncTitle :title="`${widget.title}[${widget.items.length}]`"></FuncTitle>
       </template>
-      <a-list :grid="{ gutter: 8, column: 2 }" :dataSource="widget.items">
-        <template #renderItem="{ item }">
-          <a-list-item>
-            <IconFont :type="item.icon" />{{ item.title }}
-          </a-list-item>
+      <Draggable class="atom-widget-list"
+                 tag="ul"
+                 :list="widget.items"
+                 itemKey="type"
+                 v-bind="dragOptions">
+        <template #item="{ element }">
+          <li class="atom-widget">
+            <IconFont :type="element.icon" />{{ element.title }}
+          </li>
         </template>
-      </a-list>
+      </Draggable>
     </a-collapse-panel>
   </a-collapse>
 </template>
@@ -21,16 +25,25 @@
 /**
  * 组件面板
  */
+import Draggable from 'vuedraggable'
 import FuncTitle from '@/components/Common/FuncTitle'
 export default {
   name: 'WidgetPanel',
-  components: { FuncTitle },
+  components: { Draggable, FuncTitle },
   props: {},
   data () {
     return {
       // 当前激活的组件库
       activeKey: ['layout', 'basic', 'advance'],
-      widgets: [layoutWidgets, basicWidgets, advanceWidgets]
+      // 组件库
+      widgets: [layoutWidgets, basicWidgets, advanceWidgets],
+      // 拖动配置
+      dragOptions: {
+        animation: 0,
+        group: { name: 'widgets', pull: 'clone', put: false },
+        sort: false,
+        ghostClass: 'atom-widget-ghost'
+      }
     }
   }
 }

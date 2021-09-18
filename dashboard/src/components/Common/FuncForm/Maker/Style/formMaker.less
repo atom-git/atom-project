@@ -11,23 +11,31 @@
       background-color: @component-background;
       user-select: none;
       /*组件item样式*/
-      .ant-list-grid .ant-col > .ant-list-item {;
-        background: @primary-1;
-        border: 1px solid @primary-1;
-        line-height: 26px;
-        padding: 0 8px;
-        margin-bottom: 8px;
-        font-size: 13px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        cursor: move;
-        .anticon {
-          margin-right: 6px;
-        }
-        &:hover, &:focus {
-          border: 1px dashed @primary-color;
-          color: @primary-color;
+      .atom-widget-list {
+        display: flex;
+        flex-flow: row wrap;
+        padding: 0;
+        justify-content: space-between;
+        .atom-widget {
+          width: 48%;
+          max-width: 48%;
+          background: @primary-1;
+          border: 1px solid @primary-1;
+          line-height: 26px;
+          padding: 0 8px;
+          margin-bottom: 8px;
+          font-size: 13px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          cursor: move;
+          .anticon {
+            margin-right: 6px;
+          }
+          &:hover, &:focus {
+            border: 1px dashed @primary-color;
+            color: @primary-color;
+          }
         }
       }
     }
