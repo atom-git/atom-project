@@ -14,7 +14,7 @@
       </div>
       <a-divider class="atom-theme-divider">主题色</a-divider>
       <div class="atom-theme-setting-item">
-        <ColorPicker v-model="appConfig.primaryColor" @change="handleThemeToggle"></ColorPicker>
+        <ColorPicker v-model="appConfig.primaryColor" type="compact" @change="handleThemeToggle"></ColorPicker>
       </div>
       <a-divider class="atom-theme-divider">布局模式</a-divider>
       <div class="atom-theme-setting-item">
@@ -92,8 +92,7 @@
 /**
  * 全局主题设置
  */
-import { IconRadio } from '@/components/Common/FuncForm/Item'
-import ColorPicker from '@/components/Common/ColorPicker'
+import { ColorPicker, IconRadio } from '@/components/Common/FuncForm/Item'
 import { toggleTheme } from '@/config/theme'
 import { animateSet } from '@/components/Common/Animate/config'
 export default {

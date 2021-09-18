@@ -101,7 +101,7 @@ export default {
       handler (newValue) {
         // 对uid进行兼容处理，防止在文件超出时，导致的文件超出上传异常
         newValue&&newValue.forEach(file => { file.uid = file.uid || file.key })
-        this.fileList = newValue
+        this.fileList = newValue || []
       }
     },
     // 监听内部文件列表的变化

@@ -85,7 +85,7 @@ export default {
     model: {
       handler (newValue) {
         this.$emit('update:modelValue', newValue)
-        this.$emit('change', this.model)
+        this.$emit('change', newValue)
       },
       deep: true
     },
@@ -93,7 +93,7 @@ export default {
     modelValue: {
       immediate: true,
       handler (newValue) {
-        this.model = newValue
+        this.model = Object.assign(this.model, newValue)
       },
       deep: true
     }
