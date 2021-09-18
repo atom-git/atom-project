@@ -4,9 +4,9 @@
       <!-- 组件配置 -->
       <FieldConfig></FieldConfig>
     </a-tab-pane>
-    <a-tab-pane key="form" tab="表单属性">
+    <a-tab-pane key="form" tab="表单属性" :forceRender="true">
       <!-- 表单配置 -->
-      <FormConfig></FormConfig>
+      <FormConfig v-model="formConfig"></FormConfig>
     </a-tab-pane>
   </a-tabs>
 </template>
@@ -26,7 +26,9 @@ export default {
   data () {
     return {
       // 当前激活的tab
-      activeTab: 'field'
+      activeTab: 'field',
+      // form表单配置
+      formConfig: {}
     }
   }
 }

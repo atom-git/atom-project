@@ -17,12 +17,14 @@
       <a-input v-else-if="formConfig['labelColType'] === 'grid'"
                v-model:value="model[field.name]"
                :style="{ width: '60%' }"/>
+      <!-- getTooltipPopupContainer配置是为了防止切换tab时tooltip不隐藏的问题 -->
       <a-slider v-else
                 v-model:value="model[field.name]"
                 :max="24"
                 :style="{ width: '50%', marginLeft: '12px' }"
                 :tooltipVisible="true"
                 tooltipPlacement="bottom"
+                :getTooltipPopupContainer="triggerNode => triggerNode.parentNode"
                 :tipFormatter="value => `{ span: ${value} }`"/>
     </template>
   </FormList>
@@ -36,6 +38,12 @@ import { FormList } from '@/components/Common/FuncForm'
 export default {
   name: 'FormConfig',
   components: { FormList },
+  props: {
+    // 双绑的form表单配置
+    modelValue: {
+      type: Object
+    }
+  },
   data () {
     return {
       // form表单配置
@@ -102,6 +110,23 @@ export default {
           placeholder: '请输入自定义样式[支持less写法]'
         }
       ]
+    }
+  },
+  watch: {
+    // 监听外部传入值的变化
+    modelValue: {
+      deep: true,
+      handler (newValue) {
+        this.formConfig = newValue
+      }
+    },
+    // form配置的双绑
+    formConfig: {
+      deep: true,
+      handler (newValue) {
+        this.$emit('update:modelValue', newValue)
+        this.$emit('change', newValue)
+      }
     }
   },
   methods: {
