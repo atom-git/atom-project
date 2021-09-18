@@ -85,6 +85,7 @@ export default {
     model: {
       handler (newValue) {
         this.$emit('update:modelValue', newValue)
+        this.$emit('change', this.model)
       },
       deep: true
     },
@@ -101,22 +102,32 @@ export default {
     // 初始化表单数据
     this.initModel(this.$utils.deepClone(this.fields))
   },
-  emits: ['update:modelValue', 'submit', 'reset', 'form-ready'],
+  emits: ['update:modelValue', 'change', 'submit', 'reset', 'form-ready'],
   methods: {
     // 表单值初始化，默认值仅通过fields传入
     initModel (fields) {
       const model = {}
       if (this.$utils.isValid(fields)) {
         fields.forEach(field => {
-          if (this.dateType.includes(field.type)) {
-            model[field.name] = this.$utils.toDate(field.default) || undefined
-          } else {
-            model[field.name] = field.default || undefined
-          }
+          this.formatModel(field, model)
         })
       }
       this.model = Object.assign(model, this.modelValue)
       this.$emit('update:modelValue', this.model)
+      this.$emit('change', this.model)
+    },
+    // 格式化双绑值
+    formatModel (field, model) {
+      if (this.dateType.includes(field.type)) {
+        model[field.name] = this.$utils.toDate(field.default) || undefined
+      } else if ('inputGroup' === field.type) {
+        // 对子集进行拆解后写入值
+        field.group.forEach(groupField => {
+          this.formatModel(groupField, model)
+        })
+      } else {
+        model[field.name] = field.default || undefined
+      }
     },
     // 表单数据提交
     submitForm () {
@@ -126,9 +137,9 @@ export default {
         this.fields.forEach(field => {
           // 如果当前值有效，返回当前值
           if (this.$utils.isValid(this.model[field.name])) {
-            this.formatModel(field, model)
+            this.formatValue(field, model)
           } else if (field.type === 'inputGroup') {
-            this.formatModel(field, model)
+            this.formatValue(field, model)
           }
         })
         // 与this.modelValue叠加是为了防止外部传入的id等值
@@ -137,8 +148,8 @@ export default {
         console.log(error)
       })
     },
-    // 格式化field modelValue值
-    formatModel (field, model) {
+    // 格式化field Value值，用于传输
+    formatValue (field, model) {
       if (field.type === 'datePicker') {
         if (field.showTime) {
           model[field.name] = this.model[field.name].format(field.format || 'YYYY-MM-DD HH:mm:ss')
