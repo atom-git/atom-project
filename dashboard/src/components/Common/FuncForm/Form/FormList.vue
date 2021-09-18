@@ -31,11 +31,15 @@
                      :field="field"
                      :size="field.size || size">
           <template #group>
-            <FieldRender v-for="groupField in field.group"
-                         :key="groupField.name"
-                         :field="groupField"
-                         :size="groupField.size || size"
-                         v-model="model[groupField.name]"></FieldRender>
+            <!-- 如果里面带slot时，则优先挂载slot -->
+            <template v-for="groupField in field.group">
+              <slot v-if="groupField.slot" :name="groupField.slot" :field="groupField" :model="model"></slot>
+              <FieldRender v-else
+                           :key="groupField.name"
+                           :field="groupField"
+                           :size="groupField.size || size"
+                           v-model="model[groupField.name]"></FieldRender>
+            </template>
           </template>
         </FieldRender>
         <!-- 非inputGroup字段 -->

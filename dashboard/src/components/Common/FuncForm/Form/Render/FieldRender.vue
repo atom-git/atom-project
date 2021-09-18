@@ -182,9 +182,7 @@
   <!-- rate -->
   <a-rate v-else-if="isType('rate')" v-bind="renderField" :value="modelValue" :filterOption="false" @change="handleChange" allowClear/>
   <!-- inputGroup 采用group包裹内部field -->
-  <a-input-group v-else-if="isType('inputGroup')"
-                 v-bind="renderField"
-                 compact>
+  <a-input-group v-else-if="isType('inputGroup')" compact>
     <slot name="group"></slot>
   </a-input-group>
 
