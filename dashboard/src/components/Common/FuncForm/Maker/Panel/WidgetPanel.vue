@@ -1,6 +1,6 @@
 <template>
   <a-collapse v-model:activeKey="activeKey" :bordered="false">
-    <a-collapse-panel v-for="widget in widgets"
+    <a-collapse-panel v-for="(widget, index) in widgets"
                       :key="widget.key"
                       :showArrow="false">
       <template #header>
@@ -10,7 +10,8 @@
                  tag="ul"
                  :list="widget.items"
                  itemKey="type"
-                 v-bind="dragOptions">
+                 v-bind="dragOptions"
+                 @clone="handleWidgetClone($event, widget.key, index)">
         <template #item="{ element }">
           <li class="atom-widget">
             <IconFont :type="element.icon" />{{ element.title }}
@@ -39,11 +40,30 @@ export default {
       widgets: [layoutWidgets, basicWidgets, advanceWidgets],
       // 拖动配置
       dragOptions: {
-        animation: 0,
+        animation: 300,
         group: { name: 'widgets', pull: 'clone', put: false },
         sort: false,
         ghostClass: 'atom-widget-ghost'
       }
+    }
+  },
+  methods: {
+    // 响应组件被clone，时增加一个惟一key
+    handleWidgetClone (event, group, groupIndex) {
+      // 统一生成key input字段
+      // 构建字段的基础信息
+      const cloneWidget = this.widgets[groupIndex].items[event.oldIndex]
+      this.widgets[groupIndex].items[event.oldIndex] = {
+        ...cloneWidget,
+        // 生成组件唯一key，配置界面的动画要求，同时需要改变对象的值，将组的信息也传递下去
+        group,
+        key: cloneWidget.type + '_' + this.$utils.randomStr(8),
+        options: {
+          type: cloneWidget.type,
+          ...cloneWidget.options
+        }
+      }
+      console.log(this.widgets[groupIndex].items[event.oldIndex])
     }
   }
 }
@@ -109,7 +129,7 @@ const advanceWidgets = {
     { icon: 'atom-form-tagCheck', title: '标签多选', type: 'tagCheck' },
     { icon: 'atom-form-mapPicker', title: '地图选择', type: 'mapPicker' },
     { icon: 'atom-form-tableSelect', title: '列表选择', type: 'tableSelect' },
-    { icon: 'atom-form-richText', title: '富文本', type: 'richText' },
+    { icon: 'atom-form-richText', title: '富文本', type: 'richText' }
   ]
 }
 </script>

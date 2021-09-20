@@ -84,7 +84,7 @@ export default {
               // 非slot挂载时，需要按照label来写属性，自动挂载时，会在内部replace
               options: [{ value: 'style', label: '固定宽度' }, { value: 'span', label: '网格布局' }, { value: 'grid', label: '响应布局' }]
             },
-            { type: 'input', name: 'labelColSize', default: 6, slot: 'labelColSize' }
+            { type: 'text', name: 'labelColSize', default: 6, slot: 'labelColSize' }
           ]
         },
         {
@@ -129,6 +129,7 @@ export default {
       }
     }
   },
+  emits: ['update:modelValue', 'change'],
   methods: {
     // 响应label的类型变化
     handleLabelChange (labelColType) {
