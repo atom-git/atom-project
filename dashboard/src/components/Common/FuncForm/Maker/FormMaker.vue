@@ -5,10 +5,10 @@
       <WidgetPanel></WidgetPanel>
     </a-layout-sider>
     <!-- 中间画布面板区域 -->
-    <MakerPanel></MakerPanel>
+    <MakerPanel :makerConfig="makerConfig"></MakerPanel>
     <!-- 右侧配置面板区域 -->
     <a-layout-sider :theme="contentTheme" class="atom-config-panel" :width="280">
-      <ConfigPanel></ConfigPanel>
+      <ConfigPanel v-model="makerConfig"></ConfigPanel>
     </a-layout-sider>
   </a-layout>
 </template>
@@ -24,7 +24,13 @@ import config from '@/config/mixins/config'
 export default {
   name: 'FormMaker',
   components: { WidgetPanel, MakerPanel, ConfigPanel },
-  mixins: [config]
+  mixins: [config],
+  data () {
+    return {
+      // 表单编辑器的配置
+      makerConfig: {}
+    }
+  }
 }
 </script>
 

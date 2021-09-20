@@ -28,6 +28,7 @@ import Default from '@/config/default'
  * simpleList: 取list中的某个属性值构成数组
  * simpleTree: 取tree中的某个属性值构成数组
  * concatStr: 多个字符串连接成字符串
+ * randomStr: 随机生成字符串
  * formatNum: 格式化数字
  * formatStr: 格式化字符串
  * formatMoney: 格式化钱字符串
@@ -436,6 +437,21 @@ export default class Utils {
     } else {
       return url
     }
+  }
+
+  /**
+   * 随机生成固定长度字符串-根据16进制进行生成
+   * @param len 长度
+   */
+  static randomStr (len) {
+    let str = Math.random().toString(16).slice(2)
+    let strLen = str.length
+
+    while (strLen < len) {
+      str += Math.random().toString(16).slice(2)
+      strLen = str.length
+    }
+    return str.substr(0, len)
   }
 
   /**
