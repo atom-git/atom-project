@@ -1,3 +1,10 @@
+/**
+ * 组件特有配置
+ * FormItem公共属性
+ * 一、key,title,width,default,labelvisible,placeholder公共生成
+ * 二、disabled:是否禁用默认否,rules:校验规则,设置默认选项
+ * 三、labelvisible:默认显示, style:自定义样式, placeholder:不设置时自动根据label生成
+ */
 export default {
   // 布局组件
   grid: [
@@ -111,10 +118,34 @@ export default {
     { name: 'plain', type: 'switch', label: '是否普通正文样式', default: false }
   ],
   // 基础组件
-  input: [],
-  textarea: [],
-  number: [],
-  select: [],
+  input: [
+    { name: 'maxlength', type: 'number', label: '最大长度' },
+    { name: 'prefix', type: 'iconPicker', label: '前缀图标' },
+    { name: 'suffix', type: 'iconPicker', label: '后缀图标' }
+  ],
+  textarea: [
+    { name: 'maxlength', type: 'number', label: '最大长度', step: 10 },
+    { name: 'rows', type: 'number', label: '行数', default: 4 },
+    { name: 'autosize', type: 'switch', label: '自适应内容高度', default: 0 },
+    { name: 'showCount', type: 'switch', label: '是否展示字数', default: 1 }
+  ],
+  number: [
+    { name: 'range', type: 'inputGroup', label: '区间步长', group: [
+        { name: 'min', type: 'number', label: '最小值', default: 0, style: { width: '40%' } },
+        { name: 'max', type: 'number', label: '最大值', default: 0, style: { width: '40%' } },
+        { name: 'step', type: 'text', label: '步长', style: { width: '20%' } }
+      ]
+    },
+    { name: 'formatter', type: 'text', label: '展示格式', default: '`${value}`.replace(/\\B(?=(\\d{3})+(?!\\d))/g, \',\')' },
+    { name: 'parser', type: 'text', label: '展示格式', default: 'value.replace(/\\$\\s?|(,*)/g, \'\')' }
+  ],
+  select: [
+    { name: 'mode', type: 'radio', label: '选择模式', default: 'horizontal', mode: 'button', buttonStyle: 'solid', options: [
+        { value: '', title: '默认' }, { value: 'multiple', title: '多选' }, { value: 'tags', title: '标签' }
+      ]
+    },
+    { name: 'options', type: '', label: '选项' }
+  ],
   radio: [],
   checkbox: [],
   switch: [],

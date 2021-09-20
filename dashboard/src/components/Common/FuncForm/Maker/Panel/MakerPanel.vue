@@ -15,8 +15,8 @@
                      tag="transition-group"
                      :component-data="{ name:'fade' }"
                      @add="handleWidgetAdd">
+            <!-- FormItem渲染 -->
             <template #item="{ element }">
-              <!-- FormItem渲染 -->
               <a-form-item :key="element.key"
                            :name="element.key"
                            :label="element.title">
