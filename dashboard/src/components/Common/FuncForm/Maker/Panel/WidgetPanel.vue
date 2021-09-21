@@ -28,6 +28,7 @@
  */
 import Draggable from 'vuedraggable'
 import FuncTitle from '@/components/Common/FuncTitle'
+import WidgetOptions, { CommonOptions } from './WidgetOptions'
 export default {
   name: 'WidgetPanel',
   components: { Draggable, FuncTitle },
@@ -42,26 +43,39 @@ export default {
       dragOptions: {
         animation: 300,
         group: { name: 'widgets', pull: 'clone', put: false },
-        sort: false,
-        ghostClass: 'atom-widget-ghost'
+        sort: false
       }
     }
   },
   methods: {
     // 响应组件被clone，时增加一个惟一key
     handleWidgetClone (event, group, groupIndex) {
-      // 统一生成key input字段
       // 构建字段的基础信息
       const cloneWidget = this.widgets[groupIndex].items[event.oldIndex]
+      // 统一生成key input字段
+      const key = cloneWidget.type + '_' + this.$utils.randomStr(8)
+      // 构建字段配置表单options
+      const fields = [
+        { ...CommonOptions.key, default: key },
+        { ...CommonOptions.title, default: cloneWidget.title },
+        { ...CommonOptions.width },
+        ...WidgetOptions[cloneWidget.type],
+        { ...CommonOptions.disabled },
+        { ...CommonOptions.labelvisible },
+        { ...CommonOptions.rules },
+        { ...CommonOptions.style },
+        { ...CommonOptions.placeholder }
+      ]
       this.widgets[groupIndex].items[event.oldIndex] = {
         ...cloneWidget,
         // 生成组件唯一key，配置界面的动画要求，同时需要改变对象的值，将组的信息也传递下去
         group,
-        key: cloneWidget.type + '_' + this.$utils.randomStr(8),
+        key,
         options: {
           type: cloneWidget.type,
-          ...cloneWidget.options
-        }
+          label: cloneWidget.title
+        },
+        fields
       }
       console.log(this.widgets[groupIndex].items[event.oldIndex])
     }

@@ -1,22 +1,26 @@
 <template>
-  <div v-if="options"></div>
+  <FormList v-if="fields && fields.length > 0"
+            layout="vertical"
+            v-model="widgetConfig"
+            :fields="fields"></FormList>
   <a-empty v-else description="请添加组件"/>
-  <!-- table, grid等布局需要在这里增加slot的自定义，table增加一个按照图形来创建的样式 -->
 </template>
 
 <script>
 /**
  * 组件配置
  */
+import { FormList } from '@/components/Common/FuncForm'
 export default {
   name: 'WidgetConfig',
+  components: { FormList },
   props: {
     // 双绑的组件配置
     modelValue: {
       type: Object
     },
     // 组件配置属性
-    options: {
+    fields: {
       type: Array,
       required: false
     }
