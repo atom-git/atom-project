@@ -1,11 +1,10 @@
 export const CommonOptions = {
-  key: { name: 'key', type: 'text', label: '字段标识[需当前表单惟一]' },
-  title: { name: 'title', type: 'text', label: '标题' },
+  key: { name: 'key', type: 'text', label: '字段标识[需当前表单惟一]', required: true },
+  label: { name: 'label', type: 'text', label: '标题', required: true },
   width: { name: 'width', type: 'number', label: '宽度', default: 100, formatter: value => `${value}%`, parser: value => value.replace('%', '') },
   disabled: { name: 'disabled', type: 'switch', label: '是否禁用', checkedValue: true, unCheckedValue: false, default: false },
-  labelvisible: { name: 'labelvisible', type: 'switch', label: '隐藏标签', checkedValue: true, unCheckedValue: false, default: false },
-  rules: { name: 'disabled', type: 'textarea', label: '校验规则' },
-  style: { name: 'style', type: 'textarea', label: '自定义样式', rows: 4, placeholder: '请输入自定义样式[支持less写法]' },
+  labelVisible: { name: 'labelVisible', type: 'switch', label: '隐藏标签', checkedValue: true, unCheckedValue: false, default: false },
+  rules: { name: 'rules', type: 'textarea', label: '校验规则' },
   placeholder: { name: 'placeholder', type: 'text', label: '占位提示' }
 }
 /**
@@ -29,7 +28,7 @@ export default {
         { value: 'space-between', title: '两端对齐' }
       ]
     },
-    { name: 'wrap', type: 'switch', label: '是否换行', default: 1 }
+    { name: 'wrap', type: 'switch', label: '是否换行', checkedValue: true, unCheckedValue: false, default: true }
   ],
   col: [
     { name: 'span', type: 'number', label: '栅格列数', default: 12 },
@@ -96,7 +95,7 @@ export default {
         { value: 'vertical', title: '垂直对齐' }, { value: 'horizontal', title: '水平对齐' }
       ]
     },
-    { name: 'progressDot', type: 'switch', label: '设置为点状步骤条', default: false },
+    { name: 'progressDot', type: 'switch', label: '设置为点状步骤条', checkedValue: true, unCheckedValue: false, default: false },
     { name: 'size', type: 'radio', label: '组件大小', default: 'default', mode: 'button', buttonStyle: 'solid', options: [
         { value: 'default', title: '默认' }, { value: 'small', title: '迷你' }
       ]
@@ -104,7 +103,7 @@ export default {
   ],
   desc: [
     { name: 'title', type: 'text', label: '标题' },
-    { name: 'colon', type: 'switch', label: '是否显示冒号', default: false },
+    { name: 'colon', type: 'switch', label: '是否显示冒号', checkedValue: true, unCheckedValue: false, default: false },
     { name: 'column', type: 'inputGroup', label: '每行组件数量', group: [
         { name: 'columnType', type: 'select',default: 'span', slot: 'columnType', options: [{ value: 'span', title: '固定' }, { value: 'grid', title: '响应式' }] },
         { name: 'columnSize', type: 'text', default: 3, slot: 'columnSize'}
@@ -125,8 +124,8 @@ export default {
         { value: 'left', title: '左侧' }, { value: 'center', title: '居中' }, { value: 'right', title: '右侧' }
       ]
     },
-    { name: 'dashed', type: 'switch', label: '是否虚线', default: false },
-    { name: 'plain', type: 'switch', label: '是否普通正文样式', default: false }
+    { name: 'dashed', type: 'switch', label: '是否虚线', checkedValue: true, unCheckedValue: false, default: false },
+    { name: 'plain', type: 'switch', label: '是否普通正文样式', checkedValue: true, unCheckedValue: false, default: false }
   ],
   // 基础组件
   input: [
@@ -139,8 +138,8 @@ export default {
     { name: 'default', type: 'textarea', label: '默认值' },
     { name: 'maxlength', type: 'number', label: '最大长度', step: 10 },
     { name: 'rows', type: 'number', label: '行数', default: 4 },
-    { name: 'autosize', type: 'switch', label: '自适应内容高度', default: 0 },
-    { name: 'showCount', type: 'switch', label: '是否展示字数', default: 1 }
+    { name: 'autoSize', type: 'switch', label: '自适应内容高度', checkedValue: true, unCheckedValue: false, default: false },
+    { name: 'showCount', type: 'switch', label: '是否展示字数', checkedValue: true, unCheckedValue: false, default: true }
   ],
   number: [
     { name: 'default', type: 'number', label: '默认值' },
@@ -150,12 +149,12 @@ export default {
         { name: 'step', type: 'text', label: '步长', style: { width: '20%' } }
       ]
     },
-    { name: 'formatter', type: 'text', label: '展示格式', default: '`${value}`.replace(/\\B(?=(\\d{3})+(?!\\d))/g, \',\')' },
-    { name: 'parser', type: 'text', label: '展示格式', default: 'value.replace(/\\$\\s?|(,*)/g, \'\')' }
+    { name: 'formatter', type: 'text', label: '展示格式', default: '(value) => `${value}`.replace(/\\B(?=(\\d{3})+(?!\\d))/g, \',\')' },
+    { name: 'parser', type: 'text', label: '展示格式', default: '(value) => value.replace(/\\$\\s?|(,*)/g, \'\')' }
   ],
   select: [
-    { name: 'mode', type: 'radio', label: '选择模式', default: 'horizontal', mode: 'button', buttonStyle: 'solid', options: [
-        { value: '', title: '默认' }, { value: 'multiple', title: '多选' }, { value: 'tags', title: '标签' }
+    { name: 'mode', type: 'radio', label: '选择模式', default: '-', mode: 'button', buttonStyle: 'solid', options: [
+        { value: '-', title: '默认' }, { value: 'multiple', title: '多选' }, { value: 'tags', title: '标签' }
       ]
     },
     { name: 'options', type: '', label: '选项' }

@@ -2,7 +2,7 @@
   <FormList layout="vertical"
             v-model="formConfig"
             :fields="fields"
-            @submit="handleSubmit">
+            hiddenFooter>
     <!-- labelCol宽度设置挂载点，根据不同的type来展示不同的设置方式 -->
     <template #labelColType="{ field, model }">
       <a-select v-bind="field" v-model:value="model[field.name]" @change="handleLabelChange"></a-select>
@@ -13,10 +13,12 @@
                       :min="80"
                       :style="{ width: '60%' }"
                       :formatter="value => `${value}px`"
-                      :parser="value => value.replace('px', '')"/>
+                      :parser="value => value.replace('px', '')"
+                      @change="handleLabelColWidth"/>
       <a-input v-else-if="formConfig['labelColType'] === 'grid'"
                v-model:value="model[field.name]"
-               :style="{ width: '60%' }"/>
+               :style="{ width: '60%' }"
+               @blur="handleLabelColGrid"/>
       <!-- getTooltipPopupContainer配置是为了防止切换tab时tooltip不隐藏的问题 -->
       <a-slider v-else
                 v-model:value="model[field.name]"
@@ -25,7 +27,8 @@
                 :tooltipVisible="true"
                 tooltipPlacement="bottom"
                 :getTooltipPopupContainer="triggerNode => triggerNode.parentNode"
-                :tipFormatter="value => `{ span: ${value} }`"/>
+                :tipFormatter="value => `{ span: ${value} }`"
+                @change="handleLabelColSpan"/>
     </template>
   </FormList>
 </template>
@@ -103,13 +106,6 @@ export default {
           checkedValue: true,
           unCheckedValue: false,
           default: true
-        },
-        {
-          type: 'textarea',
-          name: 'style',
-          label: '自定义样式',
-          rows: 4,
-          placeholder: '请输入自定义样式[支持less写法]'
         }
       ]
     }
@@ -137,15 +133,30 @@ export default {
     handleLabelChange (labelColType) {
       if (labelColType === 'style') {
         this.formConfig['labelColSize'] = 150
+        this.formConfig['labelCol'] = { style: { width: '150px' } }
       } else if (labelColType === 'span') {
         this.formConfig['labelColSize'] = 6
+        this.formConfig['labelCol'] = { span: 6 }
       } else if (labelColType === 'grid') {
-        this.formConfig['labelColSize'] = '{ xs: 24, sm: 6, md: 8, lg: 8, xl: 6, xxl: 4 }'
+        this.formConfig['labelColSize'] = '{"xs":24,"sm":6,"md":8,"lg":4,"xl":3,"xxl":4}'
+        this.formConfig['labelCol'] = { xs: 24, sm: 6, md: 8, lg: 8, xl: 6, xxl: 4 }
       }
     },
-    // 响应form提交
-    handleSubmit (model) {
-      console.log(model)
+    // 响应form label定宽
+    handleLabelColWidth () {
+      this.formConfig.labelCol = { style: { width: `${this.formConfig.labelColSize}px` } }
+    },
+    // 响应form label响应式布局
+    handleLabelColGrid () {
+      try {
+        this.formConfig.labelCol = JSON.parse(this.formConfig.labelColSize)
+      } catch (err) {
+        this.$message.warn(`输入格式有误，参考'{"xs":24,"sm":6,"md":8,"lg":4,"xl":3,"xxl":4}'`)
+      }
+    },
+    // 响应form label定宽
+    handleLabelColSpan () {
+      this.formConfig.labelCol = { span: this.formConfig.labelColSize }
     }
   }
 }

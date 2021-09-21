@@ -6,7 +6,7 @@
     <div class="atom-maker-canvas-panel">
       <div :class="['atom-maker-canvas', panel]">
         <!-- 表单区域 -->
-        <a-form v-bind="formConfig">
+        <a-form v-bind="formConfig" :style="{ width: `${formConfig.width}%` }">
           <!-- 有元素时 -->
           <Draggable :list="widgets"
                      v-bind="dragOptions"
@@ -17,12 +17,16 @@
             <!-- FormItem渲染 -->
             <template #item="{ element }">
               <a-form-item :key="element.key"
+                           :class="[element.key === curWidget.key ? 'active' : '']"
                            :name="element.key"
-                           :label="element.group === 'layout' ? '' : element.title">
+                           :label="element.group !== 'layout' && element.options.labelVisible ? '' : element.options.label"
+                           @click="handleWidgetChange(element)">
                 <!-- 布局元素 -->
                 <LayoutMaker v-if="element.group === 'layout'" :widget="element"></LayoutMaker>
                 <!-- form组件元素 -->
-                <WidgetMaker v-else :field="element.options" :size="formConfig.size"></WidgetMaker>
+                <FieldRender v-else
+                             :field="element.options"
+                             :size="formConfig.size"></FieldRender>
               </a-form-item>
             </template>
           </Draggable>
@@ -41,10 +45,10 @@
 import MakerHeader from '../Widget/MakerHeader'
 import Draggable from 'vuedraggable'
 import LayoutMaker from '../Widget/LayoutMaker'
-import WidgetMaker from '../Widget/WidgetMaker'
+import FieldRender from '../../Form/Render/FieldRender'
 export default {
   name: 'MakerPanel',
-  components: { MakerHeader, Draggable, LayoutMaker, WidgetMaker },
+  components: { MakerHeader, Draggable, LayoutMaker, FieldRender },
   props: {
     // 表单配置
     makerConfig: {
@@ -95,6 +99,12 @@ export default {
     handleWidgetAdd (event) {
       // 设置当前操作的组件
       this.curWidget = this.widgets[event['newDraggableIndex']]
+      this.$emit('maker-widget-change', this.curWidget)
+    },
+    // 响应组件选择改变
+    handleWidgetChange (widget) {
+      // 设置当前操作的组件
+      this.curWidget = widget
       this.$emit('maker-widget-change', this.curWidget)
     }
   }

@@ -57,10 +57,12 @@ export default {
     }
   },
   computed: {
-    // 需要为输入控件设置布局样式时，使用该属性，用法同 labelCol
+    // 需要为输入控件设置布局样式时，使用该属性，用法同 labelCol,需要兼容处理多种情况
     wrapperCol () {
       if (this.labelCol && this.labelCol.span) {
         return { span: 24 - this.labelCol.span }
+      } else if (this.labelCol && this.labelCol.style) {
+        return { span: 24 }
       } else {
         return {
           xs: 24 - this.labelCol.xs || 0,

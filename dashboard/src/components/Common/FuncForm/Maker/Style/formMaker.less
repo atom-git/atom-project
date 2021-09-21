@@ -93,6 +93,25 @@
           width: 100%;
           min-height: 100%;
           padding: 8px 2px;
+          margin: 0 auto;
+          .ant-form-item {
+            padding-bottom: 24px;
+            margin-bottom: 0;
+            border: 1px dashed transparent;
+            cursor: move;
+            .ant-form-item-label > label {
+              cursor: move;
+            }
+            /*当前选中的节点*/
+            &.active {
+              border: 1px dashed @primary-color;
+            }
+            /*当前hover的节点*/
+            &:hover:not(.active) {
+              background-color: @primary-1;
+              border: 1px dashed @primary-color;
+            }
+          }
         }
         /*pad画布*/
         &.pad {
@@ -155,6 +174,7 @@
         .ant-tabs-tabpane {
           max-height: 100%;
           overflow: auto;
+          padding-bottom: 16px;
           .atom-form {
             .ant-card-body {
               padding: 16px 8px;
