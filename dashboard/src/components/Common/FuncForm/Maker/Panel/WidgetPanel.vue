@@ -57,13 +57,12 @@ export default {
       // 构建字段配置表单options
       const fields = [
         { ...CommonOptions.key, default: key },
-        { ...CommonOptions.title, default: cloneWidget.title },
+        { ...CommonOptions.label, default: cloneWidget.title },
         { ...CommonOptions.width },
         ...WidgetOptions[cloneWidget.type],
         { ...CommonOptions.disabled },
-        { ...CommonOptions.labelvisible },
+        { ...CommonOptions.labelVisible },
         { ...CommonOptions.rules },
-        { ...CommonOptions.style },
         { ...CommonOptions.placeholder }
       ]
       this.widgets[groupIndex].items[event.oldIndex] = {
@@ -75,7 +74,9 @@ export default {
           type: cloneWidget.type,
           label: cloneWidget.title
         },
-        fields
+        fields,
+        // 重写配置防止同一实例配置覆盖
+        widgetConfig: {}
       }
       console.log(this.widgets[groupIndex].items[event.oldIndex])
     }

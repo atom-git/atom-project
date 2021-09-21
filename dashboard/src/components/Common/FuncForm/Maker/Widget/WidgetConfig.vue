@@ -2,7 +2,8 @@
   <FormList v-if="fields && fields.length > 0"
             layout="vertical"
             v-model="widgetConfig"
-            :fields="fields"></FormList>
+            :fields="fields"
+            hiddenFooter></FormList>
   <a-empty v-else description="请添加组件"/>
 </template>
 
