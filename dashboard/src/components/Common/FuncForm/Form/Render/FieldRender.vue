@@ -105,9 +105,9 @@
             v-bind="renderField"
             :style="{ width: 'auto' }"
             :checked="modelValue"
-            :checkedValue="renderField.checkedValue || 1"
+            :checkedValue="renderField.checkedValue === true || 1"
             :checkedChildren="renderField.checkedChildren || '启'"
-            :unCheckedValue="renderField.unCheckedValue || 0"
+            :unCheckedValue="renderField.unCheckedValue === false ? false : 0"
             :unCheckedChildren="renderField.unCheckedChildren || '禁'"
             @change="handleChange"/>
   <!-- cascader TODO 分级loadData -->

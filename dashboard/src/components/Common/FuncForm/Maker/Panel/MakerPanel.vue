@@ -8,8 +8,7 @@
         <!-- 表单区域 -->
         <a-form v-bind="formConfig">
           <!-- 有元素时 -->
-          <Draggable v-if="widgets"
-                     :list="widgets"
+          <Draggable :list="widgets"
                      v-bind="dragOptions"
                      itemKey="key"
                      tag="transition-group"
@@ -19,19 +18,16 @@
             <template #item="{ element }">
               <a-form-item :key="element.key"
                            :name="element.key"
-                           :label="element.title">
+                           :label="element.group === 'layout' ? '' : element.title">
                 <!-- 布局元素 -->
-                <template v-if="element.group === 'layout'">
-                  <p>{{ `layout: ${element}` }}</p>
-                </template>
+                <LayoutMaker v-if="element.group === 'layout'" :widget="element"></LayoutMaker>
                 <!-- form组件元素 -->
-                <FieldRender v-else
-                             :field="element.options"></FieldRender>
+                <WidgetMaker v-else :field="element.options" :size="formConfig.size"></WidgetMaker>
               </a-form-item>
             </template>
           </Draggable>
           <!-- 没有元素时 -->
-          <a-empty v-else description="从左侧拖拽或点击来添加字段"/>
+          <a-empty v-if="!widgets || widgets.length <= 0" description="从左侧拖拽或点击来添加字段"/>
         </a-form>
       </div>
     </div>
@@ -44,10 +40,11 @@
  */
 import MakerHeader from '../Widget/MakerHeader'
 import Draggable from 'vuedraggable'
-import FieldRender from '../../Form/Render/FieldRender'
+import LayoutMaker from '../Widget/LayoutMaker'
+import WidgetMaker from '../Widget/WidgetMaker'
 export default {
   name: 'MakerPanel',
-  components: { MakerHeader, Draggable, FieldRender },
+  components: { MakerHeader, Draggable, LayoutMaker, WidgetMaker },
   props: {
     // 表单配置
     makerConfig: {
@@ -63,10 +60,6 @@ export default {
       widgets: [],
       // 当前操作的组件
       curWidget: {},
-      // 表单配置信息
-      formConfig: {
-        layout: 'horizontal'
-      },
       // 拖动配置
       dragOptions: {
         animation: 300,
@@ -76,6 +69,19 @@ export default {
       }
     }
   },
+  computed: {
+    // 表单配置信息
+    formConfig () {
+      return {
+        layout: (this.makerConfig.formConfig && this.makerConfig.formConfig.labelAlign === 'vertical')
+            ? 'vertical' : 'horizontal',
+        ...this.makerConfig.formConfig,
+        labelAlign: (this.makerConfig.formConfig && this.makerConfig.formConfig.labelAlign === 'vertical')
+            ? 'right' : (this.makerConfig.formConfig && this.makerConfig.formConfig.labelAlign)
+      }
+    }
+  },
+  emits: ['maker-widget-change'],
   methods: {
     // 响应头部点击响应
     handleHeaderAction (action) {
@@ -88,7 +94,8 @@ export default {
     // 响应组件的增加
     handleWidgetAdd (event) {
       // 设置当前操作的组件
-      this.curWidget = this.widgets[event.newIndex]
+      this.curWidget = this.widgets[event['newDraggableIndex']]
+      this.$emit('maker-widget-change', this.curWidget)
     }
   }
 }

@@ -2,7 +2,9 @@
   <a-tabs v-model:activeKey="activeTab">
     <a-tab-pane key="field" tab="组件属性">
       <!-- 组件配置 -->
-      <WidgetConfig v-model="widgetConfig" @change="handleWidgetChange"></WidgetConfig>
+      <WidgetConfig v-model="widgetConfig"
+                    :fields="fields"
+                    @change="handleWidgetChange"></WidgetConfig>
     </a-tab-pane>
     <a-tab-pane key="form" tab="表单属性" :forceRender="true">
       <!-- 表单配置 -->
@@ -25,8 +27,8 @@ export default {
     modelValue: {
       type: Object
     },
-    // 组件配置属性
-    options: {
+    // 组件配置字段
+    fields: {
       type: Array,
       required: false
     }

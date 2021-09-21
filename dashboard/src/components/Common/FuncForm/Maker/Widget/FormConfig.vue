@@ -62,7 +62,7 @@ export default {
         },
         {
           type: 'radio',
-          name: 'layout',
+          name: 'labelAlign',
           label: '标签对齐',
           mode: 'button',
           buttonStyle: 'solid',
@@ -100,7 +100,9 @@ export default {
           type: 'switch',
           name: 'colon',
           label: '是否显示冒号[仅在水平模式下有效]',
-          default: 1
+          checkedValue: true,
+          unCheckedValue: false,
+          default: true
         },
         {
           type: 'textarea',

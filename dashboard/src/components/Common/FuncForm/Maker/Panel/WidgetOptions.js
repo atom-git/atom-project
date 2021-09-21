@@ -1,9 +1,20 @@
+export const CommonOptions = {
+  key: { name: 'key', type: 'text', label: '字段标识[需当前表单惟一]' },
+  title: { name: 'title', type: 'text', label: '标题' },
+  width: { name: 'width', type: 'number', label: '宽度', default: 100, formatter: value => `${value}%`, parser: value => value.replace('%', '') },
+  disabled: { name: 'disabled', type: 'switch', label: '是否禁用', checkedValue: true, unCheckedValue: false, default: false },
+  labelvisible: { name: 'labelvisible', type: 'switch', label: '隐藏标签', checkedValue: true, unCheckedValue: false, default: false },
+  rules: { name: 'disabled', type: 'textarea', label: '校验规则' },
+  style: { name: 'style', type: 'textarea', label: '自定义样式', rows: 4, placeholder: '请输入自定义样式[支持less写法]' },
+  placeholder: { name: 'placeholder', type: 'text', label: '占位提示' }
+}
 /**
  * 组件特有配置
  * FormItem公共属性
- * 一、key,title,width,default,labelvisible,placeholder公共生成
- * 二、disabled:是否禁用默认否,rules:校验规则,设置默认选项
- * 三、labelvisible:默认显示, style:自定义样式, placeholder:不设置时自动根据label生成
+ * 一、key,title,width基础属性
+ * 二、disabled:是否禁用默认否, labelvisible:默认显示
+ * 三、rules:校验规则,设置默认选项, style:自定义样式
+ * 四、placeholder:不设置时自动根据label生成
  */
 export default {
   // 布局组件
@@ -119,17 +130,20 @@ export default {
   ],
   // 基础组件
   input: [
+    { name: 'default', type: 'text', label: '默认值' },
     { name: 'maxlength', type: 'number', label: '最大长度' },
     { name: 'prefix', type: 'iconPicker', label: '前缀图标' },
     { name: 'suffix', type: 'iconPicker', label: '后缀图标' }
   ],
   textarea: [
+    { name: 'default', type: 'textarea', label: '默认值' },
     { name: 'maxlength', type: 'number', label: '最大长度', step: 10 },
     { name: 'rows', type: 'number', label: '行数', default: 4 },
     { name: 'autosize', type: 'switch', label: '自适应内容高度', default: 0 },
     { name: 'showCount', type: 'switch', label: '是否展示字数', default: 1 }
   ],
   number: [
+    { name: 'default', type: 'number', label: '默认值' },
     { name: 'range', type: 'inputGroup', label: '区间步长', group: [
         { name: 'min', type: 'number', label: '最小值', default: 0, style: { width: '40%' } },
         { name: 'max', type: 'number', label: '最大值', default: 0, style: { width: '40%' } },
