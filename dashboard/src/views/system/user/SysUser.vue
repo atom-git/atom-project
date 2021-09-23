@@ -6,6 +6,7 @@
                 :loading="loading"
                 :tree="sysDeptTree"
                 :replaceKeys="replaceFields"
+                :customizeTitle="false"
                 @tree-select="handleTreeSelect"></MenuTree>
     </template>
     <template #content>

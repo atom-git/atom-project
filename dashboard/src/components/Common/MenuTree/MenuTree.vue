@@ -70,6 +70,7 @@
  * action上抛出事件 action.name,treeNode | tree-node-action
  */
 import config from '@/config/mixins/config'
+const defaultKeys = { key: 'key', title: 'title', children: 'children', status: 'status' }
 export default {
   name: 'MenuTree',
   mixins: [config],
@@ -148,6 +149,11 @@ export default {
     maxHeight: {
       type: [Number, String],
       required: false
+    },
+    // 是否自定义title，用于保障不进行多次slot加快性能
+    customizeTitle: {
+      type: Boolean,
+      default: true
     }
   },
   data () {
@@ -163,7 +169,7 @@ export default {
   computed: {
     // 默认的替换字段
     replaceFields () {
-      return Object.assign({ key: 'key', title: 'title', children: 'children', status: 'status' }, this.replaceKeys)
+      return Object.assign({}, defaultKeys, this.replaceKeys)
     },
     // 下拉菜单替换字段
     optionFields () {
@@ -172,7 +178,9 @@ export default {
     // 用于对title重新挂载的slot数组
     slots () {
       const slots = []
-      this.initActionNode(this.tree, slots)
+      if (this.customizeTitle) {
+        this.initActionNode(this.tree, slots)
+      }
       return slots
     },
     // 树的最大高度，PC端，平板端是总高度的80%，手机端是50%
