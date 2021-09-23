@@ -207,9 +207,8 @@
   <!-- optionTree -->
   <OptionTree v-else-if="isType('optionTree')"
               :modelValue="modelValue"
-              :options="renderField.options"
-              :labelDiff="renderField.labelDiff"
-              :size="renderField.size"></OptionTree>
+              :size="renderField.size"
+              @change="handleChange"></OptionTree>
   <!-- richText -->
   <RichText v-else-if="isType('richText')" v-bind="renderField" :modelValue="modelValue"/>
   <!-- tableSelect -->

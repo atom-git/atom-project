@@ -58,6 +58,11 @@ export default {
         ...widgetConfig,
         style: { width: `${this.curWidget.options.width}%` || '100%' }
       }
+      // select时对配置参数进行格式化
+      if (this.curWidget.type === 'select') {
+        this.curWidget.options.options = widgetConfig.options && widgetConfig.options.options
+        this.curWidget.options.default = widgetConfig.options && widgetConfig.options.default
+      }
     }
   }
 }

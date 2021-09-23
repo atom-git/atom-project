@@ -39,3 +39,6 @@ node_modules/
 
 ### log ###
 logdir_IS_UNDEFINED/
+
+### vue ###
+public/theme/color.less

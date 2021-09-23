@@ -1,0 +1,49 @@
+/**
+选项树样式
+ */
+.atom-option-tree-checkbox {
+  margin-bottom: 12px;
+}
+.atom-option-tree {
+  .ant-radio-wrapper {
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 6px;
+    margin-right: 0;
+    span.ant-radio + * {
+      padding-right: 0;
+    }
+    .atom-option-node {
+      .ant-input-group-addon {
+        padding: 0 4px;
+        background-color: unset;
+        .anticon {
+          padding: 4px;
+          font-size: 18px;
+          color: @primary-color;
+          &:hover {
+            border-radius: 50%;
+            transition: all 0.3s;
+            background-color: @primary-color;
+            color: #FFFFFF;
+          }
+          &.anticon-minus-circle {
+            color: @error-color;
+            &:hover {
+              background-color: @error-color;
+              color: #FFFFFF;
+            }
+          }
+        }
+      }
+    }
+  }
+  &.child {
+    margin-left: 12px;
+    max-height: 144px;
+    overflow: auto;
+    &>.ant-radio-wrapper:last-child {
+      margin-bottom: 0;
+    }
+  }
+}

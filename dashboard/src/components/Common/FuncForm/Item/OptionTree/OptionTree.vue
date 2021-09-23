@@ -1,9 +1,9 @@
 <template>
   <a-checkbox v-model:checked="labelShow" class="atom-option-tree-checkbox">是否显示标签</a-checkbox>
   <a-radio-group v-model:value="selected" class="atom-option-tree">
-    <OptionNode v-for="option in options"
+    <OptionNode v-for="option in optionsTree"
                 :key="option.key"
-                :defaultValue="(modelValue||[]).slice(1)"
+                :defaultValue="defaultValue.slice(1)"
                 :pSelected="selected"
                 :option="option"
                 :labelShow="labelShow"
@@ -20,19 +20,10 @@ export default {
   name: 'OptionTree',
   components: { OptionNode },
   props: {
-    // 默认选中值，双绑
+    // 默认选项双绑
     modelValue: {
-      type: [Array, String, Number]
-    },
-    // 选项列表双绑[title][value]
-    options: {
-      type: Array,
-      default: () => ([])
-    },
-    // label与value是否一样
-    labelDiff: {
-      type: Boolean,
-      default: false
+      type: Object,
+      default: () => ({})
     },
     // 组件大小 large|default|small
     size: {
@@ -45,35 +36,44 @@ export default {
       // 当前选中的节点
       selected: '',
       // label与value是否一样
-      labelShow: false
+      labelShow: false,
+      // 默认值
+      defaultValue: [],
+      // 选项树结构
+      optionsTree: []
     }
   },
-  emits: ['update:modelValue'],
+  computed: {
+    // 构建内部的选项默认配置用于监听发起数据响应
+    defaultOptions () {
+      return {
+        labelShow: this.labelShow,
+        default: this.defaultValue,
+        options: this.optionsTree
+      }
+    }
+  },
+  emits: ['update:modelValue', 'change'],
   watch: {
-    // 监听外部默认选中值绑定
+    // 监听外部选项绑定
     modelValue: {
       deep: true,
       immediate: true,
       handler (newValue) {
-        newValue = (newValue && [...newValue]) || []
-        this.selected = newValue[0] || ''
+        this.labelShow = newValue.labelShow || false
+        this.defaultValue = newValue.default || []
+        this.selected = this.defaultValue[0] || ''
+        this.initOptionTree(newValue.options)
+        this.optionsTree = newValue.options
       }
     },
-    // 监听外部选项绑定
-    options: {
+    // 响应内部options的变化
+    defaultOptions: {
       deep: true,
-      immediate: true,
       handler (newValue) {
-        this.initOptionTree(newValue)
+        this.$emit('update:modelValue', newValue)
+        this.$emit('change', newValue)
       }
-    },
-    // 监听外部label是否一致的绑定
-    labelDiff (newValue) {
-      this.labelShow = newValue
-    },
-    // 监听内部label是否一致的变化
-    labelShow (newValue) {
-      this.$emit('update:labelDiff', newValue)
     }
   },
   methods: {
@@ -81,6 +81,7 @@ export default {
     initOptionTree (options) {
       options.forEach(node => {
         node.key = node.key || node.value
+        node.title = this.labelShow ? node.title || node.value : node.value
         if (this.$utils.isValid(node.children)) {
           this.initOptionTree(node.children)
         }
@@ -91,50 +92,5 @@ export default {
 </script>
 
 <style lang="less">
-.atom-option-tree-checkbox {
-  margin-bottom: 12px;
-}
-.atom-option-tree {
-  .ant-radio-wrapper {
-    display: inline-flex;
-    align-items: center;
-    margin-bottom: 6px;
-    margin-right: 0;
-    span.ant-radio + * {
-      padding-right: 0;
-    }
-    .atom-option-node {
-      .ant-input-group-addon {
-        padding: 0 4px;
-        background-color: unset;
-        .anticon {
-          padding: 4px;
-          font-size: 18px;
-          color: @primary-color;
-          &:hover {
-            border-radius: 50%;
-            transition: all 0.3s;
-            background-color: @primary-color;
-            color: #FFFFFF;
-          }
-          &.anticon-minus-circle {
-            color: @error-color;
-            &:hover {
-              background-color: @error-color;
-              color: #FFFFFF;
-            }
-          }
-        }
-      }
-    }
-  }
-  &.child {
-    margin-left: 12px;
-    max-height: 144px;
-    overflow: auto;
-    &>.ant-radio-wrapper:last-child {
-      margin-bottom: 0;
-    }
-  }
-}
+@import "optionTree";
 </style>

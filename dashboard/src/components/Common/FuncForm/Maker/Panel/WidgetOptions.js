@@ -1,11 +1,15 @@
 /**
  * 默认选项
  */
-const defaultOptions = [
-  { value: 'option1', title: '选项1', children: [{ value: 'option1-1', title: '选项1-1' }, { value: 'option1-2', title: '选项1-2' }] },
-  { value: 'option2', title: '选项2' },
-  { value: 'option3', title: '选项3' }
-]
+const defaultOptions = {
+  labelShow: false,
+  default: ['option1', 'option1-2'],
+  options:  [
+    { value: 'option1', children: [{ value: 'option1-1' }, { value: 'option1-2' }] },
+    { value: 'option2' },
+    { value: 'option3' }
+  ]
+}
 export const CommonOptions = {
   key: { name: 'key', type: 'text', label: '字段标识[需当前表单惟一]', required: true },
   label: { name: 'label', type: 'text', label: '标题', required: true },
@@ -165,7 +169,7 @@ export default {
         { value: '-', title: '默认' }, { value: 'multiple', title: '多选' }, { value: 'tags', title: '标签' }
       ]
     },
-    { name: 'options', type: 'optionTree', label: '选项', options: defaultOptions, default: ['option1', 'option1-1'], help: '必须保证值的全局惟一性' }
+    { name: 'options', type: 'optionTree', label: '选项', default: defaultOptions, help: '必须保证值的全局惟一性' }
   ],
   radio: [],
   checkbox: [],
