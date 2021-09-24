@@ -6,8 +6,8 @@ const defaultOptions = {
   default: ['option1', 'option1-2'],
   options:  [
     { value: 'option1', children: [{ value: 'option1-1' }, { value: 'option1-2' }] },
-    { value: 'option2' },
-    { value: 'option3' }
+    { value: 'option2', children: [{ value: 'option2-1' }, { value: 'option2-2' }] },
+    { value: 'option3', children: [{ value: 'option3-1' }, { value: 'option3-2' }, { value: 'option3-3' }] }
   ]
 }
 export const CommonOptions = {
@@ -169,7 +169,7 @@ export default {
         { value: '-', title: '默认' }, { value: 'multiple', title: '多选' }, { value: 'tags', title: '标签' }
       ]
     },
-    { name: 'options', type: 'optionTree', label: '选项', default: defaultOptions, help: '必须保证值的全局惟一性' }
+    { name: 'options', type: 'optionTree', label: '选项', default: defaultOptions, cascade: false, help: '必须保证值的全局惟一性' }
   ],
   radio: [],
   checkbox: [],
