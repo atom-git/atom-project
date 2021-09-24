@@ -1,5 +1,58 @@
 <template>
-  <a-radio :value="optionNode.value">
+  <!-- 多级 -->
+  <a-collapse-panel v-if="cascade" :showArrow="false" :key="optionNode.value">
+    <template #header>
+      <a-radio v-if="cascade" :value="optionNode.value">
+        <a-input-group :size="size" compact class="atom-option-node">
+          <a-input v-if="labelShow"
+                   placeholder="label"
+                   v-model:value="optionNode.title"
+                   :style="{ width: '40%' }"/>
+          <a-input placeholder="value"
+                   v-model:value="optionNode.value"
+                   :style="{ width: labelShow ? '60%' : '100%' }">
+            <template #addonAfter>
+              <IconFont type="MinusCircleOutlined"
+                        @click="handleAction( { key: 'delete' }, optionIndex, optionNode)"/>
+              <a-divider type="vertical" />
+              <a-dropdown :trigger="['hover', 'click']">
+                <IconFont type="PlusCircleOutlined"/>
+                <template #overlay>
+                  <a-menu @click="handleAction($event, optionIndex, optionNode)">
+                    <a-menu-item key="add">同级增加</a-menu-item>
+                    <a-menu-item key="addChild">子级增加</a-menu-item>
+                  </a-menu>
+                </template>
+              </a-dropdown>
+            </template>
+          </a-input>
+        </a-input-group>
+      </a-radio>
+    </template>
+    <!-- 下级 -->
+    <a-radio-group v-if="optionNode.children && optionNode.children.length > 0"
+                   class="atom-option-tree child"
+                   :name="optionNode.value"
+                   v-model:value="selected"
+                   @change="handleRadioChange">
+      <a-collapse v-if="cascade" v-model:activeKey="activeKey" :bordered="false">
+        <OptionNode v-for="(child, index) in optionNode.children"
+                    :key="child.key"
+                    :optionIndex="index"
+                    :defaultValue="defaultValue.slice(1)"
+                    :pSelected="selected"
+                    :option="child"
+                    :labelShow="labelShow"
+                    :size="size"
+                    :cascade="cascade"
+                    @option-selected-change="handleSelectedChange"
+                    @option-delete="handleOptionDelete($event, optionNode.children)"
+                    @option-add="handleOptionAdd($event, optionNode.children)"></OptionNode>
+      </a-collapse>
+    </a-radio-group>
+  </a-collapse-panel>
+  <!-- 单级 -->
+  <a-radio v-else :value="optionNode.value">
     <a-input-group :size="size" compact class="atom-option-node">
       <a-input v-if="labelShow"
                placeholder="label"
@@ -9,33 +62,15 @@
                v-model:value="optionNode.value"
                :style="{ width: labelShow ? '60%' : '100%' }">
         <template #addonAfter>
-          <IconFont type="MinusCircleOutlined" @click="handleAction('minus')"/>
+          <IconFont type="MinusCircleOutlined"
+                    @click="handleAction( { key: 'delete' }, optionIndex, optionNode)"/>
           <a-divider type="vertical" />
-          <a-dropdown :trigger="['hover', 'click']">
-            <IconFont type="PlusCircleOutlined"/>
-            <template #overlay>
-              <a-menu @click="handleAction">
-                <a-menu-item key="plus">同级增加</a-menu-item>
-                <a-menu-item key="childPlus">子级增加</a-menu-item>
-              </a-menu>
-            </template>
-          </a-dropdown>
+          <IconFont type="PlusCircleOutlined"
+                    @click="handleAction( { key: 'add' }, optionIndex, optionNode)"/>
         </template>
       </a-input>
     </a-input-group>
   </a-radio>
-  <!-- 子选项 -->
-  <template v-if="optionNode.children && optionNode.children.length > 0" >
-    <a-radio-group :name="optionNode.value" v-model:value="selected" class="atom-option-tree child">
-      <OptionNode v-for="child in optionNode.children"
-                  :key="child.key"
-                  :defaultValue="defaultValue.slice(1)"
-                  :pSelected="selected"
-                  :option="child"
-                  :labelShow="labelShow"
-                  :size="size"></OptionNode>
-    </a-radio-group>
-  </template>
 </template>
 
 <script>
@@ -50,9 +85,19 @@ export default {
       type: Array,
       default: () => ([])
     },
+    // 是否多级
+    cascade: {
+      type: Boolean,
+      default: false
+    },
     // 父级选中的值
     pSelected: {
       type: [String, Number]
+    },
+    // 选项序列
+    optionIndex: {
+      type: Number,
+      default: 0
     },
     // 选项列表双绑title|value|children
     option: {
@@ -75,7 +120,9 @@ export default {
       // 选项配置信息
       optionNode: {},
       // 当前选中的节点
-      selected: ''
+      selected: '',
+      // 当前激活的窗口
+      activeKey: 0
     }
   },
   computed: {
@@ -88,6 +135,10 @@ export default {
     // 根据选中值，给内部赋值
     selectedValue (newValue) {
       this.selected = newValue
+      // 展开选中的
+      if (this.cascade) {
+        this.activeKey = this.selected
+      }
     },
     // 监听内部选项配置变化
     option: {
@@ -98,16 +149,60 @@ export default {
       }
     }
   },
+  emits: ['option-delete', 'option-add', 'option-selected-change'],
   methods: {
     // 响应操作
-    handleAction (action) {
-      if (action === 'minus') {
+    handleAction (action, index, option) {
+      if (action.key === 'delete') {
         // 删除当前行
-      } else if (action === 'plus') {
+        this.$emit('option-delete', index, option)
+      } else if (action.key === 'add') {
         // 同级增加
-      } else if (action === 'plusChild') {
+        this.$emit('option-add', index, option)
+      } else if (action.key === 'addChild') {
+        // 设置新元素的key，保障惟一性
+        const key = this.$utils.randomStr(6)
+        const addOption = { key: key,  value: key, title: this.labelShow ? '选项' : key }
         // 增加子级
+        if (option.children) {
+          option.children.push(addOption)
+        } else {
+          option.children = [addOption]
+        }
+        // 防止下级菜单还未生成导致的展开错误
+        this.$nextTick(() => {
+          this.activeKey = option.value
+        })
       }
+    },
+    // 响应选项删除
+    handleOptionDelete (index, options) {
+      options.splice(index, 1)
+    },
+    // 响应选项同级增加
+    handleOptionAdd (index, options) {
+      // 设置新元素的key，保障惟一性
+      const key = this.$utils.randomStr(6)
+      const addOption = { key: key,  value: key, title: this.labelShow ? '选项' : key }
+      options.splice(index + 1, 0, addOption)
+    },
+    // 响应radio值的改变
+    handleRadioChange () {
+      // 如果是多级，选中时展开当前级别
+      if (this.cascade) {
+        this.activeKey = this.optionNode.value
+      }
+      // 当前层改变，每往上一层index+1，相当于从后往前推选中值
+      this.$emit('option-selected-change', [this.selected], 1, this.optionNode)
+    },
+    // 响应radio选中的改变
+    handleSelectedChange (selected, len, option) {
+      // 如果是多级，选中时展开当前级别
+      if (this.cascade) {
+        this.activeKey = option.value
+      }
+      // 如果子级的radio改变，且值为非空，则本级必然选中为他自己
+      this.$emit('option-selected-change', [option.value, ...selected], len + 1, this.optionNode)
     }
   }
 }

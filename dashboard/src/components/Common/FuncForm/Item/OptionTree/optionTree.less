@@ -5,6 +5,20 @@
   margin-bottom: 12px;
 }
 .atom-option-tree {
+  max-height: 200px;
+  overflow: auto;
+  /*多级折叠样式*/
+  .ant-collapse {
+    background-color: @component-background;
+    .ant-collapse-item {
+      .ant-collapse-header {
+        padding: 0;
+      }
+      .ant-collapse-content .ant-collapse-content-box {
+        padding: 0;
+      }
+    }
+  }
   .ant-radio-wrapper {
     display: inline-flex;
     align-items: center;
@@ -39,9 +53,9 @@
     }
   }
   &.child {
-    margin-left: 12px;
-    max-height: 144px;
-    overflow: auto;
+    margin-left: 8px;
+    padding-left: 6px;
+    border-left: 1px dashed @border-color-base;
     &>.ant-radio-wrapper:last-child {
       margin-bottom: 0;
     }
