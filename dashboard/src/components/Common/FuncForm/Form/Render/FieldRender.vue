@@ -207,6 +207,7 @@
   <!-- optionTree -->
   <OptionTree v-else-if="isType('optionTree')"
               :modelValue="modelValue"
+              :cascade="renderField.cascade"
               :size="renderField.size"
               @change="handleChange"></OptionTree>
   <!-- richText -->

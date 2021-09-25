@@ -15,6 +15,7 @@ import * as antIcons from '@ant-design/icons-vue'
 import IconFont from '@/components/Common/IconFont'
 import moment from 'moment'
 import 'moment/dist/locale/zh-cn'
+import Draggable from 'vuedraggable'
 import axios from './axios'
 import stomp from './stomp'
 import api from '@/api'
@@ -41,6 +42,8 @@ export function setUpPlugins (app) {
   // moment国际化
   moment.locale('zh-cn')
   app.use(moment)
+  // 引入拖拽组件
+  app.component('Draggable', Draggable)
   // 挂载提示类公共实例
   app.config.globalProperties.$message = message
   app.config.globalProperties.$notification = notification

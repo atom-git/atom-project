@@ -113,6 +113,7 @@ export default {
       options.forEach(node => {
         node.key = node.key || node.value
         node.title = this.labelShow ? node.title || node.value : node.value
+        node.label = node.title
         if (this.$utils.isValid(node.children)) {
           this.initOptionTree(node.children)
         }
@@ -126,7 +127,7 @@ export default {
     handleOptionAdd (index) {
       // 设置新元素的key，保障惟一性
       const key = this.$utils.randomStr(6)
-      const addOption = { key: key,  value: key, title: this.labelShow ? '选项' : key }
+      const addOption = { key: key,  value: key, title: this.labelShow ? '选项' : key, label: this.labelShow ? '选项' : key }
       this.optionsTree.splice(index + 1, 0, addOption)
     },
     // 响应radio值改变

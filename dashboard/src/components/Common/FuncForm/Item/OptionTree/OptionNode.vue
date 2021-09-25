@@ -7,9 +7,11 @@
           <a-input v-if="labelShow"
                    placeholder="label"
                    v-model:value="optionNode.title"
+                   @change="handleTitleChange"
                    :style="{ width: '40%' }"/>
           <a-input placeholder="value"
                    v-model:value="optionNode.value"
+                   @change="handleValueChange"
                    :style="{ width: labelShow ? '60%' : '100%' }">
             <template #addonAfter>
               <IconFont type="MinusCircleOutlined"
@@ -162,7 +164,7 @@ export default {
       } else if (action.key === 'addChild') {
         // 设置新元素的key，保障惟一性
         const key = this.$utils.randomStr(6)
-        const addOption = { key: key,  value: key, title: this.labelShow ? '选项' : key }
+        const addOption = { key: key,  value: key, title: this.labelShow ? '选项' : key, label: this.labelShow ? '选项' : key }
         // 增加子级
         if (option.children) {
           option.children.push(addOption)
@@ -183,7 +185,7 @@ export default {
     handleOptionAdd (index, options) {
       // 设置新元素的key，保障惟一性
       const key = this.$utils.randomStr(6)
-      const addOption = { key: key,  value: key, title: this.labelShow ? '选项' : key }
+      const addOption = { key: key,  value: key, title: this.labelShow ? '选项' : key, label: this.labelShow ? '选项' : key }
       options.splice(index + 1, 0, addOption)
     },
     // 响应radio值的改变
@@ -203,6 +205,14 @@ export default {
       }
       // 如果子级的radio改变，且值为非空，则本级必然选中为他自己
       this.$emit('option-selected-change', [option.value, ...selected], len + 1, this.optionNode)
+    },
+    // 响应title的变化，用于更新label作为兼容
+    handleTitleChange (event) {
+      this.optionNode.label = event.target.value
+    },
+    // 响应value的变化，用于更新label作为兼容
+    handleValueChange (event) {
+      this.optionNode.label = event.target.value
     }
   }
 }

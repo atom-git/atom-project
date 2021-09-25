@@ -26,12 +26,11 @@
 /**
  * 组件面板
  */
-import Draggable from 'vuedraggable'
 import FuncTitle from '@/components/Common/FuncTitle'
 import WidgetOptions, { CommonOptions } from './WidgetOptions'
 export default {
   name: 'WidgetPanel',
-  components: { Draggable, FuncTitle },
+  components: { FuncTitle },
   props: {},
   data () {
     return {
@@ -55,16 +54,25 @@ export default {
       // 统一生成key input字段
       const key = cloneWidget.type + '_' + this.$utils.randomStr(8)
       // 构建字段配置表单options
-      const fields = [
-        { ...CommonOptions.key, default: key },
-        { ...CommonOptions.label, default: cloneWidget.title },
-        { ...CommonOptions.width },
-        ...WidgetOptions[cloneWidget.type],
-        { ...CommonOptions.disabled },
-        { ...CommonOptions.labelVisible },
-        { ...CommonOptions.rules },
-        { ...CommonOptions.placeholder }
-      ]
+      let fields
+      if (group === 'layout') {
+        fields = [
+          { ...CommonOptions.key, default: key },
+          { ...CommonOptions.width },
+          ...WidgetOptions[cloneWidget.type]
+        ]
+      } else {
+        fields = [
+          { ...CommonOptions.key, default: key },
+          { ...CommonOptions.label, default: cloneWidget.title },
+          { ...CommonOptions.width },
+          ...WidgetOptions[cloneWidget.type],
+          { ...CommonOptions.disabled },
+          { ...CommonOptions.labelVisible },
+          { ...CommonOptions.rules },
+          { ...CommonOptions.placeholder }
+        ]
+      }
       this.widgets[groupIndex].items[event.oldIndex] = {
         ...cloneWidget,
         // 生成组件唯一key，配置界面的动画要求，同时需要改变对象的值，将组的信息也传递下去
@@ -95,7 +103,11 @@ const layoutWidgets = {
     { icon: 'atom-layout-space', title: '行列布局', type: 'space' },
     { icon: 'atom-layout-step', title: '分步布局', type: 'step' },
     { icon: 'atom-layout-desc', title: '描述布局', type: 'desc' },
-    { icon: 'atom-layout-divider', title: '分割线', type: 'divider' }
+    { icon: 'atom-layout-divider', title: '分割线', type: 'divider' },
+    { icon: 'atom-form-title', title: '标题', type: 'title' },
+    { icon: 'atom-form-text', title: '文本', type: 'text' },
+    { icon: 'atom-form-link', title: '链接', type: 'link' },
+    { icon: 'atom-form-html', title: 'HTML', type: 'html' }
   ]
 }
 /**
@@ -117,12 +129,7 @@ const basicWidgets = {
     { icon: 'atom-form-monthPicker', title: '月份选择器', type: 'monthPicker' },
     { icon: 'atom-form-rangePicker', title: '区间选择器', type: 'rangePicker' },
     { icon: 'atom-form-weekPicker', title: '周选择器', type: 'weekPicker' },
-    { icon: 'atom-form-timePicker', title: '时间选择器', type: 'timePicker' },
-    { icon: 'atom-form-title', title: '标题', type: 'title' },
-    { icon: 'atom-form-text', title: '文本', type: 'text' },
-    { icon: 'atom-form-button', title: '按钮', type: 'button' },
-    { icon: 'atom-form-link', title: '链接', type: 'link' },
-    { icon: 'atom-form-html', title: 'HTML', type: 'html' }
+    { icon: 'atom-form-timePicker', title: '时间选择器', type: 'timePicker' }
   ]
 }
 /**

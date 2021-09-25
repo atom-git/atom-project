@@ -19,13 +19,14 @@
               <a-form-item :key="element.key"
                            :class="[element.key === curWidget.key ? 'active' : '']"
                            :name="element.key"
-                           :label="element.group !== 'layout' && element.options.labelVisible ? '' : element.options.label"
+                           :label="element.group === 'layout' || !element.options.labelVisible ? '' : element.options.label"
                            @click="handleWidgetChange(element)">
                 <!-- 布局元素 -->
                 <LayoutMaker v-if="element.group === 'layout'" :widget="element"></LayoutMaker>
                 <!-- form组件元素 -->
                 <FieldRender v-else
                              :field="element.options"
+                             :modelValue="element.options.default"
                              :size="formConfig.size"></FieldRender>
               </a-form-item>
             </template>
@@ -43,12 +44,11 @@
  * 画布面板
  */
 import MakerHeader from '../Widget/MakerHeader'
-import Draggable from 'vuedraggable'
 import LayoutMaker from '../Widget/LayoutMaker'
 import FieldRender from '../../Form/Render/FieldRender'
 export default {
   name: 'MakerPanel',
-  components: { MakerHeader, Draggable, LayoutMaker, FieldRender },
+  components: { MakerHeader, LayoutMaker, FieldRender },
   props: {
     // 表单配置
     makerConfig: {

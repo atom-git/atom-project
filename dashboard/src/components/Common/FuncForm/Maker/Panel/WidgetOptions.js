@@ -1,7 +1,20 @@
 /**
- * 默认选项
+ * 默认单级选项
  */
-const defaultOptions = {
+const monoOptions = {
+  labelShow: false,
+  multiple: false,
+  default: ['option1'],
+  options:  [
+    { value: 'option1' },
+    { value: 'option2' },
+    { value: 'option3' }
+  ]
+}
+/**
+ * 默认多级选项
+ */
+const cascadeOptions = {
   labelShow: false,
   default: ['option1', 'option1-2'],
   options:  [
@@ -15,7 +28,7 @@ export const CommonOptions = {
   label: { name: 'label', type: 'text', label: '标题', required: true },
   width: { name: 'width', type: 'number', label: '宽度', default: 100, formatter: value => `${value}%`, parser: value => value.replace('%', '') },
   disabled: { name: 'disabled', type: 'switch', label: '是否禁用', checkedValue: true, unCheckedValue: false, default: false },
-  labelVisible: { name: 'labelVisible', type: 'switch', label: '隐藏标签', checkedValue: true, unCheckedValue: false, default: false },
+  labelVisible: { name: 'labelVisible', type: 'switch', label: '显示标签', checkedValue: true, unCheckedValue: false, default: true },
   rules: { name: 'rules', type: 'textarea', label: '校验规则' },
   placeholder: { name: 'placeholder', type: 'text', label: '占位提示' }
 }
@@ -139,6 +152,19 @@ export default {
     { name: 'dashed', type: 'switch', label: '是否虚线', checkedValue: true, unCheckedValue: false, default: false },
     { name: 'plain', type: 'switch', label: '是否普通正文样式', checkedValue: true, unCheckedValue: false, default: false }
   ],
+  title: [
+    { name: 'default', type: 'text', label: '默认值' }
+  ],
+  text: [
+    { name: 'default', type: 'textarea', label: '默认值' }
+  ],
+  link: [
+    { name: 'content', type: 'textarea', label: '替代文本' },
+    { name: 'href', type: 'text', label: '链接' }
+  ],
+  html: [
+    { name: 'content', type: 'textarea', label: '页面内容' }
+  ],
   // 基础组件
   input: [
     { name: 'default', type: 'text', label: '默认值' },
@@ -169,22 +195,44 @@ export default {
         { value: '-', title: '默认' }, { value: 'multiple', title: '多选' }, { value: 'tags', title: '标签' }
       ]
     },
-    { name: 'options', type: 'optionTree', label: '选项', default: defaultOptions, cascade: false, help: '必须保证值的全局惟一性' }
+    { name: 'options', type: 'optionTree', label: '选项', default: monoOptions, help: '必须保证值的全局惟一性' }
   ],
-  radio: [],
-  checkbox: [],
-  switch: [],
-  cascader: [],
-  datePicker: [],
-  monthPicker: [],
-  rangePicker: [],
-  weekPicker: [],
-  timePicker: [],
-  title: [],
-  text: [],
-  button: [],
-  link: [],
-  html: [],
+  radio: [
+    { name: 'mode', type: 'radio', label: '选择模式', default: '-', mode: 'button', buttonStyle: 'solid', options: [
+        { value: '-', title: '默认' }, { value: 'button', title: '按钮' }
+      ]
+    },
+    { name: 'buttonStyle', type: 'radio', label: '按钮模式', default: '-', mode: 'button', buttonStyle: 'solid', options: [
+        { value: 'outline', title: '边框' }, { value: 'solid', title: '填底' }
+      ]
+    },
+    { name: 'options', type: 'optionTree', label: '选项', default: monoOptions, help: '必须保证值的全局惟一性' }
+  ],
+  checkbox: [
+    { name: 'options', type: 'optionTree', label: '选项', default: monoOptions, help: '必须保证值的全局惟一性' }
+  ],
+  switch: [
+    { name: 'default', type: 'switch', label: '默认值' }
+  ],
+  cascader: [
+    { name: 'options', type: 'optionTree', label: '选项', default: cascadeOptions, cascade: true, help: '必须保证值的全局惟一性' },
+    { name: 'showSearch', type: 'switch', label: '是否支持搜索', checkedValue: true, unCheckedValue: false, default: false }
+  ],
+  datePicker: [
+    { name: 'default', type: 'datePicker', label: '默认值' }
+  ],
+  monthPicker: [
+    { name: 'default', type: 'monthPicker', label: '默认值' }
+  ],
+  rangePicker: [
+    { name: 'default', type: 'rangePicker', label: '默认值' }
+  ],
+  weekPicker: [
+    { name: 'default', type: 'weekPicker', label: '默认值' }
+  ],
+  timePicker: [
+    { name: 'default', type: 'timePicker', label: '默认值' }
+  ],
   // 高阶组件
   treeSelect: [],
   transfer: [],

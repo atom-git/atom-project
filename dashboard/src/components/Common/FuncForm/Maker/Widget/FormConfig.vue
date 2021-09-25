@@ -50,7 +50,9 @@ export default {
   data () {
     return {
       // form表单配置
-      formConfig: {},
+      formConfig: {
+        labelCol: { span: 3 }
+      },
       // 表单配置fields
       fields: [
         {
@@ -87,7 +89,7 @@ export default {
               // 非slot挂载时，需要按照label来写属性，自动挂载时，会在内部replace
               options: [{ value: 'style', label: '固定宽度' }, { value: 'span', label: '网格布局' }, { value: 'grid', label: '响应布局' }]
             },
-            { type: 'text', name: 'labelColSize', default: 6, slot: 'labelColSize' }
+            { type: 'text', name: 'labelColSize', default: 3, slot: 'labelColSize' }
           ]
         },
         {
@@ -135,11 +137,11 @@ export default {
         this.formConfig['labelColSize'] = 150
         this.formConfig['labelCol'] = { style: { width: '150px' } }
       } else if (labelColType === 'span') {
-        this.formConfig['labelColSize'] = 6
-        this.formConfig['labelCol'] = { span: 6 }
+        this.formConfig['labelColSize'] = 3
+        this.formConfig['labelCol'] = { span: 3 }
       } else if (labelColType === 'grid') {
-        this.formConfig['labelColSize'] = '{"xs":24,"sm":6,"md":8,"lg":4,"xl":3,"xxl":4}'
-        this.formConfig['labelCol'] = { xs: 24, sm: 6, md: 8, lg: 8, xl: 6, xxl: 4 }
+        this.formConfig['labelColSize'] = '{"xs":24,"sm":6,"md":8,"lg":6,"xl":3,"xxl":3}'
+        this.formConfig['labelCol'] = { xs: 24, sm: 6, md: 8, lg: 6, xl: 3, xxl: 3 }
       }
     },
     // 响应form label定宽
