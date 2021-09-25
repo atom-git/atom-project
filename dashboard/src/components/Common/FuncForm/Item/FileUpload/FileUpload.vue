@@ -41,15 +41,10 @@ export default {
       type: String,
       default: 'default'
     },
-    // 上传的类型，决定了上传文件的类型 file | img | radio | video
+    // 上传的类型，决定了上传文件的类型 file | img | radio | video，如果直接传入一个可传类型的数组，则直接用
     fileType: {
-      type: String,
+      type: [String, Array],
       default: 'file'
-    },
-    // 接受的文件类型
-    accept: {
-      type: String,
-      required: false
     },
     // 上传列表的内建样式，支持三种基本样式 text, picture 和 picture-card
     listType: {
@@ -90,7 +85,8 @@ export default {
     },
     // 上传接收的文件类型
     acceptType () {
-      return this.accept || Default.acceptType[this.fileType]
+      return this.$utils.isArray(this.fileType) ? this.fileType.length <= 0 ? Default.acceptType['file'] : this.fileType
+        : Default.acceptType[this.fileType]
     }
   },
   watch: {

@@ -14,7 +14,7 @@
       </div>
       <a-divider class="atom-theme-divider">主题色</a-divider>
       <div class="atom-theme-setting-item">
-        <ColorPicker v-model="appConfig.primaryColor" type="compact" @change="handleThemeToggle"></ColorPicker>
+        <ColorPicker v-model="appConfig.primaryColor" pickType="compact" @change="handleThemeToggle"></ColorPicker>
       </div>
       <a-divider class="atom-theme-divider">布局模式</a-divider>
       <div class="atom-theme-setting-item">

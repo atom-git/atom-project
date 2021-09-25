@@ -36,6 +36,7 @@
             :showSearch="renderField.showSearch"
             :style="renderField.style"
             :filterOption="true"
+            :maxTagCount="renderField.maxTagCount"
             optionFilterProp="title" allowClear>
     <a-select-option v-for="option in renderField.options"
                      :value="option[renderField.replaceFields.value]"
@@ -148,15 +149,23 @@
 
   <!-- 高阶组件 -->
   <!-- treeSelect -->
-  <a-tree-select v-else-if="isType('treeSelect')" v-bind="renderField" :value="modelValue" @change="handleChange" allowClear/>
+  <a-tree-select v-else-if="isType('treeSelect')"
+                 v-bind="renderField"
+                 :treeData="renderField.treeData || renderField.options"
+                 :value="modelValue" @change="handleChange" allowClear/>
   <!-- transfer -->
   <a-transfer v-else-if="isType('transfer')"
               v-bind="renderField"
+              :dataSource="renderField.dataSource || renderField.options"
               :titles="renderField.titles || ['来源', '目标']"
               :render="renderField.render || (item => item[renderField.replaceFields.title])"
               :targetKeys="modelValue" @change="handleChange"/>
   <!-- slider -->
-  <a-slider v-else-if="isType('slider')" v-bind="renderField" :range="renderField.range || false" :value="modelValue" @change="handleChange"/>
+  <a-slider v-else-if="isType('slider')" v-bind="renderField"
+            :range="renderField.range || false"
+            :value="modelValue"
+            :style="initSliderStyle(renderField.style)"
+            @change="handleChange"/>
   <!-- autoComplete TODO 自定义option展示形式 -->
   <a-auto-complete v-else-if="isType('autoComplete')"
                    v-bind="renderField"
@@ -295,7 +304,7 @@ export default {
         hidden: this.field.hidden ? this.field.hidden : false,
         replaceFields: Object.assign({}, defaultKeys, this.field.replaceFields),
         // slider不能设置为100%
-        style: this.field.style || { width: this.field.type === 'slider' ? '96%' : '100%' }
+        style: this.field.style || { width: '100%' }
       })
     }
   },
@@ -340,6 +349,17 @@ export default {
     // 初始化选项过滤
     initFilterOption (keyword, option) {
       return this.renderField.remote ? true : option.value.toLowerCase().includes(keyword.toLowerCase())
+    },
+    // 初始化slider的样式
+    initSliderStyle (style) {
+      if (style) {
+        if (style.width === '100%') {
+          delete style.width
+        }
+        return style
+      } else {
+        return {}
+      }
     },
     // 格式化status
     formatStatus (value) {

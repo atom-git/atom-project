@@ -26,7 +26,7 @@ const cascadeOptions = {
 export const CommonOptions = {
   key: { name: 'key', type: 'text', label: '字段标识[需当前表单惟一]', required: true },
   label: { name: 'label', type: 'text', label: '标题', required: true },
-  width: { name: 'width', type: 'number', label: '宽度', default: 100, formatter: value => `${value}%`, parser: value => value.replace('%', '') },
+  width: { name: 'width', type: 'number', label: '宽度', min: 0, max: 100, default: 100, formatter: value => `${value}%`, parser: value => value.replace('%', '') },
   disabled: { name: 'disabled', type: 'switch', label: '是否禁用', checkedValue: true, unCheckedValue: false, default: false },
   labelVisible: { name: 'labelVisible', type: 'switch', label: '显示标签', checkedValue: true, unCheckedValue: false, default: true },
   rules: { name: 'rules', type: 'textarea', label: '校验规则' },
@@ -234,16 +234,39 @@ export default {
     { name: 'default', type: 'timePicker', label: '默认值' }
   ],
   // 高阶组件
-  treeSelect: [],
-  transfer: [],
-  slider: [],
-  mentions: [],
-  rate: [],
+  treeSelect: [
+    { name: 'multiple', type: 'switch', label: '是否支持多选', checkedValue: true, unCheckedValue: false, default: false },
+    { name: 'options', type: 'optionTree', label: '选项', default: cascadeOptions, cascade: true, help: '必须保证值的全局惟一性' },
+    { name: 'showSearch', type: 'switch', label: '是否支持搜索', checkedValue: true, unCheckedValue: false, default: false }
+  ],
+  transfer: [
+    { name: 'options', type: 'optionTree', label: '选项', default: cascadeOptions, cascade: true, help: '必须保证值的全局惟一性' },
+    { name: 'titles', type: 'select', label: '选框标题', mode: 'tags', default: ['来源', '目标'], help: '仅支持填写两个' },
+  ],
+  slider: [
+    { name: 'range', type: 'switch', label: '区间模式', checkedValue: true, unCheckedValue: false, default: false },
+    { name: 'min', type: 'number', label: '最小值', default: 0 },
+    { name: 'max', type: 'number', label: '最大值', default: 100 },
+    { name: 'step', type: 'number', label: '步长', default: 1 },
+  ],
+  mentions: [
+    { name: 'options', type: 'optionTree', label: '选项', default: monoOptions, help: '必须保证值的全局惟一性' }
+  ],
+  rate: [
+    { name: 'allowHalf', type: 'switch', label: '是否允许半星', checkedValue: true, unCheckedValue: false, default: false },
+    { name: 'count', type: 'number', label: 'Star总数' }
+  ],
   inputGroup: [],
-  fileUpload: [],
+  fileUpload: [
+    { name: 'multiple', type: 'switch', label: '是否多选', checkedValue: true, unCheckedValue: false, default: true },
+    { name: 'fileType', type: 'number', label: '支持的文件类型', default: 'file', help: '支持指定类型【file|img|radio|video】或者自定义' },
+    { name: 'max', type: 'number', label: '最多支持上传文件数', default: 5 },
+  ],
   imagePicker: [],
-  iconPicker: [],
-  tagCheck: [],
+  tagCheck: [
+    { name: 'multiple', type: 'switch', label: '是否多选', checkedValue: true, unCheckedValue: false, default: true },
+    { name: 'options', type: 'optionTree', label: '选项', default: monoOptions, help: '必须保证值的全局惟一性' }
+  ],
   mapPicker: [],
   tableSelect: [],
   richText: []

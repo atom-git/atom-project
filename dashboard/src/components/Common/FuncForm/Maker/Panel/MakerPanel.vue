@@ -90,6 +90,16 @@ export default {
     // 响应头部点击响应
     handleHeaderAction (action) {
       console.log(action)
+      // 清空
+      if (action.name === 'clear') {
+        this.widgets = []
+        this.curWidget = {}
+        this.$emit('maker-widget-change', this.curWidget)
+      } else if (action.name === 'preview') {
+        // 预览
+      } else if (action.name === 'import') {
+        // 导入
+      }
     },
     // 响应画布大小调整
     handleCanvasResize (panel) {

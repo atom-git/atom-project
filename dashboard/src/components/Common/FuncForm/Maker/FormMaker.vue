@@ -33,7 +33,9 @@ export default {
       // 表单编辑器的配置
       makerConfig: {},
       // 当前操作的组件
-      curWidget: {}
+      curWidget: {},
+      // 涉及options的组件，此类组件不需要设置default属性
+      optionsWidgets: ['select', 'radio', 'checkbox', 'cascader', 'treeSelect', 'transfer']
     }
   },
   computed: {
@@ -59,15 +61,12 @@ export default {
         style: { width: `${widgetConfig.width || 100}%` || '100%' }
       }
       // select时对配置参数进行格式化
-      if (widgetConfig.options && (this.curWidget.type === 'select'
-          || this.curWidget.type === 'radio' || this.curWidget.type === 'checkbox'
-          || this.curWidget.type === 'cascader')) {
-        // 在select mode改变时，改变其options配置中的multiple配置
-        if (this.curWidget.type === 'select') {
-          widgetConfig.options.multiple = widgetConfig.mode === 'multiple' || widgetConfig.mode === 'tag'
+      if (widgetConfig.options) {
+        // 带选项配置的需要回写其选项配置结果
+        if (this.optionsWidgets.includes(this.curWidget.type)) {
+          this.curWidget.options.options = widgetConfig.options.options
+          this.curWidget.options.default = widgetConfig.options.default
         }
-        this.curWidget.options.options = widgetConfig.options.options
-        this.curWidget.options.default = widgetConfig.options.default
       }
     }
   }
