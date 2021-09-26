@@ -43,7 +43,12 @@ export const CommonOptions = {
 export default {
   // 布局组件
   grid: [
-    { name: 'gutter', type: 'number', label: '栅格间隔', default: 0 },
+    { name: 'colCount', type: 'select', label: '列数', default: 2, options: [
+        { value: 2, title: '2列' }, { value: 3, title: '3列' }, { value: 4, title: '4列' },
+        { value: 6, title: '6列' }, { value: 8, title: '8列' }, { value: 12, title: '12列' }
+      ]
+    },
+    { name: 'gutter', type: 'number', label: '栅格间隔', default: 8 },
     { name: 'align', type: 'radio', label: '水平布局', default: 'top', mode: 'button', buttonStyle: 'solid', options: [
       { value: 'top', title: '顶部对齐' }, { value: 'middle', title: '垂直居中' }, { value: 'bottom', title: '底部对齐' }]
     },

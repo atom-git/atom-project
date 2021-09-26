@@ -31,7 +31,6 @@ import WidgetOptions, { CommonOptions } from './WidgetOptions'
 export default {
   name: 'WidgetPanel',
   components: { FuncTitle },
-  props: {},
   data () {
     return {
       // 当前激活的组件库
@@ -73,15 +72,21 @@ export default {
           { ...CommonOptions.placeholder }
         ]
       }
+      // 基础的组件属性配置
+      const options = {
+        type: cloneWidget.type,
+        label: cloneWidget.title
+      }
+      // 如果是grid布局，单独增加cols配置，用于和colCount保持一致
+      if (cloneWidget.type === 'grid') {
+        options.cols = [{ key: 'col_0', order: 0, span: 12 }, { key: 'col_1', order: 1, span: 12 }]
+      }
       this.widgets[groupIndex].items[event.oldIndex] = {
         ...cloneWidget,
         // 生成组件唯一key，配置界面的动画要求，同时需要改变对象的值，将组的信息也传递下去
         group,
         key,
-        options: {
-          type: cloneWidget.type,
-          label: cloneWidget.title
-        },
+        options,
         fields,
         // 重写配置防止同一实例配置覆盖
         widgetConfig: {}

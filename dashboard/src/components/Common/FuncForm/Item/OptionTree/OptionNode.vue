@@ -2,7 +2,8 @@
   <!-- 多级 -->
   <a-collapse-panel v-if="cascade" :showArrow="false" :key="optionNode.value">
     <template #header>
-      <a-radio v-if="cascade" :value="optionNode.value">
+      <!-- @click.stop防止展开事件多次触发 -->
+      <a-radio v-if="cascade" :value="optionNode.value" @click.stop>
         <a-input-group :size="size" compact class="atom-option-node">
           <a-input v-if="labelShow"
                    placeholder="label"
