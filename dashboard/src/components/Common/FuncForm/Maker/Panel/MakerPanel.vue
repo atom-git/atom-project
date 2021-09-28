@@ -8,29 +8,9 @@
         <!-- 表单区域 -->
         <a-form v-bind="formConfig" :style="{ width: `${formConfig.width}%` }">
           <!-- 有元素时 -->
-          <Draggable :list="widgets"
-                     v-bind="dragOptions"
-                     itemKey="key"
-                     tag="transition-group"
-                     :component-data="{ name:'fade' }"
-                     @add="handleWidgetAdd">
-            <!-- FormItem渲染 -->
-            <template #item="{ element }">
-              <a-form-item :key="element.key"
-                           :class="[element.key === curWidget.key ? 'active' : '']"
-                           :name="element.key"
-                           :label="element.group === 'layout' || !element.options.labelVisible ? '' : element.options.label"
-                           @click="handleWidgetChange(element)">
-                <!-- 布局元素 -->
-                <LayoutMaker v-if="element.group === 'layout'" :widget="element"></LayoutMaker>
-                <!-- form组件元素 -->
-                <FieldRender v-else
-                             :field="element.options"
-                             :modelValue="element.options.default"
-                             :size="formConfig.size"></FieldRender>
-              </a-form-item>
-            </template>
-          </Draggable>
+          <DragMaker v-model="widgets"
+                     :size="formConfig.size"
+                     @maker-widget-change="handleWidgetChange"></DragMaker>
           <!-- 没有元素时 -->
           <a-empty v-if="!widgets || widgets.length <= 0" description="从左侧拖拽或点击来添加字段"/>
         </a-form>
@@ -44,11 +24,10 @@
  * 画布面板
  */
 import MakerHeader from '../Widget/MakerHeader'
-import LayoutMaker from '../Widget/LayoutMaker'
-import FieldRender from '../../Form/Render/FieldRender'
+import DragMaker from '../Widget/DragMaker'
 export default {
   name: 'MakerPanel',
-  components: { MakerHeader, LayoutMaker, FieldRender },
+  components: { MakerHeader, DragMaker },
   props: {
     // 表单配置
     makerConfig: {
@@ -63,14 +42,7 @@ export default {
       // 组件列表，从组件库中拖过来的信息，需要在结束后增加一个唯一性key
       widgets: [],
       // 当前操作的组件
-      curWidget: {},
-      // 拖动配置
-      dragOptions: {
-        animation: 300,
-        group: { name: 'widgets' },
-        sort: true,
-        ghostClass: 'atom-widget-ghost'
-      }
+      curWidget: {}
     }
   },
   computed: {
@@ -105,16 +77,9 @@ export default {
     handleCanvasResize (panel) {
       this.panel = panel
     },
-    // 响应组件的增加
-    handleWidgetAdd (event) {
-      // 设置当前操作的组件
-      this.curWidget = this.widgets[event['newDraggableIndex']]
-      this.$emit('maker-widget-change', this.curWidget)
-    },
     // 响应组件选择改变
-    handleWidgetChange (widget) {
-      // 设置当前操作的组件
-      this.curWidget = widget
+    handleWidgetChange (curWidget) {
+      this.curWidget = curWidget
       this.$emit('maker-widget-change', this.curWidget)
     }
   }

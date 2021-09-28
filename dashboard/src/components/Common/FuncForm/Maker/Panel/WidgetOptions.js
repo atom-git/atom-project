@@ -23,6 +23,9 @@ const cascadeOptions = {
     { value: 'option3', children: [{ value: 'option3-1' }, { value: 'option3-2' }, { value: 'option3-3' }] }
   ]
 }
+/**
+ * 通用配置信息
+ */
 export const CommonOptions = {
   key: { name: 'key', type: 'text', label: '字段标识[需当前表单惟一]', required: true },
   label: { name: 'label', type: 'text', label: '标题', required: true },
@@ -157,19 +160,6 @@ export default {
     { name: 'dashed', type: 'switch', label: '是否虚线', checkedValue: true, unCheckedValue: false, default: false },
     { name: 'plain', type: 'switch', label: '是否普通正文样式', checkedValue: true, unCheckedValue: false, default: false }
   ],
-  title: [
-    { name: 'default', type: 'text', label: '默认值' }
-  ],
-  text: [
-    { name: 'default', type: 'textarea', label: '默认值' }
-  ],
-  link: [
-    { name: 'content', type: 'textarea', label: '替代文本' },
-    { name: 'href', type: 'text', label: '链接' }
-  ],
-  html: [
-    { name: 'content', type: 'textarea', label: '页面内容' }
-  ],
   // 基础组件
   input: [
     { name: 'default', type: 'text', label: '默认值' },
@@ -237,6 +227,19 @@ export default {
   ],
   timePicker: [
     { name: 'default', type: 'timePicker', label: '默认值' }
+  ],
+  title: [
+    { name: 'default', type: 'text', label: '默认值' }
+  ],
+  text: [
+    { name: 'default', type: 'textarea', label: '默认值', default: '文本提示' }
+  ],
+  link: [
+    { name: 'content', type: 'textarea', label: '替代文本', default: '链接文本' },
+    { name: 'href', type: 'text', label: '链接' }
+  ],
+  html: [
+    { name: 'content', type: 'textarea', label: '页面内容', default: 'HTML内容' }
   ],
   // 高阶组件
   treeSelect: [

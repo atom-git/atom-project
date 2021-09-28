@@ -73,22 +73,22 @@ export default {
         // 根据列数，计算列宽
         const span = 24 / (widgetConfig['colCount'] || 2)
         // 变化的列数
-        const colChange = widgetConfig['colCount'] - this.curWidget.options.cols.length
+        const colChange = widgetConfig['colCount'] - this.curWidget.columns.length
         // 如果列数增加，在最后面增加，并调整列宽
         if (colChange > 0) {
           // 调整列宽
-          this.curWidget.options.cols.forEach(col => col.span = span)
+          this.curWidget.columns.forEach(column => column.span = span)
           for (let index = 0; index < colChange; index++) {
-            this.curWidget.options.cols.push({
-              key: 'col_' + this.curWidget.options.cols.length + index,
+            this.curWidget.columns.push({
+              key: 'column_' + this.curWidget.columns.length + index,
               order: index,
               span: span
             })
           }
         } else {
           // 如果列数减少，从最后面减，并调整列宽
-          this.curWidget.options.cols.splice(colChange, Math.abs(colChange))
-          this.curWidget.options.cols.forEach(col => col.span = span)
+          this.curWidget.columns.splice(colChange, Math.abs(colChange))
+          this.curWidget.columns.forEach(column => column.span = span)
         }
       }
     }

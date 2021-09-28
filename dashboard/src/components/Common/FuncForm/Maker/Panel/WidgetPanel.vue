@@ -13,7 +13,7 @@
                  v-bind="dragOptions"
                  @clone="handleWidgetClone($event, widget.key, index)">
         <template #item="{ element }">
-          <li class="atom-widget">
+          <li class="atom-widget" :type="widget.key">
             <IconFont :type="element.icon" />{{ element.title }}
           </li>
         </template>
@@ -42,7 +42,9 @@ export default {
         animation: 300,
         group: { name: 'widgets', pull: 'clone', put: false },
         sort: false
-      }
+      },
+      // label默认不显示的表单类型列表
+      labelInvisible: ['title', 'text', 'link', 'html']
     }
   },
   methods: {
@@ -67,7 +69,7 @@ export default {
           { ...CommonOptions.width },
           ...WidgetOptions[cloneWidget.type],
           { ...CommonOptions.disabled },
-          { ...CommonOptions.labelVisible },
+          { ...CommonOptions.labelVisible, default: !this.labelInvisible.includes(cloneWidget.type) },
           { ...CommonOptions.rules },
           { ...CommonOptions.placeholder }
         ]
@@ -76,10 +78,6 @@ export default {
       const options = {
         type: cloneWidget.type,
         label: cloneWidget.title
-      }
-      // 如果是grid布局，单独增加cols配置，用于和colCount保持一致
-      if (cloneWidget.type === 'grid') {
-        options.cols = [{ key: 'col_0', order: 0, span: 12 }, { key: 'col_1', order: 1, span: 12 }]
       }
       this.widgets[groupIndex].items[event.oldIndex] = {
         ...cloneWidget,
@@ -90,6 +88,13 @@ export default {
         fields,
         // 重写配置防止同一实例配置覆盖
         widgetConfig: {}
+      }
+      // 如果是grid布局，单独增加cols配置，用于和colCount保持一致
+      if (cloneWidget.type === 'grid') {
+        this.widgets[groupIndex].items[event.oldIndex]['columns'] = [
+          { key: 'col_0', order: 0, span: 12, widgets: [] },
+          { key: 'col_1', order: 1, span: 12, widgets: [] }
+        ]
       }
     }
   }
@@ -107,11 +112,7 @@ const layoutWidgets = {
     { icon: 'atom-layout-space', title: '行列布局', type: 'space' },
     { icon: 'atom-layout-step', title: '分步布局', type: 'step' },
     { icon: 'atom-layout-desc', title: '描述布局', type: 'desc' },
-    { icon: 'atom-layout-divider', title: '分割线', type: 'divider' },
-    { icon: 'atom-form-title', title: '标题', type: 'title' },
-    { icon: 'atom-form-text', title: '文本', type: 'text' },
-    { icon: 'atom-form-link', title: '链接', type: 'link' },
-    { icon: 'atom-form-html', title: 'HTML', type: 'html' }
+    { icon: 'atom-layout-divider', title: '分割线', type: 'divider' }
   ]
 }
 /**
@@ -133,7 +134,11 @@ const basicWidgets = {
     { icon: 'atom-form-monthPicker', title: '月份选择器', type: 'monthPicker' },
     { icon: 'atom-form-rangePicker', title: '区间选择器', type: 'rangePicker' },
     { icon: 'atom-form-weekPicker', title: '周选择器', type: 'weekPicker' },
-    { icon: 'atom-form-timePicker', title: '时间选择器', type: 'timePicker' }
+    { icon: 'atom-form-timePicker', title: '时间选择器', type: 'timePicker' },
+    { icon: 'atom-form-title', title: '标题', type: 'title' },
+    { icon: 'atom-form-text', title: '文本', type: 'text' },
+    { icon: 'atom-form-link', title: '链接', type: 'link' },
+    { icon: 'atom-form-html', title: 'HTML', type: 'html' }
   ]
 }
 /**
