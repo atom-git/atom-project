@@ -42,7 +42,6 @@ export default {
       default: 'default'
     }
   },
-  inheritAttrs: false,
   methods: {
     // 判断field类型
     isType (type = 'text') {

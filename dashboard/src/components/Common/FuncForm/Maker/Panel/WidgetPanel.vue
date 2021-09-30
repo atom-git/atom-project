@@ -22,6 +22,7 @@
   </a-collapse>
 </template>
 
+
 <script>
 /**
  * 组件面板
@@ -40,7 +41,7 @@ export default {
       // 拖动配置
       dragOptions: {
         animation: 300,
-        group: { name: 'widgets', pull: 'clone', put: false },
+        group: { name: 'toolboxs', pull: 'clone', put: false },
         sort: false
       },
       // label默认不显示的表单类型列表

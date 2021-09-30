@@ -105,22 +105,32 @@
             }
             /*当前选中的节点*/
             &.active {
-              background-color: @primary-1;
-              border: 1px dashed @primary-color;
+              border: 1px solid @primary-color;
+              outline: 2px solid @primary-color;
             }
             /*当前hover的节点*/
             &:hover {
               border: 1px dashed @primary-color;
             }
-            /*表单内容*/
-            .ant-form-item-control-input-content {
-              /*栅格布局*/
-              .ant-row {
-                .ant-col {
-                  min-height: 32px;
-                  /*内部表单元素样式*/
-                  .atom-maker-item {
-                    border: 1px inset @border-color-base;
+            /*布局表单内容*/
+            &.layout {
+              &>.ant-form-item {
+                margin-bottom: 0;
+              }
+              /*表单内容*/
+              .ant-form-item-control-input-content {
+                /*栅格布局*/
+                .ant-row {
+                  padding: 4px;
+                  .ant-col {
+                    .atom-maker-inner-form {
+                      border: 2px inset @border-color-split;
+                      min-height: 32px;
+                      /*内部表单元素样式*/
+                      .atom-maker-item {
+                        border: 1px inset @border-color-base;
+                      }
+                    }
                   }
                 }
               }
