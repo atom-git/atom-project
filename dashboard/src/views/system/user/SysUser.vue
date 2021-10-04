@@ -206,7 +206,7 @@ export default {
             self.loading = true
             row.ifValid = row.ifValid ? 0 : 1
             self.$api.system.user.update(row).then(() => {
-              self.$message.success(`用户【${row.name}】已被${row.ifValid ? '禁用' : '启用'}！`)
+              self.$message.success(`用户【${row.name}】已被${row.ifValid ? '启用' : '禁用'}！`)
             }).finally(() => { self.loading = false })
           }
         })

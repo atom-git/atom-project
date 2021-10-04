@@ -21,6 +21,10 @@
   <template v-else-if="isFormat('formatSwitch')">
     <a-switch v-bind="switchOption" :checked="content" @change="handleAction({ name: column.key || column.dataIndex, extend: true })"></a-switch>
   </template>
+  <!-- 格式化链接，link -->
+  <template v-else-if="isFormat('formatLink')">
+    <a-button type="link" @click="handleAction({ name: column.key || column.dataIndex, extend: true })">{{ content }}</a-button>
+  </template>
   <!-- 格式化操作按钮 -->
   <template v-else-if="isFormat('formatAction')">
     <TipButtonGroup :actions="column.actions" @click="handleAction"></TipButtonGroup>
@@ -44,6 +48,7 @@
  * 格式化状态: formatStatus, options { value, title, status }，应用状态字段更好的展示
  * 格式化开关: formatSwitch, options { value, title, status }，应用状态字段更好的展示，以及直接操作其状态
  * 格式化操作按钮: formatAction|type[icon, text, both], actions [ a-tooltip, a-button ] 属性合集
+ * 格式化链接: formatLink展示类似于详情点击
  * 下面的均为值变化
  * 格式化对象: formatObject|ObjectKey，应用于外键属性渲染
  * 格式化维值: formatType, options，应用于维值渲染 { value, label } 服务端sys_type_mean VO层需要转换下
