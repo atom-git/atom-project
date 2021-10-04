@@ -179,7 +179,7 @@ export default {
           checkedColumns.push(column.key)
         }
         // 写入子集的选中结果
-        if (this.$utils.isValid(column.children)) {
+        if (this.$utils.isValid(column.children) && column.show) {
           checkedColumns.push(...this.initCheckedColumns(column.children))
         }
       })

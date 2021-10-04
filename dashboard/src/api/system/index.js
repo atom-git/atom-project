@@ -1,6 +1,17 @@
 import axios from '@/config/lib/axios'
 import Default from '@/config/default'
 import Utils from '@/utils'
+/**
+ * 管理模块
+ */
+import user from './user'
+import dept from './dept'
+import role from './role'
+import menu from './menu'
+import action from './action'
+import type from './type'
+import news from './news'
+import file from './file'
 
 /**
  * 系统管理api
@@ -109,4 +120,16 @@ export default class system {
       data: signUser
     })
   }
+
+  /**
+   * 引入管理模块
+   */
+  static user = user
+  static dept = dept
+  static role = role
+  static menu = menu
+  static action = action
+  static type = type
+  static news = news
+  static file = file
 }

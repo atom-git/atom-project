@@ -65,7 +65,7 @@ public class SysTypeController {
 	 * @param sysTypeDTO 系统数据字典类型DTO
 	 * @return 返回新增编辑的结果
 	 */
-	@PostMapping("update")
+	@PutMapping("update")
 	@ApiOperation("新增或者编辑数据字典类型")
 	@Permission(actionType = {ActionType.N, ActionType.E}, grantType = GrantType.MANUAL)
 	public RestResponse<?> update(@RequestBody SysTypeDTO sysTypeDTO) {

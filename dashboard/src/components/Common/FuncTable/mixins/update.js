@@ -51,7 +51,7 @@ export default {
     },
     // form表单的slots
     formSlots () {
-      return this.formType === 'add' ? this.addFields : this.editFields
+      return this.formType === 'add' ? this.addSlots : this.editSlots
     }
   },
   emits: ['table-form-submit', 'table-form-cancel'],

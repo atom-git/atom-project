@@ -8,7 +8,7 @@
   </template>
   <!-- 格式化标签 -->
   <template v-else-if="isFormat('formatTag')">
-    <a-tag v-if="formatTag && formatTag().color" :color="formatTag && formatTag().color">{{ formatTag && formatTag().title }}</a-tag>
+    <a-tag v-if="formatTag && (formatTag().color || formatTag().status)" :color="formatTag && (formatTag().color || formatTag().status)">{{ formatTag && formatTag().title }}</a-tag>
     <a-tag v-else>值缺失</a-tag>
   </template>
   <!-- 格式化状态，无法判断时显示default灰色 -->

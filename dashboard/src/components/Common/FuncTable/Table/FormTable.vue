@@ -36,9 +36,15 @@
               :width="formWidth"
               :loading="formLoading"
               :fields="formFields"
+              :formSlots="formSlots"
               :formError="formError"
               @table-editor-submit="handleFormSubmit"
-              @table-editor-cancel="handleFormCancel"></UpdateForm>
+              @table-editor-cancel="handleFormCancel">
+    <!-- 把外部传入的form slot传入内部 -->
+    <template v-for="slotName in formSlots" #[slotName]="{ field, model }">
+      <slot :name="slotName" :field="field" :model="model"></slot>
+    </template>
+  </UpdateForm>
 </template>
 
 <script>

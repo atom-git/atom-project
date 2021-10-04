@@ -17,7 +17,12 @@
               :fields="fields"
               :bordered="false"
               hiddenFooter
-              @submit="handleFormSubmit"></FormList>
+              @submit="handleFormSubmit">
+      <!-- 把外部传入的form slot传入内部 -->
+      <template v-for="slotName in formSlots" #[slotName]="{ field, model }">
+        <slot :name="slotName" :field="field" :model="model"></slot>
+      </template>
+    </FormList>
   </Dialog>
 </template>
 
@@ -63,6 +68,11 @@ export default {
     fields: {
       type: Array,
       default: () => [{}]
+    },
+    // 如果有slot必须指定其slot范围
+    formSlots: {
+      type: Array,
+      required: false
     },
     // 服务端返回的异常错误
     formError: {

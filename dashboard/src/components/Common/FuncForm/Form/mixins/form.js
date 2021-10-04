@@ -93,11 +93,11 @@ export default {
     },
     // 外部传入值的改变
     modelValue: {
+      deep: true,
       immediate: true,
       handler (newValue) {
-        this.model = Object.assign(this.model, newValue)
-      },
-      deep: true
+        this.model = newValue
+      }
     }
   },
   created () {

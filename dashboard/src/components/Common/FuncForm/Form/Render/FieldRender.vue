@@ -65,15 +65,9 @@
             :defaultActiveFirstOption="renderField.defaultActiveFirstOption || false"
             @search="handleRemoteSearch"
             @change="handleRemoteSelect"
+            :options="remoteOptions"
             :disabled="renderField.disabled"
             allowClear>
-    <a-select-option v-for="option in renderField.options"
-                     :value="option[renderField.replaceFields.value]"
-                     :title="option[renderField.replaceFields.title]"
-                     :key="option[renderField.replaceFields.value]"
-                     :bindData="option">
-      {{ option[renderField.replaceFields.title] }}
-    </a-select-option>
   </a-select>
   <!-- radio -->
   <a-radio-group v-else-if="isType('radio')"
@@ -292,7 +286,9 @@ export default {
   data () {
     return {
       // 加载状态
-      loading: false
+      loading: false,
+      // 远程查询时的搜索结果
+      remoteOptions: []
     }
   },
   computed: {
@@ -376,12 +372,17 @@ export default {
         this.renderField.options = null
         if (!this.loading) {
           const self = this
+          this.loading = true
           // 增加延迟请求防止多次无用请求
           setTimeout(() => {
-            self.loading = true
             // 调用外部传入的方法
             self.field.remote.search(keyword).then(options => {
-              self.renderField.options = options
+              // 格式化结果
+              self.remoteOptions = options.map(option => ({
+                value: option[self.renderField.replaceFields.value],
+                label: option[self.renderField.replaceFields.label],
+                data: option
+              }))
             }).finally(() => {
               self.loading = false
             })

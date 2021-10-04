@@ -152,6 +152,8 @@ export default {
           orderColumn: sorter.column.dataIndex,
           orderType: {ascend: 'asc', descend: 'desc'}[sorter.order]
         }
+      } else {
+        this.orderData = {}
       }
       this.loadTableData()
     },
