@@ -131,9 +131,7 @@ export default {
             }
           }
           resolve(response)
-        }).finally(() => {
-          this.loading = false
-        })
+        }).finally(() => { this.loading = false })
       })
     },
     // 响应表格过滤
@@ -183,26 +181,36 @@ export default {
         this.$emit('table-row-action', action, row, column)
       } else {
         if (action.name === this.$default.ACTION.DELETE.name) {
-          const apiUrl = this.$utils.concatStr(action.apiUrl, row[action.replaceFields.id])
-          this.$http.delete(apiUrl).then(() => {
-            // 提示删除成功
-            this.$message.success(action.messageTitle + '删除成功！')
-            this.loadTableData()
-          })
+          // apiUrl必须存在且格式合规
+          if (this.$utils.isValid(action.apiUrl) && action.apiUrl.contains('{s}')) {
+            const apiUrl = this.$utils.concatStr(action.apiUrl, row[action.replaceFields.id])
+            this.$http.delete(apiUrl).then(() => {
+              // 提示删除成功
+              this.$message.success(action.messageTitle + '删除成功！')
+              this.loadTableData()
+            })
+          } else {
+            this.$message.error('删除功能action必须配置apiUrl，格式为delete/{s}')
+          }
         }
       }
     },
     // 响应form表单的提交
     handleFormSubmit (action, model, onFinish) {
-      this.$http.put(action.apiUrl, model).then(() => {
-        this.$message.success('数据'.concat(action.name === this.$default.ACTION.ADD.name ? this.$default.ACTION.ADD.title : this.$default.ACTION.EDIT.title, '成功！'))
-        // 重新加载数据
-        this.loadTableData()
-        this.$emit('table-form-submit', action, model)
-        onFinish(true)
-      }).catch(error => {
-        onFinish(false, error)
-      })
+      // apiUrl必须存在且格式合规
+      if (this.$utils.isValid(action.apiUrl)) {
+        this.$http.put(action.apiUrl, model).then(() => {
+          this.$message.success('数据'.concat(action.name === this.$default.ACTION.ADD.name ? this.$default.ACTION.ADD.title : this.$default.ACTION.EDIT.title, '成功！'))
+          // 重新加载数据
+          this.loadTableData()
+          this.$emit('table-form-submit', action, model)
+          onFinish(true)
+        }).catch(error => {
+          onFinish(false, error)
+        })
+      } else {
+        this.$message.error('编辑功能action必须配置apiUrl')
+      }
     },
     // 响应form表单的取消
     handleFormCancel (action) {

@@ -304,7 +304,7 @@ export default {
       })
     }
   },
-  emits: ['update:modelValue'],
+  emits: ['update:modelValue', 'change'],
   methods: {
     // 判断field类型
     isType (type = 'text') {
@@ -409,6 +409,7 @@ export default {
     // 响应formItem的值变化，用于双绑
     handleChange (value) {
       this.$emit('update:modelValue', value)
+      this.$emit('change', value)
     }
   }
 }

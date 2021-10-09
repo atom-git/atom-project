@@ -22,7 +22,7 @@
     <template v-if="$slots.alert">
       <slot name="alter"></slot>
     </template>
-    <a-alert v-if="alert && $utils.isValid(alert.message)"
+    <a-alert v-if="alert && alert.message"
              :message="alert.message" :type="alert.type" :closable="alert.closable || false" />
 
     <!-- 表格主体区域 -->

@@ -63,6 +63,13 @@ const app = {
         state.config.multiTab = false
         state.config.multiTabDraggable = false
       }
+      // drawer模式即手机端模式时，弹窗均为drawer且，最大宽度为100%
+      if (layout === 'drawer') {
+        state.config.dialog.type = 'drawer'
+        state.config.dialog.size = '100%'
+      } else {
+        state.config.dialog = Default.dialog
+      }
     },
     setFixHeader: (state, fixHeader) => {
       state.config.fixHeader = fixHeader

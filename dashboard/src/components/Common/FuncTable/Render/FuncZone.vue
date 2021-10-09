@@ -10,7 +10,17 @@
       </TipButton>
     </span>
 
-    <!-- 其他附加功能按钮，action定义不能是【新增:add,编辑:edit,下载:download,导入:upload,删除:delete,详情:detail】中的一个 -->
+    <!-- 编辑功能按钮，主要用于FuncDesc组件中 -->
+    <span class="atom-func-btn" v-permission="funcZone.edit && funcZone.edit.permission">
+      <TipButton v-if="funcZone.edit"
+                 :type="funcZone.edit.type || 'primary'"
+                 :icon="funcZone.edit.icon || Default.ACTION.EDIT.icon"
+                 @click="handleClick(funcZone.edit, Default.ACTION.EDIT, funcZone.edit.extend || false)">
+        {{ funcZone.edit.title || Default.ACTION.EDIT.title }}
+      </TipButton>
+    </span>
+
+    <!-- 其他附加功能按钮，table中action定义不能是【新增:add,编辑:edit,下载:download,导入:upload,删除:delete,详情:detail】中的一个 -->
     <template v-if="funcZone.extend">
       <span class="atom-func-btn"
             v-for="tipButton in funcZone.extend"
