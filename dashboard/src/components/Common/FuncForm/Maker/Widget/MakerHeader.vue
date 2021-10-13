@@ -80,7 +80,7 @@ export default {
       this.activeKey = panel.name
       this.$emit('maker-canvas-resize', this.activeKey)
     },
-    // 响应右侧功能点击
+    // 响应功能点击
     handleAction (action) {
       this.$emit('maker-header-action', action)
     }

@@ -98,8 +98,8 @@ const app = {
     setClientHeight: (state, clientHeight) => {
       state.clientHeight = clientHeight
       // 修改内容部分高度
-      // 48:header高度 68:footer高度 footer边距(边距8+8)content上下边距(16+16)multiTabs高度44
-      state.contentHeight = clientHeight - 48 - 68 - (8 + 8) - (16 + 16) - (state.config.multiTab ? 44 : 0)
+      // 48:header高度 68:footer高度 footer边距(边距8+8)content下边距(16)multiTabs高度44
+      state.contentHeight = clientHeight - 48 - 68 - (8 + 8) - 16 - (state.config.multiTab ? 44 : 0)
     },
     setLoading: (state, loading) => {
       state.loading = loading

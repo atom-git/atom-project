@@ -23,7 +23,11 @@
   </template>
   <!-- 格式化链接，link -->
   <template v-else-if="isFormat('formatLink')">
-    <a-button type="link" @click="handleAction({ name: column.key || column.dataIndex, extend: true })">{{ content }}</a-button>
+    <a-button type="link"
+              @click="handleAction({ name: column.key || column.dataIndex, extend: true })">
+      <span ref="copy">{{ content }}</span>
+      <a-tooltip title="复制"><IconFont @click.stop="handleCopy" type="CopyOutlined" /></a-tooltip>
+    </a-button>
   </template>
   <!-- 格式化操作按钮 -->
   <template v-else-if="isFormat('formatAction')">
@@ -57,6 +61,7 @@
  * 字符超长后显示...: formatTooltip
  */
 import { TipButtonGroup } from '@/components/Common/FuncButton'
+import Clipboard from 'clipboard'
 export default {
   name: 'FormatColumn',
   components: { TipButtonGroup },
@@ -182,6 +187,24 @@ export default {
     // 响应操作按钮的点击
     handleAction (action) {
       this.$emit('table-row-action', action, this.row, this.column)
+    },
+    // link格式化时增加点击copy功能
+    handleCopy (event) {
+      const clipboard = new Clipboard(this.$refs.copy, { text: () => this.content })
+      clipboard.on('success', () => {
+        this.$message.success(`【${this.content}】复制成功`)
+        // 释放内存
+        clipboard.destroy()
+      })
+      clipboard.on('error', () => {
+        this.$notification.warn({
+          message: this.content,
+          description: '浏览器不支持自动复制，请手动复制'
+        })
+        // 释放内存
+        clipboard.destroy()
+      })
+      clipboard.onClick(event)
     }
   }
 }

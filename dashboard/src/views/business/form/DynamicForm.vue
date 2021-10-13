@@ -1,5 +1,5 @@
 <template>
-  <FormMaker :style="formMakerStyle"></FormMaker>
+  <FormMaker :style="contentStyle"></FormMaker>
 </template>
 
 <script>
@@ -11,22 +11,6 @@ import config from '@/config/mixins/config'
 export default {
   name: 'DynamicForm',
   components: { FormMaker },
-  mixins: [config],
-  computed: {
-    // 可视区域样式
-    formMakerStyle () {
-      return { height: this.appConfig.layout === 'top' || this.appConfig.layout === 'drawer' ? this.contentHeight + 'px' : '100%' }
-    }
-  }
+  mixins: [config]
 }
 </script>
-
-<style lang="less">
-.atom-form-maker {
-  .atom-maker-panel {
-    .ant-layout-content {
-      margin-bottom: 0;
-    }
-  }
-}
-</style>

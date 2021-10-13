@@ -20,6 +20,10 @@ export default {
     // 内容部分主题色
     contentTheme () {
       return this.appConfig.theme === 'dark' ? 'dark' : 'light'
+    },
+    // 可视区域样式
+    contentStyle () {
+      return { height: this.appConfig.layout === 'top' || this.appConfig.layout === 'drawer' ? this.contentHeight + 'px' : '100%' }
     }
   }
 }
