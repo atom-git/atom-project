@@ -53,11 +53,12 @@ export default {
       tabList: [
         { key: 'direction', tab: '方向图标' },
         { key: 'advice', tab: '提示图标' },
-        { key: 'form', tab: '编辑图标' },
+        { key: 'form', tab: '表单图标' },
         { key: 'data', tab: '数据图标' },
         { key: 'web', tab: '网站图标' },
         { key: 'brand', tab: '品牌图标' },
-        { key: 'iconfont', tab: 'IconFont' }
+        { key: 'iconfont', tab: 'IconFont' },
+        { key: 'network', tab: '网络架构' }
       ],
       // 当前活动的tab
       activeTab: 'direction',
