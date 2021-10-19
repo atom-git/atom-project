@@ -100,6 +100,15 @@
             border: 1px dashed transparent;
             border-radius: 2px;
             cursor: move;
+            position: relative;
+            .atom-maker-actions {
+              position: absolute;
+              right: 0;
+              bottom: 0;
+              .ant-btn {
+                border-radius: 0;
+              }
+            }
             .ant-form-item-label > label {
               cursor: move;
             }

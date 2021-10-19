@@ -21,12 +21,21 @@
                      @add="handleWidgetAdd($event, column)">
             <!-- FormItem渲染 -->
             <template #item="{ element }">
-              <div :class="['atom-maker-item', element.key === curWidget.key ? 'active' : '']">
+              <div :class="['atom-maker-item', element.key === curWidget.key ? 'active' : '']"
+                   @click.stop="handleWidgetChange(element)">
                 <!-- 布局元素中不允许出现布局元素 -->
                 <!-- form组件元素 -->
                 <FormWidget :widget="element"
-                            :size="size"
-                            @click="handleWidgetChange(element)"></FormWidget>
+                            :size="size"></FormWidget>
+                <!-- 当前选中组件时显示复制删除按钮 -->
+                <div class="atom-maker-actions" v-if="element.key === curWidget.key">
+                  <a-tooltip title="复制">
+                    <a-button type="primary" size="small" @click.stop="handleWidgetCopy(column, element, index)"><IconFont type="CopyOutlined"/></a-button>
+                  </a-tooltip>
+                  <a-tooltip title="删除">
+                    <a-button type="primary" size="small" danger @click.stop="handleWidgetDelete(column, element, index)"><IconFont type="DeleteOutlined"/></a-button>
+                  </a-tooltip>
+                </div>
               </div>
             </template>
           </Draggable>
@@ -44,9 +53,11 @@
  */
 import FormWidget from './FormWidget'
 import { message } from 'ant-design-vue'
+import copy from '../mixins/copy'
 export default {
   name: 'LayoutWidget',
   components: { FormWidget },
+  mixins: [copy],
   props: {
     // 组件
     widget: {
@@ -57,12 +68,15 @@ export default {
     size: {
       type: String,
       default: 'default'
+    },
+    // 当前操作的组件
+    curWidget: {
+      type: Object,
+      required: false
     }
   },
   data () {
     return {
-      // 当前操作的组件
-      curWidget: {},
       // 拖动配置
       dragOptions: {
         animation: 300,
@@ -90,13 +104,20 @@ export default {
     // 响应组件的增加
     handleWidgetAdd (event, column) {
       // 设置当前操作的组件
-      this.curWidget = column.widgets[event['newDraggableIndex']]
-      this.$emit('maker-widget-change', this.curWidget)
+      this.$emit('maker-widget-change', column.widgets[event['newDraggableIndex']])
     },
     // 响应组件选择改变
     handleWidgetChange (curWidget) {
-      this.curWidget = curWidget
-      this.$emit('maker-widget-change', this.curWidget)
+      this.$emit('maker-widget-change', curWidget)
+    },
+    // 响应组件的复制操作
+    handleWidgetCopy (column, widget, index) {
+      this.$emit('maker-widget-change', this.widgetCopy(widget, index, column.widgets))
+    },
+    // 响应组件的删除操作
+    handleWidgetDelete (column, widget, index) {
+      column.widgets.splice(index, 1)
+      this.$emit('maker-widget-change', column.widgets[index - 1] || {})
     }
   }
 }

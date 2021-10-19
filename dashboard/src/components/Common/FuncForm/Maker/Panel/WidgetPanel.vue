@@ -22,7 +22,6 @@
   </a-collapse>
 </template>
 
-
 <script>
 /**
  * 组件面板
@@ -93,8 +92,8 @@ export default {
       // 如果是grid布局，单独增加cols配置，用于和colCount保持一致
       if (cloneWidget.type === 'grid') {
         this.widgets[groupIndex].items[event.oldIndex]['columns'] = [
-          { key: 'col_0', order: 0, span: 12, widgets: [] },
-          { key: 'col_1', order: 1, span: 12, widgets: [] }
+          { key: 'column_0', order: 0, span: 12, widgets: [] },
+          { key: 'column_1', order: 1, span: 12, widgets: [] }
         ]
       }
     }

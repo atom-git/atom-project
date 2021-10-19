@@ -6,6 +6,7 @@
     </a-layout-sider>
     <!-- 中间画布面板区域 -->
     <MakerPanel :makerConfig="makerConfig"
+                :curWidget="curWidget"
                 @maker-widget-change="handleWidgetChange" ></MakerPanel>
     <!-- 右侧配置面板区域 -->
     <a-layout-sider :theme="contentTheme" class="atom-config-panel" :width="280">
@@ -80,14 +81,15 @@ export default {
           this.curWidget.columns.forEach(column => column.span = span)
           for (let index = 0; index < colChange; index++) {
             this.curWidget.columns.push({
-              key: 'column_' + this.curWidget.columns.length + index,
-              order: index,
-              span: span
+              key: 'column_' + (this.curWidget.columns.length + index),
+              order: this.curWidget.columns.length + index,
+              span: span,
+              widgets: []
             })
           }
         } else {
           // 如果列数减少，从最后面减，并调整列宽
-          this.curWidget.columns.splice(colChange, Math.abs(colChange))
+          this.curWidget.columns.splice(widgetConfig['colCount'], Math.abs(colChange))
           this.curWidget.columns.forEach(column => column.span = span)
         }
       }

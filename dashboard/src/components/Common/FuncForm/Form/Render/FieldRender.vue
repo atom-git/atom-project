@@ -13,8 +13,8 @@
   <!-- number，这里属性只能单独写，直接用v-bind会存在解析异常 -->
   <a-input-number v-else-if="isType('number')"
                   :value="modelValue"
-                  :formatter="renderField.formatter"
-                  :parser="renderField.parser"
+                  :formatter="parseFunction(renderField.formatter)"
+                  :parser="parseFunction(renderField.parser)"
                   :precision="renderField.precision"
                   :autofocus="renderField.autofocus"
                   :disabled="renderField.disabled"
@@ -355,6 +355,14 @@ export default {
         return style
       } else {
         return {}
+      }
+    },
+    // 把函数字符串解析成函数
+    parseFunction (value) {
+      if (this.$utils.isFunction(value)) {
+        return value
+      } else {
+        return new Function(`return ${value}`)()
       }
     },
     // 格式化status
