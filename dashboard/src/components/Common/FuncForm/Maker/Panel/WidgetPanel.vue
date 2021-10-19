@@ -28,9 +28,11 @@
  */
 import FuncTitle from '@/components/Common/FuncTitle'
 import WidgetOptions, { CommonOptions } from './WidgetOptions'
+import clone from '../mixins/clone'
 export default {
   name: 'WidgetPanel',
   components: { FuncTitle },
+  mixins: [clone],
   data () {
     return {
       // 当前激活的组件库
@@ -79,6 +81,9 @@ export default {
         type: cloneWidget.type,
         label: cloneWidget.title
       }
+      // 不同的布局组件clone不同的初始化组件方式
+      this.widgetClone(cloneWidget)
+      // 最后统一写入到要拖拽的组件中
       this.widgets[groupIndex].items[event.oldIndex] = {
         ...cloneWidget,
         // 生成组件唯一key，配置界面的动画要求，同时需要改变对象的值，将组的信息也传递下去
@@ -88,18 +93,6 @@ export default {
         fields,
         // 重写配置防止同一实例配置覆盖
         widgetConfig: {}
-      }
-      // 如果是grid布局，单独增加cols配置，用于和colCount保持一致
-      if (cloneWidget.type === 'grid') {
-        this.widgets[groupIndex].items[event.oldIndex]['columns'] = [
-          { key: 'column_0', order: 0, span: 12, widgets: [] },
-          { key: 'column_1', order: 1, span: 12, widgets: [] }
-        ]
-      } else if (cloneWidget.type === 'table') {
-        this.widgets[groupIndex].items[event.oldIndex]['rows'] = [
-          { key: 'row_0', columns: [{ key: 'column_0_0', widgets: [] }, { key: 'column_0_1', widgets: [] }] },
-          { key: 'row_1', columns: [{ key: 'column_1_0', widgets: [] }, { key: 'column_1_1', widgets: [] }] },
-        ]
       }
     }
   }
@@ -114,7 +107,6 @@ const layoutWidgets = {
     { icon: 'atom-layout-grid', title: '栅格布局', type: 'grid' },
     { icon: 'atom-layout-table', title: '表格布局', type: 'table' },
     { icon: 'atom-layout-tab', title: '标签布局', type: 'tab' },
-    { icon: 'atom-layout-space', title: '行列布局', type: 'space' },
     { icon: 'atom-layout-step', title: '分步布局', type: 'step' },
     { icon: 'atom-layout-desc', title: '描述布局', type: 'desc' },
     { icon: 'atom-layout-divider', title: '分割线', type: 'divider' }

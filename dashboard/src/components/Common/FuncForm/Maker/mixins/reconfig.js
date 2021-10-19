@@ -8,16 +8,22 @@ export default {
      * @param curWidget 当前操作的组件
      * @param widgetConfig 组件配置
      */
-    widgetResize (curWidget, widgetConfig) {
+    widgetReconfig (curWidget, widgetConfig) {
       // 栅格布局的参数调整
       if (curWidget.type === 'grid') {
-        this.gridResize(curWidget, widgetConfig)
+        this.gridReconfig(curWidget, widgetConfig)
       } else if (curWidget.type === 'table') {
-        this.tableResize(curWidget, widgetConfig)
+        this.tableReconfig(curWidget, widgetConfig)
+      } else if (curWidget.type === 'tab') {
+        this.tabReconfig(curWidget, widgetConfig)
+      } else if (curWidget.type === 'step') {
+        this.stepReconfig(curWidget, widgetConfig)
+      } else if (curWidget.type === 'desc') {
+        this.descReconfig(curWidget, widgetConfig)
       }
     },
     // 栅格布局的参数调整
-    gridResize (curWidget, widgetConfig) {
+    gridReconfig (curWidget, widgetConfig) {
       // 根据列数，计算列宽
       const span = 24 / (widgetConfig['col'] || 2)
       // 变化的列数
@@ -41,7 +47,7 @@ export default {
       }
     },
     // 表格布局的参数调整
-    tableResize (curWidget, widgetConfig) {
+    tableReconfig (curWidget, widgetConfig) {
       // 根据配置重新生成行列
       const row = widgetConfig.row
       const col = widgetConfig.col
@@ -90,6 +96,23 @@ export default {
         })
       }
       return columns
+    },
+    // 标签页布局的参数调整
+    tabReconfig (curWidget, widgetConfig) {
+      /**
+       * 判断tabs长度，用widgetConfig中的tabs去按顺序匹配，
+       * 位置一样的改tab名称
+       * 位置超出的删除
+       * 位置不足的补齐
+       */
+    },
+    // 分步布局的参数调整
+    stepReconfig (curWidget, widgetConfig) {
+
+    },
+    // 分步布局的参数调整
+    descReconfig (curWidget, widgetConfig) {
+
     }
   }
 }

@@ -23,6 +23,22 @@ const cascadeOptions = {
     { value: 'option3', children: [{ value: 'option3-1' }, { value: 'option3-2' }, { value: 'option3-3' }] }
   ]
 }
+
+/**
+ * 默认多项目选项
+ */
+export function initItems (title) {
+  return {
+    labelShow: false,
+    multiple: false,
+    default: [`${title}1`],
+    options: [
+      { value: `${title}1` },
+      { value: `${title}2` },
+      { value: `${title}3` }
+    ]
+  }
+}
 /**
  * 通用配置信息
  */
@@ -78,7 +94,7 @@ export default {
     { name: 'borderColor', type: 'colorPicker', label: '边框颜色', default: '' }
   ],
   tab: [
-    { name: 'type', type: 'radio', label: '标签页风格', default: 'line', mode: 'button', buttonStyle: 'solid', options: [
+    { name: 'tabType', type: 'radio', label: '标签页风格', default: 'line', mode: 'button', buttonStyle: 'solid', options: [
       { value: 'line', title: '选项卡' }, { value: 'card', title: '卡片式' }]
     },
     { name: 'tabPosition', type: 'radio', label: '标签位置', default: 'top', mode: 'button', buttonStyle: 'solid', options: [
@@ -86,26 +102,10 @@ export default {
         { value: 'bottom', title: '底部' }, { value: 'left', title: '左侧' }
       ]
     },
-    { name: 'tabs', type: 'input', slot: 'tabs' }
-  ],
-  space: [
-    { name: 'direction', type: 'radio', label: '间距方向', default: 'horizontal', mode: 'button', buttonStyle: 'solid', options: [
-        { value: 'vertical', title: '垂直对齐' }, { value: 'horizontal', title: '水平对齐' },
-      ]
-    },
-    { name: 'align', type: 'radio', label: '对齐方式', default: 'center', mode: 'button', buttonStyle: 'solid', options: [
-        { value: 'start', title: '头部对齐' }, { value: 'end', title: '尾部对齐' },
-        { value: 'center', title: '居中对齐' }, { value: 'baseline', title: '基线对齐' }
-      ]
-    },
-    { name: 'size', type: 'radio', label: '对齐方式', default: 'center', mode: 'button', buttonStyle: 'solid', options: [
-        { value: 'small', title: '较小' }, { value: 'middle', title: '默认' }, { value: 'large', title: '较大' }
-      ],
-      slot: 'space'
-    }
+    { name: 'tabs', type: 'optionTree', label: '选项标签', default: initItems('Tab'), help: '必须保证值的全局惟一性' }
   ],
   step: [
-    { name: 'type', type: 'radio', label: '步骤条类型', default: 'default', mode: 'button', buttonStyle: 'solid', options: [
+    { name: 'stepType', type: 'radio', label: '步骤条类型', default: 'default', mode: 'button', buttonStyle: 'solid', options: [
         { value: 'default', title: '默认' }, { value: 'navigation', title: '导航条' }]
     },
     { name: 'direction', type: 'radio', label: '步骤条方向', default: 'horizontal', mode: 'button', buttonStyle: 'solid', options: [

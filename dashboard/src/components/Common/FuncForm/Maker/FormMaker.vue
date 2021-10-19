@@ -25,11 +25,11 @@ import WidgetPanel from './Panel/WidgetPanel'
 import MakerPanel from './Panel/MakerPanel'
 import ConfigPanel from './Panel/ConfigPanel'
 import config from '@/config/mixins/config'
-import resize from './mixins/resize'
+import reconfig from './mixins/reconfig'
 export default {
   name: 'FormMaker',
   components: { WidgetPanel, MakerPanel, ConfigPanel },
-  mixins: [config, resize],
+  mixins: [config, reconfig],
   data () {
     return {
       // 表单编辑器的配置
@@ -74,8 +74,8 @@ export default {
           this.curWidget.options.default = widgetConfig.options.default
         }
       }
-      // 布局组件的参数调整对应的状态变化
-      this.widgetResize(this.curWidget, widgetConfig)
+      // 布局组件无法直接挂载的参数调整
+      this.widgetReconfig(this.curWidget, widgetConfig)
     }
   }
 }

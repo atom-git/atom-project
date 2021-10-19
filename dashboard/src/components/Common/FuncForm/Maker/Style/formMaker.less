@@ -101,6 +101,7 @@
             border-radius: 2px;
             cursor: move;
             position: relative;
+            margin-bottom: 2px;
             .atom-maker-actions {
               position: absolute;
               right: 0;
@@ -127,6 +128,15 @@
               }
               /*表单内容*/
               .ant-form-item-control-input-content {
+                /*内部表单的统一样式*/
+                .atom-maker-inner-form {
+                  border: 2px inset @border-color-split;
+                  min-height: 32px;
+                  /*内部表单元素样式*/
+                  .atom-maker-item {
+                    border: 1px inset @border-color-base;
+                  }
+                }
                 /*栅格布局*/
                 &>.ant-row {
                   padding: 4px;
@@ -135,14 +145,6 @@
                     border: 1px dashed @border-color-split;
                     &:hover {
                       border: 1px dashed @primary-color;
-                    }
-                    .atom-maker-inner-form {
-                      border: 2px inset @border-color-split;
-                      min-height: 32px;
-                      /*内部表单元素样式*/
-                      .atom-maker-item {
-                        border: 1px inset @border-color-base;
-                      }
                     }
                   }
                 }
@@ -155,14 +157,6 @@
                       border: 1px dashed @border-color-split;
                       &:hover {
                         outline: 1px dashed @primary-color;
-                      }
-                      .atom-maker-inner-form {
-                        border: 2px inset @border-color-split;
-                        min-height: 32px;
-                        /*内部表单元素样式*/
-                        .atom-maker-item {
-                          border: 1px inset @border-color-base;
-                        }
                       }
                     }
                   }
