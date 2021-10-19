@@ -46,7 +46,7 @@ export const CommonOptions = {
 export default {
   // 布局组件
   grid: [
-    { name: 'colCount', type: 'select', label: '列数', default: 2, options: [
+    { name: 'col', type: 'select', label: '列数', default: 2, options: [
         { value: 2, title: '2列' }, { value: 3, title: '3列' }, { value: 4, title: '4列' },
         { value: 6, title: '6列' }, { value: 8, title: '8列' }, { value: 12, title: '12列' }
       ]
@@ -63,31 +63,19 @@ export default {
     },
     { name: 'wrap', type: 'switch', label: '是否换行', checkedValue: true, unCheckedValue: false, default: true }
   ],
-  col: [
-    { name: 'span', type: 'number', label: '栅格列数', default: 12 },
-    { name: 'offset', type: 'number', label: '栅格左侧的间隔格数' },
-    { name: 'pull', type: 'number', label: '栅格向左移动格数' },
-    { name: 'push', type: 'number', label: '栅格向右移动格数' },
-    { name: 'xs', type: 'text', label: '<576px 响应式栅格' },
-    { name: 'sm', type: 'text', label: '≥576px 响应式栅格' },
-    { name: 'md', type: 'text', label: '≥768px 响应式栅格' },
-    { name: 'lg', type: 'text', label: '≥992px 响应式栅格' },
-    { name: 'xl', type: 'text', label: '≥1200px 响应式栅格' },
-    { name: 'xxl', type: 'text', label: '≥1600px 响应式栅格' },
-  ],
   table: [
-    { name: 'title', type: 'text', label: '标题' },
-    { name: 'width', type: 'number', label: '表格宽度', min: 20, max: 100, default: 100, formatter: value => `${value}%`, parser: value => value.replace('%', '') },
     { name: 'rowCol', type: 'inputGroup', label: '表格行列', group: [
-        { name: 'row', type: 'text', suffix: 'atom-add-row-after', slot: 'tableRow' },
-        { name: 'col', type: 'text', suffix: 'atom-add-col-after', slot: 'tableCol' }
+        { name: 'row', label: '行', default: 2, type: 'number', min: 2, max: 6, formatter: value => `${value}行`, parser: value => value.replace('行', ''), style: { width: '50%' } },
+        { name: 'col', label: '列', default: 2, type: 'number', min: 2, max: 6, formatter: value => `${value}列`, parser: value => value.replace('列', ''), style: { width: '50%' } }
       ]
     },
-    { name: 'borderStyle', type: 'select', label: '边框样式', option: [
-        { value: 'dashed', title: '虚线-dashed' }, { value: 'dotted', title: '圆点-dotted' }, { value: 'double', title: '虚线-double' },
+    { name: 'borderWidth', type: 'number', label: '边框宽度', default: 1, formatter: value => `${value}px`, parser: value => value.replace('px', '') },
+    { name: 'borderStyle', type: 'select', label: '边框样式', default: 'solid', options: [
+        { value: 'solid', title: '实线-solid' }, { value: 'dashed', title: '虚线-dashed' }, { value: 'dotted', title: '圆点-dotted' }, { value: 'double', title: '双线-double' },
         { value: 'groove', title: '沟槽-groove' }, { value: 'ridge', title: '山脊-ridge' }, { value: 'hidden', title: '隐藏-hidden' }
       ]
-    }
+    },
+    { name: 'borderColor', type: 'colorPicker', label: '边框颜色', default: '' }
   ],
   tab: [
     { name: 'type', type: 'radio', label: '标签页风格', default: 'line', mode: 'button', buttonStyle: 'solid', options: [

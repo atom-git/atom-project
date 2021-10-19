@@ -134,7 +134,7 @@
                     padding: 4px;
                     border: 1px dashed @border-color-split;
                     &:hover {
-                      border-color: @primary-color;
+                      border: 1px dashed @primary-color;
                     }
                     .atom-maker-inner-form {
                       border: 2px inset @border-color-split;
@@ -142,6 +142,27 @@
                       /*内部表单元素样式*/
                       .atom-maker-item {
                         border: 1px inset @border-color-base;
+                      }
+                    }
+                  }
+                }
+                /*表格布局*/
+                &>table {
+                  table-layout: fixed;
+                  tr {
+                    td {
+                      padding: 4px;
+                      border: 1px dashed @border-color-split;
+                      &:hover {
+                        outline: 1px dashed @primary-color;
+                      }
+                      .atom-maker-inner-form {
+                        border: 2px inset @border-color-split;
+                        min-height: 32px;
+                        /*内部表单元素样式*/
+                        .atom-maker-item {
+                          border: 1px inset @border-color-base;
+                        }
                       }
                     }
                   }

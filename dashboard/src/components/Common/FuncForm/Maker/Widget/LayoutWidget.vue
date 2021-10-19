@@ -7,7 +7,6 @@
            :justify="widget.options.justify"
            :wrap="widget.options.wrap"
            :style="widget.options.style">
-      <!-- 有元素时 -->
       <a-col v-for="column in widget.columns"
              :key="column.order"
              :span="column.span"
@@ -43,7 +42,40 @@
       </a-col>
     </a-row>
     <!-- 表格布局 -->
-    <a-table v-else-if="isType('table')"></a-table>
+    <table v-else-if="isType('table')" :style="widget.options.style">
+      <tr v-for="row in widget.rows" :key="row.key">
+        <td v-for="column in row.columns" :key="column.key">
+          <div class="atom-maker-inner-form">
+            <Draggable v-bind="dragOptions"
+                       v-model="column.widgets"
+                       itemKey="key"
+                       tag="transition-group"
+                       :component-data="{ name: 'fade' }"
+                       @add="handleWidgetAdd($event, column)">
+              <!-- FormItem渲染 -->
+              <template #item="{ element, index }">
+                <div :class="['atom-maker-item', element.key === curWidget.key ? 'active' : '']"
+                     @click.stop="handleWidgetChange(element)">
+                  <!-- 布局元素中不允许出现布局元素 -->
+                  <!-- form组件元素 -->
+                  <FormWidget :widget="element"
+                              :size="size"></FormWidget>
+                  <!-- 当前选中组件时显示复制删除按钮 -->
+                  <div class="atom-maker-actions" v-if="element.key === curWidget.key">
+                    <a-tooltip title="复制">
+                      <a-button type="primary" size="small" @click.stop="handleWidgetCopy(column, element, index)"><IconFont type="CopyOutlined"/></a-button>
+                    </a-tooltip>
+                    <a-tooltip title="删除">
+                      <a-button type="primary" size="small" danger @click.stop="handleWidgetDelete(column, element, index)"><IconFont type="DeleteOutlined"/></a-button>
+                    </a-tooltip>
+                  </div>
+                </div>
+              </template>
+            </Draggable>
+          </div>
+        </td>
+      </tr>
+    </table>
     <!-- 默认为文本布局 -->
     <div v-else>{{ widget.options.default }}</div>
   </a-form-item>

@@ -95,6 +95,11 @@ export default {
           { key: 'column_0', order: 0, span: 12, widgets: [] },
           { key: 'column_1', order: 1, span: 12, widgets: [] }
         ]
+      } else if (cloneWidget.type === 'table') {
+        this.widgets[groupIndex].items[event.oldIndex]['rows'] = [
+          { key: 'row_0', columns: [{ key: 'column_0_0', widgets: [] }, { key: 'column_0_1', widgets: [] }] },
+          { key: 'row_1', columns: [{ key: 'column_1_0', widgets: [] }, { key: 'column_1_1', widgets: [] }] },
+        ]
       }
     }
   }

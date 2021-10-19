@@ -25,10 +25,11 @@ import WidgetPanel from './Panel/WidgetPanel'
 import MakerPanel from './Panel/MakerPanel'
 import ConfigPanel from './Panel/ConfigPanel'
 import config from '@/config/mixins/config'
+import resize from './mixins/resize'
 export default {
   name: 'FormMaker',
   components: { WidgetPanel, MakerPanel, ConfigPanel },
-  mixins: [config],
+  mixins: [config, resize],
   data () {
     return {
       // 表单编辑器的配置
@@ -61,6 +62,10 @@ export default {
         ...widgetConfig,
         style: { width: `${widgetConfig.width || 100}%` || '100%' }
       }
+      // style样式不同的组件需要写入的值有差异
+      if (this.curWidget.type === 'table') {
+        this.curWidget.options.style.border = `${widgetConfig.borderWidth}px ${widgetConfig.borderStyle} ${widgetConfig.borderColor}`
+      }
       // select时对配置参数进行格式化
       if (widgetConfig.options) {
         // 带选项配置的需要回写其选项配置结果
@@ -69,30 +74,8 @@ export default {
           this.curWidget.options.default = widgetConfig.options.default
         }
       }
-      // 栅格布局的参数调整
-      if (this.curWidget.type === 'grid') {
-        // 根据列数，计算列宽
-        const span = 24 / (widgetConfig['colCount'] || 2)
-        // 变化的列数
-        const colChange = widgetConfig['colCount'] - this.curWidget.columns.length
-        // 如果列数增加，在最后面增加，并调整列宽
-        if (colChange > 0) {
-          // 调整列宽
-          this.curWidget.columns.forEach(column => column.span = span)
-          for (let index = 0; index < colChange; index++) {
-            this.curWidget.columns.push({
-              key: 'column_' + (this.curWidget.columns.length + index),
-              order: this.curWidget.columns.length + index,
-              span: span,
-              widgets: []
-            })
-          }
-        } else {
-          // 如果列数减少，从最后面减，并调整列宽
-          this.curWidget.columns.splice(widgetConfig['colCount'], Math.abs(colChange))
-          this.curWidget.columns.forEach(column => column.span = span)
-        }
-      }
+      // 布局组件的参数调整对应的状态变化
+      this.widgetResize(this.curWidget, widgetConfig)
     }
   }
 }

@@ -1,3 +1,6 @@
+/**
+ * 组件复制混入
+ */
 export default {
   methods: {
     // 深度复制
@@ -45,7 +48,17 @@ export default {
     },
     // table组件复制
     tableWidgetCopy (tableWidget) {
-      this.deepCopy(tableWidget)
+      const rows = tableWidget.rows
+      rows.forEach(row => {
+        if (row.columns) {
+          row.columns.forEach(column => {
+            // 判断是否存在子组件，如果存在子组件对齐进行递归的复制
+            if (this.$utils.isValid(column.widgets)) {
+              column.widgets = column.widgets.map((widget, index) => this.widgetCopy(widget, index, column.widgets))
+            }
+          })
+        }
+      })
     }
   }
 }

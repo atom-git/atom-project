@@ -34,7 +34,7 @@ export default {
   name: 'ColorPicker',
   components: { Sketch },
   props: {
-    // v-model绑定值
+    // v-model绑定值 hex值
     modelValue: {
       type: String
     },
