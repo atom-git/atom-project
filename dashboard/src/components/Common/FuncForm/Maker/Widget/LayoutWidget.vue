@@ -20,7 +20,7 @@
                      :component-data="{ name: 'fade' }"
                      @add="handleWidgetAdd($event, column)">
             <!-- FormItem渲染 -->
-            <template #item="{ element }">
+            <template #item="{ element, index }">
               <div :class="['atom-maker-item', element.key === curWidget.key ? 'active' : '']"
                    @click.stop="handleWidgetChange(element)">
                 <!-- 布局元素中不允许出现布局元素 -->
@@ -42,6 +42,8 @@
         </div>
       </a-col>
     </a-row>
+    <!-- 表格布局 -->
+    <a-table v-else-if="isType('table')"></a-table>
     <!-- 默认为文本布局 -->
     <div v-else>{{ widget.options.default }}</div>
   </a-form-item>
