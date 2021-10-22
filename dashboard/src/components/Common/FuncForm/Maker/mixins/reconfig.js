@@ -99,16 +99,48 @@ export default {
     },
     // 标签页布局的参数调整
     tabReconfig (curWidget, widgetConfig) {
-      /**
-       * 判断tabs长度，用widgetConfig中的tabs去按顺序匹配，
-       * 位置一样的改tab名称
-       * 位置超出的删除
-       * 位置不足的补齐
-       */
+      this.itemReconfig(curWidget, widgetConfig, 'tabs', 'tab')
     },
     // 分步布局的参数调整
     stepReconfig (curWidget, widgetConfig) {
-
+      this.itemReconfig(curWidget, widgetConfig, 'steps')
+      // 判断step当前的stepType是否为'navigation'，是的时候把其他选项都禁用掉
+      if (widgetConfig['stepType'] === 'navigation') {
+        widgetConfig['direction'] = widgetConfig['labelPlacement'] = 'horizontal'
+        widgetConfig['progressDot'] = false
+        curWidget.fields.forEach(field => {
+          if (['direction', 'labelPlacement', 'progressDot'].includes(field.name)) {
+            field.disabled = true
+          }
+        })
+      } else {
+        curWidget.fields.forEach(field => field.disabled = false)
+      }
+    },
+    // 多个元素的统一设置调试
+    itemReconfig (curWidget, widgetConfig, key = 'items', titleKey = 'title') {
+      /**
+       * 判断items长度，用widgetConfig中的items去按顺序匹配，
+       * 位置一样的改item名称
+       * 位置超出的删除
+       * 位置不足的补齐
+       */
+      if (widgetConfig[key] && widgetConfig[key].options) {
+        const items = widgetConfig[key].options
+        for (let index = 0; index < items.length; index++) {
+          const item = items[index]
+          if (curWidget[key] && curWidget[key][index]) {
+            curWidget[key][index].key = item.value
+            curWidget[key][index][titleKey] = item.label
+          } else {
+            const add = { key: item.value, widgets: [] }
+            add[titleKey] = item.label
+            curWidget[key].push(add)
+          }
+        }
+        // 删除超出的部分
+        curWidget[key].splice(items.length)
+      }
     },
     // 分步布局的参数调整
     descReconfig (curWidget, widgetConfig) {

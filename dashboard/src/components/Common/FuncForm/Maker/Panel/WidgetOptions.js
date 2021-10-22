@@ -102,7 +102,7 @@ export default {
         { value: 'bottom', title: '底部' }, { value: 'left', title: '左侧' }
       ]
     },
-    { name: 'tabs', type: 'optionTree', label: '选项标签', default: initItems('Tab'), help: '必须保证值的全局惟一性' }
+    { name: 'tabs', type: 'optionTree', label: '选项标签', showLabelOption: false, default: initItems('Tab'), help: '必须保证值的全局惟一性' }
   ],
   step: [
     { name: 'stepType', type: 'radio', label: '步骤条类型', default: 'default', mode: 'button', buttonStyle: 'solid', options: [
@@ -120,7 +120,8 @@ export default {
     { name: 'size', type: 'radio', label: '组件大小', default: 'default', mode: 'button', buttonStyle: 'solid', options: [
         { value: 'default', title: '默认' }, { value: 'small', title: '迷你' }
       ]
-    }
+    },
+    { name: 'steps', type: 'optionTree', label: '步骤标签', showLabelOption: false, default: initItems('Step'), help: '必须保证值的全局惟一性' }
   ],
   desc: [
     { name: 'title', type: 'text', label: '标题' },

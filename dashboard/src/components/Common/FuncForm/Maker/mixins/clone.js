@@ -38,7 +38,7 @@ export default {
     },
     // 分步布局clone
     stepClone (widget) {
-      widget['steps'] = initItems('Step').options.map(item => ({ key: item.value, step: item.value, widgets: [] }))
+      widget['steps'] = initItems('Step').options.map(item => ({ key: item.value, title: item.value, widgets: [] }))
     },
     // 描述布局clone
     descClone (widget) {

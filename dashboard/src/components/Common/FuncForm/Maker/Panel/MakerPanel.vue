@@ -23,7 +23,8 @@
                               :widget="element"
                               :size="formConfig.size"
                               :curWidget="curWidget"
-                              @maker-widget-change="handleWidgetChange"></LayoutWidget>
+                              @maker-widget-change="handleWidgetChange"
+                              @maker-tab-change="handleTabChange($event, element)"></LayoutWidget>
                 <!-- form组件元素 -->
                 <FormWidget v-else
                             :widget="element"
@@ -135,7 +136,11 @@ export default {
     // 响应组件的删除操作
     handleWidgetDelete (widget, index) {
       this.widgets.splice(index, 1)
-      this.$emit('maker-widget-change', this.widgets[index - 1] || {})
+      this.$emit('maker-widget-change', this.widgets[index - 1] || this.widgets[index] || {})
+    },
+    // 响应tab切换
+    handleTabChange (activeTab, widget) {
+      widget.widgetConfig['tabs'].default = [activeTab]
     }
   }
 }

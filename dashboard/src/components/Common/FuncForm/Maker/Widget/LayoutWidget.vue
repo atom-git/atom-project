@@ -29,7 +29,8 @@
             :activeKey="(widget.options && widget.options.tabs && widget.options.tabs.default[0]) || 0"
             :type="widget.options.tabType"
             :tabPosition="widget.options.tabPosition"
-            :style="widget.options.style">
+            :style="widget.options.style"
+            @change="handleTabChange">
       <a-tab-pane v-for="item in widget.tabs"
                   :key="item.key"
                   :tab="item.tab">
@@ -38,9 +39,21 @@
       </a-tab-pane>
     </a-tabs>
     <!-- 分步布局 -->
-    <a-steps v-else-if="isType('step')">
-      <a-step></a-step>
-    </a-steps>
+    <template v-else-if="isType('step')">
+      <a-steps :type="widget.options.stepType"
+               :direction="widget.options.direction"
+               :labelPlacement="widget.options.labelPlacement"
+               :progressDot="widget.options.progressDot"
+               :size="widget.options.size"
+               v-model:current="curStep">
+        <a-step v-for="step in widget.steps"
+                :key="step.key"
+                :title="step.title">
+        </a-step>
+      </a-steps>
+      <InnerForm :item="widget.steps[curStep]" :size="size" :curWidget="curWidget"
+                 @maker-widget-change="handleWidgetChange"></InnerForm>
+    </template>
     <!-- 描述布局 -->
     <a-descriptions v-else-if="isType('desc')">
       <a-descriptions-item></a-descriptions-item>
@@ -119,7 +132,7 @@ const InnerForm = {
     // 响应组件的删除操作
     handleWidgetDelete (item, widget, index) {
       item.widgets.splice(index, 1)
-      this.$emit('maker-widget-change', item.widgets[index - 1] || {})
+      this.$emit('maker-widget-change', item.widgets[index - 1] || item.widgets[index] || {})
     }
   },
   template: `
@@ -169,7 +182,25 @@ export default {
       required: false
     }
   },
-  emits: ['maker-widget-change'],
+  data () {
+    return {
+      // 当前是第几步
+      curStep: 0
+    }
+  },
+  watch: {
+    // 监听外部传入的组件变化
+    widget: {
+      deep: true,
+      handler (newValue) {
+        // 如果是step，则需要对其当前选中的值进行设置
+        if (this.isType('step')) {
+          this.curStep = this.initStepCurrent(newValue)
+        }
+      }
+    }
+  },
+  emits: ['maker-widget-change', 'maker-tab-change'],
   methods: {
     // 判断field类型
     isType (type = 'text') {
@@ -179,6 +210,23 @@ export default {
     handleWidgetChange (curWidget) {
       this.$emit('maker-widget-change', curWidget)
     },
+    // 响应tab切换
+    handleTabChange (activeTab) {
+      this.$emit('maker-tab-change', activeTab)
+    },
+    // 初始化step当前选中的步
+    initStepCurrent (widget) {
+      const options = (widget.options && widget.options.steps && widget.options.steps.options) || []
+      const activeStep = widget.options && widget.options.steps && widget.options.steps.default[0]
+      let current = 0;
+      for (let index = 0; index < options.length; index++) {
+        if (options[index].value === activeStep) {
+          current = index
+          break;
+        }
+      }
+      return current
+    }
   }
 }
 </script>

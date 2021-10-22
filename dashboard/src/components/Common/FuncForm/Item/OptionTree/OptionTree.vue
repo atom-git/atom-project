@@ -1,5 +1,5 @@
 <template>
-  <a-checkbox v-model:checked="labelShow" class="atom-option-tree-checkbox">是否显示标签</a-checkbox>
+  <a-checkbox v-if="showLabelOption" v-model:checked="labelShow" class="atom-option-tree-checkbox">是否显示标签</a-checkbox>
   <a-radio-group class="atom-option-tree"
                  v-model:value="selected"
                  @change="handleRadioChange">
@@ -51,6 +51,11 @@ export default {
     cascade: {
       type: Boolean,
       default: false
+    },
+    // 是否显示label显示与否的选项
+    showLabelOption: {
+      type: Boolean,
+      default: true
     },
     // 组件大小 large|default|small
     size: {
