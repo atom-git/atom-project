@@ -14,10 +14,10 @@ export default {
         this.gridReconfig(curWidget, widgetConfig)
       } else if (curWidget.type === 'table') {
         this.tableReconfig(curWidget, widgetConfig)
-      } else if (curWidget.type === 'tab') {
-        this.tabReconfig(curWidget, widgetConfig)
-      } else if (curWidget.type === 'step') {
-        this.stepReconfig(curWidget, widgetConfig)
+      } else if (curWidget.type === 'tabs') {
+        this.tabsReconfig(curWidget, widgetConfig)
+      } else if (curWidget.type === 'steps') {
+        this.stepsReconfig(curWidget, widgetConfig)
       } else if (curWidget.type === 'desc') {
         this.descReconfig(curWidget, widgetConfig)
       }
@@ -98,12 +98,12 @@ export default {
       return columns
     },
     // 标签页布局的参数调整
-    tabReconfig (curWidget, widgetConfig) {
-      this.itemReconfig(curWidget, widgetConfig, 'tabs', 'tab')
+    tabsReconfig (curWidget, widgetConfig) {
+      this.itemsReconfig(curWidget, widgetConfig, 'tabs', 'tab')
     },
     // 分步布局的参数调整
-    stepReconfig (curWidget, widgetConfig) {
-      this.itemReconfig(curWidget, widgetConfig, 'steps')
+    stepsReconfig (curWidget, widgetConfig) {
+      this.itemsReconfig(curWidget, widgetConfig, 'steps')
       // 判断step当前的stepType是否为'navigation'，是的时候把其他选项都禁用掉
       if (widgetConfig['stepType'] === 'navigation') {
         widgetConfig['direction'] = widgetConfig['labelPlacement'] = 'horizontal'
@@ -118,7 +118,7 @@ export default {
       }
     },
     // 多个元素的统一设置调试
-    itemReconfig (curWidget, widgetConfig, key = 'items', titleKey = 'title') {
+    itemsReconfig (curWidget, widgetConfig, key = 'items', titleKey = 'title') {
       /**
        * 判断items长度，用widgetConfig中的items去按顺序匹配，
        * 位置一样的改item名称

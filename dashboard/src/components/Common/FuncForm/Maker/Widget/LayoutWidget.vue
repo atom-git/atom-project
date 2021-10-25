@@ -25,7 +25,7 @@
       </tr>
     </table>
     <!-- 标签页布局 -->
-    <a-tabs v-else-if="isType('tab')"
+    <a-tabs v-else-if="isType('tabs')"
             :activeKey="(widget.options && widget.options.tabs && widget.options.tabs.default[0]) || 0"
             :type="widget.options.tabType"
             :tabPosition="widget.options.tabPosition"
@@ -39,13 +39,13 @@
       </a-tab-pane>
     </a-tabs>
     <!-- 分步布局 -->
-    <template v-else-if="isType('step')">
+    <template v-else-if="isType('steps')">
       <a-steps :type="widget.options.stepType"
                :direction="widget.options.direction"
                :labelPlacement="widget.options.labelPlacement"
                :progressDot="widget.options.progressDot"
                :size="widget.options.size"
-               v-model:current="curStep">
+               :current="curStep">
         <a-step v-for="step in widget.steps"
                 :key="step.key"
                 :title="step.title">
@@ -194,7 +194,7 @@ export default {
       deep: true,
       handler (newValue) {
         // 如果是step，则需要对其当前选中的值进行设置
-        if (this.isType('step')) {
+        if (this.isType('steps')) {
           this.curStep = this.initStepCurrent(newValue)
         }
       }

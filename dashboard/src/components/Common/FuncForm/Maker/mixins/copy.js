@@ -31,6 +31,10 @@ export default {
           this.gridWidgetCopy(copy)
         } else if (widget.type === 'table') {
           this.tableWidgetCopy(copy)
+        } else if (widget.type === 'tabs') {
+          this.tabsWidgetCopy(copy)
+        } else if (widget.type === 'steps') {
+          this.stepsWidgetCopy(copy)
         }
       }
       widgetGroup.splice(index + 1, 0, copy)
@@ -38,25 +42,31 @@ export default {
     },
     // grid布局组件复制
     gridWidgetCopy (gridWidget) {
-      const columns = gridWidget.columns
-      columns.forEach(column => {
-        // 判断是否存在子组件，如果存在子组件对齐进行递归的复制
-        if (this.$utils.isValid(column.widgets)) {
-          column.widgets = column.widgets.map((widget, index) => this.widgetCopy(widget, index, column.widgets))
-        }
-      })
+      this.itemsWidgetCopy(gridWidget.columns)
     },
     // table组件复制
     tableWidgetCopy (tableWidget) {
       const rows = tableWidget.rows
       rows.forEach(row => {
         if (row.columns) {
-          row.columns.forEach(column => {
-            // 判断是否存在子组件，如果存在子组件对齐进行递归的复制
-            if (this.$utils.isValid(column.widgets)) {
-              column.widgets = column.widgets.map((widget, index) => this.widgetCopy(widget, index, column.widgets))
-            }
-          })
+          this.itemsWidgetCopy(row.columns)
+        }
+      })
+    },
+    // tabs组件复制
+    tabsWidgetCopy (tabsWidget) {
+      this.itemsWidgetCopy(tabsWidget.tabs)
+    },
+    // steps组件复制
+    stepsWidgetCopy (stepsWidget) {
+      this.itemsWidgetCopy(stepsWidget.steps)
+    },
+    // 组件中子组件复制
+    itemsWidgetCopy (items) {
+      items.forEach(item => {
+        // 判断是否存在子组件，如果存在子组件对齐进行递归的复制
+        if (this.$utils.isValid(item.widgets)) {
+          item.widgets = item.widgets.map((widget, index) => this.widgetCopy(widget, index, item.widgets))
         }
       })
     }

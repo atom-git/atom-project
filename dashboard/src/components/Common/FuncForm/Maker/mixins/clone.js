@@ -10,10 +10,10 @@ export default {
         this.gridClone(widget)
       } else if (widget.type === 'table') {
         this.tableClone(widget)
-      } else if (widget.type === 'tab') {
-        this.tabClone(widget)
-      } else if (widget.type === 'step') {
-        this.stepClone(widget)
+      } else if (widget.type === 'tabs') {
+        this.tabsClone(widget)
+      } else if (widget.type === 'steps') {
+        this.stepsClone(widget)
       } else if (widget.type === 'desc') {
         this.descClone(widget)
       }
@@ -33,11 +33,11 @@ export default {
       ]
     },
     // 标签页布局clone
-    tabClone (widget) {
+    tabsClone (widget) {
       widget['tabs'] = initItems('Tab').options.map(item => ({ key: item.value, tab: item.value, widgets: [] }))
     },
     // 分步布局clone
-    stepClone (widget) {
+    stepsClone (widget) {
       widget['steps'] = initItems('Step').options.map(item => ({ key: item.value, title: item.value, widgets: [] }))
     },
     // 描述布局clone

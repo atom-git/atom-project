@@ -93,7 +93,7 @@ export default {
     },
     { name: 'borderColor', type: 'colorPicker', label: '边框颜色', default: '' }
   ],
-  tab: [
+  tabs: [
     { name: 'tabType', type: 'radio', label: '标签页风格', default: 'line', mode: 'button', buttonStyle: 'solid', options: [
       { value: 'line', title: '选项卡' }, { value: 'card', title: '卡片式' }]
     },
@@ -104,8 +104,8 @@ export default {
     },
     { name: 'tabs', type: 'optionTree', label: '选项标签', showLabelOption: false, default: initItems('Tab'), help: '必须保证值的全局惟一性' }
   ],
-  step: [
-    { name: 'stepType', type: 'radio', label: '步骤条类型', default: 'default', mode: 'button', buttonStyle: 'solid', options: [
+  steps: [
+    { name: 'stepType', type: 'radio', label: '步骤条类型', default: 'navigation', mode: 'button', buttonStyle: 'solid', options: [
         { value: 'default', title: '默认' }, { value: 'navigation', title: '导航条' }]
     },
     { name: 'direction', type: 'radio', label: '步骤条方向', default: 'horizontal', mode: 'button', buttonStyle: 'solid', options: [

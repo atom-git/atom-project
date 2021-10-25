@@ -211,6 +211,7 @@
   <OptionTree v-else-if="isType('optionTree')"
               :modelValue="modelValue"
               :cascade="renderField.cascade"
+              :showLabelOption="renderField.showLabelOption"
               :size="renderField.size"
               @change="handleChange"></OptionTree>
   <!-- richText -->
