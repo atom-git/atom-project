@@ -123,23 +123,6 @@ export default {
     },
     { name: 'steps', type: 'optionTree', label: '步骤标签', showLabelOption: false, default: initItems('Step'), help: '必须保证值的全局惟一性' }
   ],
-  desc: [
-    { name: 'title', type: 'text', label: '标题' },
-    { name: 'colon', type: 'switch', label: '是否显示冒号', checkedValue: true, unCheckedValue: false, default: false },
-    { name: 'column', type: 'inputGroup', label: '每行组件数量', group: [
-        { name: 'columnType', type: 'select',default: 'span', slot: 'columnType', options: [{ value: 'span', title: '固定' }, { value: 'grid', title: '响应式' }] },
-        { name: 'columnSize', type: 'text', default: 3, slot: 'columnSize'}
-      ]
-    },
-    { name: 'layout', type: 'radio', label: '布局方式', default: 'horizontal', mode: 'button', buttonStyle: 'solid', options: [
-        { value: 'vertical', title: '垂直布局' }, { value: 'horizontal', title: '水平布局' }
-      ]
-    },
-    { name: 'size', type: 'radio', label: '组件大小', default: 'default', mode: 'button', buttonStyle: 'solid', options: [
-        { value: 'small', title: '较小' }, { value: 'middle', title: '中等' }, { value: 'default', title: '默认' }
-      ]
-    }
-  ],
   divider: [
     { name: 'title', type: 'text', label: '标题', default: '分割线' },
     { name: 'orientation', type: 'radio', label: '标题位置', default: 'left', mode: 'button', buttonStyle: 'solid', options: [

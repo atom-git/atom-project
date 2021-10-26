@@ -14,8 +14,6 @@ export default {
         this.tabsClone(widget)
       } else if (widget.type === 'steps') {
         this.stepsClone(widget)
-      } else if (widget.type === 'desc') {
-        this.descClone(widget)
       }
     },
     // 网格布局clone
@@ -39,10 +37,6 @@ export default {
     // 分步布局clone
     stepsClone (widget) {
       widget['steps'] = initItems('Step').options.map(item => ({ key: item.value, title: item.value, widgets: [] }))
-    },
-    // 描述布局clone
-    descClone (widget) {
-      widget['items'] = initItems('Item').options.map(item => ({ key: item.value, label: item.value, widgets: [] }))
     }
   }
 }

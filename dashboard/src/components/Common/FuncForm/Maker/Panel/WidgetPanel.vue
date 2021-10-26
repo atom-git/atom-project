@@ -108,7 +108,6 @@ const layoutWidgets = {
     { icon: 'atom-layout-table', title: '表格布局', type: 'table' },
     { icon: 'atom-layout-tab', title: '标签布局', type: 'tabs' },
     { icon: 'atom-layout-step', title: '分步布局', type: 'steps' },
-    { icon: 'atom-layout-desc', title: '描述布局', type: 'desc' },
     { icon: 'atom-layout-divider', title: '分割线', type: 'divider' }
   ]
 }

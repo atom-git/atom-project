@@ -54,10 +54,6 @@
       <InnerForm :item="widget.steps[curStep]" :size="size" :curWidget="curWidget"
                  @maker-widget-change="handleWidgetChange"></InnerForm>
     </template>
-    <!-- 描述布局 -->
-    <a-descriptions v-else-if="isType('desc')">
-      <a-descriptions-item></a-descriptions-item>
-    </a-descriptions>
     <!-- 默认为文本布局 -->
     <div v-else>{{ widget.options.default }}</div>
   </a-form-item>

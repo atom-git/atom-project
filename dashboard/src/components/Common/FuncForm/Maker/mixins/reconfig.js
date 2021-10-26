@@ -18,8 +18,6 @@ export default {
         this.tabsReconfig(curWidget, widgetConfig)
       } else if (curWidget.type === 'steps') {
         this.stepsReconfig(curWidget, widgetConfig)
-      } else if (curWidget.type === 'desc') {
-        this.descReconfig(curWidget, widgetConfig)
       }
     },
     // 栅格布局的参数调整
@@ -141,10 +139,6 @@ export default {
         // 删除超出的部分
         curWidget[key].splice(items.length)
       }
-    },
-    // 分步布局的参数调整
-    descReconfig (curWidget, widgetConfig) {
-
     }
   }
 }
