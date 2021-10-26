@@ -46,6 +46,8 @@ export default {
     },
     // 表格布局的参数调整
     tableReconfig (curWidget, widgetConfig) {
+      // 表格的边框样式调整
+      curWidget.options.style.border = `${widgetConfig.borderWidth}px ${widgetConfig.borderStyle} ${widgetConfig.borderColor}`
       // 根据配置重新生成行列
       const row = widgetConfig.row
       const col = widgetConfig.col

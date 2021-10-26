@@ -117,10 +117,6 @@ export default {
       ]
     },
     { name: 'progressDot', type: 'switch', label: '设置为点状步骤条', checkedValue: true, unCheckedValue: false, default: false },
-    { name: 'size', type: 'radio', label: '组件大小', default: 'default', mode: 'button', buttonStyle: 'solid', options: [
-        { value: 'default', title: '默认' }, { value: 'small', title: '迷你' }
-      ]
-    },
     { name: 'steps', type: 'optionTree', label: '步骤标签', showLabelOption: false, default: initItems('Step'), help: '必须保证值的全局惟一性' }
   ],
   divider: [

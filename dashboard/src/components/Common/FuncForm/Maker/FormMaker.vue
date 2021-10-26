@@ -62,10 +62,6 @@ export default {
         ...widgetConfig,
         style: { width: `${widgetConfig.width || 100}%` || '100%' }
       }
-      // style样式不同的组件需要写入的值有差异
-      if (this.curWidget.type === 'table') {
-        this.curWidget.options.style.border = `${widgetConfig.borderWidth}px ${widgetConfig.borderStyle} ${widgetConfig.borderColor}`
-      }
       // select时对配置参数进行格式化
       if (widgetConfig.options) {
         // 带选项配置的需要回写其选项配置结果

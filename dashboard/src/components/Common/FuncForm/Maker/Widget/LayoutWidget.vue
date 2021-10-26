@@ -29,6 +29,7 @@
             :activeKey="(widget.options && widget.options.tabs && widget.options.tabs.default[0]) || 0"
             :type="widget.options.tabType"
             :tabPosition="widget.options.tabPosition"
+            :size="size"
             :style="widget.options.style"
             @change="handleTabChange">
       <a-tab-pane v-for="item in widget.tabs"
@@ -39,21 +40,29 @@
       </a-tab-pane>
     </a-tabs>
     <!-- 分步布局 -->
-    <template v-else-if="isType('steps')">
+    <div v-else-if="isType('steps')" :style="widget.options.style">
       <a-steps :type="widget.options.stepType"
                :direction="widget.options.direction"
                :labelPlacement="widget.options.labelPlacement"
                :progressDot="widget.options.progressDot"
-               :size="widget.options.size"
+               :size="size === 'small' ? 'small' : 'default'"
                :current="curStep">
         <a-step v-for="step in widget.steps"
                 :key="step.key"
                 :title="step.title">
         </a-step>
       </a-steps>
-      <InnerForm :item="widget.steps[curStep]" :size="size" :curWidget="curWidget"
+      <InnerForm :item="widget.steps[curStep]"
+                 :size="size"
+                 :curWidget="curWidget"
                  @maker-widget-change="handleWidgetChange"></InnerForm>
-    </template>
+    </div>
+    <!-- 分步布局 -->
+    <div v-else-if="isType('divider')" :style="widget.options.style">
+      <a-divider :orientation="widget.options.orientation"
+                 :plain="widget.options.plain"
+                 :dashed="widget.options.dashed">{{ widget.options.title }}</a-divider>
+    </div>
     <!-- 默认为文本布局 -->
     <div v-else>{{ widget.options.default }}</div>
   </a-form-item>
@@ -102,7 +111,8 @@ const InnerForm = {
             if (target.type === 'layout') {
               message.warn({ key: 'message-warn', content: '无法在布局组件中加入布局组件！' })
             }
-            return from.options.group && from.options.group.name === 'toolboxs' && target.type !== 'layout'
+            // return from.options.group && from.options.group.name === 'toolboxs' && target.type !== 'layout'
+            return target.type !== 'layout'
           }
         },
         sort: true,
