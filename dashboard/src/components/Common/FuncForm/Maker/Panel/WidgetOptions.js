@@ -128,6 +128,17 @@ export default {
     { name: 'dashed', type: 'switch', label: '是否虚线', checkedValue: true, unCheckedValue: false, default: false },
     { name: 'plain', type: 'switch', label: '是否普通正文样式', checkedValue: true, unCheckedValue: false, default: false }
   ],
+  alert: [
+    { name: 'message', type: 'textarea', label: '内容', default: '提示内容' },
+    { name: 'alertType', type: 'radio', label: '提示样式', default: 'warning', mode: 'button', buttonStyle: 'solid', options: [
+        { value: 'success', title: '成功' }, { value: 'info', title: '消息' },
+        { value: 'warning', title: '提醒' }, { value: 'error', title: '失败' }
+      ]
+    },
+    { name: 'banner', type: 'switch', label: '是否顶部公告', checkedValue: true, unCheckedValue: false, default: true },
+    { name: 'closable', type: 'switch', label: '是否可关闭', checkedValue: true, unCheckedValue: false, default: false },
+    { name: 'showIcon', type: 'switch', label: '是否显示图标', checkedValue: true, unCheckedValue: false, default: true }
+  ],
   // 基础组件
   input: [
     { name: 'default', type: 'text', label: '默认值' },

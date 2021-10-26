@@ -24,7 +24,9 @@
                               :size="formConfig.size"
                               :curWidget="curWidget"
                               @maker-widget-change="handleWidgetChange"
-                              @maker-tab-change="handleTabChange($event, element)"></LayoutWidget>
+                              @maker-tab-change="handleTabChange($event, element)"
+                              @maker-widget-copy="handleWidgetCopy(element, index)"
+                              @maker-widget-delete="handleWidgetDelete(element, index)"></LayoutWidget>
                 <!-- form组件元素 -->
                 <FormWidget v-else
                             :widget="element"
@@ -82,7 +84,7 @@ export default {
       // 拖动配置
       dragOptions: {
         animation: 300,
-        group: { name: 'widgets', put: ['toolboxs'] },
+        group: { name: 'widgets', put: ['toolboxs', 'layouts'] },
         sort: true,
         ghostClass: 'atom-widget-ghost'
       }

@@ -27,7 +27,7 @@
     <!-- 标签页布局 -->
     <a-tabs v-else-if="isType('tabs')"
             :activeKey="(widget.options && widget.options.tabs && widget.options.tabs.default[0]) || 0"
-            :type="widget.options.tabType"
+            :type="widget.options['tabType']"
             :tabPosition="widget.options.tabPosition"
             :size="size"
             :style="widget.options.style"
@@ -41,7 +41,7 @@
     </a-tabs>
     <!-- 分步布局 -->
     <div v-else-if="isType('steps')" :style="widget.options.style">
-      <a-steps :type="widget.options.stepType"
+      <a-steps :type="widget.options['stepType']"
                :direction="widget.options.direction"
                :labelPlacement="widget.options.labelPlacement"
                :progressDot="widget.options.progressDot"
@@ -64,7 +64,26 @@
                  :dashed="widget.options.dashed">{{ widget.options.title }}</a-divider>
     </div>
     <!-- 默认为文本布局 -->
-    <div v-else>{{ widget.options.default }}</div>
+    <div v-else :style="widget.options.style">
+      <a-alert :type="widget.options['alertType']"
+               :banner="widget.options.banner"
+               :closable="widget.options.closable"
+               :showIcon="widget.options.showIcon"
+               :message="widget.options.message">
+        <div class="atom-maker-actions" v-if="widget.key === curWidget.key">
+          <a-tooltip title="复制">
+            <a-button type="primary" size="small" @click.stop="handleWidgetCopy">
+              <IconFont type="CopyOutlined"/>
+            </a-button>
+          </a-tooltip>
+          <a-tooltip title="删除">
+            <a-button type="primary" size="small" danger @click.stop="handleWidgetDelete">
+              <IconFont type="DeleteOutlined"/>
+            </a-button>
+          </a-tooltip>
+        </div>
+      </a-alert>
+    </div>
   </a-form-item>
 </template>
 
@@ -105,13 +124,16 @@ const InnerForm = {
       dragOptions: {
         animation: 300,
         group: {
-          name: 'widgets',
+          name: 'layouts',
           put: function (to, from, target) {
             // 如果是布局类型，则无法插入至其中
             if (target.type === 'layout') {
               message.warn({ key: 'message-warn', content: '无法在布局组件中加入布局组件！' })
             }
             // return from.options.group && from.options.group.name === 'toolboxs' && target.type !== 'layout'
+            // 在https://github.com/SortableJS/vue.draggable.next/pull/52文件进行修改合并后
+            // 或者手工在vuedraggable.umd.js,vuedraggable.common.js,vuedraggable.js三个文件手工改动后，可以使用这个
+            // 否则会在组件内部相互移动时报错
             return target.type !== 'layout'
           }
         },
@@ -206,7 +228,7 @@ export default {
       }
     }
   },
-  emits: ['maker-widget-change', 'maker-tab-change'],
+  emits: ['maker-widget-change', 'maker-tab-change', 'maker-widget-copy', 'maker-widget-delete'],
   methods: {
     // 判断field类型
     isType (type = 'text') {
@@ -232,6 +254,14 @@ export default {
         }
       }
       return current
+    },
+    // 响应文本域的复制
+    handleWidgetCopy () {
+      this.$emit('maker-widget-copy')
+    },
+    // 响应文本域的删除
+    handleWidgetDelete () {
+      this.$emit('maker-widget-delete')
     }
   }
 }
