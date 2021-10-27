@@ -18,6 +18,8 @@ export default {
         this.tabsReconfig(curWidget, widgetConfig)
       } else if (curWidget.type === 'steps') {
         this.stepsReconfig(curWidget, widgetConfig)
+      } else if (curWidget.type === 'fileUpload') {
+        this.fileUploadReconfig(curWidget, widgetConfig)
       }
     },
     // 栅格布局的参数调整
@@ -141,6 +143,24 @@ export default {
         // 删除超出的部分
         curWidget[key].splice(items.length)
       }
+    },
+    // 文件上传组件的参数调整
+    fileUploadReconfig (curWidget, widgetConfig) {
+      curWidget.fields.filter(field => field.name === 'acceptType').forEach(field => {
+        field.help = `支持文件类型【${this.$default.acceptType[widgetConfig['acceptType']]}】`
+      })
+      // 如果输入了自定义文件类型，则把acceptType置为disabled
+      if (this.$utils.isValid(widgetConfig['fileType'])) {
+        curWidget.fields.filter(field => field.name === 'acceptType').forEach(field => {
+          field.disabled = true
+        })
+      } else {
+        curWidget.fields.filter(field => field.name === 'acceptType').forEach(field => {
+          field.disabled = false
+        })
+      }
+      // 当前组件的fileType选中值由下面规则确定
+      curWidget.options['fileType'] = widgetConfig['fileType'] || this.$default.acceptType[widgetConfig['acceptType']]
     }
   }
 }

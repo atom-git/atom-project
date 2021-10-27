@@ -70,7 +70,7 @@ export default {
           this.curWidget.options.default = widgetConfig.options.default
         }
       }
-      // 布局组件无法直接挂载的参数调整
+      // 组件无法直接挂载的参数调整
       this.widgetReconfig(this.curWidget, widgetConfig)
     }
   }

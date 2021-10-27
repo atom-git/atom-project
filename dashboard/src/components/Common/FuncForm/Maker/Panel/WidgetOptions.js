@@ -246,7 +246,13 @@ export default {
   inputGroup: [],
   fileUpload: [
     { name: 'multiple', type: 'switch', label: '是否多选', checkedValue: true, unCheckedValue: false, default: true },
-    { name: 'fileType', type: 'number', label: '支持的文件类型', default: 'file', help: '支持指定类型【file|img|radio|video】或者自定义' },
+    { name: 'acceptType', type: 'radio', label: '文件类型', default: 'file', mode: 'button', buttonStyle: 'solid', options: [
+        { value: 'file', title: '文件' }, { value: 'img', title: '图片' },
+        { value: 'radio', title: '音频' }, { value: 'video', title: '视频' }
+      ],
+      help: '支持指定类型【file|img|radio|video】或者自定义'
+    },
+    { name: 'fileType', type: 'text', label: '自定义文件类型', placeholder: '请输入以逗号分隔的字符串' },
     { name: 'max', type: 'number', label: '最多支持上传文件数', default: 5 },
   ],
   imagePicker: [],
