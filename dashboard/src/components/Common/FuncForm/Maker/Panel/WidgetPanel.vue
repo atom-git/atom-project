@@ -150,10 +150,10 @@ const advanceWidgets = {
     { icon: 'atom-form-slider', title: '滑块', type: 'slider' },
     { icon: 'atom-form-mentions', title: '提及选择', type: 'mentions' },
     { icon: 'atom-form-rate', title: '评分', type: 'rate' },
-    { icon: 'atom-form-inputGroup', title: '组合组件', type: 'inputGroup' },
     { icon: 'atom-form-fileUpload', title: '文件', type: 'fileUpload' },
-    { icon: 'atom-form-imagePicker', title: '图片', type: 'imagePicker' },
     { icon: 'atom-form-tagCheck', title: '标签多选', type: 'tagCheck' },
+    { icon: 'atom-form-imagePicker', title: '图片', type: 'imagePicker' },
+    { icon: 'atom-form-inputGroup', title: '组合组件', type: 'inputGroup' },
     { icon: 'atom-form-mapPicker', title: '地图选择', type: 'mapPicker' },
     { icon: 'atom-form-tableSelect', title: '列表选择', type: 'tableSelect' },
     { icon: 'atom-form-richText', title: '富文本', type: 'richText' }

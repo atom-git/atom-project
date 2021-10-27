@@ -218,7 +218,7 @@ export default {
     { name: 'href', type: 'text', label: '链接' }
   ],
   html: [
-    { name: 'content', type: 'textarea', label: '页面内容', default: 'HTML内容' }
+    { name: 'content', type: 'textarea', label: '页面内容', default: '<div>HTML内容</div>' }
   ],
   // 高阶组件
   treeSelect: [
@@ -243,7 +243,6 @@ export default {
     { name: 'allowHalf', type: 'switch', label: '是否允许半星', checkedValue: true, unCheckedValue: false, default: false },
     { name: 'count', type: 'number', label: 'Star总数' }
   ],
-  inputGroup: [],
   fileUpload: [
     { name: 'multiple', type: 'switch', label: '是否多选', checkedValue: true, unCheckedValue: false, default: true },
     { name: 'acceptType', type: 'radio', label: '文件类型', default: 'file', mode: 'button', buttonStyle: 'solid', options: [
@@ -255,11 +254,12 @@ export default {
     { name: 'fileType', type: 'text', label: '自定义文件类型', placeholder: '请输入以逗号分隔的字符串' },
     { name: 'max', type: 'number', label: '最多支持上传文件数', default: 5 },
   ],
-  imagePicker: [],
   tagCheck: [
     { name: 'multiple', type: 'switch', label: '是否多选', checkedValue: true, unCheckedValue: false, default: true },
     { name: 'options', type: 'optionTree', label: '选项', default: monoOptions, help: '必须保证值的全局惟一性' }
   ],
+  imagePicker: [],
+  inputGroup: [],
   mapPicker: [],
   tableSelect: [],
   richText: []
