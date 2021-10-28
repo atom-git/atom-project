@@ -59,6 +59,7 @@ export default {
       this.curWidget.widgetConfig = widgetConfig
       this.curWidget.options = {
         ...this.curWidget.options,
+        name: this.curWidget.key,
         ...widgetConfig,
         style: { width: `${widgetConfig.width || 100}%` || '100%' }
       }

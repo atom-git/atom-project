@@ -6,7 +6,7 @@
     </template>
     <a-button :type="type" :size="size" :disabled="disabled" @click="handleClick">
       <template #icon>
-        <IconFont :type="$attrs.icon" />
+        <IconFont :type="icon" />
       </template>
       <slot/>
     </a-button>
@@ -28,6 +28,10 @@ export default {
     },
     // title信息，可以使用slot进行挂载
     title: {
+      type: String
+    },
+    // 图标
+    icon: {
       type: String
     },
     // 按钮大小 [small default large]

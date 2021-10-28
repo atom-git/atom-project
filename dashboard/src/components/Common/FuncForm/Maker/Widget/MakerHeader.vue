@@ -27,13 +27,14 @@
     </a-col>
     <a-col span="10" class="atom-maker-header-right">
       <!-- 导入配置 | 清空 | 预览内部分为界面预览和JSON代码预览 -->
-      <TipButton v-for="action in actionList"
-                 :key="action.name"
-                 :title="action.title"
-                 :icon="action.icon"
-                 size="small"
-                 placement="bottom"
-                 @click="handleAction(action)">{{ appConfig.layout === 'drawer' ? '' : action.title }}</TipButton>
+      <TipButtonGroup type="both" :actions="actionList" :divider="false" @click="handleAction"></TipButtonGroup>
+<!--      <TipButton v-for="action in actionList"-->
+<!--                 :key="action.name"-->
+<!--                 :title="action.title"-->
+<!--                 :icon="action.icon"-->
+<!--                 size="small"-->
+<!--                 placement="bottom"-->
+<!--                 @click="handleAction(action)">{{ appConfig.layout === 'drawer' ? '' : action.title }}</TipButton>-->
     </a-col>
   </a-row>
 </template>
@@ -42,11 +43,11 @@
 /**
  * 画板头部组件
  */
-import { TipButton } from '@/components/Common/FuncButton'
+import { TipButton, TipButtonGroup } from '@/components/Common/FuncButton'
 import config from '@/config/mixins/config'
 export default {
   name: 'MakerHeader',
-  components: { TipButton },
+  components: { TipButtonGroup, TipButton },
   props: {
     // 当前操作是否有undo | redo由canvas判断后交给header来判断其状态
     active: {
@@ -67,9 +68,15 @@ export default {
       activeKey: 'mac',
       // 常用操作
       actionList: [
-        { icon: 'ImportOutlined', title: '导入', name: 'import' },
         { icon: 'ClearOutlined', title: '清空', name: 'clear' },
-        { icon: 'EyeOutlined', title: '预览', name: 'preview' }
+        { icon: 'EyeOutlined', title: '预览', name: 'preview' },
+        { icon: 'SettingOutlined', title: '操作',
+          children: [
+            { icon: 'ImportOutlined', title: '导入', name: 'import' },
+            { icon: 'ExportOutlined', title: '导出', name: 'export' },
+            { icon: 'SaveOutlined', title: '保存', name: 'save' }
+          ]
+        }
       ]
     }
   },
