@@ -241,7 +241,7 @@ export default {
   ],
   rate: [
     { name: 'allowHalf', type: 'switch', label: '是否允许半星', checkedValue: true, unCheckedValue: false, default: false },
-    { name: 'count', type: 'number', label: 'Star总数' }
+    { name: 'count', type: 'number', label: 'Star总数', default: 5 }
   ],
   fileUpload: [
     { name: 'multiple', type: 'switch', label: '是否多选', checkedValue: true, unCheckedValue: false, default: true },

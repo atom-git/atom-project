@@ -37,7 +37,7 @@ export default {
       // 当前操作的组件
       curWidget: {},
       // 涉及options的组件，此类组件不需要设置default属性
-      optionsWidgets: ['select', 'radio', 'checkbox', 'cascader', 'treeSelect', 'transfer']
+      optionsWidgets: ['select', 'radio', 'checkbox', 'cascader', 'treeSelect', 'transfer', 'tagCheck']
     }
   },
   computed: {

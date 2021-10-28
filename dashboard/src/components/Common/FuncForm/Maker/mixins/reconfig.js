@@ -27,23 +27,23 @@ export default {
       // 根据列数，计算列宽
       const span = 24 / (widgetConfig['col'] || 2)
       // 变化的列数
-      const colChange = widgetConfig['col'] - curWidget.columns.length
+      const colChange = widgetConfig['col'] - curWidget.items.length
       // 如果列数增加，在最后面增加，并调整列宽
       if (colChange > 0) {
         // 调整列宽
-        curWidget.columns.forEach(column => column.span = span)
+        curWidget.items.forEach(column => column.span = span)
         for (let index = 0; index < colChange; index++) {
-          curWidget.columns.push({
-            key: 'column_' + (curWidget.columns.length + index),
-            order: curWidget.columns.length + index,
+          curWidget.items.push({
+            key: 'column_' + (curWidget.items.length + index),
+            order: curWidget.items.length + index,
             span: span,
             widgets: []
           })
         }
       } else {
         // 如果列数减少，从最后面减，并调整列宽
-        curWidget.columns.splice(widgetConfig['col'], Math.abs(colChange))
-        curWidget.columns.forEach(column => column.span = span)
+        curWidget.items.splice(widgetConfig['col'], Math.abs(colChange))
+        curWidget.items.forEach(column => column.span = span)
       }
     },
     // 表格布局的参数调整
@@ -53,12 +53,12 @@ export default {
       // 根据配置重新生成行列
       const row = widgetConfig.row
       const col = widgetConfig.col
-      const originRow = curWidget.rows.length
-      const originCol = curWidget.rows[0].columns.length
+      const originRow = curWidget.items.length
+      const originCol = curWidget.items[0].columns.length
       // 先判断列是否变化
       const colChange = col - originCol
       if (colChange > 0) {
-        curWidget.rows.forEach((row, rowIndex) => {
+        curWidget.items.forEach((row, rowIndex) => {
           if (row.columns) {
             for (let index = 0; index < colChange; index++) {
               row.columns.push({
@@ -69,7 +69,7 @@ export default {
           }
         })
       } else {
-        curWidget.rows.forEach(row => {
+        curWidget.items.forEach(row => {
           if (row.columns) {
             row.columns.splice(col, Math.abs(colChange))
           }
@@ -79,13 +79,13 @@ export default {
       const rowChange = row - originRow
       if (rowChange > 0) {
         for (let index = 0; index < rowChange; index++) {
-          curWidget.rows.push({
+          curWidget.items.push({
             key: 'row_' + (originRow + index),
             columns: this.initTableColumns(originRow + index, col)
           })
         }
       } else {
-        curWidget.rows.splice(row, Math.abs(rowChange))
+        curWidget.items.splice(row, Math.abs(rowChange))
       }
     },
     // 根据行和列数初始化列组
@@ -101,11 +101,11 @@ export default {
     },
     // 标签页布局的参数调整
     tabsReconfig (curWidget, widgetConfig) {
-      this.itemsReconfig(curWidget, widgetConfig, 'tabs', 'tab')
+      this.itemsReconfig(curWidget, widgetConfig, 'items', 'tab')
     },
     // 分步布局的参数调整
     stepsReconfig (curWidget, widgetConfig) {
-      this.itemsReconfig(curWidget, widgetConfig, 'steps')
+      this.itemsReconfig(curWidget, widgetConfig, 'items')
       // 判断step当前的stepType是否为'navigation'，是的时候把其他选项都禁用掉
       if (widgetConfig['stepType'] === 'navigation') {
         widgetConfig['direction'] = widgetConfig['labelPlacement'] = 'horizontal'

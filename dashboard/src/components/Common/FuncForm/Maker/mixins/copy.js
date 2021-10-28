@@ -42,11 +42,11 @@ export default {
     },
     // grid布局组件复制
     gridWidgetCopy (gridWidget) {
-      this.itemsWidgetCopy(gridWidget.columns)
+      this.itemsWidgetCopy(gridWidget.items)
     },
     // table组件复制
     tableWidgetCopy (tableWidget) {
-      const rows = tableWidget.rows
+      const rows = tableWidget.items
       rows.forEach(row => {
         if (row.columns) {
           this.itemsWidgetCopy(row.columns)
@@ -55,11 +55,11 @@ export default {
     },
     // tabs组件复制
     tabsWidgetCopy (tabsWidget) {
-      this.itemsWidgetCopy(tabsWidget.tabs)
+      this.itemsWidgetCopy(tabsWidget.items)
     },
     // steps组件复制
     stepsWidgetCopy (stepsWidget) {
-      this.itemsWidgetCopy(stepsWidget.steps)
+      this.itemsWidgetCopy(stepsWidget.items)
     },
     // 组件中子组件复制
     itemsWidgetCopy (items) {

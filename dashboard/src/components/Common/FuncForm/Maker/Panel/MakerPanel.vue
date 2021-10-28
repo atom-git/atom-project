@@ -5,6 +5,10 @@
                  @maker-canvas-resize="handleCanvasResize"></MakerHeader>
     <div class="atom-maker-canvas-panel">
       <div :class="['atom-maker-canvas', panel]">
+        <!-- 表单头 -->
+        <FuncTitle v-if="formConfig.title"
+                   :title="formConfig.title"
+                   :style="{ width: `${formConfig.width}%` }"></FuncTitle>
         <!-- 表单区域 -->
         <a-form v-bind="formConfig" :style="{ width: `${formConfig.width}%` }">
           <!-- 有元素时 -->
@@ -55,13 +59,14 @@
 /**
  * 画布面板
  */
+import FuncTitle from '@/components/Common/FuncTitle'
 import MakerHeader from '../Widget/MakerHeader'
 import LayoutWidget from '../Widget/LayoutWidget'
 import FormWidget from '../Widget/FormWidget'
 import copy from '../mixins/copy'
 export default {
   name: 'MakerPanel',
-  components: { MakerHeader, LayoutWidget, FormWidget },
+  components: { FuncTitle, MakerHeader, LayoutWidget, FormWidget },
   mixins: [copy],
   props: {
     // 表单配置

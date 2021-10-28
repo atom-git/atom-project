@@ -7,7 +7,7 @@
            :justify="widget.options.justify"
            :wrap="widget.options.wrap"
            :style="widget.options.style">
-      <a-col v-for="column in widget.columns"
+      <a-col v-for="column in widget.items"
              :key="column.order"
              :span="column.span"
              :order="column.order">
@@ -17,7 +17,7 @@
     </a-row>
     <!-- 表格布局 -->
     <table v-else-if="isType('table')" :style="widget.options.style">
-      <tr v-for="row in widget.rows" :key="row.key">
+      <tr v-for="row in widget.items" :key="row.key">
         <td v-for="column in row.columns" :key="column.key">
           <InnerForm :item="column" :size="size" :curWidget="curWidget"
                      @maker-widget-change="handleWidgetChange"></InnerForm>
@@ -32,7 +32,7 @@
             :size="size"
             :style="widget.options.style"
             @change="handleTabChange">
-      <a-tab-pane v-for="item in widget.tabs"
+      <a-tab-pane v-for="item in widget.items"
                   :key="item.key"
                   :tab="item.tab">
         <InnerForm :item="item" :size="size" :curWidget="curWidget"
@@ -47,7 +47,7 @@
                :progressDot="widget.options.progressDot"
                :size="size === 'small' ? 'small' : 'default'"
                :current="curStep">
-        <a-step v-for="step in widget.steps"
+        <a-step v-for="step in widget.items"
                 :key="step.key"
                 :title="step.title">
         </a-step>
@@ -57,7 +57,7 @@
                  :curWidget="curWidget"
                  @maker-widget-change="handleWidgetChange"></InnerForm>
     </div>
-    <!-- 分步布局 -->
+    <!-- 分隔线布局 -->
     <div v-else-if="isType('divider')" :style="widget.options.style">
       <a-divider :orientation="widget.options.orientation"
                  :plain="widget.options.plain"

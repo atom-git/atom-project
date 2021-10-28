@@ -66,6 +66,11 @@ export default {
           parser: value => value.replace('%', '')
         },
         {
+          type: 'text',
+          name: 'title',
+          label: '表单标题'
+        },
+        {
           type: 'radio',
           name: 'labelAlign',
           label: '标签对齐',
