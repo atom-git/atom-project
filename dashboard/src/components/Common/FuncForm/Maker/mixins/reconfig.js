@@ -101,7 +101,7 @@ export default {
     },
     // 标签页布局的参数调整
     tabsReconfig (curWidget, widgetConfig) {
-      this.itemsReconfig(curWidget, widgetConfig, 'items', 'tab')
+      this.itemsReconfig(curWidget, widgetConfig, 'items')
     },
     // 分步布局的参数调整
     stepsReconfig (curWidget, widgetConfig) {
@@ -120,7 +120,7 @@ export default {
       }
     },
     // 多个元素的统一设置调试
-    itemsReconfig (curWidget, widgetConfig, key = 'items', titleKey = 'title') {
+    itemsReconfig (curWidget, widgetConfig, key = 'items') {
       /**
        * 判断items长度，用widgetConfig中的items去按顺序匹配，
        * 位置一样的改item名称
@@ -133,10 +133,9 @@ export default {
           const item = items[index]
           if (curWidget[key] && curWidget[key][index]) {
             curWidget[key][index].key = item.value
-            curWidget[key][index][titleKey] = item.label
+            curWidget[key][index].title = item.label
           } else {
-            const add = { key: item.value, widgets: [] }
-            add[titleKey] = item.label
+            const add = { key: item.value, title: item.label, widgets: [] }
             curWidget[key].push(add)
           }
         }

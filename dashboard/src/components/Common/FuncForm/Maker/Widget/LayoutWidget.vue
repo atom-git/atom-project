@@ -36,7 +36,7 @@
             @change="handleTabChange">
       <a-tab-pane v-for="item in widget.items"
                   :key="item.key"
-                  :tab="item.tab">
+                  :tab="item.title">
         <InnerForm :item="item" :labelCol="labelCol"  :size="size" :curWidget="curWidget"
                    @maker-widget-change="handleWidgetChange"></InnerForm>
       </a-tab-pane>
@@ -48,7 +48,8 @@
                :labelPlacement="widget.options.labelPlacement"
                :progressDot="widget.options.progressDot"
                :size="size === 'small' ? 'small' : 'default'"
-               v-model:current="curStep">
+               v-model:current="curStep"
+               @change="handleStepChange">
         <a-step v-for="step in widget.items"
                 :key="step.key"
                 :title="step.title">
@@ -233,19 +234,7 @@ export default {
       curStep: 0
     }
   },
-  watch: {
-    // 监听外部传入的组件变化
-    widget: {
-      deep: true,
-      handler (newValue) {
-        // 如果是step，则需要对其当前选中的值进行设置
-        if (this.isType('steps')) {
-          this.curStep = this.initStepCurrent(newValue)
-        }
-      }
-    }
-  },
-  emits: ['maker-widget-change', 'maker-tab-change', 'maker-widget-copy', 'maker-widget-delete'],
+  emits: ['maker-widget-change', 'maker-tab-change', 'maker-step-change', 'maker-widget-copy', 'maker-widget-delete'],
   methods: {
     // 判断field类型
     isType (type = 'text') {
@@ -259,18 +248,10 @@ export default {
     handleTabChange (activeTab) {
       this.$emit('maker-tab-change', activeTab)
     },
-    // 初始化step当前选中的步
-    initStepCurrent (widget) {
-      const options = (widget.options && widget.options.steps && widget.options.steps.options) || []
-      const activeStep = widget.options && widget.options.steps && widget.options.steps.default[0]
-      let current = 0;
-      for (let index = 0; index < options.length; index++) {
-        if (options[index].value === activeStep) {
-          current = index
-          break;
-        }
-      }
-      return current
+    // 响应step切换
+    handleStepChange () {
+      // 根据curStep判断当前激活的step
+      this.$emit('maker-step-change', this.widget.options['steps'].options[this.curStep].value)
     },
     // 响应文本域的复制
     handleWidgetCopy () {

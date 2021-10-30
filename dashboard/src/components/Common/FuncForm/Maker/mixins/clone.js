@@ -32,7 +32,7 @@ export default {
     },
     // 标签页布局clone
     tabsClone (widget) {
-      widget['items'] = initItems('Tab').options.map(item => ({ key: item.value, tab: item.value, widgets: [] }))
+      widget['items'] = initItems('Tab').options.map(item => ({ key: item.value, title: item.value, widgets: [] }))
     },
     // 分步布局clone
     stepsClone (widget) {

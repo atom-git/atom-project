@@ -34,15 +34,14 @@
     </table>
     <!-- 标签页布局 -->
     <a-tabs v-else-if="isType('tabs')"
-            :activeKey="(widget.options && widget.options.tabs && widget.options.tabs.default[0]) || 0"
+            v-model:activeKey="current"
             :type="widget.options['tabType']"
             :tabPosition="widget.options.tabPosition"
             :size="size"
-            :style="widget.options.style"
-            @change="handleTabChange">
-      <a-tab-pane v-for="item in widget.items"
-                  :key="item.key"
-                  :tab="item.tab">
+            :style="widget.options.style">
+      <a-tab-pane v-for="(item, index) in widget.items"
+                  :key="index"
+                  :tab="item.title">
         <FormWidget v-for="element in item.widgets"
                     :key="element.key"
                     :widget="element"
@@ -57,14 +56,14 @@
                :labelPlacement="widget.options.labelPlacement"
                :progressDot="widget.options.progressDot"
                :size="size === 'small' ? 'small' : 'default'"
-               v-model:current="curStep">
+               v-model:current="current">
         <a-step v-for="step in widget.items"
                 :key="step.key"
                 :title="step.title">
         </a-step>
       </a-steps>
       <div style="margin-top: 16px;">
-        <FormWidget v-for="element in widget.items[curStep].widgets"
+        <FormWidget v-for="element in widget.items[current].widgets"
                     :key="element.key"
                     :widget="element"
                     :labelCol="labelCol"
@@ -118,7 +117,7 @@ export default {
   data () {
     return {
       // 当前是第几步
-      curStep: 0
+      current: 0
     }
   },
   methods: {

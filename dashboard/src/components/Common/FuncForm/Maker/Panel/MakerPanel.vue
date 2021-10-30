@@ -30,6 +30,7 @@
                               :curWidget="curWidget"
                               @maker-widget-change="handleWidgetChange"
                               @maker-tab-change="handleTabChange($event, element)"
+                              @maker-step-change="handleStepChange($event, element)"
                               @maker-widget-copy="handleWidgetCopy(element, index)"
                               @maker-widget-delete="handleWidgetDelete(element, index)"></LayoutWidget>
                 <!-- form组件元素 -->
@@ -170,6 +171,10 @@ export default {
     // 响应tab切换
     handleTabChange (activeTab, widget) {
       widget.widgetConfig['tabs'].default = [activeTab]
+    },
+    // 响应step切换
+    handleStepChange (activeStep, widget) {
+      widget.widgetConfig['steps'].default = [activeStep]
     },
     // 响应表单预览取消
     handlePreviewCancel () {
