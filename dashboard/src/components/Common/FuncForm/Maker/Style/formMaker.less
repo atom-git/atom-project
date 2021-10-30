@@ -237,6 +237,12 @@
             .ant-card-body {
               padding: 16px 8px;
             }
+            /*滑动条的tooltip z-index不能高于drawer*/
+            .ant-slider {
+              .ant-slider-tooltip {
+                z-index: 999;
+              }
+            }
           }
           .ant-empty {
             margin-top: 128px;

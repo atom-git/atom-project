@@ -28,13 +28,6 @@
     <a-col span="10" class="atom-maker-header-right">
       <!-- 导入配置 | 清空 | 预览内部分为界面预览和JSON代码预览 -->
       <TipButtonGroup type="both" :actions="actionList" :divider="false" @click="handleAction"></TipButtonGroup>
-<!--      <TipButton v-for="action in actionList"-->
-<!--                 :key="action.name"-->
-<!--                 :title="action.title"-->
-<!--                 :icon="action.icon"-->
-<!--                 size="small"-->
-<!--                 placement="bottom"-->
-<!--                 @click="handleAction(action)">{{ appConfig.layout === 'drawer' ? '' : action.title }}</TipButton>-->
     </a-col>
   </a-row>
 </template>

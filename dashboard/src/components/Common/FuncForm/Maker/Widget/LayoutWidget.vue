@@ -1,5 +1,7 @@
 <template>
-  <a-form-item :key="widget.key">
+  <!-- 标题布局 -->
+  <FuncTitle v-if="isType('title')" :title="widget.options.title || '自定义标题'"></FuncTitle>
+  <a-form-item v-else :key="widget.key">
     <!-- 栅格布局 -->
     <a-row v-if="isType('grid')"
            :align="widget.options.align"
@@ -11,7 +13,7 @@
              :key="column.order"
              :span="column.span"
              :order="column.order">
-        <InnerForm :item="column" :size="size" :curWidget="curWidget"
+        <InnerForm :item="column" :labelCol="labelCol" :size="size" :curWidget="curWidget"
                    @maker-widget-change="handleWidgetChange"></InnerForm>
       </a-col>
     </a-row>
@@ -19,7 +21,7 @@
     <table v-else-if="isType('table')" :style="widget.options.style">
       <tr v-for="row in widget.items" :key="row.key">
         <td v-for="column in row.columns" :key="column.key">
-          <InnerForm :item="column" :size="size" :curWidget="curWidget"
+          <InnerForm :item="column" :labelCol="labelCol"  :size="size" :curWidget="curWidget"
                      @maker-widget-change="handleWidgetChange"></InnerForm>
         </td>
       </tr>
@@ -35,7 +37,7 @@
       <a-tab-pane v-for="item in widget.items"
                   :key="item.key"
                   :tab="item.tab">
-        <InnerForm :item="item" :size="size" :curWidget="curWidget"
+        <InnerForm :item="item" :labelCol="labelCol"  :size="size" :curWidget="curWidget"
                    @maker-widget-change="handleWidgetChange"></InnerForm>
       </a-tab-pane>
     </a-tabs>
@@ -46,16 +48,19 @@
                :labelPlacement="widget.options.labelPlacement"
                :progressDot="widget.options.progressDot"
                :size="size === 'small' ? 'small' : 'default'"
-               :current="curStep">
+               v-model:current="curStep">
         <a-step v-for="step in widget.items"
                 :key="step.key"
                 :title="step.title">
         </a-step>
       </a-steps>
-      <InnerForm :item="widget.steps[curStep]"
-                 :size="size"
-                 :curWidget="curWidget"
-                 @maker-widget-change="handleWidgetChange"></InnerForm>
+      <div style="margin-top: 16px;">
+        <InnerForm :item="widget.items[curStep]"
+                   :labelCol="labelCol"
+                   :size="size"
+                   :curWidget="curWidget"
+                   @maker-widget-change="handleWidgetChange"></InnerForm>
+      </div>
     </div>
     <!-- 分隔线布局 -->
     <div v-else-if="isType('divider')" :style="widget.options.style">
@@ -91,6 +96,7 @@
 /**
  * 布局构造器
  */
+import FuncTitle from '@/components/Common/FuncTitle'
 import FormWidget from './FormWidget'
 import { message } from 'ant-design-vue'
 import copy from '../mixins/copy'
@@ -106,6 +112,11 @@ const InnerForm = {
     item: {
       type: Object,
       required: true
+    },
+    // label的展示形式
+    labelCol: {
+      type: Object,
+      required: false
     },
     // 组件尺寸
     size: {
@@ -175,6 +186,7 @@ const InnerForm = {
           <div :class="['atom-maker-item', element.key === curWidget.key ? 'active' : '']"
                @click.stop="handleWidgetChange(element)">
             <FormWidget :widget="element"
+                        :labelCol="labelCol"
                         :size="size"></FormWidget>
             <div class="atom-maker-actions" v-if="element.key === curWidget.key">
               <a-tooltip title="复制">
@@ -192,12 +204,17 @@ const InnerForm = {
 }
 export default {
   name: 'LayoutWidget',
-  components: { InnerForm },
+  components: { FuncTitle, InnerForm },
   props: {
     // 组件
     widget: {
       type: Object,
       required: true
+    },
+    // label的展示形式
+    labelCol: {
+      type: Object,
+      required: false
     },
     // 组件尺寸
     size: {

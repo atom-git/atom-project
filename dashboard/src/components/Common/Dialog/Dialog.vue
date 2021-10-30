@@ -93,9 +93,6 @@ export default {
       return this.width || this.$store.getters.appConfig.dialog.size
     }
   },
-  mounted () {
-    console.log(this.$slots)
-  },
   watch: {
     // 监听外部传入的显示与否
     modelValue (newValue) {

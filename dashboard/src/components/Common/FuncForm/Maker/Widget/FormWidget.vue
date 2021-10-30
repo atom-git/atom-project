@@ -1,11 +1,10 @@
 <template>
   <a-form-item :key="widget.key"
                :name="widget.key"
+               :labelCol="labelCol"
                :label="widget.options.labelVisible ? widget.options.label : ''">
-    <!-- 标题布局 -->
-    <FuncTitle v-if="isType('title')" :title="widget.options.default"></FuncTitle>
     <!-- 文本链接 -->
-    <a v-else-if="isType('link')"
+    <a v-if="isType('link')"
        :href="widget.options.href || ''"
        target="_blank">{{ widget.options.content || '外部链接' }}</a>
     <!-- html -->
@@ -25,16 +24,20 @@
 /**
  * 表单组件
  */
-import FuncTitle from '@/components/Common/FuncTitle'
 import FieldRender from '../../Form/Render/FieldRender'
 export default {
   name: 'FormWidget',
-  components: { FuncTitle, FieldRender },
+  components: { FieldRender },
   props: {
     // 组件
     widget: {
       type: Object,
       default: () => ({})
+    },
+    // label的展示形式
+    labelCol: {
+      type: Object,
+      required: false
     },
     // 组件尺寸
     size: {

@@ -108,6 +108,7 @@ const layoutWidgets = {
     { icon: 'atom-layout-table', title: '表格布局', type: 'table' },
     { icon: 'atom-layout-tab', title: '标签布局', type: 'tabs' },
     { icon: 'atom-layout-step', title: '分步布局', type: 'steps' },
+    { icon: 'atom-form-title', title: '标题', type: 'title' },
     { icon: 'atom-layout-desc', title: '提示文本', type: 'alert' },
     { icon: 'atom-layout-divider', title: '分割线', type: 'divider' }
   ]
@@ -132,7 +133,6 @@ const basicWidgets = {
     { icon: 'atom-form-rangePicker', title: '区间选择器', type: 'rangePicker' },
     { icon: 'atom-form-weekPicker', title: '周选择器', type: 'weekPicker' },
     { icon: 'atom-form-timePicker', title: '时间选择器', type: 'timePicker' },
-    { icon: 'atom-form-title', title: '标题', type: 'title' },
     { icon: 'atom-form-text', title: '文本', type: 'text' },
     { icon: 'atom-form-link', title: '链接', type: 'link' },
     { icon: 'atom-form-html', title: 'HTML', type: 'html' }

@@ -119,14 +119,8 @@ export default {
     { name: 'progressDot', type: 'switch', label: '设置为点状步骤条', checkedValue: true, unCheckedValue: false, default: false },
     { name: 'steps', type: 'optionTree', label: '步骤标签', showLabelOption: false, default: initItems('Step'), help: '必须保证值的全局惟一性' }
   ],
-  divider: [
-    { name: 'title', type: 'text', label: '标题', default: '分割线' },
-    { name: 'orientation', type: 'radio', label: '标题位置', default: 'left', mode: 'button', buttonStyle: 'solid', options: [
-        { value: 'left', title: '左侧' }, { value: 'center', title: '居中' }, { value: 'right', title: '右侧' }
-      ]
-    },
-    { name: 'dashed', type: 'switch', label: '是否虚线', checkedValue: true, unCheckedValue: false, default: false },
-    { name: 'plain', type: 'switch', label: '是否普通正文样式', checkedValue: true, unCheckedValue: false, default: false }
+  title: [
+    { name: 'title', type: 'text', label: '自定义标题' }
   ],
   alert: [
     { name: 'message', type: 'textarea', label: '内容', default: '提示内容' },
@@ -138,6 +132,15 @@ export default {
     { name: 'banner', type: 'switch', label: '是否顶部公告', checkedValue: true, unCheckedValue: false, default: true },
     { name: 'closable', type: 'switch', label: '是否可关闭', checkedValue: true, unCheckedValue: false, default: false },
     { name: 'showIcon', type: 'switch', label: '是否显示图标', checkedValue: true, unCheckedValue: false, default: true }
+  ],
+  divider: [
+    { name: 'title', type: 'text', label: '标题', default: '分割线' },
+    { name: 'orientation', type: 'radio', label: '标题位置', default: 'left', mode: 'button', buttonStyle: 'solid', options: [
+        { value: 'left', title: '左侧' }, { value: 'center', title: '居中' }, { value: 'right', title: '右侧' }
+      ]
+    },
+    { name: 'dashed', type: 'switch', label: '是否虚线', checkedValue: true, unCheckedValue: false, default: false },
+    { name: 'plain', type: 'switch', label: '是否普通正文样式', checkedValue: true, unCheckedValue: false, default: false }
   ],
   // 基础组件
   input: [
@@ -206,9 +209,6 @@ export default {
   ],
   timePicker: [
     { name: 'default', type: 'timePicker', label: '默认值' }
-  ],
-  title: [
-    { name: 'default', type: 'text', label: '默认值' }
   ],
   text: [
     { name: 'default', type: 'textarea', label: '默认值', default: '文本提示' }
