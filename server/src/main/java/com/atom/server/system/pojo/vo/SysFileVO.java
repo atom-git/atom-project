@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.BeanUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -31,6 +32,8 @@ public class SysFileVO extends AbsEntity {
     private Long size;
     @ApiModelProperty("文件的父节点（文件夹）id")
     private Integer parentId;
+    @ApiModelProperty("文件key")
+    private String fileKey;
     @ApiModelProperty("文件路径")
     private String fileUrl;
     @ApiModelProperty("创建人ID")
@@ -46,9 +49,12 @@ public class SysFileVO extends AbsEntity {
     public static class VOConverter extends Converter<SysFileVO, SysFile> {
         @Override
         public SysFileVO doForward(SysFile sysFile) {
-            return null;
+            if (sysFile == null) {
+                return null;
+            }
+            SysFileVO sysFileVO = new SysFileVO();
+            BeanUtils.copyProperties(sysFile, sysFileVO);
+            return sysFileVO;
         }
     }
-
-
 }

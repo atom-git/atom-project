@@ -16,6 +16,7 @@ export default {
   data () {
     return {
       fields: [
+        { name: 'imagePicker', type: 'imagePicker', label: 'imagePicker' },
         { type: 'colorPicker', name: 'colorPicker1', label: 'colorPicker1', pickType: 'compact', default: '#9270CA' },
         { type: 'colorPicker', name: 'colorPicker2', label: 'colorPicker2', default: '#FFFFFF' },
         {
@@ -68,7 +69,8 @@ export default {
             { title: 'tag10', value: 10, icon: 'AndroidOutlined' },
             { title: 'tag11', value: 11, icon: 'AndroidOutlined' }
           ]
-        }
+        },
+        { name: 'richText', type: 'richText', label: 'richText' }
       ],
       model: {
         fileUpload1: [

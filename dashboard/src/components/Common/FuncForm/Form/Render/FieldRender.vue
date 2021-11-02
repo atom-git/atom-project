@@ -193,7 +193,12 @@
   <!-- fileUpload 文件上传 -->
   <FileUpload v-else-if="isType('fileUpload')" v-bind="renderField" name="file" :modelValue="modelValue" @change="handleChange"/>
   <!-- imagePicker -->
-  <ImagePicker v-else-if="isType('imagePicker')" v-bind="renderField" :value="modelValue"/>
+  <ImagePicker v-else-if="isType('imagePicker')"
+               :modelValue="modelValue"
+               :height="renderField.height"
+               :clipRate="renderField.clipRate"
+               :maxSize="renderField.maxSize"
+               @change="handleChange"/>
   <!-- iconPicker -->
   <IconPicker v-else-if="isType('iconPicker')" v-bind="renderField" :modelValue="modelValue" @change="handleChange"/>
   <!-- iconRadio -->
