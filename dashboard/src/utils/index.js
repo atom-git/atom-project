@@ -37,6 +37,7 @@ import Default from '@/config/default'
  * download: 下载文件
  * base64ToFile: base64转成file
  * fileToBase64: file转成base64
+ * debounce: 方法防抖
  */
 export default class Utils {
   /**
@@ -608,6 +609,25 @@ export default class Utils {
     reader.readAsDataURL(file)
     reader.onload = () => {
       callback(reader.result)
+    }
+  }
+
+  /**
+   * 方法防抖
+   * @param func 方法
+   * @param wait 等待时长
+   */
+  static debounce (func, wait) {
+    let startTime = Date.now()
+    let timer
+    return (...args) => {
+      if (Date.now() - startTime < wait && timer) {
+        clearTimeout(timer)
+      }
+      timer = setTimeout(() => {
+        func(...args)
+      }, wait)
+      startTime = Date.now()
     }
   }
 }

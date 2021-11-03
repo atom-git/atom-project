@@ -9,6 +9,23 @@ export default class file {
   static UPLOAD_URL = '/api/system/file/upload'
 
   /**
+   * 上传文件
+   * @param file 待上传文件
+   */
+  static upload (file) {
+    const data = new FormData()
+    data.append('file', file)
+    return axios({
+      url: '/system/file/upload',
+      methods: Default.HTTP_METHOD.POST,
+      data,
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+  }
+
+  /**
    * 删除文件
    * @param fileKey 文件key值
    */

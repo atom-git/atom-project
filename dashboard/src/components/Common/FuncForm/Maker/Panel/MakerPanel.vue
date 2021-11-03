@@ -62,6 +62,10 @@
                :formConfig="formConfig"
                :widgets="previewWidgets"
                @maker-preview-cancel="handlePreviewCancel"></MakerPreview>
+  <!-- 导出预览弹窗 -->
+  <ExportPreview :visible="exportVisible"
+                :widgets="previewWidgets"
+                @maker-export-cancel="handleExportCancel"></ExportPreview>
 </template>
 
 <script>
@@ -74,9 +78,10 @@ import LayoutWidget from '../Widget/LayoutWidget'
 import FormWidget from '../Widget/FormWidget'
 import MakerPreview from '../Preview/MakerPreview'
 import copy from '../mixins/copy'
+import ExportPreview from '../Preview/ExportPreview'
 export default {
   name: 'MakerPanel',
-  components: { FuncTitle, MakerHeader, LayoutWidget, FormWidget, MakerPreview },
+  components: {ExportPreview, FuncTitle, MakerHeader, LayoutWidget, FormWidget, MakerPreview },
   mixins: [copy],
   props: {
     // 表单配置
@@ -98,6 +103,8 @@ export default {
       widgets: [],
       // preview预览显隐
       previewVisible: false,
+      // 导出预览显隐
+      exportVisible: false,
       // 拖动配置
       dragOptions: {
         animation: 300,
@@ -141,6 +148,7 @@ export default {
         // 导入
       } else if (action.name === 'export') {
         // 导出
+        this.exportVisible = true
       } else if (action.name === 'save') {
         // 保存
       }
@@ -179,6 +187,10 @@ export default {
     // 响应表单预览取消
     handlePreviewCancel () {
       this.previewVisible = false
+    },
+    // 响应导出预览取消
+    handleExportCancel () {
+      this.exportVisible = false
     }
   }
 }

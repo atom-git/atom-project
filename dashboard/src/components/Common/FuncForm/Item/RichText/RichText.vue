@@ -158,7 +158,7 @@ export default {
         // this.$message.error('图片大小不能超过350KB')
         failure('文件上传失败: 图片大小不能超过350KB')
       } else {
-        this.$api.system.file.uploadRichText(file).then(uploadResult => {
+        this.$api.system.file.upload(file).then(uploadResult => {
           success(uploadResult.url)
         }).catch((e) => {
           // this.$message.error('文件上传失败' + e)

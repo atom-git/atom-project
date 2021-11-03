@@ -67,6 +67,7 @@ export default {
       this.dialogVisible = newValue
     }
   },
+  emits: ['maker-preview-cancel'],
   methods: {
     // 响应预览取消
     handleCancel () {
