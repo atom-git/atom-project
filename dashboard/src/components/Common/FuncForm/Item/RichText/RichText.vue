@@ -7,12 +7,19 @@
 
 <script>
 /**
- * tinymce编辑器
+ * tinymce编辑器，TODO 动态初始化
  * tinymce官网帐号密码 atomgit@sina.com / Zronly0622
  * 皮肤配置地址：http://skin.tiny.cloud/t5/?_ga=2.177061413.1296514030.1635736011-257999341.1635736011
  */
 import Editor from '@tinymce/tinymce-vue'
 import config from '@/config/mixins/config'
+const defaultPlugins = [
+  'paste print preview searchreplace autolink directionality visualblocks',
+  'visualchars fullscreen image media template code codesample',
+  'table charmap hr pagebreak nonbreaking anchor insertdatetime advlist',
+  'lists wordcount textpattern help emoticons autosave',
+  'autoresize ' // quickbars
+]
 export default {
   name: 'RichText',
   components: { Editor },
@@ -22,6 +29,31 @@ export default {
     modelValue: {
       type: String,
       required: false
+    },
+    // 插件设置
+    plugins: {
+      type: Array,
+      default: () => (defaultPlugins)
+    },
+    // 是否显示顶部菜单
+    menubar: {
+      type: Boolean,
+      default: false
+    },
+    // 工具栏是否固定
+    toolbarSticky: {
+      type: Boolean,
+      default: true
+    },
+    // 菜单超出的呈现形式wrap换行，floating 浮动在下方，sliding ...隐藏，scrolling 横向滚动
+    toolbarMode: {
+      type: String,
+      default: 'wrap'
+    },
+    // 最小高度
+    minHeight: {
+      type: Number,
+      default: 800
     }
   },
   data () {
@@ -51,9 +83,9 @@ export default {
         // 是否显示品牌
         branding: false,
         // 最小高度
-        min_height: 800,
+        min_height: this.minHeight,
         // 是否显示上部类windows菜单栏
-        menubar: false,
+        menubar: this.menubar,
         // 不自动上传
         automatic_uploads: true,
         // 文件上传自定义实现
@@ -77,20 +109,14 @@ export default {
         // export, formatpainter, checklist 为付费组件，media没有必要，自有imagetools 存在图片跨域问题，暂未解决，外部引入的 imagetools 存在翻转等动作后图片无法保存的问题，暂时先放下
         // 图片这块可以考虑新的思路把图片全部放到提交时再保存
         // link去除
-        plugins: [
-          'paste print preview searchreplace autolink directionality visualblocks',
-          'visualchars fullscreen image media template code codesample',
-          'table charmap hr pagebreak nonbreaking anchor insertdatetime advlist',
-          'lists wordcount textpattern help emoticons autosave',
-          'autoresize ' // quickbars
-        ],
+        plugins: this.plugins,
         paste_preprocess: (plugin, args) => {
           args.content = args.content.replace(/<\/?a.*?>/g, '')
         },
         // 工具栏固定
-        toolbar_sticky: true,
+        toolbar_sticky: this.toolbarSticky,
         // 菜单超出的呈现形式wrap换行，Floating 浮动在下方，Sliding ...隐藏，Scrolling 横向滚动
-        toolbar_mode: 'wrap',
+        toolbar_mode: this.toolbarMode,
         // 自定义工具组
         toolbar_group: {
           align: {
@@ -109,6 +135,19 @@ export default {
         // 输入区域快捷工具条
         // quickbars_selection_toolbar: 'bold italic | link h2 h3  | blockquote quickimage quicktable | align'
       }
+    }
+  },
+  watch: {
+    // 监听外部传值的变化,此种方式无法回显数据，猜测可能是由于所有的编辑器创建时间过长导致的
+    modelValue: {
+      handler (val) {
+        this.content = val
+      }
+    },
+    // 监听内部值的变化
+    content (newValue) {
+      this.$emit('update:modelValue', newValue)
+      this.$emit('change', newValue)
     }
   },
   methods: {
@@ -130,19 +169,6 @@ export default {
     // 清空内容
     clear () {
       this.content = ''
-    }
-  },
-  watch: {
-    // 监听外部传值的变化,此种方式无法回显数据，猜测可能是由于所有的编辑器创建时间过长导致的
-    modelValue: {
-      handler (val) {
-        this.content = val
-      }
-    },
-    // 监听内部值的变化
-    content (newValue) {
-      this.$emit('update:modelValue', newValue)
-      this.$emit('change', newValue)
     }
   }
 }

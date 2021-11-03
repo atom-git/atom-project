@@ -258,9 +258,24 @@ export default {
     { name: 'multiple', type: 'switch', label: '是否多选', checkedValue: true, unCheckedValue: false, default: true },
     { name: 'options', type: 'optionTree', label: '选项', default: monoOptions, help: '必须保证值的全局惟一性' }
   ],
-  imagePicker: [],
+  imagePicker: [
+    { name: 'height', type: 'number', label: '组件高度', default: 300, formatter: value => `${value}px`, parser: value => value.replace('px', '') },
+    { name: 'clipRate', type: 'select', label: '截图比例', options: [
+        { value: '16:9', title: '16:9' }, { value: '4:3', title: '4:3' }, { value: '1:1', title: '1:1' }, { value: 'self', title: '自定义' }
+      ]
+    },
+    { name: 'maxSize', type: 'number', label: '图片大小限制', default: 600, formatter: value => `${value}KB`, parser: value => value.replace('KB', '') }
+  ],
   inputGroup: [],
   mapPicker: [],
   tableSelect: [],
-  richText: []
+  richText: [
+    { name: 'menubar', type: 'switch', label: '是否显示顶部菜单', checkedValue: true, unCheckedValue: false, default: false },
+    { name: 'minHeight', type: 'number', label: '组件高度', default: 300, formatter: value => `${value}px`, parser: value => value.replace('px', '') },
+    { name: 'toolbarMode', type: 'select', label: '工具栏模式', default: 'wrap', options: [
+        { value: 'wrap', title: 'wrap' }, { value: 'floating', title: 'floating' }, { value: 'sliding', title: 'sliding' }, { value: 'scrolling', title: 'scrolling' }
+      ]
+    },
+    { name: 'toolbarSticky', type: 'switch', label: '工具栏是否固定', checkedValue: true, unCheckedValue: false, default: true }
+  ]
 }
