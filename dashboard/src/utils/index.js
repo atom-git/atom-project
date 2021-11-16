@@ -6,9 +6,11 @@ import Default from '@/config/default'
  * isValid: 任意对象是否有效
  * isArray: 是否数组
  * isObject: 是否对象
+ * isDate: 是否日期
  * isInt: 是否正整数
  * isBoolean: 是否布尔值
  * isFunction: 是否函数
+ * typeIs: 判断类型
  * clearObject: 清除obj中undefined或者null的key
  * deepClone: 对象深度克隆，采对属性部门进行克隆
  * buildArray: 根据长度构建array
@@ -69,6 +71,14 @@ export default class Utils {
   }
 
   /**
+   * 判断是否是日期
+   * @param value
+   */
+  static isDate (value) {
+    return Object.prototype.toString.call(value) === '[object Date]'
+  }
+
+  /**
    * 验证是否是正整数
    */
   static isInt (value) {
@@ -87,6 +97,23 @@ export default class Utils {
    */
   static isFunction (value) {
     return typeof value === 'function'
+  }
+
+  /**
+   * 判断值的类型
+   */
+  static typeIs (value) {
+    if (value === undefined) {
+      return 'undefined'
+    } else if (value === null) {
+      return 'null'
+    } else if (this.isObject(value)) {
+      return 'object'
+    } else if (this.isArray(value)) {
+      return 'array'
+    } else {
+      return typeof value
+    }
   }
 
   /**

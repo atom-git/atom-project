@@ -1,4 +1,5 @@
 <template>
+  <JsonView :modelValue="fields"></JsonView>
   <FormList title="文件上传功能测试"
             :fields="fields"
             v-model="model"
@@ -9,12 +10,36 @@
 /**
  * 高级表单示例
  */
+import JsonView from '@/components/Common/JsonView'
 import { FormList } from '@/components/Common/FuncForm'
 export default {
   name: 'AdvanceForm',
-  components: { FormList },
+  components: { JsonView, FormList },
   data () {
     return {
+      // json数据
+      jsonData: {
+        id: '5968fcad629fa84ab65a5247',
+        firstname: 'Ada',
+        lastname: 'Lovelace',
+        awards: null,
+        known: [
+          'mathematics',
+          'computing'
+        ],
+        position: {
+          lat: 44.563836,
+          lng: 6.495139
+        },
+        description: `Augusta Ada King, Countess of Lovelace (née Byron; 10 December 1815 – 27 November 1852) was an English mathematician and writer,
+            chiefly known for her work on Charles Babbage's proposed mechanical general-purpose computer,
+            the Analytical Engine. She was the first to recognise that the machine had applications beyond pure calculation,
+            and published the first algorithm intended to be carried out by such a machine.
+            As a result, she is sometimes regarded as the first to recognise the full potential of a "computing machine" and the first computer programmer.`,
+        bornAt: '1815-12-10T00:00:00.000Z',
+        diedAt: '1852-11-27T00:00:00.000Z'
+      },
+      // 字段列表
       fields: [
         { name: 'imagePicker', type: 'imagePicker', label: 'imagePicker' },
         { type: 'colorPicker', name: 'colorPicker1', label: 'colorPicker1', pickType: 'compact', default: '#9270CA' },

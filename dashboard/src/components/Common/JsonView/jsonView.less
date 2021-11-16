@@ -1,0 +1,15 @@
+/**
+Json格式化样式
+ */
+.atom-json-view {
+  /*节点样式*/
+  .atom-json-node {
+    /*对象和数组*/
+    &.object, &.array {
+
+    }
+    &:not(:last-child):after {
+      content: ',';
+    }
+  }
+}
