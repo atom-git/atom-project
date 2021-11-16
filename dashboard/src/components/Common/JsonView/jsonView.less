@@ -4,12 +4,57 @@ Json格式化样式
 .atom-json-view {
   /*节点样式*/
   .atom-json-node {
-    /*对象和数组*/
-    &.object, &.array {
-
+    margin-left: 16px;
+    /* 展开图标 */
+    .anticon {
+      padding: 4px;
     }
+    &>.atom-json-node-key {
+      margin-right: 4px;
+    }
+    /*对象和数组，string，key值*/
+    &.object, &.array, &>.atom-json-node-key {
+     color: @text-color;
+    }
+    /*undefined，null*/
+    &.undefined, &.null {
+      color: @magenta-6;
+    }
+    /*date*/
+    &.data {
+      color: @purple-6;
+    }
+    /*function*/
+    &.function {
+      color: @blue-6;
+    }
+    /*number*/
+    &.number {
+      color: @magenta-6;
+    }
+    /*boolean*/
+    &.boolean {
+      color: @orange-6;
+    }
+    /*string*/
+    &.string {
+      color: @cyan-6;
+    }
+    /*缩略符*/
+    .atom-json-ellipsis {
+      cursor: pointer;
+      padding: 0 4px;
+    }
+    /*分隔符*/
+    .atom-json-break.end {
+      margin-left: 4px;
+    }
+    /*后缀符*/
     &:not(:last-child):after {
       content: ',';
+    }
+    &:last-of-type:after {
+      content: '';
     }
   }
 }

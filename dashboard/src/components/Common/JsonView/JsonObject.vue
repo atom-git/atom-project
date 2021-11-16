@@ -10,8 +10,8 @@
               :sort="sort"
               :timeFormat="timeFormat"></JsonNode>
   </template>
-  <span v-else class="atom-json-ellipsis" @click="toggleExpand">...</span>
-  <span class="atom-json-break">}</span>
+  <span v-else class="atom-json-ellipsis" @click="handleExpandNode">...</span>
+  <span class="atom-json-break end">}</span>
 </template>
 
 <script>

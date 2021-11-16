@@ -27,7 +27,7 @@
   <!-- Json基础数据类型-null -->
   <span v-else-if="isType('null')">null</span>
   <!-- Json基础数据类型-date -->
-  <span v-else-if="isType('date')">{{ $utils.formatDate(jsonData, timeFormat) }}</span>
+  <span v-else-if="isType('date')">"{{ $utils.formatDate(jsonData, timeFormat) }}"</span>
   <!-- Json基础数据类型-function -->
   <a-tooltip v-else-if="isType('function')" :title="jsonData.toString()">
     &lt;function&gt;
@@ -37,7 +37,7 @@
   <!-- Json基础数据类型-boolean -->
   <span v-else-if="isType('boolean')">{{ jsonData }}</span>
   <!-- Json基础数据类型-string -->
-  <span v-else>{{ jsonData }}</span>
+  <span v-else>"{{ jsonData }}"</span>
   </div>
 </template>
 
