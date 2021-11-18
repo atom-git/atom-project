@@ -124,6 +124,7 @@ export default {
           dataIndex: 'ifValid',
           title: '状态',
           format: 'formatSwitch',
+          options: [{ value: 1, title: '有效', status: 'success' }, { value: 0, title: '删除', status: 'error' }],
           form: { filter: true, edit: true, rules: [{ required: true, type: 'any' }] }
         },
         {

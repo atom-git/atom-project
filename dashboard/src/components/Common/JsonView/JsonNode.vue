@@ -1,7 +1,7 @@
 <template>
   <div :class="['atom-json-node', dataType]">
   <!-- 展开图标 -->
-  <IconFont v-if="isType('object') || isType('array')"
+  <IconFont v-if="expandable"
             :type="expand ? 'CaretDownOutlined' : 'CaretRightOutlined'"
             @click="toggleExpand" />
   <span v-if="keyName" class="atom-json-node-key">"{{ keyName }}":</span>
@@ -91,6 +91,10 @@ export default {
     // 数据类型
     dataType () {
       return this.$utils.typeIs(this.jsonData)
+    },
+    // 是否可展开
+    expandable () {
+      return (this.isType('object') || this.isType('array')) && this.$utils.isValid(this.jsonData)
     }
   },
   watch: {

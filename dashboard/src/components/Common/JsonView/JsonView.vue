@@ -77,8 +77,11 @@ export default {
       }
     },
     // 监听外部传入展开层级的变化
-    expandDepth (newValue) {
-      this.expandLevel = newValue
+    expandDepth: {
+      immediate: true,
+      handler (newValue) {
+        this.expandLevel = newValue
+      }
     }
   },
   methods: {

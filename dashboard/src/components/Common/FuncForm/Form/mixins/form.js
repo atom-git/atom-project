@@ -11,7 +11,7 @@ export default {
      */
     modelValue: {
       type: Object,
-      default: {}
+      default: () => ({})
     },
     /**
      * label 标签的文本对齐方式'left' | 'right'
@@ -83,14 +83,6 @@ export default {
       },
       deep: true
     },
-    // 内部form表单变化时，提交变化
-    model: {
-      handler (newValue) {
-        this.$emit('update:modelValue', newValue)
-        this.$emit('change', newValue)
-      },
-      deep: true
-    },
     // 外部传入值的改变
     modelValue: {
       deep: true,
@@ -98,13 +90,21 @@ export default {
       handler (newValue) {
         this.model = newValue
       }
+    },
+    // 内部form表单变化时，提交变化
+    model: {
+      deep: true,
+      handler (newValue) {
+        this.$emit('update:modelValue', newValue)
+        this.$emit('change', newValue)
+      }
     }
   },
   created () {
     // 初始化表单数据
     this.initModel(this.$utils.deepClone(this.fields))
   },
-  emits: ['update:modelValue', 'change', 'submit', 'reset', 'form-ready'],
+  emits: ['update:modelValue', 'change', 'submit', 'reset'],
   methods: {
     // 表单值初始化，默认值仅通过fields传入
     initModel (fields) {
@@ -115,8 +115,6 @@ export default {
         })
       }
       this.model = Object.assign(model, this.modelValue)
-      this.$emit('update:modelValue', this.model)
-      this.$emit('change', this.model)
     },
     // 格式化双绑值
     formatModel (field, model) {

@@ -1,7 +1,8 @@
 <template>
   <a-layout-content class="atom-maker-panel">
     <!-- 画布头部 -->
-    <MakerHeader @maker-header-action="handleHeaderAction"
+    <MakerHeader :active="{ undo, redo }"
+                 @maker-header-action="handleHeaderAction"
                  @maker-canvas-resize="handleCanvasResize"></MakerHeader>
     <div class="atom-maker-canvas-panel">
       <div :class="['atom-maker-canvas', panel]">
@@ -58,14 +59,15 @@
   </a-layout-content>
   <!-- 预览弹窗 -->
   <MakerPreview :visible="previewVisible"
-               :title="formConfig.title"
-               :formConfig="formConfig"
-               :widgets="previewWidgets"
-               @maker-preview-cancel="handlePreviewCancel"></MakerPreview>
-  <!-- 导出预览弹窗 -->
-  <ExportPreview :visible="exportVisible"
+                :title="formConfig.title"
+                :formConfig="formConfig"
                 :widgets="previewWidgets"
-                @maker-export-cancel="handleExportCancel"></ExportPreview>
+                @maker-preview-cancel="handlePreviewCancel"></MakerPreview>
+  <!-- 导出预览弹窗 -->
+  <JsonPreview :visible="jsonVisible"
+                 :formConfig="makerConfig.formConfig"
+                 :widgets="previewWidgets"
+                 @maker-export-cancel="handleExportCancel"></JsonPreview>
 </template>
 
 <script>
@@ -77,13 +79,28 @@ import MakerHeader from '../Widget/MakerHeader'
 import LayoutWidget from '../Widget/LayoutWidget'
 import FormWidget from '../Widget/FormWidget'
 import MakerPreview from '../Preview/MakerPreview'
+import JsonPreview from '../Preview/JsonPreview'
 import copy from '../mixins/copy'
-import ExportPreview from '../Preview/ExportPreview'
 export default {
   name: 'MakerPanel',
-  components: {ExportPreview, FuncTitle, MakerHeader, LayoutWidget, FormWidget, MakerPreview },
+  components: { FuncTitle, MakerHeader, LayoutWidget, FormWidget, MakerPreview, JsonPreview },
   mixins: [copy],
   props: {
+    // 实现双绑的widgets列表
+    modelValue: {
+      type: Array,
+      default: () => ([])
+    },
+    // undo是否可用
+    undo: {
+      type: Boolean,
+      default: false
+    },
+    // redo是否可用
+    redo: {
+      type: Boolean,
+      default: false
+    },
     // 表单配置
     makerConfig: {
       type: Object,
@@ -103,8 +120,8 @@ export default {
       widgets: [],
       // preview预览显隐
       previewVisible: false,
-      // 导出预览显隐
-      exportVisible: false,
+      // JSON预览显隐
+      jsonVisible: false,
       // 拖动配置
       dragOptions: {
         animation: 300,
@@ -132,25 +149,46 @@ export default {
       return this.$utils.deepClone(this.widgets)
     }
   },
-  emits: ['maker-widget-change'],
+  watch: {
+    // 监听外部传入的widgets列表变化
+    modelValue: {
+      deep: true,
+      immediate: true,
+      handler (newValue) {
+        this.widgets = newValue
+      }
+    },
+    // 监听内部widgets列表变化实现双绑
+    widgets: {
+      deep: true,
+      handler (newValue) {
+        this.$emit('update:modelValue', newValue)
+      }
+    }
+  },
+  emits: ['maker-widget-change', 'update:modelValue', 'maker-undo', 'maker-redo', 'maker-save'],
   methods: {
     // 响应头部点击响应
     handleHeaderAction (action) {
-      console.log(action)
       // 清空
-      if (action.name === 'clear') {
+      if (action.name === 'undo') {
+        // 提交给上层用于回滚
+        this.$emit('maker-undo')
+      } else if (action.name === 'redo') {
+        // 提交给上层用于重做
+        this.$emit('maker-redo')
+      } else if (action.name === 'clear') {
         this.widgets = []
         this.$emit('maker-widget-change', {})
       } else if (action.name === 'preview') {
         // 预览
         this.previewVisible = true
-      } else if (action.name === 'import') {
-        // 导入
-      } else if (action.name === 'export') {
-        // 导出
-        this.exportVisible = true
+      } else if (action.name === 'json') {
+        // JSON
+        this.jsonVisible = true
       } else if (action.name === 'save') {
         // 保存
+        this.$emit('maker-save')
       }
     },
     // 响应画布大小调整
@@ -190,7 +228,7 @@ export default {
     },
     // 响应导出预览取消
     handleExportCancel () {
-      this.exportVisible = false
+      this.jsonVisible = false
     }
   }
 }

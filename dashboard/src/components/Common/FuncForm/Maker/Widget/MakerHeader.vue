@@ -1,6 +1,6 @@
 <template>
   <a-row class="atom-maker-header">
-    <a-col span="14" class="atom-maker-header-left">
+    <a-col span="12" class="atom-maker-header-left">
       <!-- 画布切换 -->
       <TipButton v-for="panel in panelList"
                  :key="panel.name"
@@ -25,7 +25,7 @@
                  placement="bottom"
                  @click="handleAction({ name: 'redo' })"></TipButton>
     </a-col>
-    <a-col span="10" class="atom-maker-header-right">
+    <a-col span="12" class="atom-maker-header-right">
       <!-- 导入配置 | 清空 | 预览内部分为界面预览和JSON代码预览 -->
       <TipButtonGroup type="both" :actions="actionList" :divider="false" @click="handleAction"></TipButtonGroup>
     </a-col>
@@ -63,13 +63,8 @@ export default {
       actionList: [
         { icon: 'ClearOutlined', title: '清空', name: 'clear' },
         { icon: 'EyeOutlined', title: '预览', name: 'preview' },
-        { icon: 'SettingOutlined', title: '操作',
-          children: [
-            { icon: 'ImportOutlined', title: '导入', name: 'import' },
-            { icon: 'ExportOutlined', title: '导出', name: 'export' },
-            { icon: 'SaveOutlined', title: '保存', name: 'save' }
-          ]
-        }
+        { icon: 'NodeExpandOutlined', title: 'JSON', name: 'json' },
+        { icon: 'SaveOutlined', title: '保存', name: 'save' }
       ]
     }
   },

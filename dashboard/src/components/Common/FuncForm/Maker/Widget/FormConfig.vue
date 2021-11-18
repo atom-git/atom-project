@@ -53,8 +53,15 @@ export default {
       formConfig: {
         labelCol: { span: 3 }
       },
+      // form配置是否准确好，防止初始化时的日志记录
+      configReady: false,
       // 表单配置fields
       fields: [
+        {
+          type: 'text',
+          name: 'title',
+          label: '表单标题'
+        },
         {
           type: 'number',
           name: 'width',
@@ -66,9 +73,14 @@ export default {
           parser: value => value.replace('%', '')
         },
         {
-          type: 'text',
-          name: 'title',
-          label: '表单标题'
+          type: 'number',
+          name: 'dialogSize',
+          label: '弹窗大小',
+          min: 520,
+          max: 860,
+          default: 720,
+          formatter: value => `${value}px`,
+          parser: value => value.replace('px', '')
         },
         {
           type: 'radio',
@@ -130,9 +142,16 @@ export default {
       deep: true,
       handler (newValue) {
         this.$emit('update:modelValue', newValue)
-        this.$emit('change', newValue)
+        // 配置已准备好了再提交变更事件
+        if (this.configReady) {
+          this.$emit('change', newValue)
+        }
       }
     }
+  },
+  mounted () {
+    // 表单是否已经准备好
+    this.configReady = true
   },
   emits: ['update:modelValue', 'change'],
   methods: {

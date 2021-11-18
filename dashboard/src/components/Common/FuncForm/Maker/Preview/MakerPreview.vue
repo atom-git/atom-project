@@ -1,6 +1,7 @@
 <template>
   <Dialog v-model="dialogVisible"
           :title="title"
+          :width="formConfig.dialogSize"
           :maskClosable="false"
           :destroyOnClose="true"
           :footer="null"
