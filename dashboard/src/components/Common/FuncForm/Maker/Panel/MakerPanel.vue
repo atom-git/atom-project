@@ -202,8 +202,8 @@ export default {
     },
     // 响应组件选择改变
     handleWidgetChange (widget) {
-      // 设置当前操作的组件
-      this.$emit('maker-widget-change', widget)
+      // 设置当前操作的组件, 最后一个参数是是否选中的改变，此项改变不影响历史记录
+      this.$emit('maker-widget-change', widget, true)
     },
     // 响应组件的复制操作
     handleWidgetCopy (widget, index) {

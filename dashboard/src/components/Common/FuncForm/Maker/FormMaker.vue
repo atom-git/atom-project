@@ -52,11 +52,15 @@ export default {
       widgets: [],
       // 当前操作的组件
       curWidget: {},
-      // 编辑器日志
+      // 编辑器历史
       makerLog: [],
-      // 日志状态
+      // 历史状态
       logState: {
-        // 所在状态位置
+        // 历史状态是否准备好
+        ready: true,
+        // 组件的历史状态是否准备好
+        widgetReady: false,
+        // 所在历史状态位置，0的位置为初始状态，初时状态时，undo不开启
         index: 0,
         // undo是否可用
         undo: false,
@@ -100,64 +104,82 @@ export default {
       }
     }
   },
-  emits: ['maker-save'],
+  emits: ['maker-save', 'update:modelValue', 'change'],
   methods: {
     // 响应撤销
     handleUndo () {
-      // 记录日志索引位置
+      // 记录一次动作导致的属性变化，当次不触发历史的二次记录
+      this.logState.ready = false
+      // 移动历史位置
       this.logState.index--
-      // 退到最后一步时，则不可再后退
-      if (this.logState.index < 0) {
+      // 退到初始状态时，则不可再后退
+      if (this.logState.index < 1) {
         this.logState.undo = false
         this.logState.index = 0
       }
       this.logState.redo = true
+      this.reconfigMaker()
+    },
+    // 响应重做
+    handleRedo () {
+      // 记录一次动作导致的属性变化，当次不触发历史的二次记录
+      this.logState.ready = false
+      // 移动历史位置
+      this.logState.index++
+      // 用于判断重做是否可用
+      if (this.makerLog.length > 0 && this.logState.index === this.makerLog.length - 1) {
+        this.logState.redo = false
+      }
+      this.logState.undo = true
+      this.reconfigMaker()
+    },
+    // 重置maker配置信息
+    reconfigMaker () {
       // 重置配置信息
       const { makerConfig, widgets, curWidget } = this.$utils.deepClone(this.makerLog[this.logState.index])
       this.makerConfig = makerConfig
       this.widgets = widgets
       this.curWidget = curWidget
-      console.log(this.makerConfig, this.widgets, this.curWidget)
     },
-    // 响应重做
-    handleRedo () {
-      this.logState.index++
-      // 用于判断重做是否可用
-      if (this.makerLog.length > 0 && this.logState.index !== this.makerLog.length - 1) {
-        this.logState.redo = false
-      }
-      console.log(this.makerConfig, this.widgets, this.curWidget)
-    },
-    // 推送日志
+    // 推送历史
     pushLog () {
-      // 如果日志所处位置不是最后一个，则把后面的动作日志清除
-      if (this.makerLog.length > 0 && this.logState.index !== this.makerLog.length - 1) {
-        this.makerLog.splice(this.logState.index + 1)
-        this.logState.redo = false
+      // 如果有历史移动，或者是组件变化的初始化动作，则初次不记录历史
+      if (this.logState.ready) {
+        // 如果历史所处位置不是最后一个，则把后面的动作历史清除
+        if (this.makerLog.length > 0 && this.logState.index !== this.makerLog.length - 1) {
+          this.makerLog.splice(this.logState.index + 1)
+          this.logState.redo = false
+        }
+        // 加入历史
+        this.makerLog.push(this.$utils.deepClone({
+          makerConfig: this.makerConfig,
+          widgets: this.widgets,
+          curWidget: this.curWidget
+        }))
+        // 记录历史位置
+        this.logState.index = this.makerLog.length - 1
+        // 开启undo，初始状态时不开启undo
+        if (this.makerLog.length > 1) {
+          this.logState.undo = true
+        }
+      } else {
+        this.logState.ready = true
       }
-      // 加入日志
-      this.makerLog.push(this.$utils.deepClone({
-        makerConfig: this.makerConfig,
-        widgets: this.widgets,
-        curWidget: this.curWidget
-      }))
-      // 记录日志位置
-      this.logState.index = this.makerLog.length - 1
-      // 开启undo
-      this.logState.undo = true
-      console.log(this.makerConfig, this.widgets, this.curWidget)
     },
     // 响应当前填加的组件改变
-    handleWidgetChange (curWidget) {
+    handleWidgetChange (curWidget, select = false) {
       this.curWidget = curWidget
       // 回写组件配置
       this.makerConfig.widgetConfig = curWidget.widgetConfig || {}
-      // 加入变化日志
-      this.pushLog()
+      // 组件增加，复制，删除时，改变widgetReady的状态为false
+      // 在widgetConfig发生改变时第一次（为初始化）将widgetReady修改为true,第二次记录完历史后改为false
+      if (!select) {
+        this.logState.widgetReady = false
+      }
     },
     // 响应form配置变化
     handleFormConfigChange () {
-      // 加入变化日志
+      // 加入变化历史
       this.pushLog()
     },
     // 响应组件的配置变化
@@ -180,8 +202,13 @@ export default {
       }
       // 组件无法直接挂载的参数调整
       this.widgetReconfig(this.curWidget, widgetConfig)
-      // 加入变化日志
-      this.pushLog()
+      // 加入变化历史
+      if (this.logState.widgetReady) {
+        this.pushLog()
+        this.logState.widgetReady = false
+      } else {
+        this.logState.widgetReady = true
+      }
     },
     // 响应保存提交
     handleSave () {

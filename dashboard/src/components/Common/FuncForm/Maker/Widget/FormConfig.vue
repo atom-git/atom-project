@@ -53,8 +53,6 @@ export default {
       formConfig: {
         labelCol: { span: 3 }
       },
-      // form配置是否准确好，防止初始化时的日志记录
-      configReady: false,
       // 表单配置fields
       fields: [
         {
@@ -142,16 +140,9 @@ export default {
       deep: true,
       handler (newValue) {
         this.$emit('update:modelValue', newValue)
-        // 配置已准备好了再提交变更事件
-        if (this.configReady) {
-          this.$emit('change', newValue)
-        }
+        this.$emit('change', newValue)
       }
     }
-  },
-  mounted () {
-    // 表单是否已经准备好
-    this.configReady = true
   },
   emits: ['update:modelValue', 'change'],
   methods: {
