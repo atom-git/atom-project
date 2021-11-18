@@ -52,7 +52,7 @@ export default {
     // 时间格式化
     timeFormat: {
       type: String,
-      default: 'YYYY-MM-DD HH24:mi:ss'
+      default: 'YYYY-MM-DD HH:mm:ss'
     }
   },
   data () {

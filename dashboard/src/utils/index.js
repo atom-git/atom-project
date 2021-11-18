@@ -107,6 +107,8 @@ export default class Utils {
       return 'undefined'
     } else if (value === null) {
       return 'null'
+    } else if (this.isDate(value)) {
+      return 'date'
     } else if (this.isObject(value)) {
       return 'object'
     } else if (this.isArray(value)) {

@@ -1,5 +1,5 @@
 <template>
-  <JsonView :modelValue="fields"></JsonView>
+  <JsonView :modelValue="jsonData"></JsonView>
   <FormList title="文件上传功能测试"
             :fields="fields"
             v-model="model"
@@ -36,8 +36,13 @@ export default {
             the Analytical Engine. She was the first to recognise that the machine had applications beyond pure calculation,
             and published the first algorithm intended to be carried out by such a machine.
             As a result, she is sometimes regarded as the first to recognise the full potential of a "computing machine" and the first computer programmer.`,
-        bornAt: '1815-12-10T00:00:00.000Z',
-        diedAt: '1852-11-27T00:00:00.000Z'
+        bornAt: new Date(),
+        diedAt: '1988-08-26',
+        third: [
+          { name: 'title', title: 'house' },
+          { name: 'title', title: 'house' },
+          { name: 'title', title: 'house' }
+        ]
       },
       // 字段列表
       fields: [

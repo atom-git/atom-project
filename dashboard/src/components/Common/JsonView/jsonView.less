@@ -2,27 +2,36 @@
 Json格式化样式
  */
 .atom-json-view {
+  position: relative;
+  /*功能按钮*/
+  .ant-avatar {
+    background-color: @component-background;
+    box-shadow: 0 4px 12px @shadow-color;
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+    .anticon {
+      color: @text-color;
+    }
+  }
   /*节点样式*/
   .atom-json-node {
-    margin-left: 16px;
+    margin-left: 24px;
     /* 展开图标 */
     .anticon {
       padding: 4px;
     }
     &>.atom-json-node-key {
-      margin-right: 4px;
-    }
-    /*对象和数组，string，key值*/
-    &.object, &.array, &>.atom-json-node-key {
-     color: @text-color;
+      margin-right: 8px;
+      color: @purple-6;
     }
     /*undefined，null*/
     &.undefined, &.null {
       color: @magenta-6;
     }
     /*date*/
-    &.data {
-      color: @purple-6;
+    &.date {
+      color: @pink-6;
     }
     /*function*/
     &.function {
@@ -55,6 +64,10 @@ Json格式化样式
     }
     &:last-of-type:after {
       content: '';
+    }
+    /*根元素左边距为0*/
+    &.root {
+      margin-left: 0;
     }
   }
 }

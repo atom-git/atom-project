@@ -213,38 +213,5 @@ export default {
 </script>
 
 <style lang="less">
-.atom-image-picker-container .ant-upload.ant-upload-drag {
-  background: none;
-  border: none;
-  .ant-upload.ant-upload-btn {
-    padding: 0;
-  }
-  .atom-image-picker {
-    position: relative;
-    width: 100%;
-    .atom-image-picker-actions {
-      position: absolute;
-      left: 12px;
-      z-index: 1;
-      opacity: 0.8;
-      &:hover {
-        opacity: 1;
-      }
-      .ant-upload {
-        padding: 0;
-      }
-    }
-    .atom-image-preview {
-      position: absolute;
-      right: 0;
-      bottom: 0;
-      background: #0000004d;
-      width: calc(var(--height) * 0.5);
-      img {
-        width: 100%;
-        height: auto;
-      }
-    }
-  }
-}
+@import "imagePicker";
 </style>

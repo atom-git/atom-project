@@ -4,7 +4,7 @@
   <IconFont v-if="isType('object') || isType('array')"
             :type="expand ? 'CaretDownOutlined' : 'CaretRightOutlined'"
             @click="toggleExpand" />
-  <span v-if="keyName" class="atom-json-node-key">{{ keyName }}:</span>
+  <span v-if="keyName" class="atom-json-node-key">"{{ keyName }}":</span>
   <!-- Json对象 -->
   <JsonObject v-if="isType('object')"
               :modelValue="jsonData"
@@ -78,7 +78,7 @@ export default {
     // 时间格式化
     timeFormat: {
       type: String,
-      default: 'YYYY-MM-DD HH24:mi:ss'
+      default: 'YYYY-MM-DD HH:mm:ss'
     }
   },
   data () {
@@ -93,9 +93,16 @@ export default {
       return this.$utils.typeIs(this.jsonData)
     }
   },
+  watch: {
+    // 监听外部传入展开层级的变化
+    expandDepth (newValue) {
+      // 当前层级小于等于其最大展开深度时当前级展开
+      this.expand = this.level <= newValue
+    }
+  },
   mounted () {
     // 当前层级小于等于其最大展开深度时当前级展开
-    this.expand = this.level >= this.expandDepth
+    this.expand = this.level <= this.expandDepth
   },
   methods: {
     // 判断类型

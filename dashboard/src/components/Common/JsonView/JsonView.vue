@@ -1,8 +1,22 @@
 <template>
   <div class="atom-json-view">
-    <JsonNode :jsonData="jsonData"
-              :level="level"
-              :expandDepth="expandDepth"
+    <a-dropdown :trigger="['hover', 'click']">
+      <a-avatar size="large">
+        <template #icon>
+          <IconFont type="NodeExpandOutlined" />
+        </template>
+      </a-avatar>
+      <template #overlay>
+        <a-menu @click="handleExpandChange">
+          <a-menu-item key="1">简单展开</a-menu-item>
+          <a-menu-item key="9">全部展开</a-menu-item>
+        </a-menu>
+      </template>
+    </a-dropdown>
+    <JsonNode class="root"
+              :jsonData="jsonData"
+              :level="1"
+              :expandDepth="expandLevel"
               :sort="sort"
               :timeFormat="timeFormat"></JsonNode>
   </div>
@@ -37,18 +51,19 @@ export default {
     // 时间格式化
     timeFormat: {
       type: String,
-      default: 'YYYY-MM-DD HH24:mi:ss'
+      default: 'YYYY-MM-DD HH:mm:ss'
     }
   },
   data () {
     return {
       // json格式化数据，根据展开层级、是否排序及是否对象，数组数据类型进行展开字段的补充
       jsonData: {},
-      // 层级
-      level: 1
+      // 展开到层级
+      expandLevel: 1
     }
   },
   watch: {
+    // 监听外部传入的数据变化
     modelValue: {
       deep: true,
       immediate: true,
@@ -60,6 +75,16 @@ export default {
           this.$message.error('仅支持数组或者对象类型')
         }
       }
+    },
+    // 监听外部传入展开层级的变化
+    expandDepth (newValue) {
+      this.expandLevel = newValue
+    }
+  },
+  methods: {
+    // 响应展示层级变化
+    handleExpandChange ({ key }) {
+      this.expandLevel = Number.parseInt(key)
     }
   }
 }
