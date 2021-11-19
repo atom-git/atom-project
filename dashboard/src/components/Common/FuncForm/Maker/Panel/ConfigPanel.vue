@@ -43,6 +43,12 @@ export default {
       formConfig: {}
     }
   },
+  computed: {
+    // formMaker配置
+    makerConfig () {
+      return { widgetConfig: this.widgetConfig, formConfig : this.formConfig }
+    }
+  },
   watch: {
     // 监听外部传入值的变化
     modelValue: {
@@ -53,21 +59,11 @@ export default {
       }
     },
     // 组件配置的双绑
-    widgetConfig: {
+    makerConfig: {
       deep: true,
       handler (newValue) {
-        const modelValue = { widgetConfig: newValue, formConfig : this.formConfig }
-        this.$emit('update:modelValue', modelValue)
-        this.$emit('change', modelValue)
-      }
-    },
-    // form配置的双绑
-    formConfig: {
-      deep: true,
-      handler (newValue) {
-        const modelValue = { widgetConfig: this.widgetConfig, formConfig : newValue }
-        this.$emit('update:modelValue', modelValue)
-        this.$emit('change', modelValue)
+        this.$emit('update:modelValue', newValue)
+        this.$emit('change', newValue)
       }
     }
   },

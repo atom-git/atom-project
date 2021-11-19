@@ -3,6 +3,7 @@
             layout="vertical"
             v-model="widgetConfig"
             :fields="fields"
+            @change="handleChange"
             hiddenFooter></FormList>
   <a-empty v-else description="请添加组件"/>
 </template>
@@ -45,10 +46,16 @@ export default {
       deep: true,
       handler (newValue) {
         this.$emit('update:modelValue', newValue)
-        this.$emit('change', newValue)
+        this.$emit('change', this.widgetConfig)
       }
     }
   },
-  emits: ['update:modelValue', 'change']
+  emits: ['update:modelValue', 'change'],
+  methods: {
+    // 响应表单数据的变化，这里处理方式与FormConfig不一样的原因是表单的配置作为整体上的初始化配置，是恢复成原状的必要条件
+    handleChange () {
+      // this.$emit('change', this.widgetConfig)
+    }
+  }
 }
 </script>

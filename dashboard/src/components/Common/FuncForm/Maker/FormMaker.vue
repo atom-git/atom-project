@@ -58,8 +58,13 @@ export default {
       logState: {
         // 历史状态是否准备好
         ready: true,
-        // 组件的历史状态是否准备好
-        widgetReady: false,
+        /**
+         * 组件操作状态
+         * 默认wait
+         * add copy delete selete config由widget config变化触发日志
+         * undo redo不触发日志，仅在日志链中移动
+         */
+        widget: 'wait',
         // 所在历史状态位置，0的位置为初始状态，初时状态时，undo不开启
         index: 0,
         // undo是否可用
@@ -118,7 +123,7 @@ export default {
         this.logState.index = 0
       }
       this.logState.redo = true
-      this.reconfigMaker()
+      this.reconfigMaker('undo')
     },
     // 响应重做
     handleRedo () {
@@ -131,18 +136,19 @@ export default {
         this.logState.redo = false
       }
       this.logState.undo = true
-      this.reconfigMaker()
+      this.reconfigMaker('redo')
     },
     // 重置maker配置信息
-    reconfigMaker () {
+    reconfigMaker (action) {
       // 重置配置信息
       const { makerConfig, widgets, curWidget } = this.$utils.deepClone(this.makerLog[this.logState.index])
       this.makerConfig = makerConfig
       this.widgets = widgets
       this.curWidget = curWidget
+      this.logState.widget = action
     },
     // 推送历史
-    pushLog () {
+    pushLog (state) {
       // 如果有历史移动，或者是组件变化的初始化动作，则初次不记录历史
       if (this.logState.ready) {
         // 如果历史所处位置不是最后一个，则把后面的动作历史清除
@@ -162,25 +168,24 @@ export default {
         if (this.makerLog.length > 1) {
           this.logState.undo = true
         }
+        // 日志记录完成后widget状态变为wait状态
+        console.log(state, this.makerLog, this.logState)
       } else {
         this.logState.ready = true
       }
     },
     // 响应当前填加的组件改变
-    handleWidgetChange (curWidget, select = false) {
+    handleWidgetChange (curWidget, action = 'select') {
       this.curWidget = curWidget
       // 回写组件配置
       this.makerConfig.widgetConfig = curWidget.widgetConfig || {}
-      // 组件增加，复制，删除时，改变widgetReady的状态为false
-      // 在widgetConfig发生改变时第一次（为初始化）将widgetReady修改为true,第二次记录完历史后改为false
-      if (!select) {
-        this.logState.widgetReady = false
-      }
+      // 设置操作状态，在widget config发生改变时再做日志记录
+      this.logState.widget = action
     },
     // 响应form配置变化
     handleFormConfigChange () {
       // 加入变化历史
-      this.pushLog()
+      this.pushLog('form config change')
     },
     // 响应组件的配置变化
     handleWidgetConfigChange (widgetConfig) {
@@ -202,12 +207,19 @@ export default {
       }
       // 组件无法直接挂载的参数调整
       this.widgetReconfig(this.curWidget, widgetConfig)
-      // 加入变化历史
-      if (this.logState.widgetReady) {
-        this.pushLog()
-        this.logState.widgetReady = false
-      } else {
-        this.logState.widgetReady = true
+      /**
+       * add copy delete select事件发生时，由于widget的config还未渲染，因此首轮仅修改状态为config状态，此类事件不作历史记录
+       * wait状态，发生config改变时，触发为config状态，且作日志记录
+       * 其他状态改变为config状态下才组织日志的记录
+        */
+      if (['add', 'copy', 'delete', 'select'].includes(this.logState.widget)) {
+        this.logState.widget = 'config'
+        console.log(this.logState.widget)
+      } else if (this.logState.widget === 'wait') {
+        this.logState.widget = 'config'
+        this.pushLog('widget wait change')
+      } else if (this.logState.widget === 'config') {
+        this.pushLog('widget config change')
       }
     },
     // 响应保存提交

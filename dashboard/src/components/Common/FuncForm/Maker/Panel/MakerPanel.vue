@@ -198,21 +198,21 @@ export default {
     // 响应组件的增加
     handleWidgetAdd (event) {
       // 设置当前操作的组件
-      this.$emit('maker-widget-change', this.widgets[event['newDraggableIndex']])
+      this.$emit('maker-widget-change', this.widgets[event['newDraggableIndex']], 'add')
     },
     // 响应组件选择改变
     handleWidgetChange (widget) {
       // 设置当前操作的组件, 最后一个参数是是否选中的改变，此项改变不影响历史记录
-      this.$emit('maker-widget-change', widget, true)
+      this.$emit('maker-widget-change', widget)
     },
     // 响应组件的复制操作
     handleWidgetCopy (widget, index) {
-      this.$emit('maker-widget-change', this.widgetCopy(widget, index, this.widgets))
+      this.$emit('maker-widget-change', this.widgetCopy(widget, index, this.widgets), 'copy')
     },
     // 响应组件的删除操作
     handleWidgetDelete (widget, index) {
       this.widgets.splice(index, 1)
-      this.$emit('maker-widget-change', this.widgets[index - 1] || this.widgets[index] || {})
+      this.$emit('maker-widget-change', this.widgets[index - 1] || this.widgets[index] || {}, 'delete')
     },
     // 响应tab切换
     handleTabChange (activeTab, widget) {
