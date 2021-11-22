@@ -116,7 +116,7 @@ export default {
         {
           dataIndex: 'createTime',
           title: '创建日期',
-          format: 'formatDate|YYYY年MM月DD日',
+          format: 'formatDate|YYYY-MM-DD HH:mm:ss',
           hidden: true
         },
         {

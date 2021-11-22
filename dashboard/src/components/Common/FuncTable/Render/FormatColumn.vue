@@ -33,10 +33,17 @@
   <template v-else-if="isFormat('formatAction')">
     <TipButtonGroup :actions="column.actions" @click="handleAction"></TipButtonGroup>
   </template>
+  <!-- 格式化长文本提示 -->
   <template v-else-if="isFormat('formatTooltip')">
     <a-tooltip :title="content" placement="topLeft">
       <span>{{ content }}</span>
     </a-tooltip>
+  </template>
+  <!-- 格式化进度条 -->
+  <template v-else-if="isFormat('formatProgress')">
+    <div class="atom-form-progress">
+      <span :style="progressStyle">{{ content }}</span>
+    </div>
   </template>
   <!-- 其他文本展示内容的格式化 -->
   <template v-else>
@@ -53,6 +60,7 @@
  * 格式化开关: formatSwitch, options { value, title, status }，应用状态字段更好的展示，以及直接操作其状态
  * 格式化操作按钮: formatAction|type[icon, text, both], actions [ a-tooltip, a-button ] 属性合集
  * 格式化链接: formatLink展示类似于详情点击
+ * 格式化进度条: formatProgress展示成类似于进度条，30% error色，60% warn色 90% info色 100% success色
  * 下面的均为值变化
  * 格式化对象: formatObject|ObjectKey，应用于外键属性渲染
  * 格式化维值: formatType, options，应用于维值渲染 { value, label } 服务端sys_type_mean VO层需要转换下
@@ -89,6 +97,7 @@ export default {
   },
   data () {
     return {
+      // 头像样式
       avatarStyle: { backgroundColor: this.$store.getters.primaryColor }
     }
   },
@@ -99,11 +108,26 @@ export default {
     },
     // switch的属性
     switchOption () {
-      return {
-        checkedValue: this.$utils.isValid(this.column.form.checkedValue) || 1,
-        checkedChildren: this.column.form.checkedChildren || '启',
-        unCheckedValue: this.$utils.isValid(this.column.form.checkedValue) || 0,
-        unCheckedChildren: this.column.form.checkedChildren || '禁'
+      if (this.isFormat('formatSwitch')) {
+        return {
+          checkedValue: this.$utils.isValid(this.column.form.checkedValue) || 1,
+          checkedChildren: this.column.form.checkedChildren || '启',
+          unCheckedValue: this.$utils.isValid(this.column.form.checkedValue) || 0,
+          unCheckedChildren: this.column.form.checkedChildren || '禁'
+        }
+      } else {
+        return {}
+      }
+    },
+    // 进度条样式
+    progressStyle () {
+      if (this.isFormat('formatProgress')) {
+        return {
+          width: this.content,
+          backgroundColor: this.less.match('@error-color')
+        }
+      } else {
+        return {}
       }
     }
   },
@@ -125,6 +149,8 @@ export default {
         return this.formatDate()
       } else if (this.isFormat('formatText')) {
         return this.formatText()
+      } else if (this.isFormat('formatProgress')) {
+        return this.formatProgress()
       } else {
         return this.text
       }
@@ -182,6 +208,17 @@ export default {
       } else {
         const template = formater[1]
         return template.replace(/{(.+?)}/, this.text)
+      }
+    },
+    // 格式化进度条数值
+    formatProgress () {
+      if (this.text >= 0 && this.text <= 1) {
+        return (this.text * 100) + '%'
+      } else if (this.text.includes('%')) {
+        return this.text
+      } else {
+        console.warn(`${this.text}必须为百分比或者0到1的小数`)
+        return this.text
       }
     },
     // 响应操作按钮的点击

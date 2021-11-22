@@ -111,6 +111,12 @@ export default [
             meta: { title: '数据字典' }
           },
           {
+            path: 'sysform',
+            name: 'sysform',
+            component: () => import(/* webpackChunkName: "system" */ '@/views/system/form/SysForm'),
+            meta: { title: '表单管理' }
+          },
+          {
             path: 'sysnews',
             name: 'sysnews',
             component: () => import(/* webpackChunkName: "system" */ '@/views/system/news/SysNews'),

@@ -1,7 +1,7 @@
 <template>
   <a-modal v-if="dialogType === 'modal'"
            v-bind="$attrs"
-           class="atom-dialog"
+           :class="['atom-dialog', isFull ? 'is-full' : '']"
            :width="dialogSize"
            v-model:visible="visible"
            :confirmLoading="loading"
@@ -13,7 +13,7 @@
   </a-modal>
   <a-drawer v-else
             v-bind="$attrs"
-            class="atom-dialog"
+            :class="['atom-dialog', isFull ? 'is-full' : '']"
             :width="dialogSize"
             v-model:visible="visible"
             @close="$emit('cancel')">
@@ -71,6 +71,11 @@ export default {
     loading: {
       type: Boolean,
       default: false
+    },
+    // 是否全屏
+    isFull: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -90,7 +95,7 @@ export default {
     },
     // 弹窗大小
     dialogSize () {
-      return this.width || this.$store.getters.appConfig.dialog.size
+      return this.isFull ? '100%' : this.width || this.$store.getters.appConfig.dialog.size
     }
   },
   watch: {

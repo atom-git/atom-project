@@ -200,6 +200,10 @@ export default {
           if (this.$utils.isValid(column.children)) {
             column.children = this.initRenderColumns(column.children)
           }
+          // 如果是操作字段或者是formatAction时，其字段不做隐藏
+          if (column.dataIndex === 'action') {
+            column.class = 'table-action-td'
+          }
           renderColumns.push(column)
         }
       })
@@ -286,6 +290,8 @@ export default {
     .ant-table {
       td {
         white-space: nowrap;
+      }
+      td:not(.table-action-td) {
         overflow: hidden;
         text-overflow: ellipsis;
       }

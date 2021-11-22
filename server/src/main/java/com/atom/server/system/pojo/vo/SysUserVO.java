@@ -37,7 +37,7 @@ public class SysUserVO extends AbsEntity {
 	private SysDeptVO sysDept;
 	@ApiModelProperty("创建时间")
 	private Date createTime;
-	@ApiModelProperty("状态")
+	@ApiModelProperty("状态 是否有效1有效，0失效")
 	private Integer ifValid;
 
 	public static class VOConverter extends Converter<SysUserVO, SysUser> {

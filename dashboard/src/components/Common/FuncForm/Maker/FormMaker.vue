@@ -80,6 +80,13 @@ export default {
     // 配置字段
     configFields () {
       return this.curWidget.fields || []
+    },
+    // 内部配置信息绑定
+    formMaker () {
+      return {
+        formConfig: this.makerConfig.formConfig,
+        widgets: this.widgets
+      }
     }
   },
   watch: {
@@ -88,24 +95,17 @@ export default {
       deep: true,
       immediate: true,
       handler (newValue) {
-        this.makerConfig = (newValue && newValue.makerConfig) || {}
+        console.log('赋值')
+        this.makerConfig = (newValue && { formConfig: newValue.formConfig || {} }) || {}
         this.widgets = (newValue && newValue.widgets) || []
       }
     },
     // 监听配置变化，实现双绑
-    makerConfig: {
+    formMaker: {
       deep: true,
       handler (newValue) {
-        this.$emit('update:modelValue', { makerConfig: newValue, widgets: this.widgets })
-        this.$emit('change', { makerConfig: newValue, widgets: this.widgets })
-      }
-    },
-    // 监听组件变化，实现双绑
-    widgets: {
-      deep: true,
-      handler (newValue) {
-        this.$emit('update:modelValue', { makerConfig: this.makerConfig, widgets: newValue })
-        this.$emit('change', { makerConfig: this.makerConfig, widgets: newValue })
+        this.$emit('update:modelValue', newValue)
+        this.$emit('change', newValue)
       }
     }
   },

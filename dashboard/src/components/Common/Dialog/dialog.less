@@ -36,4 +36,22 @@
       }
     }
   }
+  /*全屏-该模式下padding为0*/
+  &.is-full {
+    top: 0;
+    padding-bottom: 0;
+    .ant-modal-content {
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh);
+    }
+    .ant-modal-body {
+      flex: 1;
+      max-height: 100%;
+      padding: 0;
+    }
+    .ant-drawer-wrapper-body .ant-drawer-body .atom-dialog-content {
+      padding: 0;
+    }
+  }
 }
