@@ -8,7 +8,8 @@
     <MakerPanel v-model="widgets"
                 :undo="logState.undo"
                 :redo="logState.redo"
-                :makerConfig="makerConfig"
+                :formConfig="formConfig"
+                :widgetConfig="widgetConfig"
                 :curWidget="curWidget"
                 @maker-widget-change="handleWidgetChange"
                 @maker-undo="handleUndo"
@@ -16,7 +17,8 @@
                 @maker-save="handleSave"></MakerPanel>
     <!-- 右侧配置面板区域 -->
     <a-layout-sider :theme="contentTheme" class="atom-config-panel" :width="280">
-      <ConfigPanel v-model="makerConfig"
+      <ConfigPanel v-model:formConfig="formConfig"
+                   v-model:widgetConfig="widgetConfig"
                    :fields="configFields"
                    @form-config-change="handleFormConfigChange"
                    @widget-config-change="handleWidgetConfigChange"></ConfigPanel>
@@ -46,8 +48,10 @@ export default {
   },
   data () {
     return {
-      // 表单编辑器的配置
-      makerConfig: {},
+      // 自定义表单配置
+      formConfig: {},
+      // 组件配置
+      widgetConfig: {},
       // 组件列表
       widgets: [],
       // 当前操作的组件
@@ -84,7 +88,7 @@ export default {
     // 内部配置信息绑定
     formMaker () {
       return {
-        formConfig: this.makerConfig.formConfig,
+        formConfig: this.formConfig,
         widgets: this.widgets
       }
     }
@@ -96,7 +100,7 @@ export default {
       immediate: true,
       handler (newValue) {
         console.log('赋值')
-        this.makerConfig = (newValue && { formConfig: newValue.formConfig || {} }) || {}
+        this.formConfig = (newValue && newValue.formConfig) || {}
         this.widgets = (newValue && newValue.widgets) || []
       }
     },
@@ -141,8 +145,9 @@ export default {
     // 重置maker配置信息
     reconfigMaker (action) {
       // 重置配置信息
-      const { makerConfig, widgets, curWidget } = this.$utils.deepClone(this.makerLog[this.logState.index])
-      this.makerConfig = makerConfig
+      const { formConfig, widgetConfig, widgets, curWidget } = this.$utils.deepClone(this.makerLog[this.logState.index])
+      this.formConfig = formConfig
+      this.widgetConfig = widgetConfig
       this.widgets = widgets
       this.curWidget = curWidget
       this.logState.widget = action
@@ -158,7 +163,8 @@ export default {
         }
         // 加入历史
         this.makerLog.push(this.$utils.deepClone({
-          makerConfig: this.makerConfig,
+          formConfig: this.formConfig,
+          widgetConfig: this.widgetConfig,
           widgets: this.widgets,
           curWidget: this.curWidget
         }))
@@ -178,7 +184,7 @@ export default {
     handleWidgetChange (curWidget, action = 'select') {
       this.curWidget = curWidget
       // 回写组件配置
-      this.makerConfig.widgetConfig = curWidget.widgetConfig || {}
+      this.widgetConfig = curWidget.widgetConfig || {}
       // 设置操作状态，在widget config发生改变时再做日志记录
       this.logState.widget = action
     },

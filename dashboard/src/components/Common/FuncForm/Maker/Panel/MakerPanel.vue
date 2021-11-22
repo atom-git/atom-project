@@ -7,11 +7,11 @@
     <div class="atom-maker-canvas-panel">
       <div :class="['atom-maker-canvas', panel]">
         <!-- 表单头 -->
-        <FuncTitle v-if="formConfig.title"
-                   :title="formConfig.title"
-                   :style="{ width: `${formConfig.width}%` }"></FuncTitle>
+        <FuncTitle v-if="innerFormConfig.title"
+                   :title="innerFormConfig.title"
+                   :style="{ width: `${innerFormConfig.width}%` }"></FuncTitle>
         <!-- 表单区域 -->
-        <a-form v-bind="formConfig" :style="{ width: `${formConfig.width}%` }">
+        <a-form v-bind="innerFormConfig" :style="{ width: `${innerFormConfig.width}%` }">
           <!-- 有元素时 -->
           <Draggable v-bind="dragOptions"
                      v-model="widgets"
@@ -26,8 +26,8 @@
                 <!-- 布局元素 -->
                 <LayoutWidget v-if="element.group === 'layout'"
                               :widget="element"
-                              :labelCol="formConfig.labelCol"
-                              :size="formConfig.size"
+                              :labelCol="innerFormConfig.labelCol"
+                              :size="innerFormConfig.size"
                               :curWidget="curWidget"
                               @maker-widget-change="handleWidgetChange"
                               @maker-tab-change="handleTabChange($event, element)"
@@ -37,8 +37,8 @@
                 <!-- form组件元素 -->
                 <FormWidget v-else
                             :widget="element"
-                            :labelCol="formConfig.labelCol"
-                            :size="formConfig.size"></FormWidget>
+                            :labelCol="innerFormConfig.labelCol"
+                            :size="innerFormConfig.size"></FormWidget>
                 <!-- 当前选中组件时显示复制删除按钮 -->
                 <div class="atom-maker-actions" v-if="element.key === curWidget.key">
                   <a-tooltip title="复制">
@@ -60,12 +60,12 @@
   <!-- 预览弹窗 -->
   <MakerPreview :visible="previewVisible"
                 :title="formConfig.title"
-                :formConfig="formConfig"
+                :formConfig="innerFormConfig"
                 :widgets="previewWidgets"
                 @maker-preview-cancel="handlePreviewCancel"></MakerPreview>
-  <!-- 导出预览弹窗 -->
+  <!-- 导出预览弹窗，这里的formConfig取外部传入的配置参数 -->
   <JsonPreview :visible="jsonVisible"
-                 :formConfig="makerConfig.formConfig"
+                 :formConfig="formConfig"
                  :widgets="previewWidgets"
                  @maker-export-cancel="handleExportCancel"></JsonPreview>
 </template>
@@ -101,8 +101,13 @@ export default {
       type: Boolean,
       default: false
     },
-    // 表单配置
-    makerConfig: {
+    // 自定义表单配置
+    formConfig: {
+      type: Object,
+      required: true
+    },
+    // 组件配置
+    widgetConfig: {
       type: Object,
       required: true
     },
@@ -135,13 +140,13 @@ export default {
   },
   computed: {
     // 表单配置信息
-    formConfig () {
+    innerFormConfig () {
       return {
-        layout: (this.makerConfig.formConfig && this.makerConfig.formConfig.labelAlign === 'vertical')
+        layout: (this.formConfig && this.formConfig.labelAlign === 'vertical')
             ? 'vertical' : 'horizontal',
-        ...this.makerConfig.formConfig,
-        labelAlign: (this.makerConfig.formConfig && this.makerConfig.formConfig.labelAlign === 'vertical')
-            ? 'right' : (this.makerConfig.formConfig && this.makerConfig.formConfig.labelAlign)
+        ...this.formConfig,
+        labelAlign: (this.formConfig && this.formConfig.labelAlign === 'vertical')
+            ? 'right' : (this.formConfig && this.formConfig.labelAlign)
       }
     },
     // 预览组件列表，深度复制一份，防止渲染时同一field在FieldRender组件中多次渲染引起的往复warn

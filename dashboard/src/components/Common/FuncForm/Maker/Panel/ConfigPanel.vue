@@ -58,16 +58,22 @@ export default {
         this.formConfig = (newValue && newValue.formConfig) || {}
       }
     },
-    // 组件配置的双绑
-    makerConfig: {
+    // 表单配置的双绑
+    formConfig: {
       deep: true,
       handler (newValue) {
-        this.$emit('update:modelValue', newValue)
-        this.$emit('change', newValue)
+        this.$emit('update:formConfig', newValue)
+      }
+    },
+    // 组件配置的双绑
+    widgetConfig: {
+      deep: true,
+      handler (newValue) {
+        this.$emit('update:widgetConfig', newValue)
       }
     }
   },
-  emits: ['update:modelValue', 'change', 'form-config-change', 'widget-config-change'],
+  emits: ['update:formConfig', 'update:widgetConfig', 'form-config-change', 'widget-config-change'],
   methods: {
     // 响应form表单配置变更
     handleFormChange (formConfig) {
