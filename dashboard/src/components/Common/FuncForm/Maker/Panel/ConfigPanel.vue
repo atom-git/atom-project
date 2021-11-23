@@ -2,13 +2,13 @@
   <a-tabs v-model:activeKey="activeTab">
     <a-tab-pane key="field" tab="组件属性">
       <!-- 组件配置 -->
-      <WidgetConfig v-model="widgetConfig"
+      <WidgetConfig v-model="innerWidgetConfig"
                     :fields="fields"
                     @change="handleWidgetChange"></WidgetConfig>
     </a-tab-pane>
     <a-tab-pane key="form" tab="表单属性" :forceRender="true">
       <!-- 表单配置 -->
-      <FormConfig v-model="formConfig" @change="handleFormChange"></FormConfig>
+      <FormConfig v-model="innerFormConfig" @change="handleFormChange"></FormConfig>
     </a-tab-pane>
   </a-tabs>
 </template>
@@ -23,8 +23,12 @@ export default {
   name: 'ConfigPanel',
   components: { WidgetConfig, FormConfig },
   props: {
-    // 双绑的配置值，包括组件配置及表单配置
-    modelValue: {
+    // 表单配置
+    formConfig: {
+      type: Object
+    },
+    // 组件配置
+    widgetConfig: {
       type: Object
     },
     // 组件配置字段
@@ -37,43 +41,36 @@ export default {
     return {
       // 当前激活的tab
       activeTab: 'field',
-      // 组件配置
-      widgetConfig: {},
       // form表单配置
-      formConfig: {}
-    }
-  },
-  computed: {
-    // formMaker配置
-    makerConfig () {
-      return { widgetConfig: this.widgetConfig, formConfig : this.formConfig }
+      innerFormConfig: {},
+      // 组件配置
+      innerWidgetConfig: {}
     }
   },
   watch: {
     // 监听外部传入值的变化
-    modelValue: {
+    formConfig: {
       deep: true,
       handler (newValue) {
-        this.widgetConfig = (newValue && newValue.widgetConfig) || {}
-        this.formConfig = (newValue && newValue.formConfig) || {}
+        this.innerFormConfig = newValue || {}
+      }
+    },
+    // 监听外部传入的组件值变化
+    widgetConfig: {
+      deep: true,
+      handler (newValue) {
+        this.innerWidgetConfig = newValue || {}
       }
     },
     // 表单配置的双绑
-    formConfig: {
+    innerFormConfig: {
       deep: true,
       handler (newValue) {
         this.$emit('update:formConfig', newValue)
       }
-    },
-    // 组件配置的双绑
-    widgetConfig: {
-      deep: true,
-      handler (newValue) {
-        this.$emit('update:widgetConfig', newValue)
-      }
     }
   },
-  emits: ['update:formConfig', 'update:widgetConfig', 'form-config-change', 'widget-config-change'],
+  emits: ['update:formConfig', 'form-config-change', 'widget-config-change'],
   methods: {
     // 响应form表单配置变更
     handleFormChange (formConfig) {

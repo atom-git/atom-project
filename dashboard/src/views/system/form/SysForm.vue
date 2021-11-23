@@ -10,7 +10,7 @@
           title="自定义表单设计器"
           :loading="loading"
           :isFull="true">
-    <FormMaker v-model="sysForm"
+    <FormMaker :formMaker="sysForm"
                @maker-save="handleMakerSave"></FormMaker>
   </Dialog>
 </template>
@@ -70,7 +70,7 @@ export default {
         }
       ],
       // 当前系统自定义表单
-      sysForm: {},
+      sysForm: { formConfig: {}, widgets: [] },
       // 弹窗是否显示
       visible: false,
       // 请求loading
@@ -95,6 +95,3 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
-
-</style>

@@ -52,8 +52,6 @@ export default {
     return {
       // 表单绑定的值对象
       model: {},
-      // 是否初始化完成
-      ready: false,
       // moment类型的fieldType
       dateType: ['datePicker', 'monthPicker', 'weekPicker', 'timePicker', 'rangePicker']
     }
@@ -97,20 +95,12 @@ export default {
     model: {
       deep: true,
       handler (newValue) {
-        // 未初始化完成时，仅双绑数据，不触发change事件
-        if (this.ready) {
-          this.$emit('update:modelValue', newValue)
-          this.$emit('change', newValue)
-        } else {
-          this.$emit('update:modelValue', newValue)
-          this.ready = true
-        }
+        this.$emit('update:modelValue', newValue)
+        this.$emit('change', newValue)
       }
     }
   },
   created () {
-    // 创建时ready设置为false
-    this.ready = false
     // 初始化表单数据
     this.initModel(this.$utils.deepClone(this.fields))
   },
@@ -136,7 +126,7 @@ export default {
           this.formatModel(groupField, model)
         })
       } else {
-        model[field.name] = field.default || undefined
+        model[field.name] = field.default
       }
     },
     // 表单数据提交

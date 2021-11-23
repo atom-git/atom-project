@@ -45,7 +45,7 @@ export default {
       deep: true,
       handler (newValue) {
         this.$emit('update:modelValue', newValue)
-        this.$emit('change', this.widgetConfig)
+        this.$emit('change', newValue)
       }
     }
   },

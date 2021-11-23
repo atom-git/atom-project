@@ -9,7 +9,6 @@
                 :undo="logState.undo"
                 :redo="logState.redo"
                 :formConfig="formConfig"
-                :widgetConfig="widgetConfig"
                 :curWidget="curWidget"
                 @maker-widget-change="handleWidgetChange"
                 @maker-undo="handleUndo"
@@ -18,7 +17,7 @@
     <!-- 右侧配置面板区域 -->
     <a-layout-sider :theme="contentTheme" class="atom-config-panel" :width="280">
       <ConfigPanel v-model:formConfig="formConfig"
-                   v-model:widgetConfig="widgetConfig"
+                   :widgetConfig="curWidget.widgetConfig"
                    :fields="configFields"
                    @form-config-change="handleFormConfigChange"
                    @widget-config-change="handleWidgetConfigChange"></ConfigPanel>
@@ -41,7 +40,7 @@ export default {
   mixins: [config, reconfig],
   props: {
     // 实现自定义表单双绑配置写入的参数
-    modelValue: {
+    formMaker: {
       type: Object,
       default: () => ({})
     }
@@ -50,8 +49,6 @@ export default {
     return {
       // 自定义表单配置
       formConfig: {},
-      // 组件配置
-      widgetConfig: {},
       // 组件列表
       widgets: [],
       // 当前操作的组件
@@ -84,36 +81,20 @@ export default {
     // 配置字段
     configFields () {
       return this.curWidget.fields || []
-    },
-    // 内部配置信息绑定
-    formMaker () {
-      return {
-        formConfig: this.formConfig,
-        widgets: this.widgets
-      }
     }
   },
   watch: {
     // 监听外部传的数据变化用于双绑
-    modelValue: {
+    formMaker: {
       deep: true,
       immediate: true,
       handler (newValue) {
-        console.log('赋值')
-        this.formConfig = (newValue && newValue.formConfig) || {}
-        this.widgets = (newValue && newValue.widgets) || []
-      }
-    },
-    // 监听配置变化，实现双绑
-    formMaker: {
-      deep: true,
-      handler (newValue) {
-        this.$emit('update:modelValue', newValue)
-        this.$emit('change', newValue)
+        this.formConfig = newValue.formConfig || {}
+        this.widgets = newValue.widgets || []
       }
     }
   },
-  emits: ['maker-save', 'update:modelValue', 'change'],
+  emits: ['maker-save'],
   methods: {
     // 响应撤销
     handleUndo () {
@@ -145,9 +126,8 @@ export default {
     // 重置maker配置信息
     reconfigMaker (action) {
       // 重置配置信息
-      const { formConfig, widgetConfig, widgets, curWidget } = this.$utils.deepClone(this.makerLog[this.logState.index])
+      const { formConfig, widgets, curWidget } = this.$utils.deepClone(this.makerLog[this.logState.index])
       this.formConfig = formConfig
-      this.widgetConfig = widgetConfig
       this.widgets = widgets
       this.curWidget = curWidget
       this.logState.widget = action
@@ -164,7 +144,6 @@ export default {
         // 加入历史
         this.makerLog.push(this.$utils.deepClone({
           formConfig: this.formConfig,
-          widgetConfig: this.widgetConfig,
           widgets: this.widgets,
           curWidget: this.curWidget
         }))
@@ -183,8 +162,6 @@ export default {
     // 响应当前填加的组件改变
     handleWidgetChange (curWidget, action = 'select') {
       this.curWidget = curWidget
-      // 回写组件配置
-      this.widgetConfig = curWidget.widgetConfig || {}
       // 设置操作状态，在widget config发生改变时再做日志记录
       this.logState.widget = action
     },
@@ -230,7 +207,7 @@ export default {
     },
     // 响应保存提交
     handleSave () {
-      this.$emit('maker-save')
+      this.$emit('maker-save', this.formConfig, this.widgets)
     }
   }
 }

@@ -106,11 +106,6 @@ export default {
       type: Object,
       required: true
     },
-    // 组件配置
-    widgetConfig: {
-      type: Object,
-      required: true
-    },
     // 当前操作的组件
     curWidget: {
       type: Object,
