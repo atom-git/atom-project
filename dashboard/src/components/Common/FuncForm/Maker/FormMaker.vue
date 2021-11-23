@@ -16,7 +16,8 @@
                 @maker-save="handleSave"></MakerPanel>
     <!-- 右侧配置面板区域 -->
     <a-layout-sider :theme="contentTheme" class="atom-config-panel" :width="280">
-      <ConfigPanel v-model:formConfig="formConfig"
+      <ConfigPanel ref="configPanel"
+                   v-model:formConfig="formConfig"
                    :widgetConfig="curWidget.widgetConfig"
                    :fields="configFields"
                    @form-config-change="handleFormConfigChange"
@@ -92,9 +93,23 @@ export default {
         this.formConfig = newValue.formConfig || {}
         this.widgets = newValue.widgets || []
       }
+    },
+    // 监听内部的值变化
+    formConfig: {
+      deep: true,
+      handler (newValue) {
+        this.$emit('update:formMaker', { formConfig: newValue, widgets: this.widgets })
+      }
+    },
+    // 监听内部的值变化
+    widgets: {
+      deep: true,
+      handler (newValue) {
+        this.$emit('update:formMaker', { formConfig: this.formConfig, widgets: newValue })
+      }
     }
   },
-  emits: ['maker-save'],
+  emits: ['maker-save', 'update:formMaker'],
   methods: {
     // 响应撤销
     handleUndo () {
@@ -207,7 +222,12 @@ export default {
     },
     // 响应保存提交
     handleSave () {
-      this.$emit('maker-save', this.formConfig, this.widgets)
+      this.$refs.configPanel.triggerFormConfigValidate().then(() => {
+        this.$emit('maker-save', this.formConfig, this.widgets)
+      }).catch(() => {
+        this.$refs.configPanel.toggleToFormConfig()
+        this.$message.error('表单标题必须填写')
+      })
     }
   }
 }

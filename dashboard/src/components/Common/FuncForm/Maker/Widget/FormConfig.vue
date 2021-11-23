@@ -1,5 +1,6 @@
 <template>
-  <FormList layout="vertical"
+  <FormList ref="formList"
+            layout="vertical"
             v-model="formConfig"
             :fields="fields"
             hiddenFooter>
@@ -51,14 +52,15 @@ export default {
     return {
       // form表单配置
       formConfig: {
-        labelCol: { span: 3 }
+        labelCol: { style: { width: '80px' } }
       },
       // 表单配置fields
       fields: [
         {
           type: 'text',
           name: 'title',
-          label: '表单标题'
+          label: '表单标题',
+          rules: [{ required: true }]
         },
         {
           type: 'number',
@@ -99,12 +101,12 @@ export default {
               name: 'labelColType',
               slot: 'labelColType',
               label: '宽度类型',
-              default: 'span',
+              default: 'style',
               style: { width: '40%' },
               // 非slot挂载时，需要按照label来写属性，自动挂载时，会在内部replace
               options: [{ value: 'style', label: '固定宽度' }, { value: 'span', label: '网格布局' }, { value: 'grid', label: '响应布局' }]
             },
-            { type: 'text', name: 'labelColSize', default: 3, slot: 'labelColSize' }
+            { type: 'text', name: 'labelColSize', default: 80, slot: 'labelColSize' }
           ]
         },
         {
@@ -149,8 +151,8 @@ export default {
     // 响应label的类型变化
     handleLabelChange (labelColType) {
       if (labelColType === 'style') {
-        this.formConfig['labelColSize'] = 150
-        this.formConfig['labelCol'] = { style: { width: '150px' } }
+        this.formConfig['labelColSize'] = 80
+        this.formConfig['labelCol'] = { style: { width: '80px' } }
       } else if (labelColType === 'span') {
         this.formConfig['labelColSize'] = 3
         this.formConfig['labelCol'] = { span: 3 }

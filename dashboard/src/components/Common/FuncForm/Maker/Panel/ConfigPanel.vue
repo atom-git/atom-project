@@ -2,13 +2,16 @@
   <a-tabs v-model:activeKey="activeTab">
     <a-tab-pane key="field" tab="组件属性">
       <!-- 组件配置 -->
-      <WidgetConfig v-model="innerWidgetConfig"
+      <WidgetConfig ref="widgetConfig"
+                    v-model="innerWidgetConfig"
                     :fields="fields"
                     @change="handleWidgetChange"></WidgetConfig>
     </a-tab-pane>
     <a-tab-pane key="form" tab="表单属性" :forceRender="true">
       <!-- 表单配置 -->
-      <FormConfig v-model="innerFormConfig" @change="handleFormChange"></FormConfig>
+      <FormConfig ref="formConfig"
+                  v-model="innerFormConfig"
+                  @change="handleFormChange"></FormConfig>
     </a-tab-pane>
   </a-tabs>
 </template>
@@ -79,6 +82,14 @@ export default {
     // 响应组件配置变更
     handleWidgetChange (widgetConfig) {
       this.$emit('widget-config-change', widgetConfig)
+    },
+    // 触发FormConfig的校验
+    triggerFormConfigValidate () {
+      return this.$refs.formConfig.$refs.formList.validate()
+    },
+    // 失败时外部触发至form表单配置处
+    toggleToFormConfig () {
+      this.activeTab = 'form'
     }
   }
 }

@@ -9,8 +9,9 @@
   <Dialog v-model="visible"
           title="自定义表单设计器"
           :loading="loading"
+          :footer="null"
           :isFull="true">
-    <FormMaker :formMaker="sysForm"
+    <FormMaker v-model:formMaker="sysForm"
                @maker-save="handleMakerSave"></FormMaker>
   </Dialog>
 </template>
@@ -88,8 +89,11 @@ export default {
       console.log(action, row)
     },
     // 响应自定义表单的保存
-    handleMakerSave () {
+    handleMakerSave (formConfig, widgets) {
+      console.log(formConfig, widgets)
       console.log(this.sysForm)
+      // 弹出层关闭
+      this.visible = false
     }
   }
 }
