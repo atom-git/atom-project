@@ -10,7 +10,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
-import java.util.Date;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author zr
@@ -24,26 +25,18 @@ public class SysFormDTO extends AbsEntity {
 
 	@ApiModelProperty("用户ID")
 	private Integer id;
+	@NotEmpty
 	@ApiModelProperty("表单标题")
 	private String title;
-	@ApiModelProperty("表单布局方式horizontal | vertical")
-	private String layout;
+	@NotNull
 	@ApiModelProperty("表单宽度")
 	private Integer width;
-	@ApiModelProperty("弹窗大小")
-	private Integer dialogSize;
-	@ApiModelProperty("标签对齐方式")
-	private String labelAlign;
-	@ApiModelProperty("标签宽度类型")
-	private String labelColType;
-	@ApiModelProperty("标签宽度")
-	private String labelColSize;
-	@ApiModelProperty("组件大小")
-	private String size;
-	@ApiModelProperty("是否显示冒号")
-	private String colon;
+	@NotEmpty
+	@ApiModelProperty("表单配置")
+	private String formConfig;
+	@NotEmpty
 	@ApiModelProperty("配置内容")
-	private String content;
+	private String widgets;
 
 	public static class DTOConverter extends Converter<SysForm, SysFormDTO> {
 

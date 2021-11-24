@@ -6,10 +6,6 @@
                  @maker-canvas-resize="handleCanvasResize"></MakerHeader>
     <div class="atom-maker-canvas-panel">
       <div :class="['atom-maker-canvas', panel]">
-        <!-- 表单头 -->
-        <FuncTitle v-if="innerFormConfig.title"
-                   :title="innerFormConfig.title"
-                   :style="{ width: `${innerFormConfig.width}%` }"></FuncTitle>
         <!-- 表单区域 -->
         <a-form v-bind="innerFormConfig" :style="{ width: `${innerFormConfig.width}%` }">
           <!-- 有元素时 -->
@@ -74,7 +70,6 @@
 /**
  * 画布面板
  */
-import FuncTitle from '@/components/Common/FuncTitle'
 import MakerHeader from '../Widget/MakerHeader'
 import LayoutWidget from '../Widget/LayoutWidget'
 import FormWidget from '../Widget/FormWidget'
@@ -83,7 +78,7 @@ import JsonPreview from '../Preview/JsonPreview'
 import copy from '../mixins/copy'
 export default {
   name: 'MakerPanel',
-  components: { FuncTitle, MakerHeader, LayoutWidget, FormWidget, MakerPreview, JsonPreview },
+  components: { MakerHeader, LayoutWidget, FormWidget, MakerPreview, JsonPreview },
   mixins: [copy],
   props: {
     // 实现双绑的widgets列表

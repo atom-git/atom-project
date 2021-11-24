@@ -81,7 +81,7 @@ export default class user {
   }
 
   /**
-   * 重置用户密码
+   * 用户禁用/启用
    * @param userId 用户ID
    */
   static toggleValid (userId) {

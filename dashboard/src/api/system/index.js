@@ -10,6 +10,7 @@ import role from './role'
 import menu from './menu'
 import action from './action'
 import type from './type'
+import form from './form'
 import news from './news'
 import file from './file'
 
@@ -130,6 +131,7 @@ export default class system {
   static menu = menu
   static action = action
   static type = type
+  static form = form
   static news = news
   static file = file
 }

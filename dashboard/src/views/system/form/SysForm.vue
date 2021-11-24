@@ -1,6 +1,7 @@
 <template>
   <!-- 列表 -->
-  <FuncTable :apiUrl="apiUrl"
+  <FuncTable ref="funcTable"
+             :apiUrl="apiUrl"
              :columns="columns"
              :funcZone="funcZone"
              @table-func-action="handleFuncAction"
@@ -39,8 +40,7 @@ export default {
       // 字段列表
       columns: [
         { dataIndex: 'title', title: '标题', form: { filter: true }, format: 'formatTooltip' },
-        { dataIndex: 'width', title: '宽度', format: 'formatProgress' },
-        { dataIndex: 'dialogSize', title: '弹窗大小', format: 'formatText|{dialogSize}px' },
+        { dataIndex: 'width', title: '宽度', format: 'formatProgress|number' },
         {
           dataIndex: 'modifyTime',
           title: '修改日期',
@@ -90,10 +90,22 @@ export default {
     },
     // 响应自定义表单的保存
     handleMakerSave (formConfig, widgets) {
-      console.log(formConfig, widgets)
-      console.log(this.sysForm)
-      // 弹出层关闭
-      this.visible = false
+      this.loading = true
+      // 创建自定义表单对象
+      const sysForm = {
+        id: this.sysForm.id || null,
+        title: formConfig.title,
+        width: formConfig.width,
+        formConfig: JSON.stringify(formConfig),
+        widgets: JSON.stringify(widgets)
+      }
+      this.$api.system.form.update(sysForm).then(() => {
+        this.$message.success('自定义表单信息更新成功！')
+        // 刷新数据
+        this.$refs.funcTable.refresh()
+        // 弹出层关闭
+        this.visible = false
+      }).finally(() => { this.loading = false })
     }
   }
 }

@@ -60,7 +60,7 @@
  * 格式化开关: formatSwitch, options { value, title, status }，应用状态字段更好的展示，以及直接操作其状态
  * 格式化操作按钮: formatAction|type[icon, text, both], actions [ a-tooltip, a-button ] 属性合集
  * 格式化链接: formatLink展示类似于详情点击
- * 格式化进度条: formatProgress展示成类似于进度条，30% error色，60% warn色 90% info色 100% success色
+ * 格式化进度条: formatProgress|type[percent, decimal, number]展示成类似于进度条，30% error色，60% warn色 90% info色 100% success色
  * 下面的均为值变化
  * 格式化对象: formatObject|ObjectKey，应用于外键属性渲染
  * 格式化维值: formatType, options，应用于维值渲染 { value, label } 服务端sys_type_mean VO层需要转换下
@@ -124,7 +124,7 @@ export default {
       if (this.isFormat('formatProgress')) {
         return {
           width: this.content,
-          backgroundColor: this.less.match('@error-color')
+          backgroundColor: this.content >= '90%' || this.content === '100%' ? '#52C41ACC' : this.content > '60%' ? '#1890FFCC' : this.content >= '30%' ? '#FAAD14CC' : '#F5222DCC'
         }
       } else {
         return {}
@@ -212,13 +212,20 @@ export default {
     },
     // 格式化进度条数值
     formatProgress () {
-      if (this.text >= 0 && this.text <= 1) {
-        return (this.text * 100) + '%'
-      } else if (this.text.includes('%')) {
+      const formater = this.column.format.split('|')
+      if (formater.length < 2) {
         return this.text
       } else {
-        console.warn(`${this.text}必须为百分比或者0到1的小数`)
-        return this.text
+        // percent, decimal, number
+        const template = formater[1]
+        if (template === 'percent') {
+          // 带百分号
+          return this.text
+        } else if (template === 'decimal') {
+          return (this.text * 100) + '%'
+        } else {
+          return `${this.text}%`
+        }
       }
     },
     // 响应操作按钮的点击

@@ -25,24 +25,12 @@ public class SysFormVO extends AbsEntity {
 	private Integer id;
 	@ApiModelProperty("表单标题")
 	private String title;
-	@ApiModelProperty("表单布局方式horizontal | vertical")
-	private String layout;
 	@ApiModelProperty("表单宽度")
 	private Integer width;
-	@ApiModelProperty("弹窗大小")
-	private Integer dialogSize;
-	@ApiModelProperty("标签对齐方式")
-	private String labelAlign;
-	@ApiModelProperty("标签宽度类型")
-	private String labelColType;
-	@ApiModelProperty("标签宽度")
-	private String labelColSize;
-	@ApiModelProperty("组件大小")
-	private String size;
-	@ApiModelProperty("是否显示冒号")
-	private String colon;
+	@ApiModelProperty("表单配置")
+	private String formConfig;
 	@ApiModelProperty("配置内容")
-	private String content;
+	private String widgets;
 	@ApiModelProperty("修改时间")
 	private Date modifyTime;
 	@ApiModelProperty("创建人ID")

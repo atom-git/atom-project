@@ -200,9 +200,13 @@ export default {
           if (this.$utils.isValid(column.children)) {
             column.children = this.initRenderColumns(column.children)
           }
-          // 如果是操作字段或者是formatAction时，其字段不做隐藏
+          // 如果是操作字段或者是formatAction时，其字段不做超出隐藏
           if (column.dataIndex === 'action') {
             column.class = 'table-action-td'
+          }
+          // 格式化为进度条时样式特殊定义
+          if (column.format && column.format.indexOf('formatProgress') >= 0) {
+            column.class = 'table-format-progress'
           }
           renderColumns.push(column)
         }
@@ -294,6 +298,19 @@ export default {
       td:not(.table-action-td) {
         overflow: hidden;
         text-overflow: ellipsis;
+      }
+      td.table-format-progress {
+        padding: 0 !important;
+        .atom-form-progress {
+          line-height: 49px;
+          width: 100%;
+          text-align: left;
+          span {
+            display: inline-block;
+            padding-left: 10px;
+            font-weight: bold;
+          }
+        }
       }
       .ant-table-thead > tr > th, .ant-table-tbody > tr > td {
         text-align: center;

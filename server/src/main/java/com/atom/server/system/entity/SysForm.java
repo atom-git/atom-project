@@ -25,24 +25,12 @@ public class SysForm {
 	private Integer id;
 	@Column(name = "title")
 	private String title;
-	@Column(name = "layout")
-	private String layout;
 	@Column(name = "width")
 	private Integer width;
-	@Column(name = "dialog_size")
-	private Integer dialogSize;
-	@Column(name = "label_align")
-	private String labelAlign;
-	@Column(name = "label_col_type")
-	private String labelColType;
-	@Column(name = "label_col_size")
-	private String labelColSize;
-	@Column(name = "size")
-	private String size;
-	@Column(name = "colon")
-	private String colon;
-	@Column(name = "content")
-	private String content;
+	@Column(name = "form_config")
+	private String formConfig;
+	@Column(name = "widgets")
+	private String widgets;
 	@Column(name = "modify_time")
 	private Date modifyTime;
 	@Column(name = "creator_id")
