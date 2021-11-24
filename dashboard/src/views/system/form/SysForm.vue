@@ -12,7 +12,9 @@
           :loading="loading"
           :footer="null"
           :isFull="true">
-    <FormMaker v-model:formMaker="sysForm"
+    <FormMaker v-model:formMaker="formMaker"
+               :panel="panel"
+               @maker-panel-change="handlePanelChange"
                @maker-save="handleMakerSave"></FormMaker>
   </Dialog>
 </template>
@@ -71,7 +73,11 @@ export default {
         }
       ],
       // 当前系统自定义表单
-      sysForm: { formConfig: {}, widgets: [] },
+      sysForm: {},
+      // 画布类型
+      panel: 'mac',
+      // 需要绑定的对象
+      formMaker: {},
       // 弹窗是否显示
       visible: false,
       // 请求loading
@@ -81,12 +87,26 @@ export default {
   methods: {
     // 响应顶部功能按钮操作
     handleFuncAction (action) {
-      console.log(action)
-      this.visible = true
+      if (action.name === 'add') {
+        this.visible = true
+      }
     },
     // 响应行级操作按钮
     handleRowAction (action, row) {
       console.log(action, row)
+      if (action.name === 'edit') {
+        this.sysForm = row
+        this.panel = row.panel
+        this.formMaker.formConfig = JSON.parse(row.formConfig)
+        this.formMaker.widgets = JSON.parse(row.widgets)
+        this.visible = true
+      } else if (action.name === 'data') {
+        console.log('data 获取')
+      }
+    },
+    // 响应画布切换
+    handlePanelChange (panel) {
+      this.panel = panel
     },
     // 响应自定义表单的保存
     handleMakerSave (formConfig, widgets) {
@@ -95,6 +115,7 @@ export default {
       const sysForm = {
         id: this.sysForm.id || null,
         title: formConfig.title,
+        panel: this.panel,
         width: formConfig.width,
         formConfig: JSON.stringify(formConfig),
         widgets: JSON.stringify(widgets)

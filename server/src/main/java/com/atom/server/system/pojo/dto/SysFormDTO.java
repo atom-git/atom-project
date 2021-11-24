@@ -28,6 +28,9 @@ public class SysFormDTO extends AbsEntity {
 	@NotEmpty
 	@ApiModelProperty("表单标题")
 	private String title;
+	@NotEmpty
+	@ApiModelProperty("画布类型 mac | pad | phone")
+	private String panel;
 	@NotNull
 	@ApiModelProperty("表单宽度")
 	private Integer width;

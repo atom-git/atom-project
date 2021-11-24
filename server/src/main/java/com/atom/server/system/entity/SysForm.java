@@ -25,6 +25,8 @@ public class SysForm {
 	private Integer id;
 	@Column(name = "title")
 	private String title;
+	@Column(name = "panel")
+	private String panel;
 	@Column(name = "width")
 	private Integer width;
 	@Column(name = "form_config")

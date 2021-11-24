@@ -25,6 +25,8 @@ public class SysFormVO extends AbsEntity {
 	private Integer id;
 	@ApiModelProperty("表单标题")
 	private String title;
+	@ApiModelProperty("画布类型 mac | pad | phone")
+	private String panel;
 	@ApiModelProperty("表单宽度")
 	private Integer width;
 	@ApiModelProperty("表单配置")

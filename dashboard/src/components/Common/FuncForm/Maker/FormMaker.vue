@@ -6,10 +6,12 @@
     </a-layout-sider>
     <!-- 中间画布面板区域 -->
     <MakerPanel v-model="widgets"
+                :panel="panel"
                 :undo="logState.undo"
                 :redo="logState.redo"
                 :formConfig="formConfig"
                 :curWidget="curWidget"
+                @maker-panel-change="handlePanelChange"
                 @maker-widget-change="handleWidgetChange"
                 @maker-undo="handleUndo"
                 @maker-redo="handleRedo"
@@ -44,6 +46,11 @@ export default {
     formMaker: {
       type: Object,
       default: () => ({})
+    },
+    // 画布类型 mac | pad | phone
+    panel: {
+      type: String,
+      default: 'mac'
     }
   },
   data () {
@@ -75,7 +82,8 @@ export default {
         redo: false
       },
       // 涉及options的组件，此类组件不需要设置default属性
-      optionsWidgets: ['select', 'radio', 'checkbox', 'cascader', 'treeSelect', 'transfer', 'tagCheck']
+      singleOptions: ['select', 'radio'],
+      multiOptions: ['checkbox', 'cascader', 'treeSelect', 'transfer', 'tagCheck']
     }
   },
   computed: {
@@ -109,7 +117,7 @@ export default {
       }
     }
   },
-  emits: ['maker-save', 'update:formMaker'],
+  emits: ['maker-save', 'update:formMaker', 'maker-panel-change'],
   methods: {
     // 响应撤销
     handleUndo () {
@@ -174,6 +182,10 @@ export default {
         this.logState.ready = true
       }
     },
+    // 响应画布切换
+    handlePanelChange (panel) {
+      this.$emit('maker-panel-change', panel)
+    },
     // 响应当前填加的组件改变
     handleWidgetChange (curWidget, action = 'select') {
       this.curWidget = curWidget
@@ -198,7 +210,10 @@ export default {
       // select时对配置参数进行格式化
       if (widgetConfig.options) {
         // 带选项配置的需要回写其选项配置结果
-        if (this.optionsWidgets.includes(this.curWidget.type)) {
+        if (this.singleOptions.includes(this.curWidget.type)) {
+          this.curWidget.options.options = widgetConfig.options.options
+          this.curWidget.options.default = widgetConfig.options.default[0]
+        } else if (this.multiOptions.includes(this.curWidget.type)) {
           this.curWidget.options.options = widgetConfig.options.options
           this.curWidget.options.default = widgetConfig.options.default
         }

@@ -2,6 +2,7 @@
   <a-layout-content class="atom-maker-panel">
     <!-- 画布头部 -->
     <MakerHeader :active="{ undo, redo }"
+                 :panel="panel"
                  @maker-header-action="handleHeaderAction"
                  @maker-canvas-resize="handleCanvasResize"></MakerHeader>
     <div class="atom-maker-canvas-panel">
@@ -81,6 +82,11 @@ export default {
   components: { MakerHeader, LayoutWidget, FormWidget, MakerPreview, JsonPreview },
   mixins: [copy],
   props: {
+    // 画布类型
+    panel: {
+      type: String,
+      default: 'mac'
+    },
     // 实现双绑的widgets列表
     modelValue: {
       type: Array,
@@ -109,8 +115,6 @@ export default {
   },
   data () {
     return {
-      // 画布的样式 mac | pad | phone
-      panel: 'mac',
       // 组件列表，从组件库中拖过来的信息，需要在结束后增加一个唯一性key
       widgets: [],
       // preview预览显隐
@@ -161,7 +165,7 @@ export default {
       }
     }
   },
-  emits: ['maker-widget-change', 'update:modelValue', 'maker-undo', 'maker-redo', 'maker-save'],
+  emits: ['maker-widget-change', 'update:modelValue', 'maker-undo', 'maker-redo', 'maker-save', 'maker-panel-change'],
   methods: {
     // 响应头部点击响应
     handleHeaderAction (action) {
@@ -188,7 +192,7 @@ export default {
     },
     // 响应画布大小调整
     handleCanvasResize (panel) {
-      this.panel = panel
+      this.$emit('maker-panel-change', panel)
     },
     // 响应组件的增加
     handleWidgetAdd (event) {

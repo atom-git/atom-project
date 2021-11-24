@@ -5,7 +5,7 @@
       <TipButton v-for="panel in panelList"
                  :key="panel.name"
                  type="text"
-                 :class="[this.activeKey === panel.name ? 'active' : '']"
+                 :class="[this.activePanel === panel.name ? 'active' : '']"
                  :title="panel.title"
                  :icon="panel.icon"
                  placement="bottom"
@@ -42,6 +42,11 @@ export default {
   name: 'MakerHeader',
   components: { TipButtonGroup, TipButton },
   props: {
+    // 画布类型
+    panel: {
+      type: String,
+      default: 'mac'
+    },
     // 当前操作是否有undo | redo由canvas判断后交给header来判断其状态
     active: {
       type: Object,
@@ -58,7 +63,7 @@ export default {
         { icon: 'atom-phone', title: '手机', name: 'phone' }
       ],
       // 当前激活的画板
-      activeKey: 'mac',
+      activePanel: 'mac',
       // 常用操作
       actionList: [
         { icon: 'ClearOutlined', title: '清空', name: 'clear' },
@@ -68,12 +73,22 @@ export default {
       ]
     }
   },
+  watch: {
+    // 监听外部画布类型
+    panel (newValue) {
+      this.activePanel = newValue
+    },
+    // 监听内部画布类型变化
+    activePanel (newValue) {
+      this.$emit('maker-panel-change', newValue)
+    }
+  },
   emits: ['maker-header-action', 'maker-canvas-resize'],
   methods: {
     // 响应画板模式切换
     handleActivePanel (panel) {
-      this.activeKey = panel.name
-      this.$emit('maker-canvas-resize', this.activeKey)
+      this.activePanel = panel.name
+      this.$emit('maker-canvas-resize', this.activePanel)
     },
     // 响应功能点击
     handleAction (action) {

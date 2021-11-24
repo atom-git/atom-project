@@ -82,7 +82,7 @@ public class SysFormService implements ISysFormService {
 			if (Validator.isNull(originForm)) {
 				throw new BusException(RestError.ERROR9000, "自定义表单不存在");
 			}
-			BeanUtils.copyProperties(sysForm, originForm);
+			BeanUtils.copyProperties(sysFormDTO, originForm);
 			sysFormDao.update(originForm);
 		} else {
 			// 判断表单名称是否重复，防止表单名称重复导致的业务不明确

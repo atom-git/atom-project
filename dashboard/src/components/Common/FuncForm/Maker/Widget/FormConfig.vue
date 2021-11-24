@@ -133,6 +133,7 @@ export default {
     // 监听外部传入值的变化
     modelValue: {
       deep: true,
+      immediate: true,
       handler (newValue) {
         this.formConfig = newValue
       }

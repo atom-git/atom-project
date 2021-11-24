@@ -2,25 +2,24 @@
  * 默认单级选项
  */
 const monoOptions = {
-  labelShow: false,
-  multiple: false,
-  default: ['option1'],
+  labelShow: true,
+  default: ['value1'],
   options:  [
-    { value: 'option1' },
-    { value: 'option2' },
-    { value: 'option3' }
+    { value: 'value1', title: '选项1' },
+    { value: 'value2', title: '选项2' },
+    { value: 'value3', title: '选项3' }
   ]
 }
 /**
  * 默认多级选项
  */
 const cascadeOptions = {
-  labelShow: false,
-  default: ['option1', 'option1-2'],
+  labelShow: true,
+  default: ['value1', 'value1-2'],
   options:  [
-    { value: 'option1', children: [{ value: 'option1-1' }, { value: 'option1-2' }] },
-    { value: 'option2', children: [{ value: 'option2-1' }, { value: 'option2-2' }] },
-    { value: 'option3', children: [{ value: 'option3-1' }, { value: 'option3-2' }, { value: 'option3-3' }] }
+    { value: 'value1', title: '选项1', children: [{ value: 'value1-1', title: '选项1-1' }, { value: 'value1-2', title: '选项1-2' }] },
+    { value: 'value2', title: '选项2', children: [{ value: 'value2-1', title: '选项2-1' }, { value: 'value2-2', title: '选项2-2' }] },
+    { value: 'value3', title: '选项3', children: [{ value: 'value3-1', title: '选项3-1' }, { value: 'value3-2', title: '选项3-2' }] }
   ]
 }
 
