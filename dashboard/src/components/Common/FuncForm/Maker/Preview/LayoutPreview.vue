@@ -23,7 +23,7 @@
     <!-- 表格布局 -->
     <table v-else-if="isType('table')" :style="widget.options.style">
       <tr v-for="row in widget.items" :key="row.key">
-        <td v-for="column in row.columns" :key="column.key">
+        <td v-for="(column, index) in row.columns" :key="column.key" :style="{ paddingLeft: index !== 0 ? '6px' : 0 }">
           <FormWidget v-for="element in column.widgets"
                       :key="element.key"
                       :widget="element"

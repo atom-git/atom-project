@@ -77,10 +77,6 @@ export default {
     // 监听外部画布类型
     panel (newValue) {
       this.activePanel = newValue
-    },
-    // 监听内部画布类型变化
-    activePanel (newValue) {
-      this.$emit('maker-panel-change', newValue)
     }
   },
   emits: ['maker-header-action', 'maker-canvas-resize'],

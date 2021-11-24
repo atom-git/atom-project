@@ -89,8 +89,7 @@ export default {
     handleFuncAction (action) {
       if (action.name === 'add') {
         // 初始化画布状态
-        this.formMaker = {}
-        this.panel = 'mac'
+        this.initFormMaker()
         this.visible = true
       }
     },
@@ -130,9 +129,13 @@ export default {
         // 弹出层关闭
         this.visible = false
         // 初始化画布状态
-        this.formMaker = {}
-        this.panel = 'mac'
+        this.initFormMaker()
       }).finally(() => { this.loading = false })
+    },
+    // 初始化自定义表单
+    initFormMaker () {
+      this.sysForm = this.formMaker = {}
+      this.panel = 'mac'
     }
   }
 }

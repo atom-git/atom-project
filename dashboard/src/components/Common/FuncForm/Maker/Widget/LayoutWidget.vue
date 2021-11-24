@@ -246,12 +246,20 @@ export default {
     },
     // 响应tab切换
     handleTabChange (activeTab) {
+      if (this.curWidget.key !== this.widget.key) {
+        // 选中当前组件
+        this.$emit('maker-widget-change', this.widget)
+      }
       this.$emit('maker-tab-change', activeTab)
     },
     // 响应step切换
     handleStepChange () {
+      if (this.curWidget.key !== this.widget.key) {
+        // 选中当前组件
+        this.$emit('maker-widget-change', this.widget)
+      }
       // 根据curStep判断当前激活的step
-      this.$emit('maker-step-change', this.widget.options['steps'].options[this.curStep].value)
+      this.$emit('maker-step-change', this.widget.options['items'].options[this.curStep].value)
     },
     // 响应文本域的复制
     handleWidgetCopy () {

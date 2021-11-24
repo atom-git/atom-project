@@ -7,7 +7,7 @@
           :footer="null"
           @cancel="handleCancel">
     <!-- 表单区域 -->
-    <a-form v-bind="formConfig" :style="{ width: `${formConfig.width}%` }">
+    <a-form v-bind="formConfig" :style="{ width: `${formConfig.width}%`, margin: '0 auto' }">
       <template v-for="(widget, index) in widgets" :key="index">
         <!-- 布局元素 -->
         <LayoutPreview v-if="widget.group === 'layout'"

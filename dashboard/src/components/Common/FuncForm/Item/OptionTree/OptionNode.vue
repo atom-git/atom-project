@@ -165,7 +165,7 @@ export default {
       } else if (action.key === 'addChild') {
         // 设置新元素的key，保障惟一性
         const key = this.$utils.randomStr(6)
-        const addOption = { key: key,  value: key, title: this.labelShow ? '选项' : key, label: this.labelShow ? '选项' : key }
+        const addOption = { key: key,  value: key, title: this.labelShow ? '选项' : key }
         // 增加子级
         if (option.children) {
           option.children.push(addOption)
@@ -186,7 +186,7 @@ export default {
     handleOptionAdd (index, options) {
       // 设置新元素的key，保障惟一性
       const key = this.$utils.randomStr(6)
-      const addOption = { key: key,  value: key, title: this.labelShow ? '选项' : key, label: this.labelShow ? '选项' : key }
+      const addOption = { key: key,  value: key, title: this.labelShow ? '选项' : key }
       options.splice(index + 1, 0, addOption)
     },
     // 响应radio值的改变

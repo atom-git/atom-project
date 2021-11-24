@@ -85,7 +85,7 @@ export default {
       ]
     },
     { name: 'borderWidth', type: 'number', label: '边框宽度', default: 1, formatter: value => `${value}px`, parser: value => value.replace('px', '') },
-    { name: 'borderStyle', type: 'select', label: '边框样式', default: 'solid', options: [
+    { name: 'borderStyle', type: 'select', label: '边框样式', default: 'hidden', options: [
         { value: 'solid', title: '实线-solid' }, { value: 'dashed', title: '虚线-dashed' }, { value: 'dotted', title: '圆点-dotted' }, { value: 'double', title: '双线-double' },
         { value: 'groove', title: '沟槽-groove' }, { value: 'ridge', title: '山脊-ridge' }, { value: 'hidden', title: '隐藏-hidden' }
       ]
@@ -101,7 +101,7 @@ export default {
         { value: 'bottom', title: '底部' }, { value: 'left', title: '左侧' }
       ]
     },
-    { name: 'tabs', type: 'optionTree', label: '选项标签', showLabelOption: false, default: initItems('Tab'), help: '必须保证值的全局惟一性' }
+    { name: 'items', type: 'optionTree', label: '选项标签', showLabelOption: false, default: initItems('Tab'), help: '必须保证值的全局惟一性' }
   ],
   steps: [
     { name: 'stepType', type: 'radio', label: '步骤条类型', default: 'navigation', mode: 'button', buttonStyle: 'solid', options: [
@@ -116,7 +116,7 @@ export default {
       ]
     },
     { name: 'progressDot', type: 'switch', label: '设置为点状步骤条', checkedValue: true, unCheckedValue: false, default: false },
-    { name: 'steps', type: 'optionTree', label: '步骤标签', showLabelOption: false, default: initItems('Step'), help: '必须保证值的全局惟一性' }
+    { name: 'items', type: 'optionTree', label: '步骤标签', showLabelOption: false, default: initItems('Step'), help: '必须保证值的全局惟一性' }
   ],
   title: [
     { name: 'title', type: 'text', label: '自定义标题' }
@@ -144,9 +144,7 @@ export default {
   // 基础组件
   input: [
     { name: 'default', type: 'text', label: '默认值' },
-    { name: 'maxlength', type: 'number', label: '最大长度' },
-    { name: 'prefix', type: 'iconPicker', label: '前缀图标' },
-    { name: 'suffix', type: 'iconPicker', label: '后缀图标' }
+    { name: 'maxlength', type: 'number', label: '最大长度' }
   ],
   textarea: [
     { name: 'default', type: 'textarea', label: '默认值' },
@@ -158,9 +156,9 @@ export default {
   number: [
     { name: 'default', type: 'number', label: '默认值' },
     { name: 'range', type: 'inputGroup', label: '区间步长', group: [
-        { name: 'min', type: 'number', label: '最小值', default: 0, style: { width: '40%' } },
-        { name: 'max', type: 'number', label: '最大值', default: 0, style: { width: '40%' } },
-        { name: 'step', type: 'text', label: '步长', style: { width: '20%' } }
+        { name: 'min', type: 'number', label: '最小值', default: 0, style: { width: '33%' } },
+        { name: 'max', type: 'number', label: '最大值', default: 100, style: { width: '33%' } },
+        { name: 'step', type: 'number', label: '步长', default: 1, style: { width: '34%' } }
       ]
     },
     { name: 'formatter', type: 'text', label: '展示格式', default: '(value) => `${value}`.replace(/\\B(?=(\\d{3})+(?!\\d))/g, \',\')' },

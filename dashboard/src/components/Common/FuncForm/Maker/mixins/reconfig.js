@@ -133,9 +133,9 @@ export default {
           const item = items[index]
           if (curWidget[key] && curWidget[key][index]) {
             curWidget[key][index].key = item.value
-            curWidget[key][index].title = item.label
+            curWidget[key][index].title = item.value
           } else {
-            const add = { key: item.value, title: item.label, widgets: [] }
+            const add = { key: item.value, title: item.value, widgets: [] }
             curWidget[key].push(add)
           }
         }

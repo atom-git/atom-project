@@ -215,11 +215,11 @@ export default {
     },
     // 响应tab切换
     handleTabChange (activeTab, widget) {
-      widget.widgetConfig['tabs'].default = [activeTab]
+      widget.widgetConfig['items'].default = [activeTab]
     },
     // 响应step切换
     handleStepChange (activeStep, widget) {
-      widget.widgetConfig['steps'].default = [activeStep]
+      widget.widgetConfig['items'].default = [activeStep]
     },
     // 响应表单预览取消
     handlePreviewCancel () {
