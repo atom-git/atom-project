@@ -43,7 +43,7 @@ export default {
   data () {
     return {
       // 当前激活的tab
-      activeTab: 'field',
+      activeTab: 'form',
       // form表单配置
       innerFormConfig: {},
       // 组件配置

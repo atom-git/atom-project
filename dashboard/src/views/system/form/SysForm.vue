@@ -88,6 +88,9 @@ export default {
     // 响应顶部功能按钮操作
     handleFuncAction (action) {
       if (action.name === 'add') {
+        // 初始化画布状态
+        this.formMaker = {}
+        this.panel = 'mac'
         this.visible = true
       }
     },
@@ -126,6 +129,9 @@ export default {
         this.$refs.funcTable.refresh()
         // 弹出层关闭
         this.visible = false
+        // 初始化画布状态
+        this.formMaker = {}
+        this.panel = 'mac'
       }).finally(() => { this.loading = false })
     }
   }

@@ -39,6 +39,17 @@
  * 表单配置
  */
 import { FormList } from '@/components/Common/FuncForm'
+// 默认表单配置
+const defaultForm = {
+  width: 100,
+  dialogSize: 720,
+  labelAlign: 'right',
+  labelCol: { style: { width: '80px' } },
+  labelColType: 'style',
+  labelColSize: '80',
+  size: 'default',
+  colon: true
+}
 export default {
   name: 'FormConfig',
   components: { FormList },
@@ -51,9 +62,7 @@ export default {
   data () {
     return {
       // form表单配置
-      formConfig: {
-        labelCol: { style: { width: '80px' } }
-      },
+      formConfig: defaultForm,
       // 表单配置fields
       fields: [
         {
@@ -135,7 +144,7 @@ export default {
       deep: true,
       immediate: true,
       handler (newValue) {
-        this.formConfig = newValue
+        this.formConfig = this.$utils.isValid(newValue) ? newValue : this.$utils.deepClone(defaultForm)
       }
     },
     // form配置的双绑
