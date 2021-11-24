@@ -188,6 +188,8 @@ export default {
     },
     // 响应当前填加的组件改变
     handleWidgetChange (curWidget, action = 'select') {
+      // 切换tab页
+      this.$refs.configPanel.toggleToConfig('field')
       this.curWidget = curWidget
       // 设置操作状态，在widget config发生改变时再做日志记录
       this.logState.widget = action
@@ -240,7 +242,7 @@ export default {
       this.$refs.configPanel.triggerFormConfigValidate().then(() => {
         this.$emit('maker-save', this.formConfig, this.widgets)
       }).catch(() => {
-        this.$refs.configPanel.toggleToFormConfig()
+        this.$refs.configPanel.toggleToConfig('form')
         this.$message.error('表单标题必须填写')
       })
     }

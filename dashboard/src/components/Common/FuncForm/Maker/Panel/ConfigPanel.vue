@@ -88,9 +88,11 @@ export default {
     triggerFormConfigValidate () {
       return this.$refs.formConfig.$refs.formList.validate()
     },
-    // 失败时外部触发至form表单配置处
-    toggleToFormConfig () {
-      this.activeTab = 'form'
+    // 失败时外部触发切换配置tab
+    toggleToConfig (tab) {
+      if (this.activeTab !== tab) {
+        this.activeTab = tab
+      }
     }
   }
 }
