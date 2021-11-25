@@ -136,7 +136,7 @@ export default {
             // 设置App应用配置信息
             this.$store.dispatch('setConfig', appConfig).then(() => {
               // 生成权限信息
-              this.$store.dispatch('generatePermission', { menus, actions }).then(() => {
+              this.$store.dispatch('loadRouter', { menus, actions }).then(() => {
                 this.$router.replace({ name: this.$default.HOME_PAGE })
               }).catch(() => this.loading = false)
             }).catch(() => this.loading = false)

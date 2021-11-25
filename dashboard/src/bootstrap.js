@@ -17,11 +17,10 @@ export function bootstrap (app) {
     // 读取store中的配置信息判断用户是否登录【即是否是页面刷新】，如果登录则使用store.permission.asyncRoute生成异步路由
     if (store.getters.generated) {
       // 将userInfo中的appConfig信息写入到store.app中
-      console.log(JSON.parse(store.getters.userInfo.appConfig), store.getters.appConfig)
       store.dispatch('setConfig', JSON.parse(store.getters.userInfo.appConfig) || store.getters.appConfig).then(() => {
         console.log('用户配置已写入')
       })
-      store.dispatch('reloadRouter', store.getters.menus).then(() => {
+      store.dispatch('loadRouter', { menus: store.getters.menus, actions: store.getters.actions, reload: true }).then(() => {
         // 注册路由
         setUpRouter(app)
         resolve(router)

@@ -44,7 +44,7 @@ export function createGuards (router) {
           store.dispatch('getUser').then(({ menus, actions, appConfig }) => {
             // 设置App应用配置信息
             store.dispatch('setConfig', appConfig).then(() => {
-              store.dispatch('generatePermission', { menus, actions }).then(() => {
+              store.dispatch('loadRouter', { menus, actions }).then(() => {
                 // 跳转至目标页面
                 return true
               }).catch(() => { return { replace: true, name: 'signIn' } })

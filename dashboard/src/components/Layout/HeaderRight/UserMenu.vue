@@ -13,7 +13,7 @@
         <a-menu-item key="userCenter">
           <IconFont type="GithubOutlined"/><span>个人中心</span>
         </a-menu-item>
-        <a-menu-item key="userSetUp">
+        <a-menu-item key="userSetting">
           <IconFont type="WindowsOutlined"/><span>个人设置</span>
         </a-menu-item>
         <a-menu-divider />
@@ -52,7 +52,7 @@ export default {
     // 响应菜单点击
     handleClick (menu) {
       // 点击非当前路由时跳转
-      if (menu.key === 'userCenter' || menu.key === 'userSetUp') {
+      if (menu.key === 'userCenter' || menu.key === 'userSetting') {
         if (menu.key !== this.curMenu) {
           this.$router.push({ name: menu.key })
         }

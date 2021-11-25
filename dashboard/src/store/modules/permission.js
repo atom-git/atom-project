@@ -1,5 +1,5 @@
 import Utils from '@/utils'
-import { asyncRoutes, errorRoutes } from '@/router/modules'
+import { asyncRouter, commonRouter, errorRoutes } from '@/router/modules'
 import { router } from '@/router'
 /**
  * 系统权限相关
@@ -46,7 +46,7 @@ const permission = {
   },
   actions: {
     // 生成系统权限
-    generatePermission ({ commit }, { menus, actions }) {
+    loadRouter ({ commit }, { menus, actions, reload = false }) {
       return new Promise(resolve => {
         if (Utils.isValid(menus)) {
           commit('setMenus', menus)
@@ -55,8 +55,12 @@ const permission = {
           const menuMap = {}
           Utils.tileTree(menuMap, menus, 'route')
           // 根据菜单树构建动态路由
-          const asyncRoute = filterAsyncRoute(asyncRoutes, menuMap)
+          const asyncRoute = filterAsyncRoute(asyncRouter, menuMap)
           asyncRoute.forEach(route => {
+            router.addRoute(route)
+          })
+          // 加入公共路由
+          commonRouter.forEach(route => {
             router.addRoute(route)
           })
           // 加入异常路由
@@ -66,34 +70,17 @@ const permission = {
           commit('setAsyncRoute', asyncRoute)
           // 设置权限生成标志位
           commit('setGenerated', true)
-          router.isReady().then(() => {
+          if (reload) {
             resolve(asyncRoute)
-          })
+          } else {
+            router.isReady().then(() => {
+              resolve(asyncRoute)
+            })
+          }
         } else {
           commit('clearPermission')
           throw Error('无有效可访问的系统资源')
         }
-      })
-    },
-    // 重新加载路由
-    reloadRouter ({ commit }, menus) {
-      return new Promise(resolve => {
-        // 平铺菜单
-        const menuMap = {}
-        Utils.tileTree(menuMap, menus, 'route')
-        // 根据菜单树构建动态路由
-        const asyncRoute = filterAsyncRoute(asyncRoutes, menuMap)
-        asyncRoute.forEach(route => {
-          router.addRoute(route)
-        })
-        // 加入异常路由
-        errorRoutes.forEach(route => {
-          router.addRoute(route)
-        })
-        commit('setAsyncRoute', asyncRoute)
-        // 设置权限生成标志位
-        commit('setGenerated', true)
-        resolve(asyncRoute)
       })
     },
     // 清除权限

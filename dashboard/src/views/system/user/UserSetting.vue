@@ -1,9 +1,9 @@
 <template>
-  <div>个人中心</div>
+  <div>个人设置</div>
 </template>
 
 <script>
 export default {
-  name: 'UserCenter'
+  name: 'UserSetting'
 }
 </script>

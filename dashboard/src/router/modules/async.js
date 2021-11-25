@@ -2,8 +2,13 @@ import { DashboardLayout, PageLayout } from '@/layouts'
 /**
  * 异步路由，由服务端决定meta属性[title, keepAlive, hidden]
  * webpackChunkName: 分离文件包
+ * asyncRouter 个性化路由，由后台权限决定
+ * commonRouter 公共路由，所有用户都有
+ * 以上两类路由均需要权限用户登录认证
  */
-export default [
+
+// 个性化路由
+export const asyncRouter = [
   {
     path: '/',
     name: 'dashboard',
@@ -133,14 +138,32 @@ export default [
             name: 'syslog',
             component: () => import(/* webpackChunkName: "system" */ '@/views/system/log/SysLog'),
             meta: { title: '日志管理' }
-          },
-          {
-            path: 'center',
-            name: 'userCenter',
-            component: () => import(/* webpackChunkName: 'system' */ '@/views/system/user/UserCenter'),
-            meta: { title: '个人中心' }
           }
         ]
+      }
+    ]
+  }
+]
+
+// 公共路由
+export const commonRouter = [
+  {
+    path: '/user',
+    name: 'user',
+    component: DashboardLayout,
+    redirect: '/user/center',
+    children: [
+      {
+        path: 'center',
+        name: 'userCenter',
+        component: () => import(/* webpackChunkName: 'user' */ '@/views/system/user/UserCenter'),
+        meta: { title: '个人中心' }
+      },
+      {
+        path: 'setting',
+        name: 'userSetting',
+        component: () => import(/* webpackChunkName: 'user' */ '@/views/system/user/UserSetting'),
+        meta: { title: '个人设置' }
       }
     ]
   }
