@@ -1,5 +1,5 @@
 import Utils from '@/utils'
-import { asyncRouter, publicRouter, errorRoutes } from '@/router/modules'
+import { asyncRouter, errorRoutes } from '@/router/modules'
 import { router } from '@/router'
 /**
  * 系统权限相关
@@ -59,10 +59,6 @@ const permission = {
           asyncRoute.forEach(route => {
             router.addRoute(route)
           })
-          // 加入公共路由
-          publicRouter.forEach(route => {
-            router.addRoute(route)
-          })
           // 加入异常路由
           errorRoutes.forEach(route => {
             router.addRoute(route)
@@ -97,18 +93,23 @@ const permission = {
  */
 function filterAsyncRoute (asyncRoutes, menuMap) {
   return asyncRoutes.filter(asyncRoute => {
-    // 自身不存在，但是子集中有存在的router也要增加
-    if (Utils.isValid(asyncRoute.children)) {
-      asyncRoute.children = filterAsyncRoute(asyncRoute.children, menuMap)
+    // 如果不需要校验权限，则直接写入到路由中，主要是认证后的公共路由个人中心，个人设置，大屏等
+    if (asyncRoute.meta && !asyncRoute.meta.validate) {
+      return true
+    } else {
+      // 自身不存在，但是子集中有存在的router也要增加
       if (Utils.isValid(asyncRoute.children)) {
+        asyncRoute.children = filterAsyncRoute(asyncRoute.children, menuMap)
+        if (Utils.isValid(asyncRoute.children)) {
+          return true
+        }
+      }
+      // 在菜单中存在的router需要增加
+      const menu = menuMap[asyncRoute.name]
+      if (Utils.isValid(menu)) {
+        asyncRoute.meta = { title: menu.name, keepAlive: menu.keepAlive || false, hidden: menu.hidden === 1, validate: true }
         return true
       }
-    }
-    // 在菜单中存在的router需要增加
-    const menu = menuMap[asyncRoute.name]
-    if (Utils.isValid(menu)) {
-      asyncRoute.meta = { title: menu.name, keepAlive: menu.keepAlive || false, hidden: menu.hidden === 1 }
-      return true
     }
   })
 }

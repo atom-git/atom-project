@@ -3,12 +3,9 @@ import { DashboardLayout, PageLayout } from '@/layouts'
  * 异步路由，由服务端决定meta属性[title, keepAlive, hidden]
  * webpackChunkName: 分离文件包
  * asyncRouter 个性化路由，由后台权限决定
- * publicRouter 公共路由，所有用户都有
- * 以上两类路由均需要权限用户登录认证
+ * 以下路由均需要权限用户登录认证
  */
-
-// 个性化路由
-export const asyncRouter = [
+export default [
   {
     path: '/',
     name: 'dashboard',
@@ -143,37 +140,25 @@ export const asyncRouter = [
             meta: { title: '日志管理' }
           }
         ]
-      }
-    ]
-  }
-]
-
-// 公共路由
-export const publicRouter = [
-  {
-    path: '/public',
-    name: 'public',
-    component: DashboardLayout,
-    redirect: '/public/user',
-    children: [
+      },
       {
-        path: '/user',
+        path: 'user',
         name: 'user',
         component: PageLayout,
-        redirect: '/public/user/center',
-        meta: { title: '个人信息' },
+        redirect: '/user/center',
+        meta: { title: '个人信息', validate: false },
         children: [
           {
             path: 'center',
             name: 'userCenter',
             component: () => import(/* webpackChunkName: 'user' */ '@/views/system/user/UserCenter'),
-            meta: { title: '个人中心' }
+            meta: { title: '个人中心', validate: false }
           },
           {
             path: 'setting',
             name: 'userSetting',
             component: () => import(/* webpackChunkName: 'user' */ '@/views/system/user/UserSetting'),
-            meta: { title: '个人设置' }
+            meta: { title: '个人设置', validate: false }
           }
         ]
       }
