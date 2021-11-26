@@ -44,6 +44,8 @@ public class SessionUser extends AbsEntity implements Authentication {
     private String password;
     @ApiModelProperty("用户昵称")
     private String name;
+    @ApiModelProperty("格言")
+    private String motto;
     @ApiModelProperty("头像地址")
     private String headUrl;
     @ApiModelProperty("所属组织机构")
@@ -121,6 +123,7 @@ public class SessionUser extends AbsEntity implements Authentication {
         this.id = sysUser.getId();
         this.account = sysUser.getAccount();
         this.name = sysUser.getName();
+        this.motto = sysUser.getMotto();
         // TODO 这里按需改成url
         this.headUrl = sysUser.getHead();
         this.sysDept = sysDeptVO;
@@ -139,6 +142,7 @@ public class SessionUser extends AbsEntity implements Authentication {
         this.id = sysUser.getId();
         this.account = sysUser.getAccount();
         this.name = sysUser.getName();
+        this.motto = sysUser.getMotto();
         // TODO 这里按需改成url
         this.headUrl = sysUser.getHead();
     }

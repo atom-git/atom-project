@@ -29,6 +29,8 @@ public class SysUserVO extends AbsEntity {
 	private String phone;
 	@ApiModelProperty("昵称")
 	private String name;
+	@ApiModelProperty("格言")
+	private String motto;
 	@ApiModelProperty("头像")
 	private String head;
 	@ApiModelProperty("组织机构代码")

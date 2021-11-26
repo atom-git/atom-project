@@ -32,6 +32,8 @@ public class SysUser {
 	private String name;
 	@Column(name = "password")
 	private String password;
+	@Column(name = "motto")
+	private String motto;
 	@Column(name = "nick_name")
 	private String nickName;
 	@Column(name = "open_id")

@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 @ApiModel("系统信息filter")
 public class SysNewsFilter extends AbsEntity {
 
-	@ApiModelProperty("信息类型1通知，2消息，3待办")
+	@ApiModelProperty("信息类型1待办，2通知，3消息")
 	private Integer type;
 	@ApiModelProperty("标题")
 	private String title;

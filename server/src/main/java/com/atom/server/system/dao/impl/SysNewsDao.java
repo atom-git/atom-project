@@ -25,7 +25,7 @@ public class SysNewsDao extends AbsDao<SysNews> implements ISysNewsDao {
 	/**
 	 * 根据用户id获取有效系统提醒消息待办信息
 	 * @param userId 用户id
-	 * @param newsType 系统信息类型1通知，2消息，3待办
+	 * @param newsType 系统信息类型1待办，2通知，3消息
 	 * @param pageData 分页信息
 	 * @return 返回消息列表
 	 */
@@ -46,7 +46,7 @@ public class SysNewsDao extends AbsDao<SysNews> implements ISysNewsDao {
 	/**
 	 * 根据用户id获取有效系统提醒消息待办未读信息
 	 * @param userId 用户id
-	 * @param newsType 系统信息类型1通知，2消息，3待办
+	 * @param newsType 系统信息类型1待办，2通知，3消息
 	 * @param pageData 分页信息
 	 * @return 返回未读消息列表
 	 */
@@ -69,7 +69,7 @@ public class SysNewsDao extends AbsDao<SysNews> implements ISysNewsDao {
 	/**
 	 * 根据用户id获取有效系统提醒消息待办信息
 	 * @param userId 用户id
-	 * @param newsType 系统信息类型1通知，2消息，3待办
+	 * @param newsType 系统信息类型1待办，2通知，3消息
 	 * @return 返回未读消息数
 	 */
 	@Override

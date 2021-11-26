@@ -5,7 +5,7 @@ import lombok.Getter;
 
 /**
  * @author zr
- * @description 系统信息类型1通知，2消息，3待办
+ * @description 系统信息类型1待办，2通知，3消息
  * @date 2021/8/23
  */
 @Getter

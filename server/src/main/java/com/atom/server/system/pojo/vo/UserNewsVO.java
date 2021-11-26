@@ -20,18 +20,18 @@ import java.util.stream.Collectors;
 @Setter
 @ApiModel("用户系统提醒消息待办响应VO")
 public class UserNewsVO extends AbsEntity {
-	@ApiModelProperty("提醒未读数")
+	@ApiModelProperty("待办未读数")
+	private long todoUnreadCnt = 0L;
+	@ApiModelProperty("待办列表")
+	private List<SysNewsVO> todoList;
+	@ApiModelProperty("通知未读数")
 	private long noticeUnreadCnt = 0L;
-	@ApiModelProperty("提醒列表")
+	@ApiModelProperty("通知列表")
 	private List<SysNewsVO> noticeList;
 	@ApiModelProperty("消息未读数")
 	private long messageUnreadCnt = 0L;
 	@ApiModelProperty("消息列表")
 	private List<SysNewsVO> messageList;
-	@ApiModelProperty("待办未读数")
-	private long todoUnreadCnt = 0L;
-	@ApiModelProperty("待办列表")
-	private List<SysNewsVO> todoList;
 
 	public static class VOConverter extends Converter<SysNewsVO, SysNews> {
 
@@ -42,12 +42,12 @@ public class UserNewsVO extends AbsEntity {
 
 		public UserNewsVO doForward(long noticeUnreadCnt, List<SysNews> noticeList, long messageUnreadCnt, List<SysNews> messageList, long todoUnreadCnt, List<SysNews> todoList) {
 			UserNewsVO userNewsVO = new UserNewsVO();
+			userNewsVO.setTodoUnreadCnt(todoUnreadCnt);
+			userNewsVO.setTodoList(todoList.stream().map(sysNewsVOConverter::doForward).collect(Collectors.toList()));
 			userNewsVO.setNoticeUnreadCnt(noticeUnreadCnt);
 			userNewsVO.setNoticeList(noticeList.stream().map(sysNewsVOConverter::doForward).collect(Collectors.toList()));
 			userNewsVO.setMessageUnreadCnt(messageUnreadCnt);
 			userNewsVO.setMessageList(messageList.stream().map(sysNewsVOConverter::doForward).collect(Collectors.toList()));
-			userNewsVO.setTodoUnreadCnt(todoUnreadCnt);
-			userNewsVO.setTodoList(todoList.stream().map(sysNewsVOConverter::doForward).collect(Collectors.toList()));
 			return userNewsVO;
 		}
 	}

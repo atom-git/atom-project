@@ -12,6 +12,18 @@ export default class news {
   static STOMP_FETCH_NEWS = '/stomp/fetch/news'
 
   /**
+   * 获取消息列表
+   * @param type 消息类型
+   */
+  static list (type) {
+    return axios({
+      url: '/system/news/list',
+      method: Default.HTTP_METHOD.GET,
+      params: { type: type }
+    })
+  }
+
+  /**
    * 标记消息已读
    * @param newsIds 消息ids
    */

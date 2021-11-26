@@ -25,6 +25,8 @@ public class SysUserDTO {
 	private String phone;
 	@ApiModelProperty("用户昵称")
 	private String name;
+	@ApiModelProperty("格言")
+	private String motto;
 	@ApiModelProperty("组织部门ID")
 	private Integer deptId;
 	@ApiModelProperty("是否启用 0：禁用 1：启用")

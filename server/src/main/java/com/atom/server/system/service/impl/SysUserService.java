@@ -181,6 +181,7 @@ public class SysUserService implements ISysUserService {
 			}
 			originUser.setPhone(sysUserDTO.getPhone());
 			originUser.setName(sysUserDTO.getName());
+			originUser.setMotto(sysUserDTO.getMotto());
 			originUser.setDeptId(sysUserDTO.getDeptId());
 			originUser.setUpdateTime(DateUtil.date());
 			originUser.setIfValid(sysUserDTO.getIfValid());
