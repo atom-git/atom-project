@@ -55,9 +55,9 @@ export default {
       unreadCnt: 0,
       // 系统消息tabs
       newsTabs: [
+        { name: '待办', key: 'todo' },
         { name: '通知', key: 'notice' },
-        { name: '消息', key: 'message' },
-        { name: '待办', key: 'todo' }
+        { name: '消息', key: 'message' }
       ],
       // 消息列表
       newsMap: {},
@@ -69,7 +69,11 @@ export default {
   },
   mounted () {
     this.$stomp.subscribe(this.$api.system.news.STOMP_FETCH_NEWS, userNews => {
-      this.unreadCnt = userNews['noticeUnreadCnt'] + userNews['messageUnreadCnt'] + userNews['todoUnreadCnt']
+      this.unreadCnt = userNews['todoUnreadCnt'] + userNews['noticeUnreadCnt'] + userNews['messageUnreadCnt']
+      this.newsMap.todo = {
+        unRead: userNews['todoUnreadCnt'],
+        list: userNews['todoList']
+      }
       this.newsMap.notice = {
         unRead: userNews['noticeUnreadCnt'],
         list: userNews['noticeList']
@@ -77,10 +81,6 @@ export default {
       this.newsMap.message = {
         unRead: userNews['messageUnreadCnt'],
         list: userNews['messageList']
-      }
-      this.newsMap.todo = {
-        unRead: userNews['todoUnreadCnt'],
-        list: userNews['todoList']
       }
     }).then(subscribe => this.subscribe = subscribe)
   },
@@ -119,7 +119,7 @@ export default {
     // 查看更多提醒
     handleMoreNews () {
       this.dropdown = false
-      this.$router.push({ name: 'sysnews' })
+      this.$router.push({ name: 'userCenter' })
     }
   }
 }

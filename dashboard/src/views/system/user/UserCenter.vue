@@ -1,9 +1,21 @@
 <template>
-  <div>个人中心</div>
+  <SideLayout sideTitle="个人中心">
+    <template #sider>
+      个人简介card
+    </template>
+    <template #content>
+      待办、通知、消息tab列表
+    </template>
+  </SideLayout>
 </template>
 
 <script>
+/**
+ * 个人中心
+ */
+import { SideLayout } from '@/layouts'
 export default {
-  name: 'UserCenter'
+  name: 'UserCenter',
+  components: { SideLayout }
 }
 </script>

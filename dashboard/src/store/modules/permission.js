@@ -1,5 +1,5 @@
 import Utils from '@/utils'
-import { asyncRouter, commonRouter, errorRoutes } from '@/router/modules'
+import { asyncRouter, publicRouter, errorRoutes } from '@/router/modules'
 import { router } from '@/router'
 /**
  * 系统权限相关
@@ -60,7 +60,7 @@ const permission = {
             router.addRoute(route)
           })
           // 加入公共路由
-          commonRouter.forEach(route => {
+          publicRouter.forEach(route => {
             router.addRoute(route)
           })
           // 加入异常路由
