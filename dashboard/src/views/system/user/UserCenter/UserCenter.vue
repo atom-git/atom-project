@@ -95,5 +95,5 @@ export default {
 </script>
 
 <style lang="less">
-@import "userCenter";
+@import "UserCenter";
 </style>

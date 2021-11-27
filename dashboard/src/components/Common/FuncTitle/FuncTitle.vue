@@ -46,5 +46,5 @@ export default {
 </script>
 
 <style lang="less">
-@import "title";
+@import "FuncTitle";
 </style>

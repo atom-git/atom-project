@@ -34,5 +34,5 @@ export default {
 </script>
 
 <style lang="less">
-@import "headerRight";
+@import "HeaderRight";
 </style>

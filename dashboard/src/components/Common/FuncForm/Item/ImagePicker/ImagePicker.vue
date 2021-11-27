@@ -213,5 +213,5 @@ export default {
 </script>
 
 <style lang="less">
-@import "imagePicker";
+@import "ImagePicker";
 </style>

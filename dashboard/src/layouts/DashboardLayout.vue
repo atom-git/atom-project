@@ -40,5 +40,5 @@ export default {
 </script>
 
 <style lang="less">
-@import "Style/dashboard";
+@import "./Style/Dashboard";
 </style>

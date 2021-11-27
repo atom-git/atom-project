@@ -251,5 +251,5 @@ export default {
 </script>
 
 <style lang="less">
-@import './Style/formMaker';
+@import './Style/FormMaker';
 </style>

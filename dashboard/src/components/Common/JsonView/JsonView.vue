@@ -94,5 +94,5 @@ export default {
 </script>
 
 <style lang="less">
-@import "jsonView";
+@import "JsonView";
 </style>

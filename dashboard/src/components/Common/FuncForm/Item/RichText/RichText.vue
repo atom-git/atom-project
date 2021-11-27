@@ -175,5 +175,5 @@ export default {
 </script>
 
 <style lang="less">
-@import "richText";
+@import "RichText";
 </style>

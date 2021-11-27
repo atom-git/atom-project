@@ -140,5 +140,5 @@ export default {
 </script>
 
 <style lang="less">
-@import "multiTab";
+@import "MultiTab";
 </style>

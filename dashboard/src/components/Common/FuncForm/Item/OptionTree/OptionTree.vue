@@ -154,5 +154,5 @@ export default {
 </script>
 
 <style lang="less">
-@import "optionTree";
+@import "OptionTree";
 </style>

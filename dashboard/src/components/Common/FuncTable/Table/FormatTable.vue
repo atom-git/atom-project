@@ -75,7 +75,7 @@
  *           默认功能按钮包括，refresh 刷新 可选[定时刷新], setting 列设置
  */
 import FuncTitle from '@/components/Common/FuncTitle'
-import FuncZone from '@/components/Common/FuncTable/Render/FuncZone'
+import FuncZone from '@/components/Common/FuncZone'
 import FormatColumn from '@/components/Common/FuncTable/Render/FormatColumn'
 // 用于生成rowKey的默认index序列，rowKey不存在时，不能放到this对象中会出现无限循环
 let rowIndex = 0
@@ -86,7 +86,7 @@ export default {
     // 数据表头
     title: {
       type: String,
-      default: ''
+      required: false
     },
     // 表格的尺寸大小，默认是middle，可以是default | middle | small
     size: {

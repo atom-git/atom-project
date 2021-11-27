@@ -303,5 +303,5 @@ export default {
 </script>
 
 <style lang="less">
-@import "menuTree";
+@import "MenuTree";
 </style>

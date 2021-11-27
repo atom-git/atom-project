@@ -33,5 +33,5 @@ export default {
 </script>
 
 <style lang="less">
-@import "Style/sign";
+@import "./Style/Sign";
 </style>

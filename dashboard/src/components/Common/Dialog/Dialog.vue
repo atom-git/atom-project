@@ -112,5 +112,5 @@ export default {
 </script>
 
 <style lang="less">
-@import "dialog";
+@import "Dialog";
 </style>

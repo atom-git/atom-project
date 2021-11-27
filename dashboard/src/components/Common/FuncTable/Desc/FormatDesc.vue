@@ -62,7 +62,7 @@
 
 <script>
 import FuncTitle from '@/components/Common/FuncTitle'
-import FuncZone from '@/components/Common/FuncTable/Render/FuncZone'
+import FuncZone from '@/components/Common/FuncZone'
 import FormatColumn from '@/components/Common/FuncTable/Render/FormatColumn'
 import FieldRender from '@/components/Common/FuncForm/Form/Render/FieldRender'
 export default {
