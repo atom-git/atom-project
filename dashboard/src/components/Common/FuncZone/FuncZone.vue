@@ -1,9 +1,40 @@
 <template>
-  <div v-if="funcZone" class="atom-table-func">
+  <div v-if="funcZone" class="atom-func-zone">
+    <!-- 带文本的大按钮展示区域 -->
+    <span v-if="checkable" class="atom-func-btn">
+      <span class="atom-checked-count">
+        已选择<a-tooltip title="点击清空"><span @click="handleClearCheck">{{ checkedCount }}</span></a-tooltip>项
+      </span>
+      <!-- 全选按钮 -->
+      <a-checkbox v-if="checkallShow" v-model:checked="checkall" @change="handleCheckAll">{{ checkall ? '清空' : '全选' }}</a-checkbox>
+    </span>
+    <!-- 批量删除，在打开选择功能后，根据外部配置决定是否要出现此按钮 -->
+    <span v-if="funcZone.delete && checkable"
+          class="atom-func-btn"
+          v-permission="funcZone.delete && funcZone.delete.permission">
+       <TipButton :type="funcZone.delete.type || 'primary'"
+                  :danger="true"
+                  :icon="funcZone.delete.icon || Default.ACTION.DELETE.icon"
+                  @click="handleClick(funcZone.delete, Default.ACTION.DELETE, funcZone.delete.extend || false)">
+        {{ funcZone.delete.title || Default.ACTION.DELETE.title }}
+      </TipButton>
+    </span>
+    <!-- 选择/取消选择 自动切换，选择按钮出现时，前面追加全选功能按钮 -->
+    <span v-if="funcZone.check"
+          class="atom-func-btn">
+      <TipButton :type="funcZone.check.type || 'primary'"
+                 :icon="funcZone.check.icon || Default.ACTION.CHECK.icon"
+                 @click="handleClick(funcZone.check, Default.ACTION.CHECK, false)">
+        {{ checkable ? '取消' : funcZone.check.title || Default.ACTION.CHECK.title }}
+      </TipButton>
+    </span>
+    <a-divider v-if="checkable && funcZone.delete" type="vertical"/>
+
     <!-- 新增功能按钮 -->
-    <span class="atom-func-btn" v-permission="funcZone.add && funcZone.add.permission">
-      <TipButton v-if="funcZone.add"
-                 :type="funcZone.add.type || 'primary'"
+    <span v-if="funcZone.add"
+          class="atom-func-btn"
+          v-permission="funcZone.add && funcZone.add.permission">
+      <TipButton :type="funcZone.add.type || 'primary'"
                  :icon="funcZone.add.icon || Default.ACTION.ADD.icon"
                  @click="handleClick(funcZone.add, Default.ACTION.ADD, funcZone.add.extend || false)">
         {{ funcZone.add.title || Default.ACTION.ADD.title }}
@@ -11,16 +42,17 @@
     </span>
 
     <!-- 编辑功能按钮，主要用于FuncDesc组件中 -->
-    <span class="atom-func-btn" v-permission="funcZone.edit && funcZone.edit.permission">
-      <TipButton v-if="funcZone.edit"
-                 :type="funcZone.edit.type || 'primary'"
+    <span v-if="funcZone.edit"
+           class="atom-func-btn"
+          v-permission="funcZone.edit && funcZone.edit.permission">
+      <TipButton :type="funcZone.edit.type || 'primary'"
                  :icon="funcZone.edit.icon || Default.ACTION.EDIT.icon"
                  @click="handleClick(funcZone.edit, Default.ACTION.EDIT, funcZone.edit.extend || false)">
         {{ funcZone.edit.title || Default.ACTION.EDIT.title }}
       </TipButton>
     </span>
 
-    <!-- 其他附加功能按钮，table中action定义不能是【新增:add,编辑:edit,下载:download,导入:upload,删除:delete,详情:detail】中的一个 -->
+    <!-- 其他附加功能按钮，table中action定义不能是【新增:add,编辑:edit,下载:download,导入:upload,删除:delete,详情:detail】中的一个，且其中没有定义extend属性为true -->
     <template v-if="funcZone.extend">
       <span class="atom-func-btn"
             v-for="tipButton in funcZone.extend"
@@ -33,7 +65,7 @@
     </template>
     <a-divider v-if="funcZone.add || funcZone.extend" type="vertical"/>
 
-    <!-- 默认功能按钮 -->
+    <!-- 图标按钮展示区域 -->
     <!-- download 下载 -->
     <a-tooltip v-if="funcZone.download"
                :title="funcZone.download.title || Default.ACTION.DOWNLOAD.title">
@@ -90,7 +122,8 @@
 <script>
 /**
  * 多功能按钮区域
- * funcZone: [Object{ TipButton属性 }] 新增，下载等功能按钮区，具备默认实现逻辑 [add, download, upload, refresh, setting]
+ * funcZone: [Object{ TipButton属性 }] 新增，下载等功能按钮区
+ *           具备默认实现逻辑 [add, download, upload, refresh, setting, checked, delete]
  *           如果需要自定义，action事件名称不能与默认一致，默认事件包括[新增:add,编辑:edit,下载:download,导入:upload,删除:delete,详情:detail]
  *           示例:
  *           {
@@ -118,6 +151,16 @@ export default {
       type: Array,
       default: () => [{}]
     },
+    // 是否显示全选
+    checkallShow: {
+      type: Boolean,
+      default: true
+    },
+    // 选中的记录数
+    checkedCount: {
+      type: [Number, String],
+      default: 0
+    },
     // 树结构标题相关挂载点
     titleSlots: {
       type: Array,
@@ -137,7 +180,11 @@ export default {
       // 常量
       Default: this.$default,
       // 列设置全选与非全选
-      indeterminate: false
+      indeterminate: false,
+      // 是否是可选择状态
+      checkable: false,
+      // 是否全选
+      checkall: false
     }
   },
   computed: {
@@ -154,7 +201,7 @@ export default {
       return this.columns.length
     }
   },
-  emits: ['table-column-change', 'table-func-action'],
+  emits: ['column-change', 'func-zone-action', 'func-zone-checkall', 'func-zone-clear-check'],
   watch: {
     checkedColumns: {
       deep: true,
@@ -162,7 +209,7 @@ export default {
         // 设置是否全部选中
         this.checkedAll = this.checkedColumns.length === this.columnsSize
         this.indeterminate = this.checkedColumns.length !== 0 && this.checkedColumns.length < this.columnsSize
-        this.$emit('table-column-change', newValue)
+        this.$emit('column-change', newValue)
       }
     }
   },
@@ -197,8 +244,11 @@ export default {
     },
     // 响应按钮点击
     handleClick (action, defaultAction, extend) {
+      if (defaultAction.name === this.$default.ACTION.CHECK.name) {
+        this.checkable = !this.checkable
+      }
       // 用默认的action保障事件action的完整性
-      this.$emit('table-func-action', Object.assign(defaultAction, action), extend)
+      this.$emit('func-zone-action', Object.assign(defaultAction, action), extend, this.checkable)
     },
     // 响应列设置的全选与非全选
     toogleChecked ($event) {
@@ -228,15 +278,35 @@ export default {
     // 响应选中重置
     handleReset () {
       this.checkedColumns = this.resetCheckedColumns
+    },
+    // 响应全选功能的选中与否
+    handleCheckAll () {
+      this.$emit('func-zone-checkall', this.checkall)
+    },
+    // 清空选择
+    handleClearCheck () {
+      this.$emit('func-zone-clear-check')
     }
   }
 }
 </script>
 
 <style lang="less">
-.atom-table-func {
+.atom-func-zone {
   .atom-func-btn {
-    margin-right: 8px;
+    margin: 0 4px;
+    &:first-child {
+      margin-left: 0;
+    }
+    .atom-checked-count {
+      margin-right: 8px;
+      span {
+        color: #1890FF;
+        font-weight: bold;
+        padding: 4px;
+        cursor: pointer;
+      }
+    }
   }
   >.anticon {
     font-size: 16px;

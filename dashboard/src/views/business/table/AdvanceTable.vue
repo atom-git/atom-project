@@ -41,6 +41,8 @@ export default {
       // 用户功能按钮区域
       funcZone: {
         add: { apiUrl: '/system/user/update' },
+        check: true,
+        delete: true,
         download: true,
         refresh: true,
         setting: true

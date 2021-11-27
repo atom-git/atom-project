@@ -7,10 +7,14 @@
     <!-- 右侧功能按钮 -->
     <template v-if="funcZone" #extra>
       <FuncZone :funcZone="funcZone"
+                :checkallShow="false"
+                :checkedCount="selectedRowKeys.length"
                 :columns="renderColumns"
                 :titleSlots="titleSlots"
-                @table-func-action="handleFuncAction"
-                @table-column-change="handleColumnChange">
+                @func-zone-action="handleFuncAction"
+                @func-zone-checkall="handleFuncCheckAll"
+                @func-zone-clear-check="handleFuncClearCheck"
+                @column-change="handleColumnChange">
         <!-- 外部$slots传入的自定义挂载点 -->
         <template v-for="slotName in titleSlots" #[slotName]>
           <slot :name="slotName"></slot>
@@ -33,6 +37,7 @@
              :columns="showColumns"
              :dataSource="dataSource"
              :rowKey="generateRowKey"
+             :rowSelection="checkable ? { selectedRowKeys: selectedRowKeys, onChange: onRowSelectChange } : null"
              :size="size"
              :bordered="bordered"
              :loading="loading"
@@ -77,8 +82,6 @@
 import FuncTitle from '@/components/Common/FuncTitle'
 import FuncZone from '@/components/Common/FuncZone'
 import FormatColumn from '@/components/Common/FuncTable/Render/FormatColumn'
-// 用于生成rowKey的默认index序列，rowKey不存在时，不能放到this对象中会出现无限循环
-let rowIndex = 0
 export default {
   name: 'FormatTable',
   components: { FuncTitle, FuncZone, FormatColumn },
@@ -134,7 +137,7 @@ export default {
       required: false
     },
     /**
-     * 表行数据rowKey或者生成规则，默认是id
+     * 表行数据rowKey或者生成规则，默认是id，若不存在id，则取record对应的index
      */
     rowKey: {
       type: [String, Function],
@@ -157,6 +160,10 @@ export default {
       formatColumns: [],
       // funcZone中选中的列
       checkedColumns: [],
+      // 是否可选择
+      checkable: false,
+      // 当前选中的行
+      selectedRowKeys: [],
       // 标题相关挂载点
       titleSlots: []
     }
@@ -186,7 +193,7 @@ export default {
       deep: true
     }
   },
-  emits: ['table-row-action', 'table-func-action'],
+  emits: ['table-row-action', 'table-func-action', 'table-row-selection'],
   methods: {
     /**
      * 生成渲染用的Columns
@@ -260,20 +267,44 @@ export default {
      * 生成行rowKey，默认按照id，如果没有id属性，则按照内置row-key自动生成
      * @returns {string|(function())}
      */
-    generateRowKey (record) {
+    generateRowKey (record, index) {
       if (this.$utils.isValid(record) && record[this.rowKey]) {
         return record[this.rowKey]
       } else {
-        return 'row-key-' + ++rowIndex
+        return index
       }
+    },
+    // 行选择变化
+    onRowSelectChange (selectedRowKeys, selectedRows) {
+      this.selectedRowKeys = selectedRowKeys
+      this.$emit('table-row-selection', selectedRowKeys, selectedRows)
     },
     /**
      * 响应功能区域操作按钮
      * @param action 响应事件的名称
      * @param extend 是否扩展功能，true | false，true事件直接上抛不做默认处理
+     * @param checkable 是否可选择
      */
-    handleFuncAction (action, extend) {
-      this.$emit('table-func-action', action, extend)
+    handleFuncAction (action, extend, checkable) {
+      // 开启或者取消选择
+      if (action.name === this.$default.ACTION.CHECK.name) {
+        this.checkable = checkable
+        // 是否可选择切换时将选中结果切换掉
+        this.selectedRowKeys = []
+      } else {
+        this.$emit('table-func-action', action, extend)
+      }
+    },
+    // 响应全选与否
+    handleFuncCheckAll (checkAll) {
+      console.log(checkAll)
+      // 由于全选动作在table这一层已经实现，抛出事件可以作为此事件的trigger
+      this.$emit('table-func-action', this.$default.ACTION.CHECKALL, true)
+    },
+    // 响应清除选择
+    handleFuncClearCheck () {
+      this.selectedRowKeys = []
+      this.$emit('table-row-selection', [], [])
     },
     // 响应操作按钮的点击
     handleRowAction (action, row, column) {
@@ -300,13 +331,18 @@ export default {
         text-overflow: ellipsis;
       }
       td.table-format-progress {
+        position: relative;
         padding: 0 !important;
         .atom-form-progress {
-          line-height: 49px;
+          position: absolute;
           width: 100%;
+          height: 100%;
+          top: 0;
           text-align: left;
           span {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            height: 100%;
             padding-left: 10px;
             font-weight: bold;
           }

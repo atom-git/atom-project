@@ -23,6 +23,7 @@
                :loading="loading"
                @table-row-action="handleRowAction"
                @table-func-action="handleFuncAction"
+               @table-row-selection="handleRowSelection"
                @change="handleTableChange">
     <!-- 外部$slots传入的自定义挂载点 -->
     <template v-for="slotName in slotColumns" #[slotName]="{ text, row, index }">
@@ -142,6 +143,8 @@ export default {
     return {
       // 用于存储当前的操作往外抛
       curAction: {},
+      // 当前选中的行
+      selectedRowKeys: [],
       // form显隐
       formVisible: false,
       // form提交loading
@@ -204,7 +207,7 @@ export default {
       deep: true
     }
   },
-  emits: ['table-change', 'table-row-action', 'table-func-action'],
+  emits: ['table-change', 'table-func-action', 'table-row-action', 'table-row-selection'],
   methods: {
     // 初始化FormTable
     initTable (columns) {
@@ -284,6 +287,22 @@ export default {
           this.formType = this.$default.ACTION.ADD.name
           this.formModel = this.$utils.deepClone(this.defaultModel)
           this.formVisible = true
+        } else if (action.name === this.$default.ACTION.DELETE.name) {
+          // 非扩展功能且有选中记录时弹出删除提醒
+          if (this.$utils.isValid(this.selectedRowKeys)) {
+            // FuncZone区域的删除操作为批量删除动作
+            const self = this
+            this.$modal.$confirm({
+              icon: createVNode(ExclamationCircleOutlined),
+              okType: 'danger',
+              content: `确认要删除选中记录吗？`,
+              onOk () {
+                self.$emit('table-func-action', action)
+              }
+            })
+          } else {
+            this.$message('无选中记录！')
+          }
         } else if (action.name === this.$default.ACTION.REFRESH.name || action.name === this.$default.ACTION.DOWNLOAD.name) {
           this.$emit('table-func-action', action)
         }
@@ -324,6 +343,11 @@ export default {
           this.$emit('table-row-action', action, row, column)
         }
       }
+    },
+    // 响应row选择改变
+    handleRowSelection (selectedRowKeys, selectedRows) {
+      this.selectedRowKeys = selectedRowKeys
+      this.$emit('table-row-selection', selectedRowKeys, selectedRows)
     },
     // 响应pagination, sorter改变
     handleTableChange (pagination, filters, sorter) {

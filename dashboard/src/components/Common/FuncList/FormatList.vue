@@ -7,7 +7,7 @@
     <!-- 右侧功能按钮 -->
     <template v-if="funcZone" #extra>
       <FuncZone :funcZone="funcZone"
-                @table-func-action="handleFuncAction">
+                @func-zone-action="handleFuncAction">
       </FuncZone>
     </template>
 

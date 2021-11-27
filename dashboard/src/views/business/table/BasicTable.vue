@@ -1,5 +1,9 @@
 <template>
-  <FormatTable title="FormatTable" :columns="columns" :funcZone="funcZone" :dataSource="dataSource">
+  <FormatTable title="FormatTable"
+               :columns="columns"
+               :funcZone="funcZone"
+               :dataSource="dataSource"
+               @table-row-selection="handleRowSelection">
     <template #head>
       <a-avatar><template #icon><IconFont type="UserOutlined"/></template></a-avatar>
     </template>
@@ -20,13 +24,16 @@ export default {
       // 用户功能按钮区域
       funcZone: {
         add: { apiUrl: '/system/user/update' },
+        check: true,
+        delete: true,
         download: true,
         refresh: true,
         setting: true
       },
       // 数据
       dataSource: [
-        { head: 'default.png', account: 'admin', name: '管理员', deptId: 1000, sysDept: { id: 1000, deptName: '管理平台' }, createTime: '2021-07-30 15:12:36', ifValid: 1 }
+        { head: 'default.png', account: 'admin', name: '管理员', company: '三六零科技有限公司', progress: 50, deptId: 1000, sysDept: { id: 1000, deptName: '管理平台' }, createTime: '2021-07-30 15:12:36', ifValid: 1 },
+        { head: 'default.png', account: 'super', name: '超级管理员', company: 'Atom Project有限公司', progress: 80, deptId: 1000, sysDept: { id: 1000, deptName: '管理平台' }, createTime: '2021-07-30 15:12:36', ifValid: 1 }
       ],
       // 字段列表
       columns: [
@@ -53,6 +60,8 @@ export default {
             }
           ]
         },
+        { dataIndex: 'company', title: '公司', format: 'formatLink' },
+        { dataIndex: 'progress', title: '进度', format: 'formatProgress|number', width: 120 },
         {
           type: 'treeSelect',
           dataIndex: 'deptId',
@@ -86,6 +95,12 @@ export default {
           ]
         }
       ]
+    }
+  },
+  methods: {
+    // 响应row选择改变
+    handleRowSelection (selectedRowKeys, selectedRows) {
+      console.log(selectedRowKeys, selectedRows)
     }
   }
 }

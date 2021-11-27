@@ -8,6 +8,7 @@
              @table-filter="handleFilter"
              @table-func-action="handleFuncAction"
              @table-row-action="handleRowAction"
+             @table-row-selection="handleRowSelection"
              @table-form-submit="handleFormSubmit"
              @table-form-cancel="handleFormCancel"
              @table-change="handleTableChange">
@@ -64,6 +65,8 @@ export default {
       filterParams: {},
       // 排序参数
       orderData: {},
+      // 当前选中的行
+      selectedRowKeys: [],
       // 是否数据下载
       download: false
     }
@@ -97,7 +100,7 @@ export default {
       deep: true
     }
   },
-  emits: ['table-data-load', 'table-func-action', 'table-row-action', 'table-form-submit', 'table-form-cancel'],
+  emits: ['table-data-load', 'table-func-action', 'table-row-selection', 'table-row-action', 'table-form-submit', 'table-form-cancel'],
   methods: {
     // 加载数据
     loadTableData () {
@@ -160,7 +163,23 @@ export default {
       if (action.extend) {
         this.$emit('table-func-action', action)
       } else {
-        if (action.name === this.$default.ACTION.REFRESH.name) {
+        if (action.name === this.$default.ACTION.DELETE.name) {
+          // 批量删除动作，如果扩展动作，则直接抛出，否则按照apiUrl逻辑进行处理
+          if (action.extend) {
+            this.$emit('table-func-action', action)
+          } else {
+            // apiUrl必须存在且格式合规
+            if (this.$utils.isValid(action.apiUrl)) {
+              // 执行删除动作，服务端需支持批删除
+              this.$http.delete(action.apiUrl, { data: { ids: this.selectedRowKeys } }).then(() => {
+                this.$message.success('数据删除成功！')
+                this.loadTableData()
+              })
+            } else {
+              this.$message.error('删除功能action未配置apiUrl')
+            }
+          }
+        } else if (action.name === this.$default.ACTION.REFRESH.name) {
           // 刷新表格
           this.loadTableData().then(() => {
             this.$message.success('数据刷新成功！')
@@ -190,10 +209,15 @@ export default {
               this.loadTableData()
             })
           } else {
-            this.$message.error('删除功能action必须配置apiUrl，格式为delete/{s}')
+            this.$message.error('删除功能action未配置apiUrl，格式为delete/{s}')
           }
         }
       }
+    },
+    // 响应row选择改变
+    handleRowSelection (selectedRowKeys, selectedRows) {
+      this.selectedRowKeys = selectedRowKeys
+      this.$emit('table-row-selection', selectedRowKeys, selectedRows)
     },
     // 响应form表单的提交
     handleFormSubmit (action, model, onFinish) {
