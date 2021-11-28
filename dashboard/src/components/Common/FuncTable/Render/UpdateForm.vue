@@ -94,7 +94,7 @@ export default {
       return this.width || this.$store.getters.appConfig.dialog.size
     }
   },
-  emits: ['update:modelValue', 'table-editor-submit', 'table-editor-cancel'],
+  emits: ['update:modelValue', 'form-editor-submit', 'form-editor-cancel'],
   watch: {
     // 内部form表单变化时，提交变化
     model: {
@@ -122,12 +122,12 @@ export default {
     },
     // 响应表单的数据提交
     handleFormSubmit (model) {
-      this.$emit('table-editor-submit', model)
+      this.$emit('form-editor-submit', model)
     },
     // 响应取消
     handleCancel () {
       this.$refs.formList.resetForm()
-      this.$emit('table-editor-cancel')
+      this.$emit('form-editor-cancel')
     }
   }
 }

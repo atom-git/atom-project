@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { FormList } from '@/components/Common/FuncList'
+import { FormList } from '@/components/Common/FuncTable'
 const dataSource = []
 for (let i = 0; i < 23; i++) {
   dataSource.push({

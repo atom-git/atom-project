@@ -1,4 +1,19 @@
 <template>
+  <!-- 筛选条件区域 -->
+  <FormFilter v-if="filterFields && filterFields.length > 0"
+              ref="formFilter"
+              v-model="filterModel"
+              :fields="filterFields"
+              :labelCol="labelCol"
+              :wrapperCol="wrapperCol"
+              @submit="handleFilterSubmit"
+              @reset="handleFilterReset">
+    <!-- 把外部传入的form slot传入内部 -->
+    <template v-for="slotName in formSlots" #[slotName]="{ field, model }">
+      <slot :name="slotName" :field="field" :model="model"></slot>
+    </template>
+  </FormFilter>
+  <!-- 列表主体区域 -->
   <FormatList v-bind="$attrs"
               :fieldKeys="fieldKeys"
               :itemTitleFormat="itemTitleFormat"
@@ -7,25 +22,47 @@
               @list-load-more="handleLoadMore"
               @list-title-link="handleTitleLink"
               @list-row-selection="handleRowSelection"
-              @list-row-action="handleRowAction"></FormatList>
+              @list-row-action="handleRowAction">
+
+  </FormatList>
+  <!-- 统一表单处理 -->
+  <UpdateForm v-model="formModel"
+              :visible="formVisible"
+              :title="formTitle"
+              :width="formWidth"
+              :loading="formLoading"
+              :fields="formFields"
+              :formSlots="formSlots"
+              :formError="formError"
+              @form-editor-submit="handleFormSubmit"
+              @form-editor-cancel="handleFormCancel">
+    <!-- 把外部传入的form slot传入内部 -->
+    <template v-for="slotName in formSlots" #[slotName]="{ field, model }">
+      <slot :name="slotName" :field="field" :model="model"></slot>
+    </template>
+  </UpdateForm>
 </template>
 
 <script>
 /**
  * 带表单的格式化列表
+ * 暂无需求，先不完善
  */
+import { FormFilter } from '@/components/Common/FuncForm'
 import FormatList from './FormatList'
+import UpdateForm from '../Render/UpdateForm'
+import list from '../mixins/list'
 export default {
   name: 'FormList',
-  components: { FormatList },
+  components: { FormFilter, FormatList, UpdateForm },
+  mixins: [list],
   props: {
     /**
      * 字段列表 { title, dataIndex, span, class, format, form }
      * title: 表示对应的FormatList中fieldKeys被替换的key
      * key为title时其format目前仅支持formatBadge，其他字段暂不支持format
      * dataIndex: 表示字段属性名
-     *
-     * 其他与FuncTable中完全一致
+     * 其他与FormTable中完全一致
      */
     columns: {
       type: Array,
@@ -35,6 +72,11 @@ export default {
     dataSource: {
       type: Array,
       required: false
+    },
+    // 是否加载中
+    loading: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -43,8 +85,16 @@ export default {
       fieldKeys: {},
       // 列表中标题字段格式化 formatBadge
       itemTitleFormat: {},
-      // 编辑字段列表
-      fields: []
+      // 用于存储当前的操作往外抛
+      curAction: {},
+      // 当前选中的行
+      selectedRowKeys: [],
+      // form显隐
+      formVisible: false,
+      // form提交loading
+      formLoading: false,
+      // form提交时的错误提示，此错误为服务端返回错误
+      formError: ''
     }
   },
   watch: {

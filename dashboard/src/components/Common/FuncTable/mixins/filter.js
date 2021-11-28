@@ -14,11 +14,11 @@ export default {
   },
   emits: ['table-filter'],
   mounted () {
-    // 在formTable挂载时提交一次filter数据，好让FuncTable中能够正常的进行数据初始化
+    // 在FormTable挂载时提交一次filter数据，好让FuncTable中能够正常的进行数据初始化
     this.handleFilterSubmit(this.filterModel)
   },
   methods: {
-    // 根据column构建filterForm，存在filter属性时才生成
+    // 根据column构建FilterForm，存在filter属性时才生成
     generateFilterForm (column) {
       const filterField = {}
       // 如果是对象，则按照对象的方式来处理，否则取默认的情况，属性优先级是按照容错处理>filter>column

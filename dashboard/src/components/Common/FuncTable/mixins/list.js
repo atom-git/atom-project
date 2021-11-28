@@ -1,6 +1,8 @@
 /**
- * FormTable的数据编辑混入
+ * FormList数据编辑混入
  * 当前编辑的表单的信息，包括新增或者编辑两种表单的form表单
+ * formMode: 弹框类型：modal, drawer
+ * formAttrs: 弹出框的属性
  * formType: add | edit
  * formModel: 表单绑定的属性值
  * addFields: 新增字段列表
@@ -12,8 +14,26 @@
  * 其他form表单配置项见FormFilter
  */
 export default {
+  props: {
+    // form表单的宽度
+    formWidth: {
+      type: Number,
+      defalut: 720
+    },
+    // form表单的label,wrapper宽度分配
+    labelCol: {
+      type: Object,
+      default: () => ({ xs: 24, sm: 6, md: 8, lg: 8, xl: 6, xxl: 5 })
+    }
+  },
   data () {
     return {
+      // 过滤表单项 filterFields: 过滤字段
+      filterFields: [],
+      // 过滤器内部绑定的值对象
+      filterModel: {},
+      // 过滤器挂载slot
+      filterSlots: [],
       // 表单处理类型
       formType: 'add',
       // 新增默认的表单值
@@ -40,31 +60,33 @@ export default {
       return this.formType === 'add' ? this.addSlots : this.editSlots
     }
   },
-  emits: ['table-form-submit', 'table-form-cancel'],
+  emits: ['list-filter', 'list-form-submit', 'list-form-cancel'],
+  mounted () {
+    // 在FormList挂载时提交一次filter数据，好让FuncList中能够正常的进行数据初始化
+    this.handleFilterSubmit(this.filterModel)
+  },
   methods: {
+    /**
+     * filter过滤器配置
+     */
+    // 根据column构建FilterForm，存在filter属性时才生成
+    generateFilterForm (column) {
+
+    },
+    // 响应filter form的提交
+    handleFilterSubmit (filterModel) {
+      this.$emit('list-filter', filterModel)
+    },
+    // 响应filter form的重置
+    handleFilterReset (filterModel) {
+      this.$emit('list-filter', filterModel)
+    },
+    /**
+     * form表单配置
+     */
     // 根据column构建dataForm，在点击时才生成，存在add，edit属性时才生成
     generateUpdateForm (column) {
-      // 为新增时
-      if (column.form.add) {
-        const addField = {}
-        this.generateColumnForm(column, column.form, column.form.add, addField)
-        this.addFields.push(addField)
-        if (this.$utils.isValid(addField.default)) {
-          this.defaultModel[addField.name] = addField.default
-        }
-        if (addField.slot) {
-          this.addSlots.push(addField.slot)
-        }
-      }
-      // 为编辑时
-      if (column.form.edit) {
-        const editField = {}
-        this.generateColumnForm(column, column.form, column.form.edit, editField)
-        this.editFields.push(editField)
-        if (editField.slot) {
-          this.editSlots.push(editField.slot)
-        }
-      }
+
     },
     // 响应form表单的提交
     handleFormSubmit (model) {
@@ -75,14 +97,14 @@ export default {
         this.formVisible = !status
         this.formError = error ? error.errorMsg : undefined
       }
-      this.$emit('table-form-submit', this.curAction, model, onFinish)
+      this.$emit('list-form-submit', this.curAction, model, onFinish)
     },
     // 响应form表单的取消
     handleFormCancel () {
       this.formModel = {}
       this.formVisible = false
       this.formError = undefined
-      this.$emit('table-form-cancel', this.curAction)
+      this.$emit('list-form-cancel', this.curAction)
     }
   }
 }

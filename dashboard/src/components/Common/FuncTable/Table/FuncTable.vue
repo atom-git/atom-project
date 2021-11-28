@@ -83,10 +83,10 @@ export default {
   watch: {
     // 监听分页信息的变化重新加载数据
     pagination: {
+      deep: true,
       handler (newValue) {
         this.tablePagination = newValue
-      },
-      deep: true
+      }
     },
     // 监听到请求的变化变重新加载数据
     apiUrl () {
@@ -94,10 +94,10 @@ export default {
     },
     // 监听扩展参数的变化重新加载数据
     extendParams: {
+      deep: true,
       handler () {
         this.loadTableData()
-      },
-      deep: true
+      }
     }
   },
   emits: ['table-data-load', 'table-func-action', 'table-row-selection', 'table-row-action', 'table-form-submit', 'table-form-cancel'],

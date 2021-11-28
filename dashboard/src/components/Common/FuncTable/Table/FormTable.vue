@@ -39,8 +39,8 @@
               :fields="formFields"
               :formSlots="formSlots"
               :formError="formError"
-              @table-editor-submit="handleFormSubmit"
-              @table-editor-cancel="handleFormCancel">
+              @form-editor-submit="handleFormSubmit"
+              @form-editor-cancel="handleFormCancel">
     <!-- 把外部传入的form slot传入内部 -->
     <template v-for="slotName in formSlots" #[slotName]="{ field, model }">
       <slot :name="slotName" :field="field" :model="model"></slot>
@@ -64,7 +64,6 @@
  *          others: 其他form-item的属性，如tree-select的treeData
  *          slot:表单项插槽,指定插槽名称
  * formMode: [String] 表单的展示形式modal, drawer
- * formAttrs: [Object] updateForm的属性绑定
  * scroll: 表格超过某个高度滚动，且这个高度为atom-table最小高度 { x: 300, y: 500 }
  * 事件[Event]:
  * table-filter: 过滤表格数据，对FomrFilter的model数据传递，submit，reset事件一样，都是进行过滤，只是查询条件不一样
