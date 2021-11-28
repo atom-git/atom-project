@@ -226,7 +226,7 @@ export default {
     // 初始化FormTable的属性值
     initColumns (columns) {
       // 重新初始化表格
-      columns.map(column => {
+      columns.forEach(column => {
         // 过滤器和默认表单初始化
         if (column.form) {
           if (column.form.filter) {

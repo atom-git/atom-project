@@ -61,6 +61,9 @@
 </template>
 
 <script>
+/**
+ * 格式化描述展现
+ */
 import FuncTitle from '@/components/Common/FuncTitle'
 import FuncZone from '@/components/Common/FuncZone'
 import FormatColumn from '@/components/Common/FuncTable/Render/FormatColumn'

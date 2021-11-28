@@ -2,11 +2,20 @@
 功能列表样式
  */
 .atom-list {
+  /*防止不能占满100%的问题*/
+  .ant-card-body > .ant-checkbox-group {
+    width: 100%;
+  }
   .ant-list {
     /*普通列表*/
     .ant-list-items {
       .ant-list-item {
         .ant-list-item-meta {
+          .ant-list-item-meta-avatar {
+            .ant-checkbox-wrapper {
+              margin-right: 8px;
+            }
+          }
           .ant-list-item-meta-content {
             .ant-list-item-meta-title {
               .linkable {

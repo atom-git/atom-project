@@ -4,7 +4,7 @@
     <template v-if="title" #title>
       <FuncTitle :title="title"></FuncTitle>
     </template>
-    <!-- 右侧功能按钮 -->
+    <!-- 右侧功能按钮，数据表的checkall由表格进行控制 -->
     <template v-if="funcZone" #extra>
       <FuncZone :funcZone="funcZone"
                 :checkallShow="false"
@@ -12,7 +12,6 @@
                 :columns="renderColumns"
                 :titleSlots="titleSlots"
                 @func-zone-action="handleFuncAction"
-                @func-zone-checkall="handleFuncCheckAll"
                 @func-zone-clear-check="handleFuncClearCheck"
                 @column-change="handleColumnChange">
         <!-- 外部$slots传入的自定义挂载点 -->
@@ -294,12 +293,6 @@ export default {
       } else {
         this.$emit('table-func-action', action, extend)
       }
-    },
-    // 响应全选与否
-    handleFuncCheckAll (checkAll) {
-      console.log(checkAll)
-      // 由于全选动作在table这一层已经实现，抛出事件可以作为此事件的trigger
-      this.$emit('table-func-action', this.$default.ACTION.CHECKALL, true)
     },
     // 响应清除选择
     handleFuncClearCheck () {
