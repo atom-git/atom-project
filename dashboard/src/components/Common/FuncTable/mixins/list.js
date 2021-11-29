@@ -71,7 +71,12 @@ export default {
      */
     // 根据column构建FilterForm，存在filter属性时才生成
     generateFilterForm (column) {
-
+      // 如果是对象，则按照对象的方式来处理，否则取默认的情况，属性优先级是按照容错处理>filter>column
+      const filterField = this.generateColumnForm(column, column.form, column.form.filter)
+      this.filterFields.push(filterField)
+      if (filterField.slot) {
+        this.filterSlots.push(filterField.slot)
+      }
     },
     // 响应filter form的提交
     handleFilterSubmit (filterModel) {
@@ -86,7 +91,25 @@ export default {
      */
     // 根据column构建dataForm，在点击时才生成，存在add，edit属性时才生成
     generateUpdateForm (column) {
-
+      // 字段有新增时
+      if (column.form.add) {
+        const addField = this.generateColumnForm(column, column.form, column.form.add)
+        this.addFields.push(addField)
+        if (this.$utils.isValid(addField.default)) {
+          this.defaultModel[addField.name] = addField.default
+        }
+        if (addField.slot) {
+          this.addSlots.push(addField.slot)
+        }
+      }
+      // 字段有编辑时
+      if (column.form.edit) {
+        const editField = this.generateColumnForm(column, column.form, column.form.edit)
+        this.editFields.push(editField)
+        if (editField.slot) {
+          this.addSlots.push(editField.slot)
+        }
+      }
     },
     // 响应form表单的提交
     handleFormSubmit (model) {
@@ -105,6 +128,33 @@ export default {
       this.formVisible = false
       this.formError = undefined
       this.$emit('list-form-cancel', this.curAction)
+    },
+    /**
+     * 根据column和field构建FieldRender属性，优先级field>form>column
+     * @param column 列属性，不能把column的属性合并进去，否则会造成污染
+     * @param form 统一的form属性
+     * @param field 字段属性配置可能是Object | Boolean，filter.add等可能仅配置为true
+     */
+    generateColumnForm (column, form, field) {
+      /**
+       * 由于List其字段属性相对固定
+       * 通过遍历自动生成大部分表单属性
+       */
+      const formProps = Object.assign({ label: column.title, name: column.dataIndex }, form, field)
+      if (column.key === 'title') {
+        return { type: 'input', rules: [{ required: true }], ...formProps }
+      } else if (column.key === 'avatar') {
+        return { type: 'imagePicker', height: 60, maxSize: 200, rules: [{ required: true }], ...formProps }
+      } else if (column.key === 'description') {
+        return { type: 'textarea', rows: 2, maxlength: 100, rules: [{ required: true }], ...formProps }
+      } else if (column.key === 'content') {
+        return { type: 'textarea', rows: 3, maxlength: 100, rules: [{ required: true }], ...formProps }
+      } else if (column.key === 'extra') {
+        return { type: 'imagePicker', height: 160, maxSize: 200, rules: [{ required: true }], ...formProps }
+      } else {
+        // 其他字段生成
+        return formProps
+      }
     }
   }
 }

@@ -6,7 +6,8 @@
     </template>
     <!-- 右侧功能按钮 -->
     <template v-if="funcZone" #extra>
-      <FuncZone :funcZone="funcZone"
+      <FuncZone ref="funcZone"
+                :funcZone="funcZone"
                 :checkedCount="selectedRowKeys.length"
                 @func-zone-action="handleFuncAction"
                 @func-zone-checkall="handleFuncCheckAll"
@@ -17,7 +18,7 @@
       <!-- 列表 -->
       <a-list v-bind="$attrs"
               :dataSource="dataSource"
-              :pagination="pagination"
+              :pagination="listPagination"
               :loading="loading">
         <!-- 是否有加载更多，pagination优先级更高 -->
         <template v-if="loadMore && !pagination" #loadMore>
@@ -177,13 +178,34 @@ export default {
     return {
       // 是否可选择
       checkable: false,
+      // 列表分页
+      listPagination: true,
       // 选中的行keys
       selectedRowKeys: [],
       // 选中的行
       selectedRows: []
     }
   },
-  emits: ['list-func-action', 'list-load-more', 'list-title-link', 'list-row-selection', 'list-row-action'],
+  watch: {
+    // 监听分页信息状态
+    pagination: {
+      deep: true,
+      hanlder (newValue) {
+        // 如果分页为true或者是对象
+        if (newValue) {
+          // 判断onChange方法存在与否，自动增加分页方法
+          this.listPagination = {
+            current: newValue.current || 1,
+            pageSize: newValue.pageSize || 10,
+            total: newValue.total || this.dataSource.length,
+            showSizeChanger: true,
+            onChange: (page, pageSize) => { this.$emit('list-page-change', page, pageSize) }
+          }
+        }
+      }
+    }
+  },
+  emits: ['list-func-action', 'list-load-more', 'list-title-link', 'list-row-selection', 'list-row-action', 'list-page-change'],
   methods: {
     // 初始化badge
     initBadge (item) {
@@ -212,6 +234,10 @@ export default {
     // 响应选中的变化
     handleSelectChange () {
       this.selectedRows = this.dataSource.filter((data, index) => this.selectedRowKeys.includes(data[this.fieldKeys.key] || index))
+      // 修改全选状态
+      if (this.selectedRowKeys.length < this.dataSource.length) {
+        this.$refs.funcZone.checkall = false
+      }
       this.$emit('list-row-selection', this.selectedRowKeys, this.selectedRows)
     },
     // 响应全选与否

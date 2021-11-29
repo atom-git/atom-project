@@ -39,7 +39,7 @@ export default {
     return {
       title: '基础列表测试',
       dataSource: dataSource,
-      pagination: false,
+      pagination: true,
       loadMore: true,
       fieldKeys: { avatar: 'avatar', title: 'title', description: 'description', content: 'content', extra: 'extra' },
       actions: [

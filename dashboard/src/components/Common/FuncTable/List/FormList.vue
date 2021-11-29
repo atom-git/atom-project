@@ -22,7 +22,8 @@
               @list-load-more="handleLoadMore"
               @list-title-link="handleTitleLink"
               @list-row-selection="handleRowSelection"
-              @list-row-action="handleRowAction">
+              @list-row-action="handleRowAction"
+              @list-page-change="handlePageChange">
 
   </FormatList>
   <!-- 统一表单处理 -->
@@ -52,11 +53,18 @@ import { FormFilter } from '@/components/Common/FuncForm'
 import FormatList from './FormatList'
 import UpdateForm from '../Render/UpdateForm'
 import list from '../mixins/list'
+import { createVNode } from 'vue'
+import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
 export default {
   name: 'FormList',
   components: { FormFilter, FormatList, UpdateForm },
   mixins: [list],
   props: {
+    // 列表标题
+    title: {
+      type: String,
+      required: false
+    },
     /**
      * 字段列表 { title, dataIndex, span, class, format, form }
      * title: 表示对应的FormatList中fieldKeys被替换的key
@@ -97,6 +105,26 @@ export default {
       formError: ''
     }
   },
+  computed: {
+    // 表单的名称
+    formTitle () {
+      return this.title.concat('【', this.formType === 'add' ? '新增' : '编辑', '】')
+    },
+    // 需要为输入控件设置布局样式
+    wrapperCol () {
+      if (this.labelCol && this.labelCol.span) {
+        return { span: 24 - this.labelCol.span }
+      } else {
+        return {
+          xs: 24 - this.labelCol.xs || 0,
+          sm: 24 - this.labelCol.sm || 0,
+          md: 24 - this.labelCol.md || 0,
+          xl: 24 - this.labelCol.xl || 0,
+          xxl: 24 - this.labelCol.xxl || 0,
+        }
+      }
+    }
+  },
   watch: {
     // 监听外部传入的字段列表变化，初始化List属性
     columns: {
@@ -107,6 +135,7 @@ export default {
       }
     }
   },
+  emits: ['list-func-action', 'list-row-action', 'list-load-more', 'list-row-selection', 'list-title-link', 'list-page-change'],
   methods: {
     // 初始化List属性
     initList (columns) {
@@ -115,25 +144,20 @@ export default {
         if (column.key) {
           this.fieldKeys[column.key] = column.dataIndex
         }
-        /**
-         * 由于List其字段属性相对固定
-         * 通过遍历自动生成大部分表单属性
-         */
-        const formProps = Object.assign({ title: column.title, name: column.dataIndex }, column.form)
+        // title字段生成其格式化
         if (column.key === 'title') {
           this.itemTitleFormat = column.format
-          this.fields.push({ type: 'input', rules: [{ required: true }], ...formProps })
-        } else if (column.key === 'avatar') {
-          this.fields.push({ type: 'imagePicker', height: 60, maxSize: 200, rules: [{ required: true }], ...formProps })
-        } else if (column.key === 'description') {
-          this.fields.push({ type: 'textarea', rows: 2, maxlength: 100, rules: [{ required: true }], ...formProps })
-        } else if (column.key === 'content') {
-          this.fields.push({ type: 'textarea', rows: 3, maxlength: 100, rules: [{ required: true }], ...formProps })
-        } else if (column.key === 'extra') {
-          this.fields.push({ type: 'imagePicker', height: 160, maxSize: 200, rules: [{ required: true }], ...formProps })
-        } else {
-          // 其他字段生成
-          this.fields.push(formProps)
+        }
+        // 过滤器和默认表单初始化
+        if (column.form) {
+          if (column.form.filter) {
+            // 生成filter表单
+            this.generateFilterForm(column)
+          }
+          if (column.form.add || column.form.edit) {
+            // 生成数据编辑的表单
+            this.generateUpdateForm(column)
+          }
         }
       })
       // 如果没有配置其key字段，则默认采用id作为key
@@ -143,23 +167,81 @@ export default {
     },
     // 响应功能区域操作
     handleFuncAction (action, extend) {
-      console.log(action, extend)
+      this.curAction = action
+      if (extend) {
+        this.$emit('list-func-action', action)
+      } else {
+        if (action.name === this.$default.ACTION.ADD.name) {
+          this.formType = this.$default.ACTION.ADD.name
+          this.formModel = this.$utils.deepClone(this.defaultModel)
+          this.formVisible = true
+        } else if (action.name === this.$default.ACTION.DELETE.name) {
+          // 非扩展功能且有选中记录时弹出删除提醒
+          if (this.$utils.isValid(this.selectedRowKeys)) {
+            // FuncZone区域的删除操作为批量删除动作
+            const self = this
+            this.$modal.$confirm({
+              icon: createVNode(ExclamationCircleOutlined),
+              okType: 'danger',
+              content: `确认要删除选中记录吗？`,
+              onOk () {
+                self.$emit('list-func-action', action)
+              }
+            })
+          } else {
+            this.$message('无选中记录！')
+          }
+        } else if (action.name === this.$default.ACTION.REFRESH.name || action.name === this.$default.ACTION.DOWNLOAD.name) {
+          this.$emit('list-func-action', action)
+        }
+      }
     },
     // 响应加载更多
     handleLoadMore () {
-      console.log('load more')
+      this.$emit('list-load-more')
+    },
+    // 响应分页切换
+    handlePageChange (page, pageSize) {
+      this.$emit('list-page-change', page, pageSize)
     },
     // 响应标题跳转
-    handleTitleLink (item) {
-      console.log(item)
+    handleTitleLink (row) {
+      this.$emit('list-title-link', row)
     },
     // 响应行选择
     handleRowSelection (selectedRowKeys, selectedRows) {
-      console.log(selectedRowKeys, selectedRows)
+      this.selectedRowKeys = selectedRowKeys
+      this.$emit('list-row-selection', selectedRowKeys, selectedRows)
     },
     // 响应扩展操作
     handleRowAction (action, row) {
-      console.log(action, row)
+      this.curAction = action
+      if (action.extend) {
+        this.$emit('list-row-action', action, row, this.fieldKeys)
+      } else {
+        // 默认编辑
+        if (action.name === this.$default.ACTION.EDIT.name) {
+          this.formType = this.$default.ACTION.EDIT.name
+          this.formModel = row
+          this.formVisible = true
+        } else if (action.name === this.$default.ACTION.DELETE.name) {
+          // 默认删除
+          const self = this
+          action.messageTitle = this.title.concat('【', row[this.fieldKeys.title], '】')
+          this.$modal.$confirm({
+            icon: createVNode(ExclamationCircleOutlined),
+            okType: 'danger',
+            content: `确认要删除${action.messageTitle}吗？`,
+            onOk () {
+              self.$emit('list-row-action', action, row, this.fieldKeys)
+            }
+          })
+        } else {
+          // 对非默认处理的情况进行容错处理
+          action.extend = true
+          this.$emit('list-row-action', action, row, this.fieldKeys)
+        }
+      }
     }
   }
 }

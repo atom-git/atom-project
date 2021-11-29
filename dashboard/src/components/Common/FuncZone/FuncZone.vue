@@ -171,7 +171,7 @@ export default {
     return {
       // 刷新间隔，默认1分钟
       delay: 1,
-      // 全选按钮的值
+      // 字段全选按钮的值
       checkedAll: false,
       // 选中的列
       checkedColumns: [],
@@ -183,7 +183,7 @@ export default {
       indeterminate: false,
       // 是否是可选择状态
       checkable: false,
-      // 是否全选
+      // 列表是否全选
       checkall: false
     }
   },
@@ -285,6 +285,7 @@ export default {
     },
     // 清空选择
     handleClearCheck () {
+      this.checkall = false
       this.$emit('func-zone-clear-check')
     }
   }

@@ -1,15 +1,17 @@
 <template>
   <FormList v-bind="$attrs"
-              :columns="columns"
-              :loadMore="loadMore"
-              :pagination="listPagination"
-              :dataSource="dataSource"
-              :loading="loading"
-              @list-func-action="handleFuncAction"
-              @list-load-more="handleLoadMore"
-              @list-title-link="handleTitleLink"
-              @list-row-selection="handleRowSelection"
-              @list-row-action="handleRowAction"></FormList>
+            :title="title"
+            :columns="columns"
+            :loadMore="listLoadMore"
+            :pagination="listPagination"
+            :dataSource="dataSource"
+            :loading="loading"
+            @list-func-action="handleFuncAction"
+            @list-row-action="handleRowAction"
+            @list-load-more="handleLoadMore"
+            @list-row-selection="handleRowSelection"
+            @list-title-link="handleTitleLink"
+            @list-page-change="handlePageChange"></FormList>
 </template>
 
 <script>
@@ -21,6 +23,11 @@ export default {
   name: 'FuncList',
   components: { FormList },
   props: {
+    // 列表标题
+    title: {
+      type: String,
+      required: false
+    },
     // 数据请求url
     apiUrl: {
       type: String,
@@ -60,25 +67,20 @@ export default {
       dataSource: [],
       // 列表分页信息
       listPagination: this.pagination,
+      // 是否有加载更多
+      listLoadMore: this.loadMore,
       // 选中的行keys
       selectedRowKeys: [],
       // 选中的行
       selectedRows: [],
+      // 分页参数
+      pageParams: {},
       // 过滤参数
       filterParams: {},
       // 列表loading
       loading: false,
       // 是否数据下载
       download: false
-    }
-  },
-  computed: {
-    // 分页参数
-    pageParams () {
-      return this.tablePagination === false ? {} : {
-        curPage: this.tablePagination.current,
-        pageSize: this.tablePagination.pageSize
-      }
     }
   },
   watch: {
@@ -88,6 +90,10 @@ export default {
       handler (newValue) {
         this.listPagination = newValue
       }
+    },
+    // 监听加载更多的方法
+    loadMore (newValue) {
+      this.listLoadMore = newValue
     },
     // 监听到请求的变化变重新加载数据
     apiUrl () {
@@ -101,6 +107,7 @@ export default {
       }
     }
   },
+  emits: ['list-func-action', 'list-row-action', 'list-load-more', 'list-row-selection', 'list-title-link', 'list-data-load'],
   methods: {
     // 加载列表数据
     loadListData () {
@@ -122,12 +129,13 @@ export default {
             // 对下载的请求单独处理
             this.$utils.download(response)
           } else {
-            this.$emit('table-data-load', response)
-            if (this.tablePagination) {
-              this.tablePagination.total = response && response.page ? response.page.totalCnt : 0
+            this.$emit('list-data-load', response)
+            if (this.listPagination) {
+              this.listPagination.total = (response && response.page && response.page.totalCnt) || 0
               this.dataSource = response ? response.data : []
-            } else {
-              this.dataSource = response
+            } else if (this.loadMore) {
+              this.listLoadMore = (response && response.page && response.page.hasMore) || false
+              this.dataSource = response ? response.data : []
             }
           }
           resolve(response)
@@ -140,24 +148,82 @@ export default {
       this.loadListData()
     },
     // 响应功能区域操作
-    handleFuncAction (action, extend) {
-      console.log(action, extend)
+    handleFuncAction (action) {
+      if (action.extend) {
+        this.$emit('list-func-action', action)
+      } else {
+        if (action.name === this.$default.ACTION.DELETE.name) {
+          // 批量删除动作，如果扩展动作，则直接抛出，否则按照apiUrl逻辑进行处理
+          if (action.extend) {
+            this.$emit('list-func-action', action)
+          } else {
+            // apiUrl必须存在且格式合规
+            if (this.$utils.isValid(action.apiUrl)) {
+              // 执行删除动作，服务端需支持批删除
+              this.$http.delete(action.apiUrl, { data: { ids: this.selectedRowKeys } }).then(() => {
+                this.$message.success('数据删除成功！')
+                this.loadTableData()
+              })
+            } else {
+              this.$message.error('删除功能action未配置apiUrl')
+            }
+          }
+        } else if (action.name === this.$default.ACTION.REFRESH.name) {
+          // 刷新表格
+          this.loadTableData().then(() => {
+            this.$message.success('数据刷新成功！')
+          })
+        } else if (action.name === this.$default.ACTION.DOWNLOAD.name) {
+          // 下载数据
+          this.download = true
+          this.loadTableData().then(() => {
+            // 每次执法行把download置成false
+            this.download = false
+          })
+        }
+      }
     },
     // 响应加载更多
     handleLoadMore () {
-      console.log('load more')
+      this.pageParams.curPage++
+      this.loadListData()
+    },
+    // 响应分页切换
+    handlePageChange (page, pageSize) {
+      this.listPagination.current = page
+      this.listPagination.pageSize = pageSize
+      this.pageParams.curPage = page
+      this.pageParams.pageSize = pageSize
+      this.loadTableData()
     },
     // 响应标题跳转
-    handleTitleLink (item) {
-      console.log(item)
+    handleTitleLink (row) {
+      this.$emit('list-title-link', row)
     },
     // 响应行选择
     handleRowSelection (selectedRowKeys, selectedRows) {
-      console.log(selectedRowKeys, selectedRows)
+      this.selectedRowKeys = selectedRowKeys
+      this.$emit('list-row-selection', selectedRowKeys, selectedRows)
     },
     // 响应扩展操作
-    handleRowAction (action, row) {
-      console.log(action, row)
+    handleRowAction (action, row, fieldKeys) {
+      if (action.extend) {
+        this.$emit('list-row-action', action, row)
+      } else {
+        if (action.name === this.$default.ACTION.DELETE.name) {
+          // apiUrl必须存在且格式合规
+          if (this.$utils.isValid(action.apiUrl) && action.apiUrl.contains('{s}')) {
+            const apiUrl = this.$utils.concatStr(action.apiUrl, row[fieldKeys.key])
+            this.$http.delete(apiUrl).then(() => {
+              // 提示删除成功
+              this.$message.success(action.messageTitle + '删除成功！')
+              this.loadTableData()
+            })
+          } else {
+            this.$message.error('删除功能action未配置apiUrl，格式为delete/{s}')
+          }
+        }
+      }
     }
   }
 }
