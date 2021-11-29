@@ -136,17 +136,17 @@ const InnerForm = {
       dragOptions: {
         animation: 300,
         group: {
-          name: 'layouts',
+          name: 'widgets',
           put: function (to, from, target) {
             // 如果是布局类型，则无法插入至其中
-            if (target.type === 'layout') {
+            if ((target.type || target.__draggable_context.element.group) === 'layout') {
               message.warn({ key: 'message-warn', content: '无法在布局组件中加入布局组件！' })
             }
             // return from.options.group && from.options.group.name === 'toolboxs' && target.type !== 'layout'
             // 在https://github.com/SortableJS/vue.draggable.next/pull/52文件进行修改合并后
             // 或者手工在vuedraggable.umd.js,vuedraggable.common.js,vuedraggable.js三个文件手工改动后，可以使用这个
             // 否则会在组件内部相互移动时报错
-            return target.type !== 'layout'
+            return (target.type || target.__draggable_context.element.group) !== 'layout'
           }
         },
         sort: true,
@@ -178,7 +178,7 @@ const InnerForm = {
   template: `
     <div class="atom-maker-inner-form">
       <Draggable v-bind="dragOptions"
-                 v-model="item.widgets"
+                 :list="item.widgets"
                  itemKey="key"
                  tag="transition-group"
                  :component-data="{ name: 'fade' }"

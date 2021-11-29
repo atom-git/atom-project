@@ -11,7 +11,7 @@
         <a-form v-bind="innerFormConfig" :style="{ width: `${innerFormConfig.width}%` }">
           <!-- 有元素时 -->
           <Draggable v-bind="dragOptions"
-                     v-model="widgets"
+                     :list="widgets"
                      itemKey="key"
                      tag="transition-group"
                      :component-data="{ name: 'fade' }"
@@ -124,7 +124,7 @@ export default {
       // 拖动配置
       dragOptions: {
         animation: 300,
-        group: { name: 'widgets', put: ['toolboxs', 'layouts'] },
+        group: { name: 'widgets', put: true },
         sort: true,
         ghostClass: 'atom-widget-ghost',
         // steps标题禁止拖动，防止与click事件重叠
