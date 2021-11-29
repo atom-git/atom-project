@@ -28,7 +28,7 @@
     </table>
     <!-- 标签页布局 -->
     <a-tabs v-else-if="isType('tabs')"
-            :activeKey="(widget.options && widget.options.tabs && widget.options.tabs.default[0]) || 0"
+            :activeKey="(widget.options && widget.options.items && widget.options.items.default[0]) || 0"
             :type="widget.options['tabType']"
             :tabPosition="widget.options.tabPosition"
             :size="size"
