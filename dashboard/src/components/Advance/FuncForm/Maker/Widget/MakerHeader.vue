@@ -36,7 +36,7 @@
 /**
  * 画板头部组件
  */
-import { TipButton, TipButtonGroup } from '@/components/Common/FuncButton'
+import { TipButton, TipButtonGroup } from '@/components/Common/TipButton'
 import config from '@/config/mixins/config'
 export default {
   name: 'MakerHeader',

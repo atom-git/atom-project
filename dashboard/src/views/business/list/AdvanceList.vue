@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { FuncList } from '@/components/Common/FuncTable'
+import { FuncList } from '@/components/Advance/FuncTable'
 export default {
   name: 'AdvanceList',
   components: { FuncList },

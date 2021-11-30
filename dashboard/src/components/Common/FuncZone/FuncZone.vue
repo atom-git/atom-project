@@ -134,7 +134,7 @@
  *           upload: 导入按钮点击后，如查有提供模板地址，则生成导入模板的下载提示
  *           默认功能按钮包括，refresh 刷新 可选[定时刷新],setting 列设置
  */
-import { TipButton } from '@/components/Common/FuncButton'
+import { TipButton } from '@/components/Common/TipButton'
 export default {
   name: 'FuncZone',
   components: {

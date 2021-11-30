@@ -33,7 +33,7 @@
 <script>
 import { SideLayout } from '@/layouts'
 import MenuTree from '@/components/Common/MenuTree'
-import { FormatTable } from '@/components/Common/FuncTable'
+import { FormatTable } from '@/components/Advance/FuncTable'
 export default {
   name: 'RolePermission',
   components: { SideLayout, MenuTree, FormatTable },

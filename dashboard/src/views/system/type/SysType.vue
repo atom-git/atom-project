@@ -12,7 +12,7 @@
 /**
  * 数据字典管理
  */
-import { FuncTable } from '@/components/Common/FuncTable'
+import { FuncTable } from '@/components/Advance/FuncTable'
 import SysTypeCode from './SysTypeCode'
 export default {
   name: 'SysType',

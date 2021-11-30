@@ -8,7 +8,7 @@
 /**
  * 日志管理
  */
-import { FuncTable } from '@/components/Common/FuncTable'
+import { FuncTable } from '@/components/Advance/FuncTable'
 export default {
   name: 'SysLog',
   components: { FuncTable },

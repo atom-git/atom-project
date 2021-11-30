@@ -31,7 +31,7 @@
  * 新增或者编辑的数据表单，默认实现
  */
 import Dialog from '@/components/Common/Dialog'
-import { FormList } from '@/components/Common/FuncForm'
+import { FormList } from '@/components/Advance/FuncForm'
 export default {
   name: 'UpdateForm',
   components: {

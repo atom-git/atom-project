@@ -23,9 +23,9 @@
 /**
  * 自定义表单管理
  */
-import { FuncTable } from '@/components/Common/FuncTable'
+import { FuncTable } from '@/components/Advance/FuncTable'
 import Dialog from '@/components/Common/Dialog'
-import { FormMaker } from '@/components/Common/FuncForm'
+import { FormMaker } from '@/components/Advance/FuncForm'
 export default {
   name: 'SysForm',
   components: { FuncTable, Dialog, FormMaker },

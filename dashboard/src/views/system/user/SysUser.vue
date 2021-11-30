@@ -37,11 +37,11 @@
  */
 import { SideLayout } from '@/layouts'
 import MenuTree from '@/components/Common/MenuTree'
-import { FuncTable } from '@/components/Common/FuncTable'
+import { FuncTable } from '@/components/Advance/FuncTable'
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
 import { createVNode } from 'vue'
 import Dialog from '@/components/Common/Dialog'
-import { FormList } from '@/components/Common/FuncForm'
+import { FormList } from '@/components/Advance/FuncForm'
 export default {
   name: 'SysUser',
   components: { SideLayout, MenuTree, FuncTable, Dialog, FormList },

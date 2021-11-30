@@ -33,8 +33,8 @@
 </template>
 
 <script>
-import { FormatTable } from '@/components/Common/FuncTable'
-import { TipButtonGroup } from '@/components/Common/FuncButton'
+import { FormatTable } from '@/components/Advance/FuncTable'
+import { TipButtonGroup } from '@/components/Common/TipButton'
 import { createVNode } from 'vue'
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
 // sysTypeCode默认值

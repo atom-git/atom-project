@@ -2,7 +2,6 @@
   <FormatList :title="title"
               :dataSource="dataSource"
               itemLayout="vertical"
-              :pagination="pagination"
               :loadMore="loadMore"
               :fieldKeys="fieldKeys"
               :funcZone="funcZone"
@@ -19,7 +18,6 @@
             :columns="columns"
             :dataSource="dataSource"
             itemLayout="vertical"
-            :pagination="pagination"
             :loadMore="loadMore"
             :funcZone="funcZone"
             :linkable="true"
@@ -33,7 +31,7 @@
 </template>
 
 <script>
-import { FormatList, FormList } from '@/components/Common/FuncTable'
+import { FormatList, FormList } from '@/components/Advance/FuncTable'
 const dataSource = []
 for (let i = 0; i < 13; i++) {
   dataSource.push({

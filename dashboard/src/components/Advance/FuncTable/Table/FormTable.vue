@@ -76,12 +76,12 @@
  * 表格title====================================新增，下载等功能按钮区 | 其他默认功能按钮
  * ============================表格部分============================
  */
-import { FormFilter } from '@/components/Common/FuncForm'
+import { FormFilter } from '@/components/Advance/FuncForm'
 import FormatTable from './FormatTable'
-import UpdateForm from '@/components/Common/FuncTable/Render/UpdateForm'
-import filter from '@/components/Common/FuncTable/mixins/filter'
-import update from '@/components/Common/FuncTable/mixins/update'
-import upload from '@/components/Common/FuncTable/mixins/upload'
+import UpdateForm from '../Render/UpdateForm'
+import filter from '../mixins/filter'
+import update from '../mixins/update'
+import upload from '../mixins/upload'
 import { createVNode } from 'vue'
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
 export default {

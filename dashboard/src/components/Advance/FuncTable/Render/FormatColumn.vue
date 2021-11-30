@@ -68,7 +68,7 @@
  * 格式化文本: formatText|{age}岁，应用于文本前后缀，不使用${}是因为es6语法限制，会提示no-template-curly-in-string
  * 字符超长后显示...: formatTooltip
  */
-import { TipButtonGroup } from '@/components/Common/FuncButton'
+import { TipButtonGroup } from '@/components/Common/TipButton'
 import Clipboard from 'clipboard'
 export default {
   name: 'FormatColumn',

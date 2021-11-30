@@ -11,7 +11,7 @@
  * 高级表单示例
  */
 import JsonView from '@/components/Common/JsonView'
-import { FormList } from '@/components/Common/FuncForm'
+import { FormList } from '@/components/Advance/FuncForm'
 export default {
   name: 'AdvanceForm',
   components: { JsonView, FormList },

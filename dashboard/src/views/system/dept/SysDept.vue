@@ -35,7 +35,7 @@
  */
 import { SideLayout } from '@/layouts'
 import MenuTree from '@/components/Common/MenuTree'
-import { FormList } from '@/components/Common/FuncForm'
+import { FormList } from '@/components/Advance/FuncForm'
 import { createVNode } from 'vue'
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
 // sysDept默认值

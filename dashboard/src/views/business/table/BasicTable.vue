@@ -15,7 +15,7 @@
 /**
  * 基础列表示例
  */
-import { FormatTable, FormTable } from '@/components/Common/FuncTable'
+import { FormatTable, FormTable } from '@/components/Advance/FuncTable'
 export default {
   name: 'BasicTable',
   components: { FormatTable, FormTable },

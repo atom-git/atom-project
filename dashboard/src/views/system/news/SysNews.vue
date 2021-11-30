@@ -13,8 +13,8 @@
 /**
  * 提醒消息待办管理
  */
-import { FuncTable } from '@/components/Common/FuncTable'
-import { TipButtonGroup } from '@/components/Common/FuncButton'
+import { FuncTable } from '@/components/Advance/FuncTable'
+import { TipButtonGroup } from '@/components/Common/TipButton'
 export default {
   name: 'SysNews',
   components: { FuncTable, TipButtonGroup },

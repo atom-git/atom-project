@@ -92,7 +92,7 @@
 /**
  * 全局主题设置
  */
-import { ColorPicker, IconRadio } from '@/components/Common/FuncForm/Item'
+import { ColorPicker, IconRadio } from '@/components/Common/FormItem'
 import { toggleTheme } from '@/config/theme'
 import { animateSet } from '@/components/Common/Animate/config'
 export default {

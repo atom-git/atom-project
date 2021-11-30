@@ -66,8 +66,8 @@
  */
 import FuncTitle from '@/components/Common/FuncTitle'
 import FuncZone from '@/components/Common/FuncZone'
-import FormatColumn from '@/components/Common/FuncTable/Render/FormatColumn'
-import FieldRender from '@/components/Common/FuncForm/Form/Render/FieldRender'
+import FormatColumn from '@/components/Advance/FuncTable/Render/FormatColumn'
+import FieldRender from '@/components/Advance/FuncForm/Form/Render/FieldRender'
 export default {
   name: 'FormatDesc',
   components: { FuncTitle, FuncZone, FormatColumn, FieldRender },

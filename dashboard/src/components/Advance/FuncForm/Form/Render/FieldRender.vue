@@ -236,7 +236,7 @@
 
 <script>
 // 默认替换key
-import { ColorPicker, FileUpload, IconPicker, IconRadio, ImagePicker, MapPicker, OptionTree, RichText, TableSelect, TagCheck } from '@/components/Common/FuncForm/Item'
+import { ColorPicker, FileUpload, IconPicker, IconRadio, ImagePicker, MapPicker, OptionTree, RichText, TableSelect, TagCheck } from '@/components/Common/FormItem'
 const defaultKeys = { key: 'key', title: 'title', children: 'children', label: 'label', value: 'value', status: 'status', color: 'color' }
 /**
  * Form表单字段渲染

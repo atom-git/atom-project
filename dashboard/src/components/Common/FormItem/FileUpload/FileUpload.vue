@@ -24,7 +24,7 @@
 /**
  * 文件上传器
  */
-import { FileList } from '@/components/Common/File'
+import { FileList } from '@/components/Common/FileList'
 import Default from '@/config/default'
 import Thumb from './thumb'
 export default {

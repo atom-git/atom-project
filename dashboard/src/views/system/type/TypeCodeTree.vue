@@ -30,7 +30,7 @@
 
 <script>
 import MenuTree from '@/components/Common/MenuTree'
-import { FormList } from '@/components/Common/FuncForm'
+import { FormList } from '@/components/Advance/FuncForm'
 import { SideLayout } from '@/layouts'
 import { createVNode } from 'vue'
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue'

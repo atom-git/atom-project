@@ -22,7 +22,7 @@
 /**
  * 高级列表示例
  */
-import { FuncTable, TabTable } from '@/components/Common/FuncTable'
+import { FuncTable, TabTable } from '@/components/Advance/FuncTable'
 export default {
   name: 'AdvanceTable',
   components: { FuncTable, TabTable },

@@ -49,7 +49,7 @@
  * 带表单的格式化列表
  * 暂无需求，先不完善
  */
-import { FormFilter } from '@/components/Common/FuncForm'
+import { FormFilter } from '@/components/Advance/FuncForm'
 import FormatList from './FormatList'
 import UpdateForm from '../Render/UpdateForm'
 import list from '../mixins/list'

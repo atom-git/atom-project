@@ -14,7 +14,7 @@
 /**
  * 基础表单示例
  */
-import { FormFilter, FormList } from '@/components/Common/FuncForm'
+import { FormFilter, FormList } from '@/components/Advance/FuncForm'
 export default {
   name: 'BasicForm',
   components: { FormFilter, FormList },

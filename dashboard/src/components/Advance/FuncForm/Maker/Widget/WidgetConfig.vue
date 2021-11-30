@@ -11,7 +11,7 @@
 /**
  * 组件配置
  */
-import { FormList } from '@/components/Common/FuncForm'
+import { FormList } from '@/components/Advance/FuncForm'
 export default {
   name: 'WidgetConfig',
   components: { FormList },

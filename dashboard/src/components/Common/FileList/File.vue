@@ -45,7 +45,7 @@
 /**
  * 文件组件
  */
-import { TipButtonGroup } from '@/components/Common/FuncButton'
+import { TipButtonGroup } from '@/components/Common/TipButton'
 import Default from '@/config/default'
 export default {
   name: 'File',

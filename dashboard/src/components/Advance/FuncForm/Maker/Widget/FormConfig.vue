@@ -38,7 +38,7 @@
 /**
  * 表单配置
  */
-import { FormList } from '@/components/Common/FuncForm'
+import { FormList } from '@/components/Advance/FuncForm'
 // 默认表单配置
 const defaultForm = {
   width: 100,
