@@ -21,9 +21,9 @@
               :pagination="listPagination"
               :loading="loading">
         <!-- 是否有加载更多，pagination优先级更高 -->
-        <template v-if="loadMore && !pagination" #loadMore>
+        <template v-if="loadMore" #loadMore>
           <div class="atom-list-load-more" @click="handleLoadMore">
-            {{ loading ? '加载中...' : '加载更多' }}
+            {{ hasMore ? (loading ? '加载中...' : '加载更多') : '~已经到底了~' }}
           </div>
         </template>
         <template #renderItem="{ item, index }">
@@ -119,13 +119,25 @@ export default {
     },
     // 分页信息
     pagination: {
-      type: [Boolean, Object],
-      default: false
+      type: Object,
+      default: () => {
+        return {
+          current: 1,
+          pageSize: 10,
+          total: 0,
+          showSizeChanger: true
+        }
+      }
     },
-    // 是否展示加载更多，与pagination互斥，pagination优先级高
+    // 是否展示加载更多，与pagination互斥，loadMore优先级高
     loadMore: {
       type: Boolean,
       default: false
+    },
+    // 是否还有更多数据
+    hasMore: {
+      type: Boolean,
+      default: true
     },
     /**
      * 字段key值，需要用到哪个展示就填写其字段，没有这个字段不写其key值
@@ -179,7 +191,7 @@ export default {
       // 是否可选择
       checkable: false,
       // 列表分页
-      listPagination: true,
+      listPagination: false,
       // 选中的行keys
       selectedRowKeys: [],
       // 选中的行
@@ -190,17 +202,24 @@ export default {
     // 监听分页信息状态
     pagination: {
       deep: true,
-      hanlder (newValue) {
-        // 如果分页为true或者是对象
-        if (newValue) {
+      immediate: true,
+      handler (newValue) {
+        // 如果不是loadMore时开启分页
+        if (!this.loadMore) {
           // 判断onChange方法存在与否，自动增加分页方法
           this.listPagination = {
             current: newValue.current || 1,
             pageSize: newValue.pageSize || 10,
             total: newValue.total || this.dataSource.length,
             showSizeChanger: true,
-            onChange: (page, pageSize) => { this.$emit('list-page-change', page, pageSize) }
+            onChange: (page, pageSize) => {
+              this.listPagination.current = page
+              this.listPagination.pageSize = pageSize
+              this.$emit('list-page-change', page, pageSize)
+            }
           }
+        } else {
+          this.listPagination = false
         }
       }
     }
@@ -227,9 +246,15 @@ export default {
      * @param checkable 是否可选择
      */
     handleFuncAction (action, extend, checkable) {
-      // 是否开启选择
-      this.checkable = checkable
-      this.$emit('list-func-action', action, extend)
+      // 开启或者取消选择
+      if (action.name === this.$default.ACTION.CHECK.name) {
+        this.checkable = checkable
+        // 是否可选择切换时将选中结果切换掉
+        this.selectedRowKeys = []
+        this.selectedRows = []
+      } else {
+        this.$emit('list-func-action', action, extend)
+      }
     },
     // 响应选中的变化
     handleSelectChange () {
@@ -265,7 +290,11 @@ export default {
     },
     // 响应加载更多
     handleLoadMore () {
-      this.$emit('list-load-more')
+      if (this.hasMore) {
+        this.$emit('list-load-more')
+      } else {
+        this.$message.warn('没有更多数据！')
+      }
     }
   }
 }

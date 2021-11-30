@@ -15,17 +15,17 @@
   </FormFilter>
   <!-- 列表主体区域 -->
   <FormatList v-bind="$attrs"
+              :title="title"
               :fieldKeys="fieldKeys"
               :itemTitleFormat="itemTitleFormat"
               :dataSource="dataSource"
+              :hasMore="hasMore"
               @list-func-action="handleFuncAction"
               @list-load-more="handleLoadMore"
               @list-title-link="handleTitleLink"
               @list-row-selection="handleRowSelection"
               @list-row-action="handleRowAction"
-              @list-page-change="handlePageChange">
-
-  </FormatList>
+              @list-page-change="handlePageChange"></FormatList>
   <!-- 统一表单处理 -->
   <UpdateForm v-model="formModel"
               :visible="formVisible"
@@ -80,6 +80,11 @@ export default {
     dataSource: {
       type: Array,
       required: false
+    },
+    // 是否还有更多数据
+    hasMore: {
+      type: Boolean,
+      default: true
     },
     // 是否加载中
     loading: {

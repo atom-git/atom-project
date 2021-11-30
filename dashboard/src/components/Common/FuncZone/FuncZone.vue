@@ -188,7 +188,7 @@ export default {
     }
   },
   computed: {
-    // 刷新选项
+    // TODO 刷新选项
     refreshOptions () {
       if (this.funcZone.refresh && this.funcZone.refresh.option) {
         return this.funcZone.refresh.option
@@ -246,6 +246,8 @@ export default {
     handleClick (action, defaultAction, extend) {
       if (defaultAction.name === this.$default.ACTION.CHECK.name) {
         this.checkable = !this.checkable
+        // 全选按钮重置为false
+        this.checkall = false
       }
       // 用默认的action保障事件action的完整性
       this.$emit('func-zone-action', Object.assign(defaultAction, action), extend, this.checkable)

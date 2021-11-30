@@ -290,6 +290,7 @@ export default {
         this.checkable = checkable
         // 是否可选择切换时将选中结果切换掉
         this.selectedRowKeys = []
+        this.selectedRows = []
       } else {
         this.$emit('table-func-action', action, extend)
       }

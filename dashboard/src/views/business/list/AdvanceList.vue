@@ -1,64 +1,38 @@
 <template>
-  <FormList :title="title"
-            :dataSource="dataSource"
+  <FuncList :title="title"
+            :apiUrl="apiUrl"
+            :columns="columns"
             itemLayout="vertical"
-            :pagination="pagination"
             :loadMore="loadMore"
-            :fieldKeys="fieldKeys"
             :funcZone="funcZone"
             :linkable="true"
             :actions="actions"
-            :loading="loading"
-            :itemTitleFormat="itemTitleFormat"
             @list-func-action="handleFuncAction"
             @list-load-more="handleLoadMore"
             @list-title-link="handleTitleLink"
             @list-row-selection="handleRowSelection"
-            @list-row-action="handleRowAction"></FormList>
+            @list-row-action="handleRowAction"></FuncList>
 </template>
 
 <script>
-import { FormList } from '@/components/Common/FuncTable'
-const dataSource = []
-for (let i = 0; i < 23; i++) {
-  dataSource.push({
-    title: `Atom Project项目组件标题${i}`,
-    avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-    description:
-        '这是一个FuncList组件的测试组件，这个是描述字段表述description字段，长描述字段。',
-    content:
-        '希望像一个家庭一样，没有它，你会觉得生活乏味；有了它，你又觉得天天为它辛劳，是一种烦恼。——马克·吐温；一个希望的突然失落会留下一处伤痕，即使那希望最终实现，也决不能使它完全平复。——托马斯·哈代',
-    extra: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-    state: i % 2
-  })
-}
+import { FuncList } from '@/components/Common/FuncTable'
 export default {
   name: 'AdvanceList',
-  components: { FormList },
+  components: { FuncList },
   data () {
     return {
       title: '基础列表测试',
-      dataSource: dataSource,
-      pagination: false,
-      loadMore: true,
-      actions: [
-        { icon: 'StarOutlined', title: '收藏', name: 'star' },
-        { icon: 'LikeOutlined', title: '点赞', name: 'like' },
-        { icon: 'MessageOutlined', title: '评论' }
-      ],
-      itemTitleFormat: {
-        type: 'formatBadge',
-        field: 'state',
-        options: [{ value: 0, color: 'purple' }]
-      },
+      apiUrl: '/system/news/list',
+      loadMore: false,
       columns: [
         { key: 'title', title: '标题', dataIndex: 'title',
-          format: { type: 'formatBadge', field: 'state', options: [{ value: 0, color: 'purple' }] } },
+          format: { type: 'formatBadge', field: 'status', options: [{ value: 0, color: 'red' }] } },
         { key: 'avatar', title: '头像', dataIndex: 'avatar' },
-        { key: 'description', title: '描述', dataIndex: 'description' },
-        { key: 'content', title: '内容', dataIndex: 'content', form: { maxlength: 200 } },
-        { key: 'extra', title: '图例', dataIndex: 'extra' },
-        { title: '时间', dataIndex: 'dataTime', form: { type: 'dataPicker' } }
+        { key: 'description', title: '消息时间', dataIndex: 'createTime' }
+      ],
+      actions: [
+        { icon: 'StarOutlined', title: '收藏', name: 'star' },
+        { icon: 'LikeOutlined', title: '点赞', name: 'like' }
       ],
       // 用户功能按钮区域
       funcZone: {
@@ -67,8 +41,7 @@ export default {
         delete: true,
         download: true,
         refresh: true
-      },
-      loading: false
+      }
     }
   },
   methods: {

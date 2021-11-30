@@ -2,10 +2,12 @@
   <FormList v-bind="$attrs"
             :title="title"
             :columns="columns"
-            :loadMore="listLoadMore"
-            :pagination="listPagination"
+            :loadMore="loadMore"
+            :hasMore="hasMore"
+            :pagination="pagination"
             :dataSource="dataSource"
             :loading="loading"
+            @list-filter="handleFilter"
             @list-func-action="handleFuncAction"
             @list-row-action="handleRowAction"
             @list-load-more="handleLoadMore"
@@ -41,19 +43,7 @@ export default {
     // 是否展示加载更多，与pagination互斥，pagination优先级高
     loadMore: {
       type: Boolean,
-      default: false
-    },
-    // 分页信息
-    pagination: {
-      type: [Boolean, Object],
-      default: () => {
-        return {
-          current: 1,
-          pageSize: 10,
-          total: 0,
-          showSizeChanger: true
-        }
-      }
+      default: true
     },
     // 外部扩展的参数
     extendParams: {
@@ -65,36 +55,30 @@ export default {
     return {
       // 数据列表
       dataSource: [],
-      // 列表分页信息
-      listPagination: this.pagination,
-      // 是否有加载更多
-      listLoadMore: this.loadMore,
       // 选中的行keys
       selectedRowKeys: [],
       // 选中的行
       selectedRows: [],
+      // 分页信息
+      pagination:  {
+        current: 1,
+        pageSize: 10,
+        total: 0,
+        showSizeChanger: true
+      },
       // 分页参数
-      pageParams: {},
+      pageParams: { curPage: 1, pageSize: 10 },
       // 过滤参数
       filterParams: {},
       // 列表loading
       loading: false,
+      // 是否还有更多数据
+      hasMore: true,
       // 是否数据下载
       download: false
     }
   },
   watch: {
-    // 监听分页信息的变化重新加载数据
-    pagination: {
-      deep: true,
-      handler (newValue) {
-        this.listPagination = newValue
-      }
-    },
-    // 监听加载更多的方法
-    loadMore (newValue) {
-      this.listLoadMore = newValue
-    },
     // 监听到请求的变化变重新加载数据
     apiUrl () {
       this.loadListData()
@@ -130,12 +114,12 @@ export default {
             this.$utils.download(response)
           } else {
             this.$emit('list-data-load', response)
-            if (this.listPagination) {
-              this.listPagination.total = (response && response.page && response.page.totalCnt) || 0
+            if (this.pagination) {
+              this.pagination.total = (response && response.page && response.page.totalCnt) || 0
               this.dataSource = response ? response.data : []
             } else if (this.loadMore) {
-              this.listLoadMore = (response && response.page && response.page.hasMore) || false
-              this.dataSource = response ? response.data : []
+              this.hasMore = response && response.page && response.page.hasMore || false
+              this.dataSource.push(...(response ? response.data : []))
             }
           }
           resolve(response)
@@ -190,11 +174,9 @@ export default {
     },
     // 响应分页切换
     handlePageChange (page, pageSize) {
-      this.listPagination.current = page
-      this.listPagination.pageSize = pageSize
       this.pageParams.curPage = page
       this.pageParams.pageSize = pageSize
-      this.loadTableData()
+      this.loadListData()
     },
     // 响应标题跳转
     handleTitleLink (row) {

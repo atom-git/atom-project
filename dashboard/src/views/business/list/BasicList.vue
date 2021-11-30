@@ -15,12 +15,27 @@
               @list-title-link="handleTitleLink"
               @list-row-selection="handleRowSelection"
               @list-row-action="handleRowAction"></FormatList>
+  <FormList :title="title"
+            :columns="columns"
+            :dataSource="dataSource"
+            itemLayout="vertical"
+            :pagination="pagination"
+            :loadMore="loadMore"
+            :funcZone="funcZone"
+            :linkable="true"
+            :actions="actions"
+            :loading="loading"
+            @list-func-action="handleFuncAction"
+            @list-load-more="handleLoadMore"
+            @list-title-link="handleTitleLink"
+            @list-row-selection="handleRowSelection"
+            @list-row-action="handleRowAction"></FormList>
 </template>
 
 <script>
-import { FormatList } from '@/components/Common/FuncTable'
+import { FormatList, FormList } from '@/components/Common/FuncTable'
 const dataSource = []
-for (let i = 0; i < 23; i++) {
+for (let i = 0; i < 13; i++) {
   dataSource.push({
     title: `Atom Project项目组件标题${i}`,
     avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
@@ -34,7 +49,7 @@ for (let i = 0; i < 23; i++) {
 }
 export default {
   name: 'BasicList',
-  components: { FormatList },
+  components: { FormatList, FormList },
   data () {
     return {
       title: '基础列表测试',
@@ -52,6 +67,15 @@ export default {
         field: 'state',
         options: [{ value: 0, color: 'purple' }]
       },
+      columns: [
+        { key: 'title', title: '标题', dataIndex: 'title',
+          format: { type: 'formatBadge', field: 'state', options: [{ value: 0, color: 'purple' }] } },
+        { key: 'avatar', title: '头像', dataIndex: 'avatar' },
+        { key: 'description', title: '描述', dataIndex: 'description' },
+        { key: 'content', title: '内容', dataIndex: 'content', form: { maxlength: 200 } },
+        { key: 'extra', title: '图例', dataIndex: 'extra' },
+        { title: '时间', dataIndex: 'dataTime', form: { type: 'dataPicker' } }
+      ],
       // 用户功能按钮区域
       funcZone: {
         add: true,
