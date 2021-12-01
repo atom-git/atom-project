@@ -71,7 +71,7 @@
 import { TipButtonGroup } from '@/components/Common/TipButton'
 import Clipboard from 'clipboard'
 export default {
-  name: 'FormatColumn',
+  name: 'CellRender',
   components: { TipButtonGroup },
   props: {
     // 待格式化的列格式

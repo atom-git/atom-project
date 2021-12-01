@@ -76,7 +76,7 @@
  * 列表展示类型的表单
  */
 import FuncTitle from '@/components/Common/FuncTitle'
-import FieldRender from './Render/FieldRender'
+import { FieldRender } from '@/components/Common/Render'
 import form from './mixins/form'
 export default {
   name: 'FormList',

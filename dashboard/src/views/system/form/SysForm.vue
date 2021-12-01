@@ -25,7 +25,7 @@
  */
 import { FuncTable } from '@/components/Advance/FuncTable'
 import Dialog from '@/components/Common/Dialog'
-import { FormMaker } from '@/components/Advance/FuncForm'
+import FormMaker from '@/components/Advance/FormMaker'
 export default {
   name: 'SysForm',
   components: { FuncTable, Dialog, FormMaker },

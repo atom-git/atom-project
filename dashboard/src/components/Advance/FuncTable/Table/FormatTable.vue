@@ -47,11 +47,11 @@
       </template>
       <!-- 内置格式化字段 -->
       <template v-for="column in formatColumns" :key="column.dataIndex" #[column.slots.customRender]="{ text, record, index }">
-        <FormatColumn :column="column"
+        <CellRender :column="column"
                       :text="text"
                       :row="record"
                       :index="index"
-                      @table-row-action="handleRowAction"></FormatColumn>
+                      @table-row-action="handleRowAction"></CellRender>
       </template>
     </a-table>
     <a-empty v-else description="无可展示列"/>
@@ -80,10 +80,10 @@
  */
 import FuncTitle from '@/components/Common/FuncTitle'
 import FuncZone from '@/components/Common/FuncZone'
-import FormatColumn from '../Render/FormatColumn'
+import { CellRender } from '@/components/Common/Render'
 export default {
   name: 'FormatTable',
-  components: { FuncTitle, FuncZone, FormatColumn },
+  components: { FuncTitle, FuncZone, CellRender },
   props: {
     // 数据表头
     title: {

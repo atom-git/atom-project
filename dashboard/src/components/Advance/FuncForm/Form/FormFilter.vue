@@ -55,7 +55,7 @@
 /**
  * 查询条件的form表单展示
  */
-import FieldRender from './Render/FieldRender'
+import { FieldRender } from '@/components/Common/Render'
 import form from './mixins/form'
 export default {
   name: 'FormFilter',

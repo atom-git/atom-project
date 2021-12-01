@@ -48,10 +48,10 @@
                        :field="initField(column)"
                        v-model="dataSource[column.dataIndex]"
                        @change="handleFieldChange($event, column)"></FieldRender>
-          <FormatColumn v-else
+          <CellRender v-else
                         :column="column"
                         :text="dataSource[column.dataIndex]"
-                        :row="dataSource"></FormatColumn>
+                        :row="dataSource"></CellRender>
         </template>
       </a-descriptions-item>
     </a-descriptions>
@@ -66,11 +66,10 @@
  */
 import FuncTitle from '@/components/Common/FuncTitle'
 import FuncZone from '@/components/Common/FuncZone'
-import FormatColumn from '@/components/Advance/FuncTable/Render/FormatColumn'
-import FieldRender from '@/components/Advance/FuncForm/Form/Render/FieldRender'
+import { CellRender, FieldRender } from '@/components/Common/Render'
 export default {
   name: 'FormatDesc',
-  components: { FuncTitle, FuncZone, FormatColumn, FieldRender },
+  components: { FuncTitle, FuncZone, CellRender, FieldRender },
   props: {
     /**
      * 字段列表 { title, dataIndex, span, class, format, form }

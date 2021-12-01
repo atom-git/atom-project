@@ -24,7 +24,7 @@
 /**
  * 表单组件
  */
-import FieldRender from '../../Form/Render/FieldRender'
+import { FieldRender } from '@/components/Common/Render'
 export default {
   name: 'FormWidget',
   components: { FieldRender },
