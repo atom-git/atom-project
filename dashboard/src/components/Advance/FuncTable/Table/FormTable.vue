@@ -31,7 +31,7 @@
     </template>
   </FormatTable>
   <!-- 统一表单处理 -->
-  <UpdateForm v-model="formModel"
+  <FormDialog v-model="formModel"
               :visible="formVisible"
               :title="formTitle"
               :width="formWidth"
@@ -45,7 +45,7 @@
     <template v-for="slotName in formSlots" #[slotName]="{ field, model }">
       <slot :name="slotName" :field="field" :model="model"></slot>
     </template>
-  </UpdateForm>
+  </FormDialog>
 </template>
 
 <script>
@@ -76,9 +76,8 @@
  * 表格title====================================新增，下载等功能按钮区 | 其他默认功能按钮
  * ============================表格部分============================
  */
-import { FormFilter } from '@/components/Advance/FuncForm'
+import { FormDialog, FormFilter } from '@/components/Advance/FuncForm'
 import FormatTable from './FormatTable'
-import UpdateForm from '../Render/UpdateForm'
 import filter from '../mixins/filter'
 import update from '../mixins/update'
 import upload from '../mixins/upload'
@@ -86,11 +85,7 @@ import { createVNode } from 'vue'
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
 export default {
   name: 'FormTable',
-  components: {
-    FormFilter,
-    FormatTable,
-    UpdateForm
-  },
+  components: { FormDialog, FormFilter, FormatTable },
   mixins: [filter, update, upload],
   props: {
     // 表格名称，新增编辑等的名称设置[String, Object{ table, add, edit }]，默认设置: title || 当前route的meta.title || '数据表'

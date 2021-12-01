@@ -31,13 +31,10 @@
  * 新增或者编辑的数据表单，默认实现
  */
 import Dialog from '@/components/Common/Dialog'
-import { FormList } from '@/components/Advance/FuncForm'
+import FormList from './FormList'
 export default {
   name: 'UpdateForm',
-  components: {
-    Dialog,
-    FormList
-  },
+  components: { Dialog, FormList },
   props: {
     // 用于控制显隐
     visible: {

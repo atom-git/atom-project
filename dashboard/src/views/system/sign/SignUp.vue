@@ -87,7 +87,7 @@
 </template>
 
 <script>
-import FieldRules from '@/components/Advance/FuncForm/Form/mixins/FieldRules'
+import FieldRules from '@/components/Common/Render/FieldRules'
 import config from '@/config/mixins/config'
 export default {
   name: 'SignUp',

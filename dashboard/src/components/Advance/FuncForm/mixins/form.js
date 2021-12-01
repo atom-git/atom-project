@@ -1,7 +1,7 @@
 /**
  * form表单混入
  */
-import FieldRules from './FieldRules'
+import FieldRules from '@/components/Common/Render/FieldRules'
 export default {
   props: {
     /**

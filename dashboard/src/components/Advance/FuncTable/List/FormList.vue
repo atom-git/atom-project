@@ -27,7 +27,7 @@
               @list-row-action="handleRowAction"
               @list-page-change="handlePageChange"></FormatList>
   <!-- 统一表单处理 -->
-  <UpdateForm v-model="formModel"
+  <FormDialog v-model="formModel"
               :visible="formVisible"
               :title="formTitle"
               :width="formWidth"
@@ -41,7 +41,7 @@
     <template v-for="slotName in formSlots" #[slotName]="{ field, model }">
       <slot :name="slotName" :field="field" :model="model"></slot>
     </template>
-  </UpdateForm>
+  </FormDialog>
 </template>
 
 <script>
@@ -49,15 +49,14 @@
  * 带表单的格式化列表
  * 暂无需求，先不完善
  */
-import { FormFilter } from '@/components/Advance/FuncForm'
+import { FormDialog, FormFilter } from '@/components/Advance/FuncForm'
 import FormatList from './FormatList'
-import UpdateForm from '../Render/UpdateForm'
 import list from '../mixins/list'
 import { createVNode } from 'vue'
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
 export default {
   name: 'FormList',
-  components: { FormFilter, FormatList, UpdateForm },
+  components: { FormDialog, FormFilter, FormatList },
   mixins: [list],
   props: {
     // 列表标题

@@ -154,5 +154,5 @@ export default {
 </script>
 
 <style lang="less">
-@import "Form";
+@import "./mixins/Form";
 </style>
