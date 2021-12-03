@@ -27,7 +27,7 @@ export default {
   props: {
     // 列表标题
     title: {
-      type: String,
+      type: [String, Boolean],
       required: false
     },
     // 数据请求url
@@ -97,20 +97,23 @@ export default {
   watch: {
     // 监听到请求的变化变重新加载数据
     apiUrl () {
-      this.loadListData()
+      this.loadListData(true)
     },
     // 监听扩展参数的变化重新加载数据
     extendParams: {
       deep: true,
       handler () {
-        this.loadListData()
+        this.loadListData(true)
       }
     }
   },
   emits: ['list-data-load', 'list-func-action', 'list-row-action', 'list-row-selection', 'list-form-submit', 'list-form-cancel'],
   methods: {
-    // 加载列表数据
-    loadListData () {
+    /**
+     * 加载列表数据
+     * @param refresh 是否刷新数据
+     */
+    loadListData (refresh = false) {
       return new Promise(resolve => {
         if (!this.$utils.isValid(this.apiUrl)) {
           console.warn('请提供有效的apiUrl')
@@ -130,6 +133,10 @@ export default {
             this.$utils.download(response)
           } else {
             this.$emit('list-data-load', response)
+            // 如果是刷新数据，则清空原有数据
+            if (refresh) {
+              this.dataSource = []
+            }
             if (this.loadMore) {
               this.pageParams.hasMore = response && response.page && response.page.hasMore || false
               this.dataSource.push(...(response ? response.data : []))
@@ -145,7 +152,7 @@ export default {
     // 响应表格过滤
     handleFilter (filterParams) {
       this.filterParams = filterParams
-      this.loadListData()
+      this.loadListData(true)
     },
     // 响应加载更多
     handleLoadMore () {
@@ -167,15 +174,14 @@ export default {
               // 执行删除动作，服务端需支持批删除
               this.$http.delete(action.apiUrl, { data: { ids: this.selectedRowKeys } }).then(() => {
                 this.$message.success('数据删除成功！')
-                this.loadListData()
+                this.loadListData(true)
               })
             } else {
               this.$message.error('删除功能action未配置apiUrl')
             }
           }
         } else if (action.name === this.$default.ACTION.REFRESH.name) {
-          // 刷新表格
-          this.loadListData().then(() => {
+          this.loadListData(true).then(() => {
             this.$message.success('数据刷新成功！')
           })
         } else if (action.name === this.$default.ACTION.DOWNLOAD.name) {
@@ -200,7 +206,7 @@ export default {
             this.$http.delete(apiUrl).then(() => {
               // 提示删除成功
               this.$message.success(action.messageTitle + '删除成功！')
-              this.loadTableData()
+              this.loadTableData(true)
             })
           } else {
             this.$message.error('删除功能action未配置apiUrl，格式为delete/{s}')
@@ -220,7 +226,7 @@ export default {
         this.$http.put(action.apiUrl, model).then(() => {
           this.$message.success('数据'.concat(action.name === this.$default.ACTION.ADD.name ? this.$default.ACTION.ADD.title : this.$default.ACTION.EDIT.title, '成功！'))
           // 重新加载数据
-          this.loadListData()
+          this.loadListData(true)
           this.$emit('list-form-submit', action, model)
           onFinish(true)
         }).catch(error => {
@@ -236,7 +242,7 @@ export default {
     },
     // 刷新数据
     refresh () {
-      this.loadListData()
+      this.loadListData(true)
     }
   }
 }

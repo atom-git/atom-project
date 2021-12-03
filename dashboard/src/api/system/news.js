@@ -10,6 +10,8 @@ export default class news {
    * 订阅时拉取用户提醒消息及待办
    */
   static STOMP_FETCH_NEWS = '/stomp/fetch/news'
+  // http的系统消息查询接口
+  static HTTP_NEWS_LIST = '/system/news/list'
 
   /**
    * 获取消息列表
@@ -17,7 +19,7 @@ export default class news {
    */
   static list (type) {
     return axios({
-      url: '/system/news/list',
+      url: this.HTTP_NEWS_LIST,
       method: Default.HTTP_METHOD.GET,
       params: { type: type }
     })

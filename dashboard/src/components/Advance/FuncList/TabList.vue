@@ -5,7 +5,7 @@
           :activeTabKey="activeTab"
           @tabChange="handleTabChange">
     <!-- 标题 -->
-    <template #tabBarExtraContent>
+    <template v-if="title" #tabBarExtraContent>
       <FuncTitle :title="title"></FuncTitle>
     </template>
     <FuncList v-bind="listAttrs"
@@ -64,11 +64,16 @@ export default {
   computed: {
     // tab列表，通过内部处理隐藏key的输入，默认采用index作为key
     tabList () {
-      return this.tabs.map((tab, index) => ({ ...tab, key: index + '' }))
+      return this.tabs.map((tab, index) => {
+        if (index === 0) {
+          this.activeTab = (tab.key || index) + ''
+        }
+        return { ...tab, key: (tab.key || index) + '' }
+      })
     },
     // 当前选中的tab配置信息
     listAttrs () {
-      return this.tabList.filter(tab => tab.key === this.activeTab)[0].list
+      return this.tabList.filter(tab => (tab.key + '') === this.activeTab)[0].list
     }
   },
   emits: ['list-tab-change', 'list-data-load', 'list-func-action', 'list-row-action', 'list-row-selection', 'list-form-submit', 'list-form-cancel'],

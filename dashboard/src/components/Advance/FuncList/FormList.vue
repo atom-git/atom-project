@@ -61,7 +61,7 @@ export default {
   props: {
     // 列表标题
     title: {
-      type: String,
+      type: [String, Boolean],
       required: false
     },
     // 数据列表
@@ -123,7 +123,7 @@ export default {
   computed: {
     // 表单的名称
     formTitle () {
-      return this.title.concat('【', this.formType === 'add' ? '新增' : '编辑', '】')
+      return (this.title || '').concat('【', this.formType === 'add' ? '新增' : '编辑', '】')
     },
     // 需要为输入控件设置布局样式
     wrapperCol () {

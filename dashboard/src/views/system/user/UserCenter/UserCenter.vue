@@ -36,9 +36,10 @@
       </a-card>
     </template>
     <template #content>
-      <a-card :tabList="newsTabs" :bordered="false" :activeTabKey="activeTab">
-
-      </a-card>
+      <TabList :tabs="newsTabs"
+               tabPosition="left"
+               :extendParams="{ type: activeTab }"
+               @list-tab-change="handleTabChange"></TabList>
     </template>
   </SideLayout>
 </template>
@@ -50,9 +51,10 @@
 import { SideLayout } from '@/layouts'
 import user from '@/config/mixins/user'
 import FuncTitle from '@/components/Common/FuncTitle'
+import { TabList } from '@/components/Advance/FuncList'
 export default {
   name: 'UserCenter',
-  components: { SideLayout, FuncTitle },
+  components: { SideLayout, FuncTitle, TabList },
   mixins: [user],
   data () {
     return {
@@ -67,28 +69,40 @@ export default {
       ],
       // 印象标签
       tags: ['梦想家', '亚当术士', 'WOWer~', '达人Show', '厨艺大师', '写点代码'],
-      // 系统消息tabs
-      newsTabs: [
-        { tab: '待办', key: '1' },
-        { tab: '通知', key: '2' },
-        { tab: '消息', key: '3' }
-      ],
       // 当前激活的tab
       activeTab: '1',
-      // news列表
-      sysNewsList: []
+      // 系统消息字段
+      newsColumns: [
+        { key: 'title', title: '标题', dataIndex: 'title',
+          optionField: 'status', options: [{ value: 0, count: 'new' }],
+          format: 'formatBadge' },
+        { key: 'avatar', title: '头像', dataIndex: 'avatar' },
+        { key: 'content', title: '消息时间', dataIndex: 'createTime', format: 'formatDate' }
+      ],
+      // 系统消息类型
+      newsType: [
+        { key: 1, tab: '待办' },
+        { key: 2, tab: '通知' },
+        { key: 3, tab: '消息' }
+      ]
     }
   },
-  mounted () {
-    // 加载当前激活窗体的消息列表
-    this.loadNews(Number.parseInt(this.activeTab))
+  computed: {
+    // 系统消息tabs
+    newsTabs () {
+      return this.newsType.map(tab => ({
+        ...tab,
+        list: {
+          apiUrl: this.$api.system.news.HTTP_NEWS_LIST,
+          columns: this.newsColumns
+        }
+      }))
+    }
   },
   methods: {
-    // 加载系统消息
-    loadNews (type) {
-      this.$api.system.news.list(type).then(sysNewsList => {
-        console.log(sysNewsList)
-      })
+    // 响应tab切换
+    handleTabChange (activeTab) {
+      this.activeTab = activeTab
     }
   }
 }

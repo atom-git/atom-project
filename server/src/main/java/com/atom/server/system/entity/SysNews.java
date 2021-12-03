@@ -27,6 +27,8 @@ public class SysNews {
 	private Integer type;
 	@Column(name = "title")
 	private String title;
+	@Column(name = "desc")
+	private String desc;
 	@Column(name = "from_user")
 	private Integer fromUser;
 	@ManyToOne(cascade = CascadeType.DETACH)

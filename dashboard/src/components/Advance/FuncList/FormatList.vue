@@ -101,7 +101,7 @@ export default {
   props: {
     // 列表标题
     title: {
-      type: String,
+      type: [String, Boolean],
       required: false
     },
     // 数据列表

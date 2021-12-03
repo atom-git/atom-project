@@ -28,6 +28,8 @@ public class SysNewsVO extends AbsEntity {
 	private Integer type;
 	@ApiModelProperty("标题")
 	private String title;
+	@ApiModelProperty("简介")
+	private String desc;
 	@ApiModelProperty("源用户，系统提示用户为空")
 	private Integer fromUser;
 	@ApiModelProperty("源用户")
