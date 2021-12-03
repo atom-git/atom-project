@@ -14,6 +14,7 @@
             @table-data-load="handleDataLoad"
             @table-func-action="handleFuncAction"
             @table-row-action="handleRowAction"
+            @table-row-selection="handleRowSelection"
             @table-form-submit="handleFormSubmit"
             @table-form-cancel="handleFormCancel"></TabTable>
 </template>
@@ -46,7 +47,7 @@ export default {
         download: true,
         refresh: true,
         setting: true
-      },
+      }
     }
   },
   computed: {
@@ -118,7 +119,7 @@ export default {
     tabs () {
       return [
         {
-          tab: { title: '用户信息' },
+          tab: '用户信息',
           table: {
             apiUrl: this.apiUrl,
             columns: this.columns,
@@ -126,7 +127,7 @@ export default {
           }
         },
         {
-          tab: { title: '角色信息' },
+          tab: '角色信息',
           table: {
             apiUrl: this.apiUrl,
             columns: this.columns,
@@ -149,28 +150,32 @@ export default {
       })
     },
     // 响应tab切换
-    handleTabChange (activeKey, tab) {
-      console.log(activeKey, tab)
+    handleTabChange (activeTab, tab) {
+      console.log(activeTab, tab)
     },
     // 响应数据加载完成
-    handleDataLoad (response, activeKey, tab) {
-      console.log(response, activeKey, tab)
+    handleDataLoad (response, activeTab, tab) {
+      console.log(response, activeTab, tab)
     },
     // 响应功能区域操作按钮
-    handleFuncAction (action, activeKey, tab) {
-      console.log(action, activeKey, tab)
+    handleFuncAction (action, activeTab, tab) {
+      console.log(action, activeTab, tab)
     },
     // 响应行操作
-    handleRowAction (action, row, column, activeKey, tab) {
-      console.log(action, row, column, activeKey, tab)
+    handleRowAction (action, row, column, activeTab, tab) {
+      console.log(action, row, column, activeTab, tab)
+    },
+    // 响应行选中
+    handleRowSelection (selectedRowKeys, selectedRows, activeTab, tab) {
+      console.log(selectedRowKeys, selectedRows, activeTab, tab)
     },
     // 响应表单提交
-    handleFormSubmit (action, model, activeKey, tab) {
-      console.log(action, model, activeKey, tab)
+    handleFormSubmit (action, model, activeTab, tab) {
+      console.log(action, model, activeTab, tab)
     },
     // 响应表单取消
-    handleFormCancel (action, activeKey, tab) {
-      console.log(action, activeKey, tab)
+    handleFormCancel (action, activeTab, tab) {
+      console.log(action, activeTab, tab)
     }
   },
   created () {

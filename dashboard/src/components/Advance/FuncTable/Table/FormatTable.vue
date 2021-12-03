@@ -51,7 +51,7 @@
                       :text="text"
                       :row="record"
                       :index="index"
-                      @table-row-action="handleRowAction"></CellRender>
+                      @cell-action="handleRowAction"></CellRender>
       </template>
     </a-table>
     <a-empty v-else description="无可展示列"/>
@@ -314,52 +314,62 @@ export default {
 
 <style lang="less">
 .atom-table {
-  .ant-table-wrapper.center {
-    overflow-x: auto;
-    .ant-table {
-      td {
-        white-space: nowrap;
-      }
-      td:not(.table-action-td) {
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      td.table-format-progress {
-        position: relative;
-        padding: 0 !important;
-        .atom-form-progress {
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          top: 0;
-          text-align: left;
-          span {
-            display: inline-flex;
-            align-items: center;
-            height: 100%;
-            padding-left: 10px;
-            font-weight: bold;
-          }
-        }
-      }
-      .ant-table-thead > tr > th, .ant-table-tbody > tr > td {
-        text-align: center;
-      }
-      .ant-table-thead > tr > th {
-        position: relative;
-        .atom-column-resize-bar {
-          position: absolute;
-          top: 0;
-          bottom: 0;
-          right: -3px;
-          cursor: col-resize;
-          width: 6px;
-        }
+  .ant-card-head {
+    .ant-card-head-wrapper {
+      .ant-card-extra {
+        padding: 12px 0;
       }
     }
   }
-  .ant-table-pagination.ant-pagination {
-    margin-bottom: 0;
+  .ant-card-body {
+    padding-top: 4px;
+    .ant-table-wrapper.center {
+      overflow-x: auto;
+      .ant-table {
+        td {
+          white-space: nowrap;
+        }
+        td:not(.table-action-td) {
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        td.table-format-progress {
+          position: relative;
+          padding: 0 !important;
+          .atom-format-progress {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            text-align: left;
+            span {
+              display: inline-flex;
+              align-items: center;
+              height: 100%;
+              padding-left: 10px;
+              font-weight: bold;
+            }
+          }
+        }
+        .ant-table-thead > tr > th, .ant-table-tbody > tr > td {
+          text-align: center;
+        }
+        .ant-table-thead > tr > th {
+          position: relative;
+          .atom-column-resize-bar {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: -3px;
+            cursor: col-resize;
+            width: 6px;
+          }
+        }
+      }
+    }
+    .ant-table-pagination.ant-pagination {
+      margin-bottom: 0;
+    }
   }
 }
 </style>

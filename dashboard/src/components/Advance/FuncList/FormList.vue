@@ -16,16 +16,17 @@
   <!-- 列表主体区域 -->
   <FormatList v-bind="$attrs"
               :title="title"
-              :fieldKeys="fieldKeys"
-              :itemTitleFormat="itemTitleFormat"
               :dataSource="dataSource"
+              :columns="columns"
+              :pagination="pagination"
+              :loadMore="loadMore"
               :hasMore="hasMore"
+              :funcZone="funcZone"
+              :loading="loading"
               @list-func-action="handleFuncAction"
               @list-load-more="handleLoadMore"
-              @list-title-link="handleTitleLink"
               @list-row-selection="handleRowSelection"
-              @list-row-action="handleRowAction"
-              @list-page-change="handlePageChange"></FormatList>
+              @list-row-action="handleRowAction"></FormatList>
   <!-- 统一表单处理 -->
   <FormDialog v-model="formModel"
               :visible="formVisible"
@@ -47,11 +48,10 @@
 <script>
 /**
  * 带表单的格式化列表
- * 暂无需求，先不完善
  */
 import { FormDialog, FormFilter } from '@/components/Advance/FuncForm'
 import FormatList from './FormatList'
-import list from '../mixins/list'
+import list from './mixins/list'
 import { createVNode } from 'vue'
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
 export default {
@@ -64,10 +64,15 @@ export default {
       type: String,
       required: false
     },
+    // 数据列表
+    dataSource: {
+      type: Array,
+      required: false
+    },
     /**
-     * 字段列表 { title, dataIndex, span, class, format, form }
+     * 字段列表 { key, title, dataIndex, span, class, format, form }
+     * key: 为固定的list-meta所对应的字段
      * title: 表示对应的FormatList中fieldKeys被替换的key
-     * key为title时其format目前仅支持formatBadge，其他字段暂不支持format
      * dataIndex: 表示字段属性名
      * 其他与FormTable中完全一致
      */
@@ -75,15 +80,25 @@ export default {
       type: Array,
       required: true
     },
-    // 数据列表
-    dataSource: {
-      type: Array,
-      required: false
+    // 分页信息
+    pagination: {
+      type: [Object, Boolean],
+      default: () => ({ current: 1, pageSize: 10, total: 0, showSizeChanger: true })
+    },
+    // 是否展示加载更多，与pagination互斥，loadMore优先级高
+    loadMore: {
+      type: Boolean,
+      default: false
     },
     // 是否还有更多数据
     hasMore: {
       type: Boolean,
       default: true
+    },
+    // 顶部右侧功能按钮区
+    funcZone: {
+      type: Object,
+      required: false
     },
     // 是否加载中
     loading: {
@@ -93,10 +108,6 @@ export default {
   },
   data () {
     return {
-      // 字段key值对象
-      fieldKeys: {},
-      // 列表中标题字段格式化 formatBadge
-      itemTitleFormat: {},
       // 用于存储当前的操作往外抛
       curAction: {},
       // 当前选中的行
@@ -139,19 +150,11 @@ export default {
       }
     }
   },
-  emits: ['list-func-action', 'list-row-action', 'list-load-more', 'list-row-selection', 'list-title-link', 'list-page-change'],
+  emits: ['list-func-action', 'list-load-more', 'list-row-selection', 'list-row-action'],
   methods: {
     // 初始化List属性
     initList (columns) {
       columns.forEach(column => {
-        // key存在时才放到fieldKeys中
-        if (column.key) {
-          this.fieldKeys[column.key] = column.dataIndex
-        }
-        // title字段生成其格式化
-        if (column.key === 'title') {
-          this.itemTitleFormat = column.format
-        }
         // 过滤器和默认表单初始化
         if (column.form) {
           if (column.form.filter) {
@@ -164,10 +167,6 @@ export default {
           }
         }
       })
-      // 如果没有配置其key字段，则默认采用id作为key
-      if (!this.fieldKeys.key) {
-        this.fieldKeys.key = 'id'
-      }
     },
     // 响应功能区域操作
     handleFuncAction (action, extend) {
@@ -203,14 +202,6 @@ export default {
     // 响应加载更多
     handleLoadMore () {
       this.$emit('list-load-more')
-    },
-    // 响应分页切换
-    handlePageChange (page, pageSize) {
-      this.$emit('list-page-change', page, pageSize)
-    },
-    // 响应标题跳转
-    handleTitleLink (row) {
-      this.$emit('list-title-link', row)
     },
     // 响应行选择
     handleRowSelection (selectedRowKeys, selectedRows) {

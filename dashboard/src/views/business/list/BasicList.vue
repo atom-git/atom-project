@@ -1,17 +1,13 @@
 <template>
-  <FormatList :title="title"
+  <FormatList itemLayout="vertical"
+              :title="title"
               :dataSource="dataSource"
-              itemLayout="vertical"
               :loadMore="loadMore"
-              :fieldKeys="fieldKeys"
+              :columns="columns"
               :funcZone="funcZone"
-              :linkable="true"
-              :actions="actions"
               :loading="loading"
-              :itemTitleFormat="itemTitleFormat"
               @list-func-action="handleFuncAction"
               @list-load-more="handleLoadMore"
-              @list-title-link="handleTitleLink"
               @list-row-selection="handleRowSelection"
               @list-row-action="handleRowAction"></FormatList>
   <FormList :title="title"
@@ -20,18 +16,18 @@
             itemLayout="vertical"
             :loadMore="loadMore"
             :funcZone="funcZone"
-            :linkable="true"
-            :actions="actions"
             :loading="loading"
+            @list-filter="handleFilter"
             @list-func-action="handleFuncAction"
             @list-load-more="handleLoadMore"
-            @list-title-link="handleTitleLink"
             @list-row-selection="handleRowSelection"
-            @list-row-action="handleRowAction"></FormList>
+            @list-row-action="handleRowAction"
+            @list-form-submit="handleFormSubmit"
+            @list-form-cancel="handleFormCancel"></FormList>
 </template>
 
 <script>
-import { FormatList, FormList } from '@/components/Advance/FuncTable'
+import { FormatList, FormList } from '@/components/Advance/FuncList'
 const dataSource = []
 for (let i = 0; i < 13; i++) {
   dataSource.push({
@@ -54,24 +50,19 @@ export default {
       dataSource: dataSource,
       pagination: true,
       loadMore: true,
-      fieldKeys: { avatar: 'avatar', title: 'title', description: 'description', content: 'content', extra: 'extra' },
-      actions: [
-        { icon: 'StarOutlined', title: '收藏', name: 'star' },
-        { icon: 'LikeOutlined', title: '点赞', name: 'like' },
-        { icon: 'MessageOutlined', title: '评论' }
-      ],
-      itemTitleFormat: {
-        type: 'formatBadge',
-        field: 'state',
-        options: [{ value: 0, color: 'purple' }]
-      },
       columns: [
         { key: 'title', title: '标题', dataIndex: 'title',
-          format: { type: 'formatBadge', field: 'state', options: [{ value: 0, color: 'purple' }] } },
+          optionField: 'state', options: [{ value: 0, count: 'new' }],
+          format: 'formatBadge' },
         { key: 'avatar', title: '头像', dataIndex: 'avatar' },
         { key: 'description', title: '描述', dataIndex: 'description' },
         { key: 'content', title: '内容', dataIndex: 'content', form: { maxlength: 200 } },
-        { key: 'extra', title: '图例', dataIndex: 'extra' },
+        { key: 'extra', title: '图例', dataIndex: 'extra', width: 120 },
+        { key: 'actions', actions: [
+            { icon: 'StarOutlined', title: '收藏', name: 'star' },
+            { icon: 'LikeOutlined', title: '点赞', name: 'like' },
+            { icon: 'MessageOutlined', title: '评论' }
+          ] },
         { title: '时间', dataIndex: 'dataTime', form: { type: 'dataPicker' } }
       ],
       // 用户功能按钮区域
@@ -86,6 +77,10 @@ export default {
     }
   },
   methods: {
+    // 响应过滤查询
+    handleFilter (filterModel) {
+      console.log(filterModel)
+    },
     // 响应功能区域操作
     handleFuncAction (action, extend) {
       console.log(action, extend)
@@ -94,10 +89,6 @@ export default {
     handleLoadMore () {
       console.log('load more')
     },
-    // 响应标题跳转
-    handleTitleLink (item) {
-      console.log(item)
-    },
     // 响应行选择
     handleRowSelection (selectedRowKeys, selectedRows) {
       console.log(selectedRowKeys, selectedRows)
@@ -105,6 +96,14 @@ export default {
     // 响应扩展操作
     handleRowAction (action, row) {
       console.log(action, row)
+    },
+    // 响应表单提交
+    handleFormSubmit (action, model) {
+      console.log(action, model)
+    },
+    // 响应表单取消
+    handleFormCancel (action) {
+      console.log(action)
     }
   }
 }

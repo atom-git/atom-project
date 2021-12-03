@@ -3,17 +3,17 @@
             :title="title"
             :columns="columns"
             :loadMore="loadMore"
-            :hasMore="hasMore"
+            :hasMore="pageParams.hasMore"
             :pagination="pagination"
             :dataSource="dataSource"
             :loading="loading"
             @list-filter="handleFilter"
             @list-func-action="handleFuncAction"
             @list-row-action="handleRowAction"
-            @list-load-more="handleLoadMore"
             @list-row-selection="handleRowSelection"
-            @list-title-link="handleTitleLink"
-            @list-page-change="handlePageChange"></FormList>
+            @list-load-more="handleLoadMore"
+            @list-form-submit="handleFormSubmit"
+            @list-form-cancel="handleFormCancel"></FormList>
 </template>
 
 <script>
@@ -35,7 +35,13 @@ export default {
       type: String,
       required: true
     },
-    // 参考FormList的配置
+    /**
+     * 字段列表 { key, title, dataIndex, span, class, format, form }
+     * key: 为固定的list-meta所对应的字段
+     * title: 表示对应的FormatList中fieldKeys被替换的key
+     * dataIndex: 表示字段属性名
+     * 其他与FormTable中完全一致
+     */
     columns: {
       type: Array,
       required: true
@@ -59,23 +65,33 @@ export default {
       selectedRowKeys: [],
       // 选中的行
       selectedRows: [],
-      // 分页信息
-      pagination:  {
-        current: 1,
-        pageSize: 10,
-        total: 0,
-        showSizeChanger: true
-      },
       // 分页参数
-      pageParams: { curPage: 1, pageSize: 10 },
+      pageParams: { curPage: 1, pageSize: 10, total: 0, hasMore: true },
       // 过滤参数
       filterParams: {},
       // 列表loading
       loading: false,
-      // 是否还有更多数据
-      hasMore: true,
       // 是否数据下载
       download: false
+    }
+  },
+  computed: {
+    // 分页信息
+    pagination () {
+      if (this.loadMore) {
+        return false
+      } else {
+        return {
+          current: 1,
+          pageSize: 10,
+          total: this.pageParams.total,
+          showSizeChanger: true,
+          onChange: (page, pageSize) => {
+            this.pageParams.current = page
+            this.pageParams.pageSize = pageSize
+          }
+        }
+      }
     }
   },
   watch: {
@@ -91,7 +107,7 @@ export default {
       }
     }
   },
-  emits: ['list-func-action', 'list-row-action', 'list-load-more', 'list-row-selection', 'list-title-link', 'list-data-load'],
+  emits: ['list-data-load', 'list-func-action', 'list-row-action', 'list-row-selection', 'list-form-submit', 'list-form-cancel'],
   methods: {
     // 加载列表数据
     loadListData () {
@@ -114,12 +130,12 @@ export default {
             this.$utils.download(response)
           } else {
             this.$emit('list-data-load', response)
-            if (this.pagination) {
-              this.pagination.total = (response && response.page && response.page.totalCnt) || 0
-              this.dataSource = response ? response.data : []
-            } else if (this.loadMore) {
-              this.hasMore = response && response.page && response.page.hasMore || false
+            if (this.loadMore) {
+              this.pageParams.hasMore = response && response.page && response.page.hasMore || false
               this.dataSource.push(...(response ? response.data : []))
+            } else {
+              this.pageParams.total = (response && response.page && response.page.totalCnt) || 0
+              this.dataSource = response ? response.data : []
             }
           }
           resolve(response)
@@ -129,6 +145,11 @@ export default {
     // 响应表格过滤
     handleFilter (filterParams) {
       this.filterParams = filterParams
+      this.loadListData()
+    },
+    // 响应加载更多
+    handleLoadMore () {
+      this.pageParams.curPage++
       this.loadListData()
     },
     // 响应功能区域操作
@@ -146,7 +167,7 @@ export default {
               // 执行删除动作，服务端需支持批删除
               this.$http.delete(action.apiUrl, { data: { ids: this.selectedRowKeys } }).then(() => {
                 this.$message.success('数据删除成功！')
-                this.loadTableData()
+                this.loadListData()
               })
             } else {
               this.$message.error('删除功能action未配置apiUrl')
@@ -154,38 +175,18 @@ export default {
           }
         } else if (action.name === this.$default.ACTION.REFRESH.name) {
           // 刷新表格
-          this.loadTableData().then(() => {
+          this.loadListData().then(() => {
             this.$message.success('数据刷新成功！')
           })
         } else if (action.name === this.$default.ACTION.DOWNLOAD.name) {
           // 下载数据
           this.download = true
-          this.loadTableData().then(() => {
+          this.loadListData().then(() => {
             // 每次执法行把download置成false
             this.download = false
           })
         }
       }
-    },
-    // 响应加载更多
-    handleLoadMore () {
-      this.pageParams.curPage++
-      this.loadListData()
-    },
-    // 响应分页切换
-    handlePageChange (page, pageSize) {
-      this.pageParams.curPage = page
-      this.pageParams.pageSize = pageSize
-      this.loadListData()
-    },
-    // 响应标题跳转
-    handleTitleLink (row) {
-      this.$emit('list-title-link', row)
-    },
-    // 响应行选择
-    handleRowSelection (selectedRowKeys, selectedRows) {
-      this.selectedRowKeys = selectedRowKeys
-      this.$emit('list-row-selection', selectedRowKeys, selectedRows)
     },
     // 响应扩展操作
     handleRowAction (action, row, fieldKeys) {
@@ -206,6 +207,36 @@ export default {
           }
         }
       }
+    },
+    // 响应行选择
+    handleRowSelection (selectedRowKeys, selectedRows) {
+      this.selectedRowKeys = selectedRowKeys
+      this.$emit('list-row-selection', selectedRowKeys, selectedRows)
+    },
+    // 响应表单提交
+    handleFormSubmit (action, model, onFinish) {
+      // apiUrl必须存在且格式合规
+      if (this.$utils.isValid(action.apiUrl)) {
+        this.$http.put(action.apiUrl, model).then(() => {
+          this.$message.success('数据'.concat(action.name === this.$default.ACTION.ADD.name ? this.$default.ACTION.ADD.title : this.$default.ACTION.EDIT.title, '成功！'))
+          // 重新加载数据
+          this.loadListData()
+          this.$emit('list-form-submit', action, model)
+          onFinish(true)
+        }).catch(error => {
+          onFinish(false, error)
+        })
+      } else {
+        this.$message.error('编辑功能action必须配置apiUrl')
+      }
+    },
+    // 响应表单取消
+    handleFormCancel (action) {
+      this.$emit('list-form-cancel', action)
+    },
+    // 刷新数据
+    refresh () {
+      this.loadListData()
     }
   }
 }

@@ -20,6 +20,11 @@
 </template>
 
 <script>
+/**
+ * 挂载时加载数据，需考虑保过滤器是否已经初始化完成
+ * 因此第一次加载数据，由handleFilter方法驱动
+ * 若没有filter由于是基于FormTable组件mounted方法驱动的，因此也无影响
+ */
 import FormTable from './FormTable'
 export default {
   name: 'FuncTable',
@@ -100,7 +105,7 @@ export default {
       }
     }
   },
-  emits: ['table-data-load', 'table-func-action', 'table-row-selection', 'table-row-action', 'table-form-submit', 'table-form-cancel'],
+  emits: ['table-data-load', 'table-func-action', 'table-row-action', 'table-row-selection', 'table-form-submit', 'table-form-cancel'],
   methods: {
     // 加载数据
     loadTableData () {
@@ -244,14 +249,6 @@ export default {
     refresh () {
       this.loadTableData()
     }
-  },
-  mounted () {
-    /**
-     * 挂载时加载数据，需考虑保过滤器是否已经初始化完成
-     * 因此第一次加载数据，由handleFilter方法驱动
-     * 若没有filter由于是基于FormTable组件mounted方法驱动的，因此也无影响
-     */
-    // this.loadTableData()
   }
 }
 </script>

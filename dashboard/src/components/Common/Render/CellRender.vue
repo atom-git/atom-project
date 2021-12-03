@@ -41,9 +41,15 @@
   </template>
   <!-- 格式化进度条 -->
   <template v-else-if="isFormat('formatProgress')">
-    <div class="atom-form-progress">
+    <div class="atom-format-progress">
       <span :style="progressStyle">{{ content }}</span>
     </div>
+  </template>
+  <!-- 格式化进度条 -->
+  <template v-else-if="isFormat('formatBadge')">
+    <a-badge v-bind="formatBadge()" class="atom-format-badge">
+      {{ text }}
+    </a-badge>
   </template>
   <!-- 其他文本展示内容的格式化 -->
   <template v-else>
@@ -131,7 +137,7 @@ export default {
       }
     }
   },
-  emits: ['table-row-action'],
+  emits: ['cell-action'],
   methods: {
     // 判断是哪种格式化，用于逻辑循环
     isFormat (type) {
@@ -228,9 +234,19 @@ export default {
         }
       }
     },
+    // 格式化badge，格式化依据的字段默认为dataIndex，可以通过optionField进行配置
+    formatBadge () {
+      const option = this.column.options.filter(option => option.value === this.row[this.column['optionField'] || this.column.dataIndex])
+      if (this.$utils.isValid(option)) {
+        // 因此badge的配置完成由外部决定
+        return option[0]
+      } else {
+        return {}
+      }
+    },
     // 响应操作按钮的点击
     handleAction (action) {
-      this.$emit('table-row-action', action, this.row, this.column)
+      this.$emit('cell-action', action, this.row, this.column)
     },
     // link格式化时增加点击copy功能
     handleCopy (event) {
@@ -253,3 +269,11 @@ export default {
   }
 }
 </script>
+
+<style lang="less">
+.atom-format-badge {
+  .ant-badge-count {
+    transform: translate(100%, -50%);
+  }
+}
+</style>

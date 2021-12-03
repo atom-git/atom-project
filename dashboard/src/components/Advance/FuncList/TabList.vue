@@ -1,5 +1,5 @@
 <template>
-  <a-card :class="['atom-tab-table', tabPosition ]"
+  <a-card :class="['atom-tab-list', tabPosition ]"
           :bordered="false"
           :tabList="tabList"
           :activeTabKey="activeTab"
@@ -8,35 +8,31 @@
     <template #tabBarExtraContent>
       <FuncTitle :title="title"></FuncTitle>
     </template>
-    <FuncTable v-bind="tableAttrs"
+    <FuncList v-bind="listAttrs"
                :title="false"
-               :apiUrl="tableAttrs.apiUrl"
-               :columns="tableAttrs.columns"
+               :apiUrl="listAttrs.apiUrl"
+               :columns="listAttrs.columns"
                :extendParams="extendParams"
-               @table-data-load="handleDataLoad"
-               @table-func-action="handleFuncAction"
-               @table-row-action="handleRowAction"
-               @table-row-selection="handleRowSelection"
-               @table-form-submit="handleFormSubmit"
-               @table-form-cancel="handleFormCancel">
-      <!-- 把外部传入的form slot传入内部 -->
-      <template v-for="slotName in Object.keys($slots)" #[slotName]="props">
-        <slot :name="slotName" v-bind="props"></slot>
-      </template>
-    </FuncTable>
+               @list-data-load="handleDataLoad"
+               @list-func-action="handleFuncAction"
+               @list-row-action="handleRowAction"
+               @list-row-selection="handleRowSelection"
+               @list-form-submit="handleFormSubmit"
+               @list-form-cancel="handleFormCancel">
+    </FuncList>
   </a-card>
 </template>
 
 <script>
 /**
- * tabs: [{ tab: {tab相关配置}, table: {FuncTable参数合集} }]
+ * tabs: [tab: '标签名称', list: {FuncList参数合集} }]
  * tab key值不需要指定，默认采用index作为key值
  */
 import FuncTitle from '@/components/Common/FuncTitle'
-import FuncTable from './FuncTable'
+import FuncList from './FuncList'
 export default {
-  name: 'TabTable',
-  components: { FuncTitle, FuncTable },
+  name: 'TabList',
+  components: { FuncTitle, FuncList },
   props: {
     // 多tabs标题
     title: {
@@ -71,47 +67,47 @@ export default {
       return this.tabs.map((tab, index) => ({ ...tab, key: index + '' }))
     },
     // 当前选中的tab配置信息
-    tableAttrs () {
-      return this.tabList.filter(tab => tab.key === this.activeTab)[0].table
+    listAttrs () {
+      return this.tabList.filter(tab => tab.key === this.activeTab)[0].list
     }
   },
-  emits: ['table-tab-change', 'table-data-load', 'table-func-action', 'table-row-action', 'table-row-selection', 'table-form-submit', 'table-form-cancel'],
+  emits: ['list-tab-change', 'list-data-load', 'list-func-action', 'list-row-action', 'list-row-selection', 'list-form-submit', 'list-form-cancel'],
   methods: {
     // 响应tab切换
     handleTabChange (activeTab) {
       this.activeTab = activeTab
-      this.$emit('table-tab-change', activeTab, this.tabs[this.activeTab])
+      this.$emit('list-tab-change', activeTab, this.tabs[this.activeTab])
     },
     // 响应功能区域操作按钮
     handleFuncAction (action) {
-      this.$emit('table-func-action', action, this.activeTab, this.tabs[this.activeTab])
+      this.$emit('list-func-action', action, this.activeTab, this.tabs[this.activeTab])
     },
     // 响应行级操作按钮
     handleRowAction (action, row, column) {
-      this.$emit('table-row-action', action, row, column, this.activeTab, this.tabs[this.activeTab])
+      this.$emit('list-row-action', action, row, column, this.activeTab, this.tabs[this.activeTab])
     },
     // 响应行选中
     handleRowSelection (selectedRowKeys, selectedRows) {
-      this.$emit('table-row-selection', selectedRowKeys, selectedRows, this.activeTab, this.tabs[this.activeTab])
+      this.$emit('list-row-selection', selectedRowKeys, selectedRows, this.activeTab, this.tabs[this.activeTab])
     },
     // 响应form表单的提交
     handleFormSubmit (action, model) {
-      this.$emit('table-form-submit', action, model, this.activeTab, this.tabs[this.activeTab])
+      this.$emit('list-form-submit', action, model, this.activeTab, this.tabs[this.activeTab])
     },
     // 响应form表单的取消
     handleFormCancel (action) {
-      this.$emit('table-form-cancel', action, this.activeTab, this.tabs[this.activeTab])
+      this.$emit('list-form-cancel', action, this.activeTab, this.tabs[this.activeTab])
     },
     // 响应数据加载
     handleDataLoad (response) {
-      this.$emit('table-data-load', response, this.activeTab, this.tabs[this.activeTab])
+      this.$emit('list-data-load', response, this.activeTab, this.tabs[this.activeTab])
     }
   }
 }
 </script>
 
 <style lang="less">
-.atom-tab-table {
+.atom-tab-list {
   &.right {
     .ant-tabs-top-bar {
       margin-bottom: -16px;
@@ -124,13 +120,13 @@ export default {
     }
   }
   .ant-tabs-tabpane {
-    .atom-table {
+    .atom-list {
       margin-top: 0;
       .ant-card-head {
         padding: 0;
       }
     }
-    .atom-form, .atom-table {
+    .atom-form, .atom-list {
       .ant-card-body {
         padding-left: 0;
         padding-right: 0;
