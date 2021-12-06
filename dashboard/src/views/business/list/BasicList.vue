@@ -57,7 +57,7 @@ export default {
         { key: 'avatar', title: '头像', dataIndex: 'avatar' },
         { key: 'description', title: '描述', dataIndex: 'description' },
         { key: 'content', title: '内容', dataIndex: 'content', form: { maxlength: 200 } },
-        { key: 'extra', title: '图例', dataIndex: 'extra', width: 120 },
+        { key: 'cover', title: '图例', dataIndex: 'extra', width: 120 },
         { key: 'actions', actions: [
             { icon: 'StarOutlined', title: '收藏', name: 'star' },
             { icon: 'LikeOutlined', title: '点赞', name: 'like' },

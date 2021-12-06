@@ -61,7 +61,7 @@ export default [
           },
           {
             path: 'card',
-            name: 'cardlist',
+            name: 'cardList',
             component: () => import(/* webpackChunkName: 'table' */ '@/views/business/list/CardList'),
             meta: { title: '卡片列表' }
           }
