@@ -1,8 +1,6 @@
-import FormatDesc from './Desc/FormatDesc'
-import FuncDesc from './Desc/FuncDesc'
-import FormatTable from './Table/FormatTable'
-import FormTable from './Table/FormTable'
-import FuncTable from './Table/FuncTable'
-import TabTable from './Table/TabTable'
+import FormatTable from './FormatTable'
+import FormTable from './FormTable'
+import FuncTable from './FuncTable'
+import TabTable from './TabTable'
 
-export { FormatDesc, FuncDesc, FormatTable, FormTable, FuncTable, TabTable }
+export { FormatTable, FormTable, FuncTable, TabTable }

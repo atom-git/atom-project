@@ -46,7 +46,7 @@
 /**
  * 分步表单示例
  */
-import { FormatDesc } from '@/components/Advance/FuncTable'
+import { FormatDesc } from '@/components/Advance/FuncDesc'
 export default {
   name: 'StepForm',
   components: { FormatDesc },

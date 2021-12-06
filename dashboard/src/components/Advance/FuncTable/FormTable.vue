@@ -78,9 +78,9 @@
  */
 import { FormDialog, FormFilter } from '@/components/Advance/FuncForm'
 import FormatTable from './FormatTable'
-import filter from '../mixins/filter'
-import update from '../mixins/update'
-import upload from '../mixins/upload'
+import filter from './mixins/filter'
+import update from './mixins/update'
+import upload from './mixins/upload'
 import { createVNode } from 'vue'
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
 export default {
