@@ -1,5 +1,5 @@
 <template>
-  <a-layout class="atom-form-maker">
+  <a-layout :class="['atom-form-maker', contentTheme]">
     <!-- 左侧组件面板区域 -->
     <a-layout-sider :theme="contentTheme" class="atom-widget-panel" :width="280">
       <WidgetPanel></WidgetPanel>

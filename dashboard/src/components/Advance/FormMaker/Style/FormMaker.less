@@ -4,9 +4,50 @@
 .atom-form-maker {
   width: 100%;
   height: 100%;
+  /*暗黑模式下样式兼容*/
+  &.dark {
+    .atom-widget-panel {
+      .ant-collapse-borderless {
+        .atom-widget-list .atom-widget {
+          background: @primary-8;
+          border-color: @primary-8;
+          &:hover, &:focus {
+            background: @primary-color;
+            border: 1px dashed @primary-color;
+            color: @text-color;
+          }
+        }
+      }
+    }
+    /*中间画布面板区域*/
+    .atom-maker-panel {
+      /*功能按钮的响应*/
+      .atom-maker-header {
+        .atom-maker-header-left {
+          .ant-btn-icon-only {
+            &.active {
+              background: @primary-8;
+            }
+          }
+        }
+      }
+      /*画布区域*/
+      .atom-maker-canvas-panel {
+        .atom-maker-canvas {
+          /*drop时的样式*/
+          .atom-widget-ghost {
+            background: @primary-8;
+            border: 1px dashed @primary-8;
+            color: @text-color;
+          }
+        }
+      }
+    }
+  }
   /*左侧组件面板区域*/
   .atom-widget-panel {
     overflow: auto;
+    /*普通模式样式*/
     .ant-collapse-borderless {
       background-color: @component-background;
       user-select: none;
@@ -57,7 +98,6 @@
           padding: 4px 6px;
           &.active {
             background: @primary-3;
-            color: @text-color-inverse;
           }
           .anticon {
             font-size: 20px;
