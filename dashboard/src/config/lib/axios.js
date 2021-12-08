@@ -19,6 +19,66 @@ const axios = Axios.create({
   }
 })
 
+// 防止重复请求
+let pendingList = []
+const pendingHandler = (config, cancel) => {
+  const http = Qs.stringify({ url: config.url, method: config.method, params: config.params, data: config.data })
+  if (pendingList.includes(http)) {
+    if (cancel) {
+      // 取消重复请求
+      cancel('重复请求，自动取消')
+    } else {
+      // 删除请求
+      pendingList.splice(pendingList.indexOf(http), 1)
+    }
+  } else {
+    if (cancel) {
+      pendingList.push(http)
+    }
+  }
+}
+
+// request请求拦截
+axios.interceptors.request.use(config => {
+  // /api/login为了方便后台spring security处理，修改为/login
+  if (config.url === '/login') {
+    config.baseURL = ''
+  }
+  // 加入重复请求取消令牌
+  config.cancelToken = new Axios.CancelToken(cancel => {
+    pendingHandler(config, cancel)
+  })
+  // 配置请求头
+  // config.headers.post['Content-Type'] = 'application/json'
+  // 增加请求令牌
+  const token = store.getters.token
+  if (token) {
+    config.headers['Access-Token'] = token
+  }
+  // 增加平台及平台类型内容
+  config.headers['Platform'] = Default.platform
+  config.headers['Platform-Type'] = Default.platformType
+  return config
+}, err)
+
+// response响应拦截
+axios.interceptors.response.use(response => {
+  // 判断是否为下载请求
+  if (response.headers['content-type'] === 'application/octet-stream') {
+    return Promise.resolve(response)
+  }
+  const respMsg = response.data
+  // 请求结束删除请求标记
+  pendingHandler(response.config)
+  if (respMsg.status === 200) {
+    // 响应正常交给业务逻辑
+    return Promise.resolve(respMsg.data)
+  } else {
+    // 响应异常交给公共处理，然后再返回给业务逻辑，可以决定是否要响应
+    return err({ errorCode: respMsg.errorCode, errorMsg: respMsg.errorMsg })
+  }
+}, err)
+
 // 全局请求错误处理，业务失败也在这里公共处理
 const err = (error) => {
   // 判断是业务异常还是axios异常
@@ -37,40 +97,9 @@ const err = (error) => {
       message.error(error.errorMsg)
     }
   }
+  // 清空pending列表
+  pendingList = []
   return Promise.reject(error)
 }
-// request请求拦截
-axios.interceptors.request.use(config => {
-  // /api/login为了方便后台spring security处理，修改为/login
-  if (config.url === '/login') {
-    config.baseURL = ''
-  }
-  // 配置请求头
-  // config.headers.post['Content-Type'] = 'application/json'
-  // 增加请求令牌
-  const token = store.getters.token
-  if (token) {
-    config.headers['Access-Token'] = token
-  }
-  // 增加平台及平台类型内容
-  config.headers['Platform'] = Default.platform
-  config.headers['Platform-Type'] = Default.platformType
-  return config
-}, err)
-// response响应拦截
-axios.interceptors.response.use(response => {
-  // 判断是否为下载请求
-  if (response.headers['content-type'] === 'application/octet-stream') {
-    return Promise.resolve(response)
-  }
-  const respMsg = response.data
-  if (respMsg.status === 200) {
-    // 响应正常交给业务逻辑
-    return Promise.resolve(respMsg.data)
-  } else {
-    // 响应异常交给公共处理，然后再返回给业务逻辑，可以决定是否要响应
-    return err({ errorCode: respMsg.errorCode, errorMsg: respMsg.errorMsg })
-  }
-}, err)
 
 export default axios
