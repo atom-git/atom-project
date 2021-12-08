@@ -51,7 +51,7 @@ export default {
       type: Boolean,
       default: true
     },
-    // 外部扩展的参数
+    // 外部扩展的参数，有可能导致初次加载时重复请求
     extendParams: {
       type: Object,
       default: () => ({})
@@ -146,7 +146,7 @@ export default {
             }
           }
           resolve(response)
-        }).finally(() => { this.loading = false })
+        }).catch(error => { console.log(error) }).finally(() => { this.loading = false })
       })
     },
     // 响应表格过滤

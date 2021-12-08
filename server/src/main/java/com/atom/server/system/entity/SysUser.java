@@ -28,6 +28,8 @@ public class SysUser {
 	private String account;
 	@Column(name = "phone")
 	private String phone;
+	@Column(name = "email")
+	private String email;
 	@Column(name = "name")
 	private String name;
 	@Column(name = "password")
@@ -38,6 +40,10 @@ public class SysUser {
 	private String nickName;
 	@Column(name = "open_id")
 	private String openId;
+	@Column(name = "location")
+	private String location;
+	@Column(name = "location_name")
+	private String locationName;
 	@Column(name = "head")
 	private String head;
 	@Column(name = "dept_id")

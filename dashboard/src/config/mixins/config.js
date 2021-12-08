@@ -33,7 +33,7 @@ export default {
     },
     // 静态资源路径
     publicPath () {
-      return this.isProd ? '/html/dashboard/' : '/'
+      return process.env.BASE_URL
     }
   }
 }

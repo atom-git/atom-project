@@ -198,6 +198,8 @@
                :height="renderField.height"
                :clipRate="renderField.clipRate"
                :maxSize="renderField.maxSize"
+               :headCutter="renderField.headCutter"
+               :imgOutType="renderField.imgOutType"
                @change="handleChange"/>
   <!-- iconPicker -->
   <IconPicker v-else-if="isType('iconPicker')" v-bind="renderField" :modelValue="modelValue" @change="handleChange"/>

@@ -97,7 +97,7 @@ export default {
     apiUrl () {
       this.loadTableData()
     },
-    // 监听扩展参数的变化重新加载数据
+    // 监听扩展参数的变化重新加载数据，有可能导致初次加载时重复请求
     extendParams: {
       deep: true,
       handler () {
@@ -139,7 +139,7 @@ export default {
             }
           }
           resolve(response)
-        }).finally(() => { this.loading = false })
+        }).catch(error => { console.log(error) }).finally(() => { this.loading = false })
       })
     },
     // 响应表格过滤

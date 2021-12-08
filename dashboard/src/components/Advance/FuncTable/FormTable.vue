@@ -37,6 +37,7 @@
               :width="formWidth"
               :loading="formLoading"
               :fields="formFields"
+              :labelCol="labelCol"
               :formSlots="formSlots"
               :formError="formError"
               @form-editor-submit="handleFormSubmit"

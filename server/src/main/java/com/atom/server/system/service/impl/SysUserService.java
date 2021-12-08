@@ -133,7 +133,7 @@ public class SysUserService implements ISysUserService {
 			sysUser.setHead(sysUserDTO.getHead());
 			sysUserDao.update(sysUser);
 			// 更新用户缓存
-			sessionUser.setHeadUrl(sysUserDTO.getHead());
+			sessionUser.setHead(sysUserDTO.getHead());
 			userCacheStore.register(sessionUser.getPlatformType(), sessionUser);
 		} else {
 			throw new AuthenticationServiceException(RestError.ERROR1006.getErrorMsg());
@@ -166,7 +166,7 @@ public class SysUserService implements ISysUserService {
 	}
 
 	/**
-	 * 新增或者编辑用户
+	 * 新增或者编辑用户，信息存在时才更新，由于个人更新和管理更新两个原因
 	 * @param sysUserDTO 用户传输dto
 	 * @return 新增时返回用户默认密码，修改时返回为空
 	 */
@@ -179,12 +179,28 @@ public class SysUserService implements ISysUserService {
 			if (Validator.isNull(originUser)) {
 				throw new BusException(RestError.ERROR1006);
 			}
-			originUser.setPhone(sysUserDTO.getPhone());
+			if (Validator.isNotEmpty(sysUserDTO.getHead())) {
+				originUser.setHead(sysUserDTO.getHead());
+			}
 			originUser.setName(sysUserDTO.getName());
-			originUser.setMotto(sysUserDTO.getMotto());
-			originUser.setDeptId(sysUserDTO.getDeptId());
+			originUser.setPhone(sysUserDTO.getPhone());
+			originUser.setEmail(sysUserDTO.getEmail());
+			if (Validator.isNotEmpty(sysUserDTO.getMotto())) {
+				originUser.setMotto(sysUserDTO.getMotto());
+			}
+			if (Validator.isNotEmpty(sysUserDTO.getDeptId())) {
+				originUser.setDeptId(sysUserDTO.getDeptId());
+			}
+			if (Validator.isNotEmpty(sysUserDTO.getLocation())) {
+				originUser.setLocation(sysUserDTO.getLocation());
+			}
+			if (Validator.isNotEmpty(sysUserDTO.getLocationName())) {
+				originUser.setLocationName(sysUserDTO.getLocationName());
+			}
 			originUser.setUpdateTime(DateUtil.date());
-			originUser.setIfValid(sysUserDTO.getIfValid());
+			if (Validator.isNotEmpty(sysUserDTO.getIfValid())) {
+				originUser.setIfValid(sysUserDTO.getIfValid());
+			}
 			sysUserDao.update(originUser);
 			return "";
 		} else {

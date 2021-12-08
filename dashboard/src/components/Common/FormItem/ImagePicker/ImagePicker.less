@@ -10,6 +10,21 @@
   .atom-image-picker {
     position: relative;
     width: 100%;
+    &.head-cutter {
+      width: 160px;
+      height: 160px !important;
+      margin: 0 auto;
+      .cropper-view-box {
+        border-radius: 50%;
+      }
+      .atom-image-picker-actions {
+        left: 0;
+        bottom: -44px;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+      }
+    }
     .atom-image-picker-actions {
       position: absolute;
       left: 12px;

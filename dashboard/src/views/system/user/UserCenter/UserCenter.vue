@@ -4,7 +4,7 @@
       <a-card class="atom-user" :bordered="false">
         <!-- 头像 -->
         <template #cover>
-          <a-image :src="userInfo.headUrl"
+          <a-image :src="userInfo.head"
                    :fallback="headFallback" />
         </template>
         <!-- 信息 -->
@@ -109,5 +109,53 @@ export default {
 </script>
 
 <style lang="less">
-@import "UserCenter";
+.atom-user {
+  .ant-card-cover {
+    text-align: center;
+    .ant-image {
+      width: 100px;
+      height: 100px;
+      display: inline-block;
+      margin: 20px auto 0 auto;
+      border-radius: 50%;
+      box-shadow: 0 0 12px 6px #F5EDFC;
+      img {
+        border-radius: 50%;
+      }
+    }
+  }
+  .ant-card-body {
+    .ant-card-meta .ant-card-meta-detail {
+      text-align: center;
+    }
+    .atom-user-extend {
+      margin-top: 24px;
+      p {
+        .anticon {
+          margin-right: 12px;
+        }
+      }
+      .atom-user-extend-favor {
+        margin: 24px 0;
+        .ant-avatar-group {
+          margin-top: 12px;
+          .ant-avatar {
+            cursor: pointer;
+            margin-right: 24px;
+          }
+        }
+      }
+      .atom-user-extend-impression {
+        margin: 24px 0;
+        .atom-user-extend-tags {
+          margin-top: 12px;
+          .ant-tag {
+            margin-right: 8px;
+            margin-bottom: 8px;
+          }
+        }
+      }
+    }
+  }
+}
 </style>

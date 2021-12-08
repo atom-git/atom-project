@@ -5,46 +5,51 @@
                       :showUploadList="false"
                       :openFileDialogOnClick="false"
                       :beforeUpload="handleBeforeUpload">
-      <div class="atom-image-picker" :style="{ height: `${height}px` }">
+      <div :class="['atom-image-picker', headCutter ? 'head-cutter' : '']" :style="{ height: `${height}px` }">
         <a-button-group class="atom-image-picker-actions">
-          <a-upload :accept="accept"
-                    :showUploadList="false"
-                    :beforeUpload="handleBeforeUpload">
-            <a-tooltip title="支持拖动上传">
-              <a-button><IconFont type="CloudUploadOutlined"/></a-button>
+          <template v-if="headCutter">
+            <a-button type="primary" @click="handleOperAction('clip')">裁剪头像</a-button>
+          </template>
+          <template v-else>
+            <a-upload :accept="accept"
+                      :showUploadList="false"
+                      :beforeUpload="handleBeforeUpload">
+              <a-tooltip title="支持拖动上传">
+                <a-button><IconFont type="CloudUploadOutlined"/></a-button>
+              </a-tooltip>
+            </a-upload>
+            <a-tooltip title="裁切">
+              <a-button @click="handleOperAction('clip')"><IconFont type="ScissorOutlined"/></a-button>
             </a-tooltip>
-          </a-upload>
-          <a-tooltip title="裁切">
-            <a-button @click="handleOperAction('clip')"><IconFont type="ScissorOutlined"/></a-button>
-          </a-tooltip>
-          <a-dropdown :trigger="['click', 'hover']">
-            <a-button>
-              <IconFont type="GatewayOutlined"/> {{ `【${fixedText}】` }}
-            </a-button>
-            <template #overlay>
-              <a-menu @click="handleClipAction">
-                <a-menu-item key="16:9">16:9</a-menu-item>
-                <a-menu-item key="4:3">4:3</a-menu-item>
-                <a-menu-item key="1:1">1:1</a-menu-item>
-                <a-menu-item key="self">自定义</a-menu-item>
-              </a-menu>
-            </template>
-          </a-dropdown>
-          <a-tooltip title="放大">
-            <a-button @click="handleOperAction('zoomIn')"><IconFont type="ZoomInOutlined"/></a-button>
-          </a-tooltip>
-          <a-tooltip title="缩小">
-            <a-button @click="handleOperAction('zoomOut')"><IconFont type="ZoomOutOutlined"/></a-button>
-          </a-tooltip>
-          <a-tooltip title="向右旋转">
-            <a-button @click="handleOperAction('rotateRight')"><IconFont type="RotateRightOutlined"/></a-button>
-          </a-tooltip>
-          <a-tooltip title="向左旋转">
-            <a-button @click="handleOperAction('rotateLeft')"><IconFont type="RotateLeftOutlined"/></a-button>
-          </a-tooltip>
-          <a-tooltip title="清除">
-            <a-button @click="handleOperAction('delete')"><IconFont type="DeleteOutlined"/></a-button>
-          </a-tooltip>
+            <a-dropdown :trigger="['click', 'hover']">
+              <a-button>
+                <IconFont type="GatewayOutlined"/> {{ `【${fixedText}】` }}
+              </a-button>
+              <template #overlay>
+                <a-menu @click="handleClipAction">
+                  <a-menu-item key="16:9">16:9</a-menu-item>
+                  <a-menu-item key="4:3">4:3</a-menu-item>
+                  <a-menu-item key="1:1">1:1</a-menu-item>
+                  <a-menu-item key="self">自定义</a-menu-item>
+                </a-menu>
+              </template>
+            </a-dropdown>
+            <a-tooltip title="放大">
+              <a-button @click="handleOperAction('zoomIn')"><IconFont type="ZoomInOutlined"/></a-button>
+            </a-tooltip>
+            <a-tooltip title="缩小">
+              <a-button @click="handleOperAction('zoomOut')"><IconFont type="ZoomOutOutlined"/></a-button>
+            </a-tooltip>
+            <a-tooltip title="向右旋转">
+              <a-button @click="handleOperAction('rotateRight')"><IconFont type="RotateRightOutlined"/></a-button>
+            </a-tooltip>
+            <a-tooltip title="向左旋转">
+              <a-button @click="handleOperAction('rotateLeft')"><IconFont type="RotateLeftOutlined"/></a-button>
+            </a-tooltip>
+            <a-tooltip title="清除">
+              <a-button @click="handleOperAction('delete')"><IconFont type="DeleteOutlined"/></a-button>
+            </a-tooltip>
+          </template>
         </a-button-group>
         <!-- 截图 -->
         <VueCropper ref="cropper"
@@ -55,9 +60,10 @@
                     :info="true"
                     :fixedNumber="fixedNumber"
                     :fixedBox="false"
+                    :outputType="imgOutType"
                     @realTime="handleRealTime"></VueCropper>
         <!-- 结果查看 -->
-        <div class="atom-image-preview" :style="previewStyle">
+        <div v-if="!headCutter" class="atom-image-preview" :style="previewStyle">
           <div :style="previewImg.div">
             <img v-if="previewImg" :src="previewImg.url" :style="previewImg.img" alt="预览图片"/>
           </div>
@@ -96,6 +102,16 @@ export default {
     maxSize: {
       type: Number,
       defalut: 600
+    },
+    // 是否头像裁剪器
+    headCutter: {
+      type: Boolean,
+      default: false
+    },
+    // 裁切完输出的图片格式，jpeg|png|webp
+    imgOutType: {
+      type: String,
+      default: 'jpeg'
     }
   },
   data () {
@@ -122,6 +138,9 @@ export default {
     // 加载时将这个选项按照外部进行设置
     this.handleClipAction({ key: this.clipRate })
   },
+  // 必须禁用，否则uploader的change事件会传上去，导致错误
+  inheritAttrs: false,
+  emits: ['update:modelValue', 'change'],
   watch: {
     // 监听外部值的变化
     modelValue (newValue) {

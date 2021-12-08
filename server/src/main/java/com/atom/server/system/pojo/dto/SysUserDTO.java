@@ -21,12 +21,20 @@ public class SysUserDTO {
 	private Integer id;
 	@ApiModelProperty("用户帐户")
 	private String account;
+	@ApiModelProperty("头像Base64")
+	private String head;
 	@ApiModelProperty("手机号")
 	private String phone;
+	@ApiModelProperty("邮箱地址")
+	private String email;
 	@ApiModelProperty("用户昵称")
 	private String name;
 	@ApiModelProperty("格言")
 	private String motto;
+	@ApiModelProperty("位置编码")
+	private String location;
+	@ApiModelProperty("位置地址")
+	private String locationName;
 	@ApiModelProperty("组织部门ID")
 	private Integer deptId;
 	@ApiModelProperty("是否启用 0：禁用 1：启用")
@@ -35,8 +43,6 @@ public class SysUserDTO {
 	private String originPassword;
 	@ApiModelProperty("密码")
 	private String password;
-	@ApiModelProperty("头像key")
-	private String head;
 
 	public static class DTOConverter extends Converter<SysUser, SysUserDTO> {
 		@Override

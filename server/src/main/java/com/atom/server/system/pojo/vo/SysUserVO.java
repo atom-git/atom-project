@@ -27,10 +27,16 @@ public class SysUserVO extends AbsEntity {
 	private String account;
 	@ApiModelProperty("手机号")
 	private String phone;
+	@ApiModelProperty("邮箱地址")
+	private String email;
 	@ApiModelProperty("昵称")
 	private String name;
 	@ApiModelProperty("格言")
 	private String motto;
+	@ApiModelProperty("位置编码")
+	private String location;
+	@ApiModelProperty("位置地址")
+	private String locationName;
 	@ApiModelProperty("头像")
 	private String head;
 	@ApiModelProperty("组织机构代码")
@@ -52,9 +58,9 @@ public class SysUserVO extends AbsEntity {
 				return null;
 			}
 			SysUserVO sysUserVO = new SysUserVO();
-			BeanUtils.copyProperties(sysUser, sysUserVO, "sysDept");
+			BeanUtils.copyProperties(sysUser, sysUserVO, "sysDept", "location");
 			sysUserVO.setSysDept(sysDeptVOConverter.doForward(sysUser.getSysDept()));
-			// 把head由key转成图片地址
+			// TODO 把head由key转成图片地址
 			return sysUserVO;
 		}
 	}

@@ -16,6 +16,7 @@
               v-model="model"
               :fields="fields"
               :bordered="false"
+              :labelCol="labelCol"
               hiddenFooter
               @submit="handleFormSubmit">
       <!-- 把外部传入的form slot传入内部 -->
@@ -65,6 +66,11 @@ export default {
     fields: {
       type: Array,
       default: () => [{}]
+    },
+    // form表单的label,wrapper宽度分配
+    labelCol: {
+      type: Object,
+      default: () => ({ xs: 24, sm: 6, md: 8, lg: 8, xl: 6, xxl: 5 })
     },
     // 如果有slot必须指定其slot范围
     formSlots: {

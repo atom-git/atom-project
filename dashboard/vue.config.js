@@ -36,7 +36,33 @@ module.exports = {
       new MomentLocalesPlugin({
         localesToKeep: ['es-us', 'zh-cn']
       })
-    ]
+    ],
+    // 优化包大小，分离第三方大插件
+    optimization: {
+      splitChunks: {
+        chunks: 'all',
+        automaticNameDelimiter: '~',
+        name: true,
+        cacheGroups: {
+          // 第三方库抽离
+          vendor: {
+            name: "modules",
+            test: /[\\/]node_modules[\\/]/,
+            priority: -10
+          },
+          // 图标库
+          anticons: {
+            name: 'anticons',
+            test: /[\\/]node_modules[\\/]@ant-design[\\/]icons-vue[\\/]/
+          },
+          // 富文本库
+          tinymce: {
+            name: "tinymce",
+            test: /[\\/]node_modules[\\/]tinymce[\\/]/
+          }
+        }
+      }
+    }
   },
   // 生产环境禁用sourceMap
   productionSourceMap: false,
@@ -56,6 +82,7 @@ module.exports = {
       less: {
         /* less 变量覆盖，用于自定义 ant design 主题 */
         modifyVars: {
+          'card-head-padding': '12px',
           'card-padding-base': '16px',
           'modal-body-padding': '16px',
           'drawer-body-padding': '16px'

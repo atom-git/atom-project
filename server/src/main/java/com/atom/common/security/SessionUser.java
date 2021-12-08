@@ -42,12 +42,20 @@ public class SessionUser extends AbsEntity implements Authentication {
     @JSONField(serialize = false)
     @ApiModelProperty("帐户密码")
     private String password;
+    @ApiModelProperty("手机号")
+    private String phone;
+    @ApiModelProperty("邮箱地址")
+    private String email;
     @ApiModelProperty("用户昵称")
     private String name;
     @ApiModelProperty("格言")
     private String motto;
-    @ApiModelProperty("头像地址")
-    private String headUrl;
+    @ApiModelProperty("位置编码")
+    private String location;
+    @ApiModelProperty("位置地址")
+    private String locationName;
+    @ApiModelProperty("头像Base64")
+    private String head;
     @ApiModelProperty("所属组织机构")
     private SysDeptVO sysDept;
     @ApiModelProperty("所属组织及子集ids")
@@ -122,10 +130,13 @@ public class SessionUser extends AbsEntity implements Authentication {
                        List<SysMenuVO> sysMenuTree, List<String> actionList) {
         this.id = sysUser.getId();
         this.account = sysUser.getAccount();
+        this.phone = sysUser.getPhone();
+        this.email = sysUser.getEmail();
         this.name = sysUser.getName();
         this.motto = sysUser.getMotto();
-        // TODO 这里按需改成url
-        this.headUrl = sysUser.getHead();
+        this.location = sysUser.getLocation();
+        this.locationName = sysUser.getLocationName();
+        this.head = sysUser.getHead();
         this.sysDept = sysDeptVO;
         this.sysDeptIdSet = sysDeptIdSet;
         this.sysRoleIdSet = sysRoleIdSet;
@@ -141,10 +152,13 @@ public class SessionUser extends AbsEntity implements Authentication {
     public SessionUser(SysUser sysUser) {
         this.id = sysUser.getId();
         this.account = sysUser.getAccount();
+        this.phone = sysUser.getPhone();
+        this.email = sysUser.getEmail();
         this.name = sysUser.getName();
         this.motto = sysUser.getMotto();
-        // TODO 这里按需改成url
-        this.headUrl = sysUser.getHead();
+        this.location = sysUser.getLocation();
+        this.locationName = sysUser.getLocationName();
+        this.head = sysUser.getHead();
     }
 
     /**

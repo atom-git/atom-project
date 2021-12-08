@@ -10,6 +10,7 @@ import Default from '@/config/default'
  * isInt: 是否正整数
  * isBoolean: 是否布尔值
  * isFunction: 是否函数
+ * isString: 是否字符串
  * typeIs: 判断类型
  * clearObject: 清除obj中undefined或者null的key
  * deepClone: 对象深度克隆，采对属性部门进行克隆
@@ -97,6 +98,13 @@ export default class Utils {
    */
   static isFunction (value) {
     return typeof value === 'function'
+  }
+
+  /**
+   * 是否是字符串
+   */
+  static isString (value) {
+    return typeof value === 'string'
   }
 
   /**

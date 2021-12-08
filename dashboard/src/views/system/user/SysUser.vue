@@ -14,6 +14,7 @@
                  :columns="columns"
                  :funcZone="funcZone"
                  :extendParams="extendParams"
+                 :labelCol="{ style: 'width: 60px' }"
                  @table-row-action="handleRowAction"></FuncTable>
     </template>
   </SideLayout>
@@ -95,8 +96,14 @@ export default {
             {
               type: 'input',
               dataIndex: 'phone',
-              title: '手机号码',
+              title: '手机',
               form: { filter: true, add: true, edit: true, rules: [{ required: true, type: 'mobile' }] }
+            },
+            {
+              type: 'input',
+              dataIndex: 'email',
+              title: '邮箱',
+              form: { filter: true, add: true, edit: true, rules: [{ required: true, type: 'email' }] }
             },
             {
               type: 'input',
