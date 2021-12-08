@@ -84,7 +84,12 @@ export default class FieldRules {
           this.idcard(label, rule)
           break
         default:
-          this.any(label, rule)
+          // 如果自定义validator存在，且是function，则不自动生成message
+          if (typeof rule.validator === 'function') {
+            break
+          } else {
+            this.any(label, rule)
+          }
       }
     }
   }
