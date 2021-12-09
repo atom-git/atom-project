@@ -47,13 +47,21 @@
         <a-list-item>
           <a-list-item-meta title="页面弹窗样式"></a-list-item-meta>
           <template #actions>
-            <a-select size="small" v-model:value="appConfig.dialog.type" :options="dialogOptions" @change="handleDialogChange"/>
+            <a-select :disabled="appConfig.layout === 'drawer'"
+                      size="small"
+                      v-model:value="appConfig.dialog.type"
+                      :options="dialogOptions"
+                      @change="handleDialogChange"/>
           </template>
         </a-list-item>
         <a-list-item>
           <a-list-item-meta title="页面弹窗大小"></a-list-item-meta>
           <template #actions>
-            <a-input-number size="small" step="10" v-model:value="appConfig.dialog.size" @blur="handleDialogChange"/>
+            <a-input-number :disabled="appConfig.layout === 'drawer'"
+                            size="small"
+                            step="10"
+                            v-model:value="appConfig.dialog.size"
+                            @blur="handleDialogChange"/>
           </template>
         </a-list-item>
         <a-list-item>

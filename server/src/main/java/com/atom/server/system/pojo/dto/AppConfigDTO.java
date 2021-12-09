@@ -43,7 +43,7 @@ public class AppConfigDTO {
 		@ApiModelProperty("弹窗类型")
 		private String type;
 		@ApiModelProperty("弹窗大小")
-		private Integer size;
+		private String size;
 	}
 
 	/**
