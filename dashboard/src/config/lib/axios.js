@@ -7,6 +7,7 @@ import { store } from '@/store'
 import { router } from '@/router'
 import { message } from 'ant-design-vue'
 import Default from '@/config/default'
+import Utils from '@/utils'
 
 const axios = Axios.create({
   // 所有请求均使用相对地址，会在前面自动拼接/api
@@ -22,18 +23,20 @@ const axios = Axios.create({
 // 防止重复请求
 let pendingList = []
 const pendingHandler = (config, cancel) => {
-  const http = Qs.stringify({ url: config.url, method: config.method, params: config.params, data: config.data })
-  if (pendingList.includes(http)) {
+  const request = Qs.stringify(
+    { url: config.url, method: config.method, params: Utils.stringify(config.params), data: Utils.stringify(config.data) },
+    { encode: false });
+  if (pendingList.includes(request)) {
     if (cancel) {
       // 取消重复请求
       cancel('重复请求，自动取消')
     } else {
       // 删除请求
-      pendingList.splice(pendingList.indexOf(http), 1)
+      pendingList.splice(pendingList.indexOf(request), 1)
     }
   } else {
     if (cancel) {
-      pendingList.push(http)
+      pendingList.push(request)
     }
   }
 }
@@ -70,6 +73,7 @@ axios.interceptors.response.use(response => {
   const respMsg = response.data
   // 请求结束删除请求标记
   pendingHandler(response.config)
+  console.log(pendingList)
   if (respMsg.status === 200) {
     // 响应正常交给业务逻辑
     return Promise.resolve(respMsg.data)

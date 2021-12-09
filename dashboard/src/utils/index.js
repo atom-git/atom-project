@@ -41,6 +41,7 @@ import Default from '@/config/default'
  * base64ToFile: base64转成file
  * fileToBase64: file转成base64
  * debounce: 方法防抖
+ * stringify: 字符串化
  */
 export default class Utils {
   /**
@@ -666,5 +667,13 @@ export default class Utils {
       }, wait)
       startTime = Date.now()
     }
+  }
+
+  /**
+   * 转换成字符串
+   * @param value 待转换的值 any
+   */
+  static stringify (value) {
+    return this.isString(value) ? value : JSON.stringify(value)
   }
 }
