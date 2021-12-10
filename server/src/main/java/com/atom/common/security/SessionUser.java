@@ -1,5 +1,7 @@
 package com.atom.common.security;
 
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.atom.common.pojo.AbsEntity;
 import com.atom.common.pojo.mapper.PlatformType;
@@ -56,6 +58,10 @@ public class SessionUser extends AbsEntity implements Authentication {
     private String locationName;
     @ApiModelProperty("头像Base64")
     private String head;
+    @ApiModelProperty("第三方登录类型")
+    private String thirdType;
+    @ApiModelProperty("最后登录时间")
+    private String lastLogin;
     @ApiModelProperty("所属组织机构")
     private SysDeptVO sysDept;
     @ApiModelProperty("所属组织及子集ids")
@@ -137,6 +143,8 @@ public class SessionUser extends AbsEntity implements Authentication {
         this.location = sysUser.getLocation();
         this.locationName = sysUser.getLocationName();
         this.head = sysUser.getHead();
+        this.thirdType = sysUser.getThirdType();
+        this.lastLogin = DateUtil.format(sysUser.getLastLogin(), DatePattern.NORM_DATETIME_PATTERN);
         this.sysDept = sysDeptVO;
         this.sysDeptIdSet = sysDeptIdSet;
         this.sysRoleIdSet = sysRoleIdSet;
@@ -159,6 +167,8 @@ public class SessionUser extends AbsEntity implements Authentication {
         this.location = sysUser.getLocation();
         this.locationName = sysUser.getLocationName();
         this.head = sysUser.getHead();
+        this.thirdType = sysUser.getThirdType();
+        this.lastLogin = DateUtil.format(sysUser.getLastLogin(), DatePattern.NORM_DATETIME_PATTERN);
     }
 
     /**

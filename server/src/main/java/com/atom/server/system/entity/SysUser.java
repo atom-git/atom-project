@@ -36,6 +36,8 @@ public class SysUser {
 	private String password;
 	@Column(name = "motto")
 	private String motto;
+	@Column(name = "third_type")
+	private String thirdType;
 	@Column(name = "nick_name")
 	private String nickName;
 	@Column(name = "open_id")
@@ -56,12 +58,14 @@ public class SysUser {
 	private Date createTime;
 	@Column(name = "update_time")
 	private Date updateTime;
-	@Column(name = "platform")
-	private String platform;
-	@Column(name = "app_config")
-	private String appConfig;
+	@Column(name = "last_login")
+	private Date lastLogin;
 	@Column(name = "extra_info")
 	private String extraInfo;
+	@Column(name = "app_config")
+	private String appConfig;
 	@Column(name = "if_valid")
 	private Integer ifValid;
+	@Column(name = "platform")
+	private String platform;
 }

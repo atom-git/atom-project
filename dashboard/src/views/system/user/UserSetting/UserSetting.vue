@@ -17,10 +17,10 @@
               </a-menu-item>
             </template>
           </a-anchor-link>
-          <a-anchor-link href="#bind">
+          <a-anchor-link href="#login">
             <template #title>
-              <a-menu-item key="bind">
-                <template #icon><IconFont type="GroupOutlined"/></template>帐号绑定
+              <a-menu-item key="login">
+                <template #icon><IconFont type="GroupOutlined"/></template>登录信息
               </a-menu-item>
             </template>
           </a-anchor-link>
@@ -38,8 +38,32 @@
       <div class="atom-user-setting-content">
         <BasicForm :userInfo="userInfo"></BasicForm>
         <SecurityForm :userInfo="userInfo"></SecurityForm>
-        <a-card id="bind" title="帐号绑定">
-
+        <a-card id="login" title="登录信息">
+          <a-list-item>
+            <a-list-item-meta title="第三方登录" :description="thirdSignIn.name">
+              <template #avatar>
+                <a-avatar :style="{ backgroundColor: thirdSignIn.color }">
+                  <template #icon>
+                    <IconFont :type="thirdSignIn.icon"/>
+                  </template>
+                </a-avatar>
+              </template>
+            </a-list-item-meta>
+            <template #actions>
+              <a-button type="link">解绑</a-button>
+            </template>
+          </a-list-item>
+          <a-list-item>
+            <a-list-item-meta title="最后登录时间" :description="userInfo.lastLogin">
+              <template #avatar>
+                <a-avatar :style="{ backgroundColor: '#1890FF' }">
+                  <template #icon>
+                    <IconFont type="ClockCircleOutlined"/>
+                  </template>
+                </a-avatar>
+              </template>
+            </a-list-item-meta>
+          </a-list-item>
         </a-card>
         <a-card id="destory" title="帐号销毁">
           <a-alert type="warning" showIcon message="帐号一旦销毁，将无法恢复，请三思而行！" />
@@ -74,10 +98,32 @@ export default {
   data () {
     return {
       // 删除是否确认
-      destoryConfirm: false
+      destoryConfirm: false,
+      // 第三方绑定列表
+      keyInfos: [
+        { title: '第三方登录', avatar: '', }
+      ]
+    }
+  },
+  computed: {
+    // 第三方登录相关信息
+    thirdSignIn () {
+      return this.initThird(this.userInfo['thirdType'])
     }
   },
   methods: {
+    // 初始化第三方信息
+    initThird (thirdType) {
+      if (thirdType === 'wechat') {
+        return { icon: 'WechatOutlined', name: '微信', color: '#52C41A' }
+      } else if (thirdType === 'qq') {
+        return { icon: 'QqOutlined', name: 'QQ', color: '#000000D9' }
+      } else if (thirdType === 'alipay') {
+        return { icon: 'AlipayOutlined', name: '支付宝', color: '#1890FF' }
+      } else {
+        return { icon: 'UserAddOutlined', name: '未绑定', color: '#00000073' }
+      }
+    },
     // 响应帐号销毁
     handleDestory () {
       console.log('destory')

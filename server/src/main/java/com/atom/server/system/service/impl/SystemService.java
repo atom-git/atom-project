@@ -138,7 +138,9 @@ public class SystemService implements ISystemService {
 				throw new UsernameNotFoundException(RestError.ERROR1008.getErrorMsg());
 			}
 		}
-
+		// 更新用户最后登录时间
+		sysUser.setLastLogin(DateUtil.date());
+		sysUserDao.update(sysUser);
 		// 创建用户SessionUser
 		return this.buildSessionUser(sysUser, platform);
 	}
