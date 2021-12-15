@@ -70,7 +70,7 @@ const defaultPlugins = [
   'visualchars fullscreen image media template code codesample',
   'table charmap hr pagebreak nonbreaking anchor insertdatetime advlist',
   'lists wordcount textpattern help autosave',
-  'autoresize ' // quickbars
+  'autoresize quickbars'
 ]
 const defaultToolbar = 'undo redo | bold italic forecolor backcolor underline strikethrough lineheight | fontselect fontsizeselect formatselect | ' +
     'alignleft aligncenter alignright alignjustify outdent indent | numlist bullist | print preview fullscreen restoredraft | ' +
@@ -99,7 +99,17 @@ export default {
     // 是否显示顶部菜单
     menubar: {
       type: Boolean,
+      default: true
+    },
+    // 快捷输入栏
+    insertQuickbars: {
+      type: [Boolean, String],
       default: false
+    },
+    // 快捷选中栏
+    selectQuickbars: {
+      type: [Boolean, String],
+      default: true
     },
     // 工具栏是否固定
     toolbarSticky: {
@@ -188,10 +198,10 @@ export default {
         },
         // 工具条
         toolbar: this.toolbar,
-        // 禁用输入区域快捷工具条
-        quickbars_selection_toolbar: false
-        // 输入区域快捷工具条
-        // quickbars_selection_toolbar: 'bold italic | link h2 h3  | blockquote quickimage quicktable | align'
+        // 快捷输入
+        quickbars_insert_toolbar: this.insertQuickbars && 'quickimage quicktable',
+        // 选中区域快捷工具条 'bold italic | link h2 h3  | blockquote quickimage quicktable | align'
+        quickbars_selection_toolbar: this.selectQuickbars && 'bold italic | link h2 h3  | blockquote quickimage quicktable | align'
       }
     }
   },

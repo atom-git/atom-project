@@ -8,6 +8,7 @@
       .tox-tbtn {
         &:hover, &.tox-tbtn--enabled {
           background: @primary-color;
+          color: #FFFFFF;
           &, .tox-tbtn__select-chevron, .tox-split-button__chevron, .tox-icon {
             svg {
               fill: #FFFFFF;
@@ -75,7 +76,7 @@
             &:focus {
               background-color: transparent;
             }
-            .tox-dialog__body-nav-item--active {
+            &.tox-dialog__body-nav-item--active {
               border-bottom-color: @primary-color;
               color: @primary-color;
             }
@@ -99,6 +100,21 @@
       }
     }
   }
+  /*快捷输入条样式*/
+  .tox-pop {
+    .tox-pop__dialog {
+      .tox-toolbar {
+        .tox-tbtn:hover, .tox-tbtn--enabled {
+          background: @primary-color;
+          color: #FFFFFF;
+          svg {
+            fill: #FFFFFF;
+          }
+        }
+      }
+    }
+  }
+  /*多级菜单选中hover样式*/
   .tox-collection--toolbar .tox-collection__item--enabled,
   .tox-collection--toolbar .tox-collection__item--active,
   .tox-tbtn--enabled, .tox-tbtn--enabled:hover,
