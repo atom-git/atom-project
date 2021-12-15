@@ -9,17 +9,73 @@
 /**
  * tinymce编辑器，TODO 动态初始化
  * tinymce官网帐号密码 atomgit@sina.com / Zronly0622
+ * // 插件引入，在vue.config.js配置optimization拆分插件，优化包大小，皮肤在初始化参数根据主题自动切换
+ * tinymce/skins/content/dark/content.min.css tinymce/skins/content/default/content.min.css
+ * 中body需要改成#tinymce选择器否则会对整体样式有影响
  * 皮肤配置地址：http://skin.tiny.cloud/t5/?_ga=2.177061413.1296514030.1635736011-257999341.1635736011
  */
+import 'tinymce'
+import 'tinymce/icons/default'
+import 'tinymce/themes/silver'
+// 引入所有插件
+import 'tinymce/plugins/paste'
+import 'tinymce/plugins/advlist'
+import 'tinymce/plugins/anchor'
+import 'tinymce/plugins/autolink'
+import 'tinymce/plugins/autoresize'
+import 'tinymce/plugins/autosave'
+import 'tinymce/plugins/bbcode'
+import 'tinymce/plugins/charmap'
+import 'tinymce/plugins/code'
+import 'tinymce/plugins/codesample'
+import 'tinymce/plugins/colorpicker'
+import 'tinymce/plugins/contextmenu'
+import 'tinymce/plugins/directionality'
+import 'tinymce/plugins/fullpage'
+import 'tinymce/plugins/fullscreen'
+import 'tinymce/plugins/help'
+import 'tinymce/plugins/hr'
+import 'tinymce/plugins/image'
+import 'tinymce/plugins/imagetools'
+import 'tinymce/plugins/importcss'
+import 'tinymce/plugins/insertdatetime'
+import 'tinymce/plugins/legacyoutput'
+import 'tinymce/plugins/link'
+import 'tinymce/plugins/lists'
+import 'tinymce/plugins/media'
+import 'tinymce/plugins/nonbreaking'
+import 'tinymce/plugins/noneditable'
+import 'tinymce/plugins/pagebreak'
+import 'tinymce/plugins/preview'
+import 'tinymce/plugins/print'
+import 'tinymce/plugins/quickbars'
+import 'tinymce/plugins/save'
+import 'tinymce/plugins/searchreplace'
+import 'tinymce/plugins/spellchecker'
+import 'tinymce/plugins/tabfocus'
+import 'tinymce/plugins/table'
+import 'tinymce/plugins/template'
+import 'tinymce/plugins/textcolor'
+import 'tinymce/plugins/textpattern'
+import 'tinymce/plugins/toc'
+import 'tinymce/plugins/visualblocks'
+import 'tinymce/plugins/visualchars'
+import 'tinymce/plugins/wordcount'
+
 import Editor from '@tinymce/tinymce-vue'
 import config from '@/config/mixins/config'
+import Default from '@/config/default'
 const defaultPlugins = [
   'paste print preview searchreplace autolink directionality visualblocks',
   'visualchars fullscreen image media template code codesample',
   'table charmap hr pagebreak nonbreaking anchor insertdatetime advlist',
-  'lists wordcount textpattern help emoticons autosave',
+  'lists wordcount textpattern help autosave',
   'autoresize ' // quickbars
 ]
+const defaultToolbar = 'undo redo | bold italic forecolor backcolor underline strikethrough lineheight | fontselect fontsizeselect formatselect | ' +
+    'alignleft aligncenter alignright alignjustify outdent indent | numlist bullist | print preview fullscreen restoredraft | ' +
+    'cut copy paste pastetext removeformat | code blockquote anchor subscript superscript table image media | ' +
+    'charmap emoticons hr pagebreak insertdatetime'
 export default {
   name: 'RichText',
   components: { Editor },
@@ -34,6 +90,11 @@ export default {
     plugins: {
       type: Array,
       default: () => (defaultPlugins)
+    },
+    // 工作栏设置
+    toolbar: {
+      type: String,
+      default: defaultToolbar
     },
     // 是否显示顶部菜单
     menubar: {
@@ -73,13 +134,13 @@ export default {
         // 初始化完成的回调方法
         init_instance_callback: (editor) => { this.tinyEditor = editor },
         // 皮肤包
-        skin_url: this.publicPath + 'tinymce/skins/ui/atom-tiny',
-        skin: 'atom-tiny',
-        content_css: this.publicPath + 'tinymce/skins/content/atom-tiny/content.css',
+        skin: this.contentTheme === 'dark' ? 'oxide-dark' : 'oxide',
+        skin_url: this.contentTheme === 'dark' ? import('tinymce/skins/ui/oxide-dark/skin.min.css') : import('tinymce/skins/ui/oxide/skin.min.css'),
+        content_css: this.contentTheme === 'dark' ? import('tinymce/skins/content/dark/content.min.css') : import('tinymce/skins/content/default/content.min.css'),
         // 是否显示语言
         language: 'zh_CN',
         language_url: this.publicPath + 'tinymce/langs/zh_CN.js',
-        font_formats: '宋体=宋体;黑体=黑体;仿宋=仿宋;微软雅黑=微软雅黑;楷体-GB2312=楷体-GB2312;Verdana=Verdana,Arial,Helvetica Neue,Helvetica,sans-serif;Arial=arial,helvetica,sans-serif; Courier New=courier new,courier,monospace; AkrutiKndPadmini=Akpdmi-n;',
+        font_formats: '宋体=宋体;黑体=黑体;仿宋=仿宋;微软雅黑=微软雅黑;隶书=隶书;楷体-GB2312=楷体-GB2312;Verdana=Verdana,Arial,Helvetica Neue,Helvetica,sans-serif;Arial=arial,helvetica,sans-serif; Courier New=courier new,courier,monospace; AkrutiKndPadmini=Akpdmi-n;',
         // 是否显示品牌
         branding: false,
         // 最小高度
@@ -93,8 +154,8 @@ export default {
         // 是否开启高级功能
         image_advtab: true,
         // 图片工具要求图片可跨域
-        imagetools_cors_hosts: ['jnanss.com'],
-        imagetools_credentials_hosts: ['jnanss.com'],
+        imagetools_cors_hosts: [Default.domain],
+        imagetools_credentials_hosts: [Default.domain],
         // 防止写成相对路径，导致图片加载不出来
         relative_urls: false,
         // 是否支持拖动上传
@@ -126,10 +187,7 @@ export default {
           }
         },
         // 工具条
-        toolbar: 'undo redo | bold italic forecolor backcolor underline strikethrough lineheight | fontselect fontsizeselect formatselect | ' +
-            'alignleft aligncenter alignright alignjustify outdent indent | numlist bullist | print preview fullscreen restoredraft | ' +
-            'cut copy paste pastetext removeformat | code blockquote anchor subscript superscript table image media | ' +
-            'charmap emoticons hr pagebreak insertdatetime',
+        toolbar: this.toolbar,
         // 禁用输入区域快捷工具条
         quickbars_selection_toolbar: false
         // 输入区域快捷工具条

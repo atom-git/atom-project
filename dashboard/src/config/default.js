@@ -22,6 +22,7 @@ export default {
   platform: 'dashboard',
   platformType: 'WEB',
   title: 'Atom Pro',
+  domain: 'atom.com',
   primaryColor: '#5B8FF9',
   theme: 'color',
   layout: 'sider',

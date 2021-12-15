@@ -22,7 +22,7 @@
  */
 import { FormList } from '@/components/Advance/FuncForm'
 import { ImagePicker } from '@/components/Common/FormItem'
-const division = require(process.env.BASE_URL + 'public/import/division.json')
+const division = require('/public/import/division.json')
 export default {
   name: 'BasicForm',
   components: { FormList, ImagePicker },

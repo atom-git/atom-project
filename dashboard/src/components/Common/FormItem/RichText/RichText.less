@@ -1,42 +1,103 @@
 /**
   富文本编辑器样式
  */
-.tox-editor-container {
-  .tox-editor-header {
-    .tox-tbtn:hover {
-      background: @primary-color;
-    }
-  }
-  .tox-tbtn {
-    cursor: pointer;
-  }
-  .tox-button {
-    background-color: @primary-color;
-    border-color: @primary-color;
-  }
-}
 .tox {
-  .tox-dialog:not(.tox-dialog--width-lg) {
-    max-width: 520px !important;
-  }
-  .tox-dialog-wrap__backdrop {
-    background-color: @modal-mask-bg !important;
-  }
-  .tox-dialog__header {
-    border-bottom: 1px solid @border-color-base !important;
-    padding: 10px 14px !important;
-  }
-  .tox-dialog__body {
-    .tox-form {
-      .tox-form__group {
-        .tox-textfield, .tox-listbox  {
-          margin: 12px 0 !important;;
+  /*工具栏样式*/
+  .tox-editor-container {
+    .tox-editor-header {
+      .tox-tbtn {
+        &:hover, &.tox-tbtn--enabled {
+          background: @primary-color;
+          &, .tox-tbtn__select-chevron, .tox-split-button__chevron, .tox-icon {
+            svg {
+              fill: #FFFFFF;
+            }
+          }
         }
       }
     }
+    .tox-tbtn {
+      cursor: pointer;
+    }
   }
-  .tox-button--secondary {
-    background-color: @white !important;
+  /*按钮样式*/
+  .tox-button {
+    &.tox-button--secondary {
+      background-color: @white;
+    }
+    &.tox-button--naked {
+      color: @text-color-secondary;
+      &:hover:not(:disabled) {
+        background-color: transparent;
+        border-color: transparent;
+      }
+    }
+    &:not(.tox-button--secondary, .tox-button--naked) {
+      background-color: @primary-color !important;
+      border-color: @primary-color !important;
+
+      &:hover:not(:disabled) {
+        background-color: @primary-5 !important;
+        border-color: @primary-5 !important;
+      }
+    }
+  }
+  /*表格配置*/
+  .tox-insert-table-picker {
+    &>div {
+      border-color: @border-color-base !important;
+    }
+    .tox-insert-table-picker__selected {
+      background-color: @primary-2 !important;
+      border-color: @primary-5 !important;
+    }
+  }
+  /*弹窗样式*/
+  .tox-dialog-wrap {
+    .tox-dialog-wrap__backdrop {
+      background-color: @modal-mask-bg;
+    }
+    .tox-dialog {
+      &:not(.tox-dialog--width-lg) {
+        max-width: 520px;
+      }
+      .tox-dialog__header {
+        border-bottom: 1px solid @border-color-base;
+        padding: 10px 12px;
+        .tox-dialog__title {
+          font-size: 16px;
+          font-weight: 500;
+        }
+      }
+      .tox-dialog__body {
+        .tox-dialog__body-nav {
+          .tox-dialog__body-nav-item {
+            &:focus {
+              background-color: transparent;
+            }
+            .tox-dialog__body-nav-item--active {
+              border-bottom-color: @primary-color;
+              color: @primary-color;
+            }
+          }
+        }
+        .tox-form {
+          .tox-form__group {
+            .tox-textfield, .tox-listbox  {
+              margin: 12px 0;
+              padding: 4px 11px;
+              border-color: @border-color-base;
+            }
+          }
+        }
+      }
+      .tox-dialog__footer-end {
+        .tox-button {
+          font-weight: 400;
+          border-radius: 2px;
+        }
+      }
+    }
   }
   .tox-collection--toolbar .tox-collection__item--enabled,
   .tox-collection--toolbar .tox-collection__item--active,
@@ -45,5 +106,6 @@
   .tox-mbtn:focus:not(:disabled), .tox-mbtn:hover:not(:disabled):not(.tox-mbtn--active), .tox-mbtn--active,
   .tox-collection--list .tox-collection__item--active {
     background-color: @primary-color !important;
+    color: #FFFFFF !important;
   }
 }
