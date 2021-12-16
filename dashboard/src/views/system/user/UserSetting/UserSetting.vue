@@ -36,7 +36,7 @@
     </template>
     <template #content>
       <div class="atom-user-setting-content">
-        <BasicForm :userInfo="userInfo"></BasicForm>
+        <UserForm :userInfo="userInfo"></UserForm>
         <SecurityForm :userInfo="userInfo"></SecurityForm>
         <a-card id="login" title="登录信息">
           <a-list-item>
@@ -87,13 +87,13 @@
  * 个人设置
  */
 import { SideLayout } from '@/layouts'
-import BasicForm from './BasicForm'
+import UserForm from './UserForm'
 import SecurityForm from './SecurityForm'
 import config from '@/config/mixins/config'
 import user from '@/config/mixins/user'
 export default {
   name: 'UserSetting',
-  components: { SideLayout, BasicForm, SecurityForm },
+  components: { SideLayout, UserForm, SecurityForm },
   mixins: [config, user],
   data () {
     return {

@@ -2,12 +2,14 @@ package com.atom.server.system.service.impl;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.Validator;
+import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.atom.common.pojo.GlobalConstant;
 import com.atom.common.pojo.exception.BusException;
 import com.atom.common.pojo.http.RestError;
 import com.atom.common.pojo.mapper.IfValid;
+import com.atom.common.pojo.mapper.PlatformType;
 import com.atom.common.pojo.table.PageData;
 import com.atom.common.pojo.table.TableData;
 import com.atom.common.security.SessionUser;
@@ -26,6 +28,7 @@ import com.atom.server.system.pojo.vo.SysUserRoleVO;
 import com.atom.server.system.pojo.vo.SysUserVO;
 import com.atom.server.system.service.ISysUserService;
 import org.hibernate.criterion.DetachedCriteria;
+import org.springframework.beans.BeanUtils;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -174,7 +177,7 @@ public class SysUserService implements ISysUserService {
 	public String saveOrUpdate(SysUserDTO sysUserDTO) {
 		SysUser sysUser = sysUserDTOConverter.doForward(sysUserDTO);
 		if (Validator.isNotNull(sysUser.getId())) {
-			// 编辑用户:用户是否存在
+			// 编辑用户:用户是否存在，如果存在同步更新SessionUser
 			SysUser originUser = sysUserDao.findOne(sysUser.getId());
 			if (Validator.isNull(originUser)) {
 				throw new BusException(RestError.ERROR1006);
@@ -192,16 +195,18 @@ public class SysUserService implements ISysUserService {
 				originUser.setDeptId(sysUserDTO.getDeptId());
 			}
 			if (Validator.isNotEmpty(sysUserDTO.getLocation())) {
-				originUser.setLocation(sysUserDTO.getLocation());
+				originUser.setLocation(ArrayUtil.join(sysUserDTO.getLocation(), "|"));
 			}
 			if (Validator.isNotEmpty(sysUserDTO.getLocationName())) {
-				originUser.setLocationName(sysUserDTO.getLocationName());
+				originUser.setLocationName(ArrayUtil.join(sysUserDTO.getLocationName(), "|"));
 			}
 			originUser.setUpdateTime(DateUtil.date());
 			if (Validator.isNotEmpty(sysUserDTO.getIfValid())) {
 				originUser.setIfValid(sysUserDTO.getIfValid());
 			}
 			sysUserDao.update(originUser);
+			// 刷新全平台有登录的用户信息
+			userCacheStore.flushSession(originUser);
 			return "";
 		} else {
 			// 判断account是否重复
@@ -249,6 +254,10 @@ public class SysUserService implements ISysUserService {
 			Integer ifValid = sysUser.getIfValid().equals(IfValid.VALID.getCode()) ? IfValid.INVALID.getCode() : IfValid.VALID.getCode();
 			sysUser.setIfValid(ifValid);
 			sysUserDao.update(sysUser);
+			// 如果用户禁用，删除用户缓存使其立即下线
+			if (ifValid.equals(IfValid.INVALID.getCode())) {
+				userCacheStore.unRegister(sysUser.getId());
+			}
 		} else {
 			throw new BusException(RestError.ERROR1006);
 		}
@@ -317,6 +326,6 @@ public class SysUserService implements ISysUserService {
 		sysUserDao.update(sysUser);
 		// 更新用户缓存
 		sessionUser.setAppConfig(JSONObject.toJSONString(appConfigDTO));
-		userCacheStore.register(sessionUser.getPlatformType(), sessionUser);
+		userCacheStore.flushSession(sessionUser.getPlatformType(), sessionUser);
 	}
 }

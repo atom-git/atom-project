@@ -1,5 +1,6 @@
 package com.atom.server.system.pojo.dto;
 
+import cn.hutool.core.util.ArrayUtil;
 import com.atom.common.dao.Converter;
 import com.atom.server.system.entity.SysUser;
 import io.swagger.annotations.ApiModel;
@@ -32,9 +33,9 @@ public class SysUserDTO {
 	@ApiModelProperty("格言")
 	private String motto;
 	@ApiModelProperty("位置编码")
-	private String location;
+	private String[] location;
 	@ApiModelProperty("位置地址")
-	private String locationName;
+	private String[] locationName;
 	@ApiModelProperty("组织部门ID")
 	private Integer deptId;
 	@ApiModelProperty("是否启用 0：禁用 1：启用")
@@ -51,7 +52,9 @@ public class SysUserDTO {
 				return null;
 			}
 			SysUser sysUser = new SysUser();
-			BeanUtils.copyProperties(sysUserDTO, sysUser);
+			BeanUtils.copyProperties(sysUserDTO, sysUser, "location", "locationName");
+			sysUser.setLocation(ArrayUtil.join(sysUserDTO.getLocation(), "|"));
+			sysUser.setLocationName(ArrayUtil.join(sysUserDTO.getLocationName(), "|"));
 			return sysUser;
 		}
 	}

@@ -18,6 +18,7 @@
               :bordered="false"
               :labelCol="labelCol"
               hiddenFooter
+              @field-option-selected-change="handleFieldOptionSelectedChange"
               @submit="handleFormSubmit">
       <!-- 把外部传入的form slot传入内部 -->
       <template v-for="slotName in formSlots" #[slotName]="{ field, model }">
@@ -97,7 +98,7 @@ export default {
       return this.width || this.$store.getters.appConfig.dialog.size
     }
   },
-  emits: ['update:modelValue', 'form-editor-submit', 'form-editor-cancel'],
+  emits: ['update:modelValue', 'form-editor-submit', 'form-editor-cancel', 'field-option-selected-change'],
   watch: {
     // 内部form表单变化时，提交变化
     model: {
@@ -119,6 +120,10 @@ export default {
     }
   },
   methods: {
+    // 响应字段选项改中改变，只针对某些特定带options的组件，目的是为了即存储code值也存储name值
+    handleFieldOptionSelectedChange (field, selectedOptions, value) {
+      this.$emit('field-option-selected-change', field, selectedOptions, value)
+    },
     // 响应提交
     handleSubmit () {
       this.$refs.formList.submitForm()

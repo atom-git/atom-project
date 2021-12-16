@@ -12,8 +12,8 @@
                      :description="userInfo.motto"></a-card-meta>
         <!-- 单位 -->
         <div class="atom-user-extend">
-          <p><IconFont type="ApartmentOutlined" /> {{ userInfo.sysDept.deptName }}</p>
-          <p><IconFont type="EnvironmentOutlined" /> {{ '中国.天津' }}</p>
+          <p><IconFont type="ApartmentOutlined" /> {{ deptName }}</p>
+          <p><IconFont type="EnvironmentOutlined" /> {{ locationName }}</p>
           <a-divider />
           <div class="atom-user-extend-favor">
             <FuncTitle title="常用应用"/>
@@ -97,6 +97,14 @@ export default {
           columns: this.newsColumns
         }
       }))
+    },
+    // 部门名称
+    deptName () {
+      return (this.userInfo && this.userInfo.sysDept && this.userInfo.sysDept.deptName) || '暂无归属'
+    },
+    // 所在位置
+    locationName () {
+      return ((this.userInfo && this.userInfo.locationName) || []).join('.')
     }
   },
   methods: {

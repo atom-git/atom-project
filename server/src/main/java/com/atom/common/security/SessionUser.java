@@ -2,6 +2,9 @@ package com.atom.common.security;
 
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.lang.Validator;
+import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.atom.common.pojo.AbsEntity;
 import com.atom.common.pojo.mapper.PlatformType;
@@ -53,9 +56,9 @@ public class SessionUser extends AbsEntity implements Authentication {
     @ApiModelProperty("格言")
     private String motto;
     @ApiModelProperty("位置编码")
-    private String location;
+    private String[] location;
     @ApiModelProperty("位置地址")
-    private String locationName;
+    private String[] locationName;
     @ApiModelProperty("头像Base64")
     private String head;
     @ApiModelProperty("第三方登录类型")
@@ -140,8 +143,12 @@ public class SessionUser extends AbsEntity implements Authentication {
         this.email = sysUser.getEmail();
         this.name = sysUser.getName();
         this.motto = sysUser.getMotto();
-        this.location = sysUser.getLocation();
-        this.locationName = sysUser.getLocationName();
+        if (Validator.isNotEmpty(sysUser.getLocation())) {
+            this.location = StrUtil.split(sysUser.getLocation(), "|").toArray(new String[]{});
+        }
+        if (Validator.isNotEmpty(sysUser.getLocationName())) {
+            this.locationName = StrUtil.split(sysUser.getLocationName(), "|").toArray(new String[]{});
+        }
         this.head = sysUser.getHead();
         this.thirdType = sysUser.getThirdType();
         this.lastLogin = DateUtil.format(sysUser.getLastLogin(), DatePattern.NORM_DATETIME_PATTERN);
@@ -164,11 +171,33 @@ public class SessionUser extends AbsEntity implements Authentication {
         this.email = sysUser.getEmail();
         this.name = sysUser.getName();
         this.motto = sysUser.getMotto();
-        this.location = sysUser.getLocation();
-        this.locationName = sysUser.getLocationName();
+        if (Validator.isNotEmpty(sysUser.getLocation())) {
+            this.location = StrUtil.split(sysUser.getLocation(), "|").toArray(new String[]{});
+        }
+        if (Validator.isNotEmpty(sysUser.getLocationName())) {
+            this.locationName = StrUtil.split(sysUser.getLocationName(), "|").toArray(new String[]{});
+        }
         this.head = sysUser.getHead();
         this.thirdType = sysUser.getThirdType();
         this.lastLogin = DateUtil.format(sysUser.getLastLogin(), DatePattern.NORM_DATETIME_PATTERN);
+    }
+
+    /**
+     * 根据系统用户刷新SessionUser
+     * @param sysUser 系统用户
+     */
+    public void refresh(SysUser sysUser) {
+        this.setHead(sysUser.getHead());
+        this.setName(sysUser.getName());
+        this.setPhone(sysUser.getPhone());
+        this.setEmail(sysUser.getEmail());
+        this.setMotto(sysUser.getMotto());
+        if (Validator.isNotEmpty(sysUser.getLocation())) {
+            this.location = StrUtil.split(sysUser.getLocation(), "|").toArray(new String[]{});
+        }
+        if (Validator.isNotEmpty(sysUser.getLocationName())) {
+            this.locationName = StrUtil.split(sysUser.getLocationName(), "|").toArray(new String[]{});
+        }
     }
 
     /**

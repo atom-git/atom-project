@@ -28,7 +28,10 @@
               </template>
             </FieldRender>
             <!-- 非inputGroup字段 -->
-            <FieldRender v-else :field="field" :size="size" v-model="model[field.name]"></FieldRender>
+            <FieldRender v-else :field="field"
+                         :size="size"
+                         v-model="model[field.name]"
+                         @option-selected-change="handleFieldOptionSelectedChange"></FieldRender>
           </a-form-item>
         </a-col>
         <!-- 查询重置按钮 -->

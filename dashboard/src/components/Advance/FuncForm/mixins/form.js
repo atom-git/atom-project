@@ -104,7 +104,7 @@ export default {
     // 初始化表单数据
     this.initModel(this.$utils.deepClone(this.fields))
   },
-  emits: ['update:modelValue', 'change', 'submit', 'reset'],
+  emits: ['update:modelValue', 'change', 'field-option-selected-change', 'submit', 'reset'],
   methods: {
     // 表单值初始化，默认值仅通过fields传入
     initModel (fields) {
@@ -230,6 +230,10 @@ export default {
       } else {
         return []
       }
+    },
+    // 响应字段选项改中改变，只针对某些特定带options的组件，目的是为了即存储code值也存储name值
+    handleFieldOptionSelectedChange (field, selectedOptions, value) {
+      this.$emit('field-option-selected-change', field, selectedOptions, value)
     },
     // 重置表单
     resetForm () {

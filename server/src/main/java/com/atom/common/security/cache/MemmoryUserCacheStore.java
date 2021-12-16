@@ -3,6 +3,7 @@ package com.atom.common.security.cache;
 import cn.hutool.core.lang.Validator;
 import com.atom.common.pojo.mapper.PlatformType;
 import com.atom.common.security.SessionUser;
+import com.atom.server.system.entity.SysUser;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -34,14 +35,14 @@ public class MemmoryUserCacheStore implements IUserCacheStore {
     public void register(PlatformType platformType, SessionUser user) {
         String platform = platformType.name() + "_";
         String oldToken;
-        if (existUserToken(platformType, user.getAccount())) {
+        if (existUserToken(platformType, user.getId())) {
             oldToken = getUserToken(platformType, user);
             if (Validator.isNotEmpty(oldToken)) {
                 removeTokenUser(platform, oldToken);
             }
         }
         setTokenUser(platform, user.getToken(), user);
-        setUserToken(platform, user.getAccount(), user.getToken());
+        setUserToken(platform, user.getId(), user.getToken());
     }
 
     /**
@@ -55,9 +56,38 @@ public class MemmoryUserCacheStore implements IUserCacheStore {
         if (existTokenUser(platformType, token)) {
             SessionUser user = getTokenUser(platformType, token);
             if (user != null) {
-                removeUserToken(platform, user.getAccount());
+                removeUserToken(platform, user.getId());
             }
             removeTokenUser(platform, token);
+        }
+    }
+
+    /**
+     * 移除缓存用户
+     * @param platformType 平台类型
+     * @param userId 用户序号
+     */
+    @Override
+    public void unRegister(PlatformType platformType, Integer userId) {
+        String platform = platformType.name() + "_";
+        if (existUserToken(platformType, userId)) {
+            SessionUser user = getUserSession(platformType, userId);
+            if (user != null) {
+                removeUserToken(platform, user.getId());
+                removeTokenUser(platform, user.getToken());
+            }
+        }
+    }
+
+    /**
+     * 移除全平台缓存用户
+     * @param userId 用户序号
+     */
+    @Override
+    public void unRegister(Integer userId) {
+        PlatformType[] platformTypes = PlatformType.values();
+        for (PlatformType platformType : platformTypes) {
+            this.unRegister(platformType, userId);
         }
     }
 
@@ -80,7 +110,30 @@ public class MemmoryUserCacheStore implements IUserCacheStore {
      */
     @Override
     public String getUserToken(PlatformType platformType, SessionUser user) {
-        return userTokenCache.get(platformType.name() + "_" + user.getAccount());
+        return userTokenCache.get(platformType.name() + "_" + user.getId());
+    }
+
+    /**
+     * 读取用户token
+     * @param platformType 平台类型
+     * @param userId 用户帐号
+     * @return 令牌
+     */
+    @Override
+    public String getUserToken(PlatformType platformType, Integer userId) {
+        return userTokenCache.get(platformType.name() + "_" + userId);
+    }
+
+    /**
+     * 获取用户Session
+     * @param platformType 平台类型
+     * @param userId 用户帐号
+     * @return 用户Session
+     */
+    @Override
+    public SessionUser getUserSession(PlatformType platformType, Integer userId) {
+        String token = this.getUserToken(platformType, userId);
+        return Validator.isNotEmpty(token) ? this.getTokenUser(platformType, token) : null;
     }
 
     /**
@@ -97,12 +150,12 @@ public class MemmoryUserCacheStore implements IUserCacheStore {
     /**
      * 用户是否存在令牌
      * @param platformType 平台类型
-     * @param account 用户帐号
+     * @param userId 用户帐号
      * @return 是否存在
      */
     @Override
-    public boolean existUserToken(PlatformType platformType, String account) {
-        return userTokenCache.containsKey(platformType.name() + "_" + account);
+    public boolean existUserToken(PlatformType platformType, Integer userId) {
+        return userTokenCache.containsKey(platformType.name() + "_" + userId);
     }
 
     /**
@@ -111,8 +164,25 @@ public class MemmoryUserCacheStore implements IUserCacheStore {
      * @param user 用户
      */
     @Override
-    public void flushTokenUser(PlatformType platformType, SessionUser user) {
+    public void flushSession(PlatformType platformType, SessionUser user) {
         this.register(platformType, user);
+    }
+
+    /**
+     * 根据用户Id刷新全平台用户信息
+     * @param sysUser 用户信息
+     */
+    @Override
+    public void flushSession(SysUser sysUser) {
+        PlatformType[] platformTypes = PlatformType.values();
+        for (PlatformType platformType : platformTypes) {
+            SessionUser sessionUser = this.getUserSession(platformType, sysUser.getId());
+            if (sessionUser != null) {
+                // 更橷SessionUser信息
+                sessionUser.refresh(sysUser);
+                this.flushSession(platformType, sessionUser);
+            }
+        }
     }
 
     /**
@@ -137,19 +207,19 @@ public class MemmoryUserCacheStore implements IUserCacheStore {
     /**
      * 移除用户令牌
      * @param platform 平台类型
-     * @param account 用户帐号
+     * @param userId 用户帐号
      */
-    private void removeUserToken(String platform, String account) {
-        userTokenCache.remove(platform + account);
+    private void removeUserToken(String platform, Integer userId) {
+        userTokenCache.remove(platform + userId);
     }
 
     /**
      * 设置用户令牌
      * @param platform 平台类型
-     * @param account 用户帐号
+     * @param userId 用户帐号
      * @param token  令牌信息
      */
-    private void setUserToken(String platform, String account, String token) {
-        userTokenCache.put(platform + account, token);
+    private void setUserToken(String platform, Integer userId, String token) {
+        userTokenCache.put(platform + userId, token);
     }
 }

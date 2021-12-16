@@ -110,7 +110,7 @@
               v-bind="renderField"
               :fieldNames="renderField.replaceFields"
               :value="modelValue"
-              @change="handleChange" allowClear/>
+              @change="handleCascaderChange" allowClear/>
 
   <!-- 时间组件 -->
   <!-- datePicker -->
@@ -312,7 +312,7 @@ export default {
       })
     }
   },
-  emits: ['update:modelValue', 'change'],
+  emits: ['update:modelValue', 'change', 'option-selected-change'],
   methods: {
     // 判断field类型
     isType (type = 'text') {
@@ -421,6 +421,12 @@ export default {
     // 响应radio改变
     handleRadioChange (event) {
       this.handleChange(event.target.value)
+    },
+    // 响应级连查询值的改变
+    handleCascaderChange (value, selectedOptions) {
+      this.handleChange(value)
+      // 对于既需要值又需要name的组件，提示option改变时的name值抛出
+      this.$emit('option-selected-change', this.field, selectedOptions, value)
     },
     // 响应formItem的值变化，用于双绑
     handleChange (value) {

@@ -43,7 +43,10 @@
           </template>
         </FieldRender>
         <!-- 非inputGroup字段 -->
-        <FieldRender v-else :field="field" :size="field.size || size" v-model="model[field.name]"></FieldRender>
+        <FieldRender v-else :field="field"
+                     :size="field.size || size"
+                     v-model="model[field.name]"
+                     @option-selected-change="handleFieldOptionSelectedChange"></FieldRender>
       </a-form-item>
       <!-- 操作按钮区域 -->
       <a-form-item v-if="!hiddenFooter"

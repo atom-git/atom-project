@@ -6,7 +6,8 @@
                   v-model="sysUser"
                   :fields="fields"
                   :hiddenFooter="true"
-                  :labelCol="{ style: 'width: 80px' }"></FormList>
+                  :labelCol="{ style: 'width: 80px' }"
+                  @field-option-selected-change="handleFieldOptionSelectedChange"></FormList>
       </a-col>
       <a-col :xs="{ span: 24, order: 0 }" :md="{ span: 12, order: 1}">
         <ImagePicker v-model="sysUser.head" :headCutter="true" imgOutType="png"></ImagePicker>
@@ -24,7 +25,7 @@ import { FormList } from '@/components/Advance/FuncForm'
 import { ImagePicker } from '@/components/Common/FormItem'
 const division = require('/public/import/division.json')
 export default {
-  name: 'BasicForm',
+  name: 'UserForm',
   components: { FormList, ImagePicker },
   props: {
     // 用户信息
@@ -54,6 +55,12 @@ export default {
     this.sysUser = this.userInfo
   },
   methods: {
+    // 响应字段选项选中改变，用于保存locationName
+    handleFieldOptionSelectedChange (field, selectedOptions) {
+      if (field.name === 'location') {
+        this.sysUser.locationName = selectedOptions.map(option => (option.name))
+      }
+    },
     // 响应个人信息更新
     handleClick () {
       this.loading = true

@@ -84,11 +84,11 @@ public class UserLoginAuthProvider implements AuthenticationProvider {
             // 同平台用户是否能够同时登录根据配置信息来定
             String token;
             // 支持多人登录同一帐户时，直接取当前已登录的用户信息
-            if (MULTI_LOGIN && userCacheStore.existUserToken(platformType, account)) {
+            if (MULTI_LOGIN && userCacheStore.existUserToken(platformType, sessionUser.getId())) {
                 token = userCacheStore.getUserToken(platformType, sessionUser);
                 sessionUser.setToken(token);
                 // 刷新用户信息
-                userCacheStore.flushTokenUser(platformType, sessionUser);
+                userCacheStore.flushSession(platformType, sessionUser);
             } else {
                 token = RandomUtil.randomStringUpper(32);
                 sessionUser.setToken(token);

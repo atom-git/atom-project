@@ -2,6 +2,7 @@ package com.atom.common.security.cache;
 
 import com.atom.common.pojo.mapper.PlatformType;
 import com.atom.common.security.SessionUser;
+import com.atom.server.system.entity.SysUser;
 
 /**
  * @author zr
@@ -25,6 +26,19 @@ public interface IUserCacheStore {
     void unRegister(PlatformType platformType, String token);
 
     /**
+     * 移除缓存用户
+     * @param platformType 平台类型
+     * @param userId 用户序号
+     */
+    void unRegister(PlatformType platformType, Integer userId);
+
+    /**
+     * 移除全平台缓存用户
+     * @param userId 用户序号
+     */
+    void unRegister(Integer userId);
+
+    /**
      * 读取用户信息
      * @param platformType 平台类型
      * @param token 令牌
@@ -40,6 +54,23 @@ public interface IUserCacheStore {
      */
     String getUserToken(PlatformType platformType, SessionUser user);
 
+
+    /**
+     * 读取用户token
+     * @param platformType 平台类型
+     * @param userId 用户序号
+     * @return 令牌
+     */
+    String getUserToken(PlatformType platformType, Integer userId);
+
+    /**
+     * 获取用户Session
+     * @param platformType 平台类型
+     * @param userId 用户序号
+     * @return 用户Session
+     */
+    SessionUser getUserSession(PlatformType platformType, Integer userId);
+
     /**
      * 检测令牌是否有效
      * @param platformType 平台类型
@@ -51,15 +82,21 @@ public interface IUserCacheStore {
     /**
      * 是否存在用户的token信息
      * @param platformType 平台类型
-     * @param account 用户帐户
+     * @param userId 用户序号
      * @return 是否存在
      */
-    boolean existUserToken(PlatformType platformType, String account);
+    boolean existUserToken(PlatformType platformType, Integer userId);
 
     /**
      * 刷新用户信息
      * @param platformType 平台
      * @param user 用户
      */
-    void flushTokenUser(PlatformType platformType, SessionUser user);
+    void flushSession(PlatformType platformType, SessionUser user);
+
+    /**
+     * 根据用户Id刷新全平台用户信息
+     * @param sysUser 用户信息
+     */
+    void flushSession(SysUser sysUser);
 }

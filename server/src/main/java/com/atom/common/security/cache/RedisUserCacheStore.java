@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.atom.common.pojo.mapper.PlatformType;
 import com.atom.common.security.SessionUser;
 import com.atom.common.util.RedisUtil;
+import com.atom.server.system.entity.SysUser;
 import org.springframework.stereotype.Component;
 
 /**
@@ -34,16 +35,16 @@ public class RedisUserCacheStore implements IUserCacheStore {
     public void register(PlatformType platformType, SessionUser user) {
         String platform = platformType.name() + "_";
         String oldToken;
-        if (existUserToken(platformType, user.getAccount())) {
+        if (existUserToken(platformType, user.getId())) {
             oldToken = getUserToken(platformType, user);
             if (Validator.isNotEmpty(oldToken)) {
                 removeTokenUser(platform, oldToken);
             }
             setTokenUser(platform, user.getToken(), user);
-            setUserToken(platform, user.getAccount(), user.getToken());
+            setUserToken(platform, user.getId(), user.getToken());
         } else {
             setTokenUser(platform, user.getToken(), user);
-            setUserToken(platform, user.getAccount(), user.getToken());
+            setUserToken(platform, user.getId(), user.getToken());
         }
     }
 
@@ -58,9 +59,38 @@ public class RedisUserCacheStore implements IUserCacheStore {
         if (existTokenUser(platformType, token)) {
             SessionUser user = getTokenUser(platformType, token);
             if (user != null) {
-                removeUserToken(platform, user.getAccount());
+                removeUserToken(platform, user.getId());
             }
             removeTokenUser(platform, token);
+        }
+    }
+
+    /**
+     * 移除缓存用户
+     * @param platformType 平台类型
+     * @param userId 用户序号
+     */
+    @Override
+    public void unRegister(PlatformType platformType, Integer userId) {
+        String platform = platformType.name() + "_";
+        if (existUserToken(platformType, userId)) {
+            SessionUser user = getUserSession(platformType, userId);
+            if (user != null) {
+                removeUserToken(platform, user.getId());
+                removeTokenUser(platform, user.getToken());
+            }
+        }
+    }
+
+    /**
+     * 移除全平台缓存用户
+     * @param userId 用户序号
+     */
+    @Override
+    public void unRegister(Integer userId) {
+        PlatformType[] platformTypes = PlatformType.values();
+        for (PlatformType platformType : platformTypes) {
+            this.unRegister(platformType, userId);
         }
     }
 
@@ -83,7 +113,31 @@ public class RedisUserCacheStore implements IUserCacheStore {
      */
     @Override
     public String getUserToken(PlatformType platformType, SessionUser user) {
-        return RedisUtil.get(platformType.name() + "_" + USER_TOKEN_KEY, user.getAccount()).toString();
+        return RedisUtil.get(platformType.name() + "_" + USER_TOKEN_KEY, user.getId() + "").toString();
+    }
+
+    /**
+     * 读取用户token
+     * @param platformType 平台类型
+     * @param userId 用户帐号
+     * @return 令牌
+     */
+    @Override
+    public String getUserToken(PlatformType platformType, Integer userId) {
+        Object token = RedisUtil.get(platformType.name() + "_" + USER_TOKEN_KEY, userId + "");
+        return token != null ? token.toString() : "";
+    }
+
+    /**
+     * 获取用户Session
+     * @param platformType 平台类型
+     * @param userId 用户帐号
+     * @return 用户Session
+     */
+    @Override
+    public SessionUser getUserSession(PlatformType platformType, Integer userId) {
+        String token = this.getUserToken(platformType, userId);
+        return Validator.isNotEmpty(token) ? this.getTokenUser(platformType, token) : null;
     }
 
     /**
@@ -100,12 +154,12 @@ public class RedisUserCacheStore implements IUserCacheStore {
     /**
      * 是否存在用户的token信息
      * @param platformType 平台类型
-     * @param account 用户帐户
+     * @param userId 用户帐号
      * @return 是否存在
      */
     @Override
-    public boolean existUserToken(PlatformType platformType, String account) {
-        return RedisUtil.exists(platformType.name() + "_" + USER_TOKEN_KEY, account);
+    public boolean existUserToken(PlatformType platformType, Integer userId) {
+        return RedisUtil.exists(platformType.name() + "_" + USER_TOKEN_KEY, userId + "");
     }
 
     /**
@@ -114,8 +168,25 @@ public class RedisUserCacheStore implements IUserCacheStore {
      * @param user 用户
      */
     @Override
-    public void flushTokenUser(PlatformType platformType, SessionUser user) {
+    public void flushSession(PlatformType platformType, SessionUser user) {
         this.register(platformType, user);
+    }
+
+    /**
+     * 根据用户Id刷新全平台用户信息
+     * @param sysUser 用户信息
+     */
+    @Override
+    public void flushSession(SysUser sysUser) {
+        PlatformType[] platformTypes = PlatformType.values();
+        for (PlatformType platformType : platformTypes) {
+            SessionUser sessionUser = this.getUserSession(platformType, sysUser.getId());
+            if (sessionUser != null) {
+                // 更橷SessionUser信息
+                sessionUser.refresh(sysUser);
+                this.flushSession(platformType, sessionUser);
+            }
+        }
     }
 
     /**
@@ -139,20 +210,20 @@ public class RedisUserCacheStore implements IUserCacheStore {
     /**
      * 设置用户token信息
      * @param platform 平台
-     * @param account 用户帐户
+     * @param userId 用户帐号
      * @param token 用户token
      */
-    private void setUserToken(String platform, String account, String token) {
-        RedisUtil.setMap(platform + USER_TOKEN_KEY, account, token);
+    private void setUserToken(String platform, Integer userId, String token) {
+        RedisUtil.setMap(platform + USER_TOKEN_KEY, userId + "", token);
     }
 
     /**
      * 清除用户的token信息
      * @param platform 平台
-     * @param account 用户帐户
+     * @param userId 用户帐号
      */
-    private void removeUserToken(String platform, String account) {
-        RedisUtil.remove(platform + USER_TOKEN_KEY, account);
+    private void removeUserToken(String platform, Integer userId) {
+        RedisUtil.remove(platform + USER_TOKEN_KEY, userId + "");
     }
 
     /**

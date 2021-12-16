@@ -1,5 +1,7 @@
 package com.atom.server.system.pojo.vo;
 
+import cn.hutool.core.lang.Validator;
+import cn.hutool.core.util.StrUtil;
 import com.atom.common.dao.Converter;
 import com.atom.common.pojo.AbsEntity;
 import com.atom.server.system.entity.SysUser;
@@ -34,9 +36,9 @@ public class SysUserVO extends AbsEntity {
 	@ApiModelProperty("格言")
 	private String motto;
 	@ApiModelProperty("位置编码")
-	private String location;
+	private String[] location;
 	@ApiModelProperty("位置地址")
-	private String locationName;
+	private String[] locationName;
 	@ApiModelProperty("头像")
 	private String head;
 	@ApiModelProperty("组织机构代码")
@@ -58,9 +60,14 @@ public class SysUserVO extends AbsEntity {
 				return null;
 			}
 			SysUserVO sysUserVO = new SysUserVO();
-			BeanUtils.copyProperties(sysUser, sysUserVO, "sysDept", "location");
+			BeanUtils.copyProperties(sysUser, sysUserVO, "sysDept", "location", "locationName");
 			sysUserVO.setSysDept(sysDeptVOConverter.doForward(sysUser.getSysDept()));
-			// TODO 把head由key转成图片地址
+			if (Validator.isNotEmpty(sysUser.getLocation())) {
+				sysUserVO.setLocation(StrUtil.split(sysUser.getLocation(), "|").toArray(new String[]{}));
+			}
+			if (Validator.isNotEmpty(sysUser.getLocationName())) {
+				sysUserVO.setLocationName(StrUtil.split(sysUser.getLocationName(), "|").toArray(new String[]{}));
+			}
 			return sysUserVO;
 		}
 	}
