@@ -1,7 +1,7 @@
 ![logo](https://user-images.githubusercontent.com/76482041/146486469-01636297-c528-4160-bf0a-ce98f81ba007.png)
 
 # Atom Project
-基于Vue3.X,Ant Design Vue2.X,Springboot2.X构建的完整后台管理系统，具有多个自定义高阶组件，AXIOS请求拦截，动态路由，且完整的权限控制系统，具备多语言切换版本，完整的样式和布局自定义能力，文档暂未编写，但是各组件均能找到使用示例和完整的参数说明，相信我，会有N多惊喜功能等着你，完全开源免费
+基于Vue3.X,Ant Design Vue2.X,Springboot2.X构建的完整后台管理系统MIT协议，具有多个自定义高阶组件，AXIOS请求拦截，动态路由，且完整的权限控制系统，具备多语言切换版本，完整的样式和布局自定义能力，文档暂未编写，但是各组件均能找到使用示例和完整的参数说明，相信我，会有N多惊喜功能等着你，完全开源免费
 i18n多语言版本功能相对滞后可自行根据需要改造，如有更多需求可联系作者atomgit@sina.com!
 
 国内链接：https://gitee.com/atomgit/atom-project/
