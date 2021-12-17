@@ -94,16 +94,6 @@ module.exports = {
   // app运行配置
   devServer: {
     port: 9099,
-    // 测试微信登录时需要配置这里和hosts中增加127.0.0.1 www.jnanss.com的DNS配置
-    // host: 'www.jnanss.com',
-    // proxy: {
-    //   '/login': {
-    //     target: 'https://www.jnanss.com:8443'
-    //   },
-    //   '/api': {
-    //     target: 'https://www.jnanss.com:8443'
-    //   }
-    // }
     proxy: {
       '/login': {
         target: 'https://localhost:8443'
