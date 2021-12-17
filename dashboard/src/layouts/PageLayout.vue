@@ -19,9 +19,6 @@ export default {
     &:not(:first-child) {
       margin-top: 16px;
     }
-    .ant-card-head {
-      border-bottom: none;
-    }
   }
 }
 </style>

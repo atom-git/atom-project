@@ -315,6 +315,7 @@ export default {
 <style lang="less">
 .atom-table {
   .ant-card-head {
+    border-bottom: none;
     .ant-card-head-wrapper {
       .ant-card-extra {
         padding: 12px 0;
